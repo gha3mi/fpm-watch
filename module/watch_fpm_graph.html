@@ -1,0 +1,1766 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="Documentation for fpm-watch">
+    <meta name="author" content="Seyed Ali Ghasemi" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>watch_fpm_graph &ndash; fpm-watch</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">fpm-watch </a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/types.html">Derived Types</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <div class="row">
+    <h1>watch_fpm_graph
+      <small>Module</small>
+      
+    </h1>
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+            <li class="list-inline-item" id="meta-license"><i class="fa fa-legal"></i> <a rel="license" href="https://opensource.org/licenses/MIT">MIT</a></li>
+
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title="14.8% of total for modules and submodules.">466 statements</a>
+            </li>
+
+            <li class="list-inline-item" id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/watch_fpm_graph.f90"> Source File</a>
+            </li>
+        </ul>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+                <li class="breadcrumb-item"><a href='../sourcefile/watch_fpm_graph.f90.html'>watch_fpm_graph.f90</a></li>
+            <li class="breadcrumb-item active" aria-current="page">watch_fpm_graph</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
+  </script>
+
+  </div>
+
+  <div class="row">
+    <div class="col-md-3">
+        <div id="sidebar">
+      <h3>Contents</h3>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#funcs-0"
+         aria-expanded="false" aria-controls="funcs-0">
+         <h4 class="card-header bg-primary text-white">Functions</h4>
+      </a>
+      <div id="funcs-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../module/watch_fpm_graph.html#proc-find_ptr_index">find_ptr_index</a>
+            <a class="list-group-item" href="../module/watch_fpm_graph.html#proc-is_in_dep_dirs">is_in_dep_dirs</a>
+            <a class="list-group-item" href="../module/watch_fpm_graph.html#proc-is_run_or_test">is_run_or_test</a>
+        </div>
+      </div>
+    </div>
+
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#subs-0"
+         aria-expanded="false" aria-controls="subs-0">
+         <h4 class="card-header bg-primary text-white">Subroutines</h4>
+      </a>
+      <div id="subs-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../module/watch_fpm_graph.html#proc-compute_watch_files_from_settings">compute_watch_files_from_settings</a>
+            <a class="list-group-item" href="../module/watch_fpm_graph.html#proc-dfs_mark_bool">dfs_mark_bool</a>
+            <a class="list-group-item" href="../module/watch_fpm_graph.html#proc-dfs_mark_mask">dfs_mark_mask</a>
+            <a class="list-group-item" href="../module/watch_fpm_graph.html#proc-gather_files_with_mask">gather_files_with_mask</a>
+            <a class="list-group-item" href="../module/watch_fpm_graph.html#proc-push_file_with_mask">push_file_with_mask</a>
+            <a class="list-group-item" href="../module/watch_fpm_graph.html#proc-select_names_or_all">select_names_or_all</a>
+            <a class="list-group-item" href="../module/watch_fpm_graph.html#proc-vec_grow">vec_grow</a>
+            <a class="list-group-item" href="../module/watch_fpm_graph.html#proc-vec_push_unique">vec_push_unique</a>
+        </div>
+      </div>
+    </div>
+
+  
+  
+  
+  
+  
+  
+  
+
+
+  </div>
+
+    </div>
+
+    <div class="col-md-9" id='text'>
+      <p>Compute watch lists from the <code>fpm</code> dependency graph.</p>
+<p>Builds the <code>fpm</code> model and expands targets into a set of source files to
+watch. Optional dependency watching can include dependency project trees
+(including those located under the build directory).</p>
+<p>This module is responsible for connecting <code>fpm-watch</code> to the <code>fpm</code> internal
+model/target structures. It selects the relevant closure of targets for the
+configured command (build/test/run), and produces:
+- <code>files</code>: unique normalized file paths
+- <code>file_mask</code>: bitmasks mapping each file to root targets
+- <code>roots</code>: the root targets corresponding to runnable/testable executables</p>
+<br>          <div class="card mb-4">
+      <h3 class="card-header card-title bg-light">Uses</h3>
+      <div class="card-body">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <ul class="list-inline">
+                  <li class="list-inline-item">fpm</li>
+                  <li class="list-inline-item">fpm_dependency</li>
+                  <li class="list-inline-item">fpm_filesystem</li>
+                  <li class="list-inline-item"><a href='watch_types.html'>watch_types</a></li>
+                  <li class="list-inline-item">fpm_model</li>
+                  <li class="list-inline-item">fpm_command_line</li>
+                  <li class="list-inline-item"><a href='http://fortranwiki.org/fortran/show/iso_fortran_env'>iso_fortran_env</a></li>
+                  <li class="list-inline-item">fpm_strings</li>
+                  <li class="list-inline-item"><a href='watch_log.html'>watch_log</a></li>
+                  <li class="list-inline-item">fpm_error</li>
+                  <li class="list-inline-item">fpm_targets</li>
+                  <li class="list-inline-item"><a href='watch_util.html'>watch_util</a></li>
+                  <li class="list-inline-item"><a href='watch_filter.html'>watch_filter</a></li>
+                  <li class="list-inline-item">fpm_manifest</li>
+              </ul>
+            </li>
+            <li class="list-group-item">
+              <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: module~~watch_fpm_graph~~UsesGraph Pages: 1 -->
+<svg id="modulewatch_fpm_graphUsesGraph" width="534pt" height="502pt"
+ viewBox="0.00 0.00 534.00 502.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="module~~watch_fpm_graph~~UsesGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 498.27)">
+<title>module~~watch_fpm_graph~~UsesGraph</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-498.27 530.08,-498.27 530.08,4 -4,4"/>
+<!-- module~watch_fpm_graph -->
+<g id="module~~watch_fpm_graph~~UsesGraph_node1" class="node">
+<title>module~watch_fpm_graph</title>
+<polygon fill="none" stroke="black" points="526.08,-212.27 420.06,-212.27 420.06,-188 526.08,-188 526.08,-212.27"/>
+<text xml:space="preserve" text-anchor="middle" x="473.07" y="-196.53" font-family="Helvetica,sans-Serif" font-size="10.50">watch_fpm_graph</text>
+</g>
+<!-- fpm -->
+<g id="module~~watch_fpm_graph~~UsesGraph_node2" class="node">
+<title>fpm</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="359.17,-494.27 305.17,-494.27 305.17,-470 359.17,-470 359.17,-494.27"/>
+<text xml:space="preserve" text-anchor="middle" x="332.17" y="-478.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">fpm</text>
+</g>
+<!-- module~watch_fpm_graph&#45;&gt;fpm -->
+<g id="module~~watch_fpm_graph~~UsesGraph_edge1" class="edge">
+<title>module~watch_fpm_graph&#45;&gt;fpm</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M471.04,-212.69C467.11,-252.92 449.83,-380.35 384.06,-456.13 380,-460.82 374.88,-464.76 369.48,-468.05"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="368.13,-464.81 360.93,-472.58 371.4,-470.99 368.13,-464.81"/>
+</g>
+<!-- fpm_command_line -->
+<g id="module~~watch_fpm_graph~~UsesGraph_node3" class="node">
+<title>fpm_command_line</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="116.52,-474.27 0,-474.27 0,-450 116.52,-450 116.52,-474.27"/>
+<text xml:space="preserve" text-anchor="middle" x="58.26" y="-458.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">fpm_command_line</text>
+</g>
+<!-- module~watch_fpm_graph&#45;&gt;fpm_command_line -->
+<g id="module~~watch_fpm_graph~~UsesGraph_edge2" class="edge">
+<title>module~watch_fpm_graph&#45;&gt;fpm_command_line</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M197.4,-462.13C174.89,-460.6 150.26,-460.19 128.12,-460.29"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="128.27,-456.79 118.3,-460.37 128.33,-463.79 128.27,-456.79"/>
+</g>
+<!-- fpm_dependency -->
+<g id="module~~watch_fpm_graph~~UsesGraph_node4" class="node">
+<title>fpm_dependency</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="384.06,-192.27 280.29,-192.27 280.29,-168 384.06,-168 384.06,-192.27"/>
+<text xml:space="preserve" text-anchor="middle" x="332.17" y="-176.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">fpm_dependency</text>
+</g>
+<!-- module~watch_fpm_graph&#45;&gt;fpm_dependency -->
+<g id="module~~watch_fpm_graph~~UsesGraph_edge3" class="edge">
+<title>module~watch_fpm_graph&#45;&gt;fpm_dependency</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M419.96,-192.63C412,-191.49 403.73,-190.29 395.58,-189.12"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="396.09,-185.66 385.7,-187.7 395.1,-192.59 396.09,-185.66"/>
+</g>
+<!-- fpm_error -->
+<g id="module~~watch_fpm_graph~~UsesGraph_node5" class="node">
+<title>fpm_error</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="364.18,-150.27 300.16,-150.27 300.16,-126 364.18,-126 364.18,-150.27"/>
+<text xml:space="preserve" text-anchor="middle" x="332.17" y="-134.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">fpm_error</text>
+</g>
+<!-- module~watch_fpm_graph&#45;&gt;fpm_error -->
+<g id="module~~watch_fpm_graph~~UsesGraph_edge4" class="edge">
+<title>module~watch_fpm_graph&#45;&gt;fpm_error</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M446.02,-187.63C428.58,-179.35 405.05,-168.35 384.06,-159.13 380.97,-157.78 377.76,-156.39 374.52,-155.02"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="376.18,-151.92 365.61,-151.27 373.47,-158.37 376.18,-151.92"/>
+</g>
+<!-- fpm_filesystem -->
+<g id="module~~watch_fpm_graph~~UsesGraph_node6" class="node">
+<title>fpm_filesystem</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="244.29,-232.27 152.52,-232.27 152.52,-208 244.29,-208 244.29,-232.27"/>
+<text xml:space="preserve" text-anchor="middle" x="198.4" y="-216.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">fpm_filesystem</text>
+</g>
+<!-- module~watch_fpm_graph&#45;&gt;fpm_filesystem -->
+<g id="module~~watch_fpm_graph~~UsesGraph_edge5" class="edge">
+<title>module~watch_fpm_graph&#45;&gt;fpm_filesystem</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M331.17,-220.13C306.52,-220.04 279.26,-220.03 255.97,-220.04"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="256.05,-216.54 246.05,-220.05 256.05,-223.54 256.05,-216.54"/>
+</g>
+<!-- fpm_manifest -->
+<g id="module~~watch_fpm_graph~~UsesGraph_node7" class="node">
+<title>fpm_manifest</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="374.31,-108.27 290.04,-108.27 290.04,-84 374.31,-84 374.31,-108.27"/>
+<text xml:space="preserve" text-anchor="middle" x="332.17" y="-92.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">fpm_manifest</text>
+</g>
+<!-- module~watch_fpm_graph&#45;&gt;fpm_manifest -->
+<g id="module~~watch_fpm_graph~~UsesGraph_edge6" class="edge">
+<title>module~watch_fpm_graph&#45;&gt;fpm_manifest</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M461.54,-187.66C446.08,-169.99 415.63,-137.54 384.06,-117.13 382.25,-115.97 380.37,-114.84 378.44,-113.76"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="380.37,-110.82 369.87,-109.42 377.21,-117.06 380.37,-110.82"/>
+</g>
+<!-- fpm_model -->
+<g id="module~~watch_fpm_graph~~UsesGraph_node8" class="node">
+<title>fpm_model</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="367.93,-66.27 296.41,-66.27 296.41,-42 367.93,-42 367.93,-66.27"/>
+<text xml:space="preserve" text-anchor="middle" x="332.17" y="-50.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">fpm_model</text>
+</g>
+<!-- module~watch_fpm_graph&#45;&gt;fpm_model -->
+<g id="module~~watch_fpm_graph~~UsesGraph_edge7" class="edge">
+<title>module~watch_fpm_graph&#45;&gt;fpm_model</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M466.35,-187.73C454.39,-163.06 424.49,-107.45 384.06,-75.13 382.15,-73.61 380.11,-72.18 377.99,-70.84"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="380.09,-67.99 369.64,-66.26 376.73,-74.13 380.09,-67.99"/>
+</g>
+<!-- fpm_strings -->
+<g id="module~~watch_fpm_graph~~UsesGraph_node9" class="node">
+<title>fpm_strings</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="94.77,-392.27 21.75,-392.27 21.75,-368 94.77,-368 94.77,-392.27"/>
+<text xml:space="preserve" text-anchor="middle" x="58.26" y="-376.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">fpm_strings</text>
+</g>
+<!-- module~watch_fpm_graph&#45;&gt;fpm_strings -->
+<g id="module~~watch_fpm_graph~~UsesGraph_edge8" class="edge">
+<title>module~watch_fpm_graph&#45;&gt;fpm_strings</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M331.17,-442.13C277.71,-467.64 258.5,-466.17 199.4,-462.13"/>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M197.4,-462.13C150.07,-458.91 104.65,-423.76 79.49,-400.54"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="81.92,-398.02 72.27,-393.65 77.09,-403.09 81.92,-398.02"/>
+</g>
+<!-- fpm_targets -->
+<g id="module~~watch_fpm_graph~~UsesGraph_node10" class="node">
+<title>fpm_targets</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="369.81,-24.27 294.54,-24.27 294.54,0 369.81,0 369.81,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="332.17" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">fpm_targets</text>
+</g>
+<!-- module~watch_fpm_graph&#45;&gt;fpm_targets -->
+<g id="module~~watch_fpm_graph~~UsesGraph_edge9" class="edge">
+<title>module~watch_fpm_graph&#45;&gt;fpm_targets</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M468.77,-187.83C460.03,-157.47 433.5,-78.15 384.06,-33.13 382.65,-31.85 381.15,-30.64 379.59,-29.5"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="381.71,-26.69 371.34,-24.48 378.06,-32.67 381.71,-26.69"/>
+</g>
+<!-- iso_fortran_env -->
+<g id="module~~watch_fpm_graph~~UsesGraph_node11" class="node">
+<title>iso_fortran_env</title>
+<g id="a_module~~watch_fpm_graph~~UsesGraph_node11"><a xlink:href="http://fortranwiki.org/fortran/show/iso_fortran_env" xlink:title="iso_fortran_env">
+<polygon fill="#337ab7" stroke="#337ab7" points="104.89,-291.27 11.62,-291.27 11.62,-267 104.89,-267 104.89,-291.27"/>
+<text xml:space="preserve" text-anchor="middle" x="58.26" y="-275.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">iso_fortran_env</text>
+</a>
+</g>
+</g>
+<!-- module~watch_fpm_graph&#45;&gt;iso_fortran_env -->
+<g id="module~~watch_fpm_graph~~UsesGraph_edge10" class="edge">
+<title>module~watch_fpm_graph&#45;&gt;iso_fortran_env</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M419.56,-211.4C393.68,-216 361.92,-220.24 333.17,-220.13"/>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M331.17,-220.13C291.45,-219.99 283.74,-203.83 244.29,-199.13 203.79,-194.31 190.77,-184.98 152.52,-199.13 121.06,-210.78 93.06,-238.31 76.14,-257.81"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="73.46,-255.56 69.73,-265.47 78.83,-260.05 73.46,-255.56"/>
+</g>
+<!-- module~watch_filter -->
+<g id="module~~watch_fpm_graph~~UsesGraph_node12" class="node">
+<title>module~watch_filter</title>
+<g id="a_module~~watch_fpm_graph~~UsesGraph_node12"><a xlink:href="../module/watch_filter.html" xlink:title="watch_filter">
+<polygon fill="#337ab7" stroke="#337ab7" points="368.68,-272.27 295.66,-272.27 295.66,-248 368.68,-248 368.68,-272.27"/>
+<text xml:space="preserve" text-anchor="middle" x="332.17" y="-256.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">watch_filter</text>
+</a>
+</g>
+</g>
+<!-- module~watch_fpm_graph&#45;&gt;module~watch_filter -->
+<g id="module~~watch_fpm_graph~~UsesGraph_edge11" class="edge">
+<title>module~watch_fpm_graph&#45;&gt;module~watch_filter</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M442.95,-212.71C422.58,-221.51 395.12,-233.37 372.77,-243.03"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="371.44,-239.79 363.64,-246.97 374.21,-246.22 371.44,-239.79"/>
+</g>
+<!-- module~watch_log -->
+<g id="module~~watch_fpm_graph~~UsesGraph_node13" class="node">
+<title>module~watch_log</title>
+<g id="a_module~~watch_fpm_graph~~UsesGraph_node13"><a xlink:href="../module/watch_log.html" xlink:title="watch_log">
+<polygon fill="#337ab7" stroke="#337ab7" points="364.56,-332.27 299.79,-332.27 299.79,-308 364.56,-308 364.56,-332.27"/>
+<text xml:space="preserve" text-anchor="middle" x="332.17" y="-316.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">watch_log</text>
+</a>
+</g>
+</g>
+<!-- module~watch_fpm_graph&#45;&gt;module~watch_log -->
+<g id="module~~watch_fpm_graph~~UsesGraph_edge12" class="edge">
+<title>module~watch_fpm_graph&#45;&gt;module~watch_log</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M459.28,-212.59C442.44,-228.82 411.72,-257.89 384.06,-281.13 376.22,-287.72 367.44,-294.61 359.42,-300.74"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="357.52,-297.78 351.65,-306.6 361.74,-303.37 357.52,-297.78"/>
+</g>
+<!-- module~watch_types -->
+<g id="module~~watch_fpm_graph~~UsesGraph_node14" class="node">
+<title>module~watch_types</title>
+<g id="a_module~~watch_fpm_graph~~UsesGraph_node14"><a xlink:href="../module/watch_types.html" xlink:title="watch_types">
+<polygon fill="#337ab7" stroke="#337ab7" points="236.79,-392.27 160.02,-392.27 160.02,-368 236.79,-368 236.79,-392.27"/>
+<text xml:space="preserve" text-anchor="middle" x="198.4" y="-376.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">watch_types</text>
+</a>
+</g>
+</g>
+<!-- module~watch_fpm_graph&#45;&gt;module~watch_types -->
+<g id="module~~watch_fpm_graph~~UsesGraph_edge13" class="edge">
+<title>module~watch_fpm_graph&#45;&gt;module~watch_types</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M469.87,-212.71C461.57,-255.77 427.61,-397.08 333.17,-442.13"/>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M331.17,-442.13C292.64,-460.52 282.94,-419.29 244.29,-401.13 241.7,-399.92 239.03,-398.66 236.33,-397.4"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="237.91,-394.27 227.36,-393.2 234.94,-400.61 237.91,-394.27"/>
+</g>
+<!-- module~watch_util -->
+<g id="module~~watch_fpm_graph~~UsesGraph_node15" class="node">
+<title>module~watch_util</title>
+<g id="a_module~~watch_fpm_graph~~UsesGraph_node15"><a xlink:href="../module/watch_util.html" xlink:title="watch_util">
+<polygon fill="#337ab7" stroke="#337ab7" points="230.79,-434.27 166.02,-434.27 166.02,-410 230.79,-410 230.79,-434.27"/>
+<text xml:space="preserve" text-anchor="middle" x="198.4" y="-418.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">watch_util</text>
+</a>
+</g>
+</g>
+<!-- module~watch_fpm_graph&#45;&gt;module~watch_util -->
+<g id="module~~watch_fpm_graph~~UsesGraph_edge14" class="edge">
+<title>module~watch_fpm_graph&#45;&gt;module~watch_util</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M331.17,-442.13C301.35,-456.36 263.79,-448.49 236.41,-438.75"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="237.72,-435.5 227.13,-435.21 235.23,-442.04 237.72,-435.5"/>
+</g>
+<!-- module~watch_filter&#45;&gt;fpm_filesystem -->
+<g id="module~~watch_fpm_graph~~UsesGraph_edge15" class="edge">
+<title>module~watch_filter&#45;&gt;fpm_filesystem</title>
+<path fill="none" stroke="#4800ff" stroke-dasharray="5,2" d="M295.17,-249.2C281.81,-245.15 266.37,-240.46 251.84,-236.05"/>
+<polygon fill="#4800ff" stroke="#4800ff" points="253,-232.75 242.41,-233.19 250.96,-239.44 253,-232.75"/>
+</g>
+<!-- module~watch_filter&#45;&gt;fpm_strings -->
+<g id="module~~watch_fpm_graph~~UsesGraph_edge16" class="edge">
+<title>module~watch_filter&#45;&gt;fpm_strings</title>
+<path fill="none" stroke="#4800ff" stroke-dasharray="5,2" d="M197.4,-260.13C141.59,-273.22 95.81,-327.49 73.66,-358.38"/>
+<polygon fill="#4800ff" stroke="#4800ff" points="71.02,-356.05 68.18,-366.26 76.77,-360.05 71.02,-356.05"/>
+</g>
+<!-- module~watch_filter&#45;&gt;iso_fortran_env -->
+<g id="module~~watch_fpm_graph~~UsesGraph_edge17" class="edge">
+<title>module~watch_filter&#45;&gt;iso_fortran_env</title>
+<path fill="none" stroke="#4800ff" stroke-dasharray="5,2" d="M295.44,-255.77C268.64,-253.55 231.26,-252.67 199.4,-260.13"/>
+<path fill="none" stroke="#4800ff" stroke-dasharray="5,2" d="M197.4,-260.13C171.14,-266.29 141.56,-270.69 116.54,-273.69"/>
+<polygon fill="#4800ff" stroke="#4800ff" points="116.43,-270.18 106.89,-274.8 117.23,-277.13 116.43,-270.18"/>
+</g>
+<!-- module~watch_log&#45;&gt;iso_fortran_env -->
+<g id="module~~watch_fpm_graph~~UsesGraph_edge19" class="edge">
+<title>module~watch_log&#45;&gt;iso_fortran_env</title>
+<path fill="none" stroke="#b600ff" stroke-dasharray="5,2" d="M299.45,-315.35C254.63,-308.59 172.03,-296.14 116.37,-287.75"/>
+<polygon fill="#b600ff" stroke="#b600ff" points="117.18,-284.33 106.77,-286.3 116.13,-291.25 117.18,-284.33"/>
+</g>
+<!-- module~watch_log&#45;&gt;module~watch_types -->
+<g id="module~~watch_fpm_graph~~UsesGraph_edge20" class="edge">
+<title>module~watch_log&#45;&gt;module~watch_types</title>
+<path fill="none" stroke="#b600ff" stroke-dasharray="5,2" d="M303.55,-332.71C284.31,-341.47 258.41,-353.27 237.25,-362.9"/>
+<polygon fill="#b600ff" stroke="#b600ff" points="236.02,-359.62 228.37,-366.95 238.92,-365.99 236.02,-359.62"/>
+</g>
+<!-- face -->
+<g id="module~~watch_fpm_graph~~UsesGraph_node16" class="node">
+<title>face</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="225.4,-350.27 171.4,-350.27 171.4,-326 225.4,-326 225.4,-350.27"/>
+<text xml:space="preserve" text-anchor="middle" x="198.4" y="-334.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">face</text>
+</g>
+<!-- module~watch_log&#45;&gt;face -->
+<g id="module~~watch_fpm_graph~~UsesGraph_edge18" class="edge">
+<title>module~watch_log&#45;&gt;face</title>
+<path fill="none" stroke="#b600ff" stroke-dasharray="5,2" d="M299.61,-324.45C280.86,-327.01 256.96,-330.27 237.21,-332.97"/>
+<polygon fill="#b600ff" stroke="#b600ff" points="236.76,-329.5 227.33,-334.32 237.71,-336.43 236.76,-329.5"/>
+</g>
+<!-- module~watch_types&#45;&gt;fpm_command_line -->
+<g id="module~~watch_fpm_graph~~UsesGraph_edge21" class="edge">
+<title>module~watch_types&#45;&gt;fpm_command_line</title>
+<path fill="none" stroke="#ff00da" stroke-dasharray="5,2" d="M169.08,-392.64C163.52,-395.3 157.78,-398.2 152.52,-401.13 129.42,-414.01 104.4,-430.52 86.1,-443.12"/>
+<polygon fill="#ff00da" stroke="#ff00da" points="84.13,-440.23 77.92,-448.81 88.13,-445.98 84.13,-440.23"/>
+</g>
+<!-- module~watch_types&#45;&gt;fpm_strings -->
+<g id="module~~watch_fpm_graph~~UsesGraph_edge22" class="edge">
+<title>module~watch_types&#45;&gt;fpm_strings</title>
+<path fill="none" stroke="#ff00da" stroke-dasharray="5,2" d="M159.66,-380.13C143.14,-380.13 123.6,-380.13 106.16,-380.13"/>
+<polygon fill="#ff00da" stroke="#ff00da" points="106.57,-376.64 96.57,-380.14 106.57,-383.64 106.57,-376.64"/>
+</g>
+<!-- module~watch_types&#45;&gt;iso_fortran_env -->
+<g id="module~~watch_fpm_graph~~UsesGraph_edge23" class="edge">
+<title>module~watch_types&#45;&gt;iso_fortran_env</title>
+<path fill="none" stroke="#ff00da" stroke-dasharray="5,2" d="M167.81,-367.69C162.58,-365.1 157.29,-362.21 152.52,-359.13 125.41,-341.63 97.78,-316.89 79.71,-299.57"/>
+<polygon fill="#ff00da" stroke="#ff00da" points="82.34,-297.24 72.73,-292.78 77.46,-302.26 82.34,-297.24"/>
+</g>
+<!-- module~watch_util&#45;&gt;fpm_strings -->
+<g id="module~~watch_fpm_graph~~UsesGraph_edge24" class="edge">
+<title>module~watch_util&#45;&gt;fpm_strings</title>
+<path fill="none" stroke="#ff006d" stroke-dasharray="5,2" d="M165.71,-412.5C148.05,-407.13 125.72,-400.34 106.08,-394.37"/>
+<polygon fill="#ff006d" stroke="#ff006d" points="107.22,-391.06 96.64,-391.5 105.19,-397.76 107.22,-391.06"/>
+</g>
+</g>
+</svg>
+</div>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#UsesGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="UsesGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="511pt" height="32pt"
+ viewBox="0.00 0.00 511.00 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 28.27)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-28.27 506.88,-28.27 506.88,4 -4,4"/>
+<!-- Module -->
+<g id="node1" class="node">
+<title>Module</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="54,-24.27 0,-24.27 0,0 54,0 54,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="27" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Module</text>
+</g>
+<!-- Submodule -->
+<g id="node2" class="node">
+<title>Submodule</title>
+<polygon fill="#5bc0de" stroke="#5bc0de" points="144.13,-24.27 71.87,-24.27 71.87,0 144.13,0 144.13,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="108" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Submodule</text>
+</g>
+<!-- Subroutine -->
+<g id="node3" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="231.63,-24.27 162.37,-24.27 162.37,0 231.63,0 231.63,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="197" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node4" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="306.26,-24.27 249.74,-24.27 249.74,0 306.26,0 306.26,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="278" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Program -->
+<g id="node5" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="381.26,-24.27 324.74,-24.27 324.74,0 381.26,0 381.26,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="353" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node6" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="502.88,-24.27 399.12,-24.27 399.12,0 502.88,0 502.88,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="451" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a submodule to the (sub)module which it is
+descended from. Dashed arrows point from a module or program unit to 
+modules which it uses.
+</p>
+ Where possible, edges connecting nodes are
+given different colours to make them easier to distinguish in
+large graphs.</div>
+            </div>
+          </div>
+        </div>
+            </li>
+        </ul>
+      </div>
+    </div>
+
+          <div class="card">
+      <h3 class="card-header card-title bg-light">Used by</h3>
+      <div class="card-body">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: module~~watch_fpm_graph~~UsedByGraph Pages: 1 -->
+<svg id="modulewatch_fpm_graphUsedByGraph" width="235pt" height="32pt"
+ viewBox="0.00 0.00 235.00 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="module~~watch_fpm_graph~~UsedByGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 28.27)">
+<title>module~~watch_fpm_graph~~UsedByGraph</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-28.27 231.04,-28.27 231.04,4 -4,4"/>
+<!-- module~watch_fpm_graph -->
+<g id="module~~watch_fpm_graph~~UsedByGraph_node1" class="node">
+<title>module~watch_fpm_graph</title>
+<polygon fill="none" stroke="black" points="106.02,-24.27 0,-24.27 0,0 106.02,0 106.02,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="53.01" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50">watch_fpm_graph</text>
+</g>
+<!-- module~watch_engine -->
+<g id="module~~watch_fpm_graph~~UsedByGraph_node2" class="node">
+<title>module~watch_engine</title>
+<g id="a_module~~watch_fpm_graph~~UsedByGraph_node2"><a xlink:href="../module/watch_engine.html" xlink:title="watch_engine">
+<polygon fill="#337ab7" stroke="#337ab7" points="227.04,-24.27 142.02,-24.27 142.02,0 227.04,0 227.04,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="184.53" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">watch_engine</text>
+</a>
+</g>
+</g>
+<!-- module~watch_engine&#45;&gt;module~watch_fpm_graph -->
+<g id="module~~watch_fpm_graph~~UsedByGraph_edge1" class="edge">
+<title>module~watch_engine&#45;&gt;module~watch_fpm_graph</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M141.84,-12.13C134.01,-12.13 125.66,-12.13 117.34,-12.13"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="117.59,-8.64 107.59,-12.14 117.59,-15.64 117.59,-8.64"/>
+</g>
+</g>
+</svg>
+</div>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#UsedByGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="UsedByGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="511pt" height="32pt"
+ viewBox="0.00 0.00 511.00 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 28.27)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-28.27 506.88,-28.27 506.88,4 -4,4"/>
+<!-- Module -->
+<g id="node1" class="node">
+<title>Module</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="54,-24.27 0,-24.27 0,0 54,0 54,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="27" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Module</text>
+</g>
+<!-- Submodule -->
+<g id="node2" class="node">
+<title>Submodule</title>
+<polygon fill="#5bc0de" stroke="#5bc0de" points="144.13,-24.27 71.87,-24.27 71.87,0 144.13,0 144.13,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="108" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Submodule</text>
+</g>
+<!-- Subroutine -->
+<g id="node3" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="231.63,-24.27 162.37,-24.27 162.37,0 231.63,0 231.63,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="197" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node4" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="306.26,-24.27 249.74,-24.27 249.74,0 306.26,0 306.26,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="278" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Program -->
+<g id="node5" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="381.26,-24.27 324.74,-24.27 324.74,0 381.26,0 381.26,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="353" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node6" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="502.88,-24.27 399.12,-24.27 399.12,0 502.88,0 502.88,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="451" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a submodule to the (sub)module which it is
+descended from. Dashed arrows point from a module or program unit to 
+modules which it uses.
+</p>
+ Where possible, edges connecting nodes are
+given different colours to make them easier to distinguish in
+large graphs.</div>
+            </div>
+          </div>
+        </div>
+            </li>
+        </ul>
+      </div>
+    </div>
+
+      <br>
+
+
+
+
+
+
+
+        <section>
+          <h2>Functions</h2>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-find_ptr_index"></span> <h3>private  function <a href='../proc/find_ptr_index.html'>find_ptr_index</a>(p, all) result(idx)  
+</h3></div>
+    <div class="card-body">
+          
+  
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-p~8"></span>
+              type(build_target_t),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              pointer
+            </td>
+            <td>::</td>
+            <td><strong>p</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-all~3"></span>
+              type(build_target_ptr),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>all</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <h4>
+    Return Value
+    <small>integer</small>
+    </h4>
+    
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-is_in_dep_dirs"></span> <h3>private pure function <a href='../proc/is_in_dep_dirs.html'>is_in_dep_dirs</a>(p, dep_dirs) result(ok)  
+</h3></div>
+    <div class="card-body">
+          
+  
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-p~7"></span>
+              character(len=*),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>p</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-dep_dirs~6"></span>
+              type(string_t),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>dep_dirs</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <h4>
+    Return Value
+    <small>logical</small>
+    </h4>
+    
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-is_run_or_test"></span> <h3>private  function <a href='../proc/is_run_or_test.html'>is_run_or_test</a>(settings)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Return whether the settings correspond to <code>fpm run</code> or <code>fpm test</code>.</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-settings~7"></span>
+              class(fpm_build_settings),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>settings</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <h4>
+    Return Value
+    <small>logical</small>
+    </h4>
+    
+
+    </div>
+  </div>
+
+        </section>
+        <br>
+
+        <section>
+          <h2>Subroutines</h2>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-compute_watch_files_from_settings"></span> <h3>public  subroutine <a href='../proc/compute_watch_files_from_settings.html'>compute_watch_files_from_settings</a>(settings, w, files, file_mask, roots, manifest_key, build_secs, secs_model, secs_targets, secs_watch)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Compute watched files and masks from current <code>fpm</code> settings.</p><a href="../proc/compute_watch_files_from_settings.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-settings~6"></span>
+              class(fpm_build_settings),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>settings</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-w~5"></span>
+              type(<a href='../type/watch_opts_t.html'>watch_opts_t</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>w</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-files~6"></span>
+              type(string_t),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>files</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-file_mask~2"></span>
+              integer(kind=int64),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>file_mask</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-roots~4"></span>
+              type(<a href='../type/root_info_t.html'>root_info_t</a>),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>roots</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-manifest_key"></span>
+              integer(kind=int64),
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>manifest_key</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-build_secs~2"></span>
+              real,
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>build_secs</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-secs_model~2"></span>
+              real,
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>secs_model</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-secs_targets~2"></span>
+              real,
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>secs_targets</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-secs_watch~2"></span>
+              real,
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>secs_watch</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-dfs_mark_bool"></span> <h3>private recursive subroutine <a href='../proc/dfs_mark_bool.html'>dfs_mark_bool</a>(node, all, visited)  
+</h3></div>
+    <div class="card-body">
+          
+  
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-node~2"></span>
+              type(build_target_t),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              pointer
+            </td>
+            <td>::</td>
+            <td><strong>node</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-all~2"></span>
+              type(build_target_ptr),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>all</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-visited~3"></span>
+              logical,
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>visited</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-dfs_mark_mask"></span> <h3>private recursive subroutine <a href='../proc/dfs_mark_mask.html'>dfs_mark_mask</a>(node, all, tmask, mask)  
+</h3></div>
+    <div class="card-body">
+          
+  
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-node"></span>
+              type(build_target_t),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              pointer
+            </td>
+            <td>::</td>
+            <td><strong>node</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-all"></span>
+              type(build_target_ptr),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>all</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-tmask"></span>
+              integer(kind=int64),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>tmask</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-mask~4"></span>
+              integer(kind=int64),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>mask</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-gather_files_with_mask"></span> <h3>private  subroutine <a href='../proc/gather_files_with_mask.html'>gather_files_with_mask</a>(targets, visited, target_mask, files, file_mask, build_dir, dep_dirs)  
+</h3></div>
+    <div class="card-body">
+          
+  
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-targets~2"></span>
+              type(build_target_ptr),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>targets</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-visited~2"></span>
+              logical,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>visited</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-target_mask~2"></span>
+              integer(kind=int64),
+            </td>
+<td>intent(in),</td>
+              <td>optional,</td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>target_mask</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-files~7"></span>
+              type(string_t),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>files</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-file_mask~3"></span>
+              integer(kind=int64),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>file_mask</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-build_dir~2"></span>
+              character(len=*),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>build_dir</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-dep_dirs~3"></span>
+              type(string_t),
+            </td>
+<td>intent(in),</td>
+              <td>optional,</td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>dep_dirs</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-push_file_with_mask"></span> <h3>private  subroutine <a href='../proc/push_file_with_mask.html'>push_file_with_mask</a>(files, file_mask, path, build_dir, mask, dep_dirs)  
+</h3></div>
+    <div class="card-body">
+          
+  
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-files~9"></span>
+              type(string_t),
+            </td>
+<td>intent(inout),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>files</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-file_mask~5"></span>
+              integer(kind=int64),
+            </td>
+<td>intent(inout),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>file_mask</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-path~6"></span>
+              character(len=*),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>path</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-build_dir~3"></span>
+              character(len=*),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>build_dir</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-mask~2"></span>
+              integer(kind=int64),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>mask</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-dep_dirs~4"></span>
+              type(string_t),
+            </td>
+<td>intent(in),</td>
+              <td>optional,</td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>dep_dirs</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-select_names_or_all"></span> <h3>private  subroutine <a href='../proc/select_names_or_all.html'>select_names_or_all</a>(targets, scope, names, keep)  
+</h3></div>
+    <div class="card-body">
+          
+  
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-targets~3"></span>
+              type(build_target_ptr),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>targets</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-scope"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>scope</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-names"></span>
+              character(len=*),
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>names</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-keep~3"></span>
+              logical,
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>keep</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-vec_grow"></span> <h3>private  subroutine <a href='../proc/vec_grow.html'>vec_grow</a>(buf, mbuf, cap)  
+</h3></div>
+    <div class="card-body">
+          
+  
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-buf~7"></span>
+              type(string_t),
+            </td>
+<td>intent(inout),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>buf</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-mbuf~6"></span>
+              integer(kind=int64),
+            </td>
+<td>intent(inout),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>mbuf</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-cap~6"></span>
+              integer,
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>cap</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-vec_push_unique"></span> <h3>private  subroutine <a href='../proc/vec_push_unique.html'>vec_push_unique</a>(buf, mbuf, n, cap, path, build_dir, mask, dep_dirs)  
+</h3></div>
+    <div class="card-body">
+          
+  
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-buf~6"></span>
+              type(string_t),
+            </td>
+<td>intent(inout),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>buf</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-mbuf~5"></span>
+              integer(kind=int64),
+            </td>
+<td>intent(inout),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>mbuf</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n~10"></span>
+              integer,
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-cap~5"></span>
+              integer,
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>cap</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-path~7"></span>
+              character(len=*),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>path</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-build_dir~4"></span>
+              character(len=*),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>build_dir</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-mask~3"></span>
+              integer(kind=int64),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>mask</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-dep_dirs~5"></span>
+              type(string_t),
+            </td>
+<td>intent(in),</td>
+              <td>optional,</td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>dep_dirs</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+        </section>
+        <br>
+
+
+
+    </div>
+  </div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              fpm-watch
+ was developed by Seyed Ali Ghasemi<br>              &copy; 2026 <a rel="license" href="https://opensource.org/licenses/MIT">MIT</a>
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+ on 2026-02-24T23:32:32.813097+0000             </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>

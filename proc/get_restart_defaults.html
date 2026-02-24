@@ -1,0 +1,698 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="Documentation for fpm-watch">
+    <meta name="author" content="Seyed Ali Ghasemi" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>get_restart_defaults &ndash; fpm-watch</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">fpm-watch </a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/types.html">Derived Types</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <div class="row">
+    <h1>get_restart_defaults
+      <small>Subroutine</small>
+      
+    </h1>
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+            <li class="list-inline-item" id="meta-license"><i class="fa fa-legal"></i> <a rel="license" href="https://opensource.org/licenses/MIT">MIT</a></li>
+
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title=" 0.9% of total for procedures.">25 statements</a>
+            </li>
+
+            <li class="list-inline-item" id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/watch_config.f90"> Source File</a>
+            </li>
+        </ul>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+                <li class="breadcrumb-item"><a href='../sourcefile/watch_config.f90.html'>watch_config.f90</a></li>
+                <li class="breadcrumb-item"><a href='../module/watch_config.html'>watch_config</a></li>
+            <li class="breadcrumb-item active" aria-current="page">get_restart_defaults</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
+  </script>
+
+  </div>
+  
+  <div class="row">
+    <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
+      <div id="sidebar">
+      <h3>Contents</h3>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    <div class="card card-primary">
+      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
+      <div class="list-group">
+        <a class="list-group-item" href="../proc/get_restart_defaults.html#src">get_restart_defaults</a>
+      </div>
+    </div>
+
+
+  </div>
+
+    </div>
+    
+    <div class="col-md-9" id='text'>
+    <h2>public  subroutine get_restart_defaults(auto_restart, restart_delay, restart_max, self_exe)  
+</h2>
+    
+
+    <p>Read supervisor defaults from the manifest (when present).</p>
+<p>These are used by <code>watch_restart</code> and can be configured under
+<code>[extra.fpm-watch]</code>.</p>
+<p>Keys:
+- <code>auto-restart</code> (logical)
+- <code>restart-delay</code> (real, seconds)
+- <code>restart-max</code> (integer, 0 = unlimited)
+- <code>self</code> or <code>self-exe</code> (string, explicit path to <code>fpm-watch</code>)</p>
+
+
+    <h3>Arguments</h3>
+        <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-auto_restart~3"></span>
+              logical,
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>auto_restart</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-restart_delay~3"></span>
+              real,
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>restart_delay</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-restart_max~3"></span>
+              integer,
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>restart_max</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-self_exe~3"></span>
+              character(len=:),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>self_exe</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <br>
+    <div class="card">
+      <div class="card-header">
+  <h3 class="card-title">Calls</h3>
+      </div>
+      <div class="card-body">
+  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: proc~~get_restart_defaults~~CallsGraph Pages: 1 -->
+<svg id="procget_restart_defaultsCallsGraph" width="409pt" height="221pt"
+ viewBox="0.00 0.00 409.00 221.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~get_restart_defaults~~CallsGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 217.27)">
+<title>proc~~get_restart_defaults~~CallsGraph</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-217.27 404.56,-217.27 404.56,4 -4,4"/>
+<!-- proc~get_restart_defaults -->
+<g id="proc~~get_restart_defaults~~CallsGraph_node1" class="node">
+<title>proc~get_restart_defaults</title>
+<polygon fill="none" stroke="black" points="116.52,-108.27 0,-108.27 0,-84 116.52,-84 116.52,-108.27"/>
+<text xml:space="preserve" text-anchor="middle" x="58.26" y="-92.54" font-family="Helvetica,sans-Serif" font-size="10.50">get_restart_defaults</text>
+</g>
+<!-- proc~load_watch_table -->
+<g id="proc~~get_restart_defaults~~CallsGraph_node2" class="node">
+<title>proc~load_watch_table</title>
+<g id="a_proc~~get_restart_defaults~~CallsGraph_node2"><a xlink:href="../proc/load_watch_table.html" xlink:title="load_watch_table">
+<polygon fill="#d9534f" stroke="#d9534f" points="256.29,-192.27 152.52,-192.27 152.52,-168 256.29,-168 256.29,-192.27"/>
+<text xml:space="preserve" text-anchor="middle" x="204.4" y="-176.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">load_watch_table</text>
+</a>
+</g>
+</g>
+<!-- proc~get_restart_defaults&#45;&gt;proc~load_watch_table -->
+<g id="proc~~get_restart_defaults~~CallsGraph_edge1" class="edge">
+<title>proc~get_restart_defaults&#45;&gt;proc~load_watch_table</title>
+<path fill="none" stroke="#ff0000" d="M75.47,-108.58C93.58,-122.12 124.12,-143.88 152.52,-159.13 154.86,-160.39 157.3,-161.63 159.78,-162.83"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="158.18,-165.94 168.73,-166.91 161.08,-159.57 158.18,-165.94"/>
+</g>
+<!-- proc~toml_get_int -->
+<g id="proc~~get_restart_defaults~~CallsGraph_node3" class="node">
+<title>proc~toml_get_int</title>
+<g id="a_proc~~get_restart_defaults~~CallsGraph_node3"><a xlink:href="../proc/toml_get_int.html" xlink:title="toml_get_int">
+<polygon fill="#d9534f" stroke="#d9534f" points="242.79,-150.27 166.02,-150.27 166.02,-126 242.79,-126 242.79,-150.27"/>
+<text xml:space="preserve" text-anchor="middle" x="204.4" y="-134.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">toml_get_int</text>
+</a>
+</g>
+</g>
+<!-- proc~get_restart_defaults&#45;&gt;proc~toml_get_int -->
+<g id="proc~~get_restart_defaults~~CallsGraph_edge2" class="edge">
+<title>proc~get_restart_defaults&#45;&gt;proc~toml_get_int</title>
+<path fill="none" stroke="#ff0000" d="M102.51,-108.74C118.97,-113.53 137.84,-119.03 154.76,-123.96"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="153.53,-127.25 164.11,-126.69 155.49,-120.53 153.53,-127.25"/>
+</g>
+<!-- proc~toml_get_logical -->
+<g id="proc~~get_restart_defaults~~CallsGraph_node4" class="node">
+<title>proc~toml_get_logical</title>
+<g id="a_proc~~get_restart_defaults~~CallsGraph_node4"><a xlink:href="../proc/toml_get_logical.html" xlink:title="toml_get_logical">
+<polygon fill="#d9534f" stroke="#d9534f" points="253.66,-108.27 155.14,-108.27 155.14,-84 253.66,-84 253.66,-108.27"/>
+<text xml:space="preserve" text-anchor="middle" x="204.4" y="-92.54" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">toml_get_logical</text>
+</a>
+</g>
+</g>
+<!-- proc~get_restart_defaults&#45;&gt;proc~toml_get_logical -->
+<g id="proc~~get_restart_defaults~~CallsGraph_edge3" class="edge">
+<title>proc~get_restart_defaults&#45;&gt;proc~toml_get_logical</title>
+<path fill="none" stroke="#ff0000" d="M116.64,-96.14C125.49,-96.14 134.64,-96.14 143.54,-96.14"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="143.52,-99.64 153.52,-96.14 143.52,-92.64 143.52,-99.64"/>
+</g>
+<!-- proc~toml_get_real -->
+<g id="proc~~get_restart_defaults~~CallsGraph_node5" class="node">
+<title>proc~toml_get_real</title>
+<g id="a_proc~~get_restart_defaults~~CallsGraph_node5"><a xlink:href="../proc/toml_get_real.html" xlink:title="toml_get_real">
+<polygon fill="#d9534f" stroke="#d9534f" points="246.16,-66.27 162.64,-66.27 162.64,-42 246.16,-42 246.16,-66.27"/>
+<text xml:space="preserve" text-anchor="middle" x="204.4" y="-50.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">toml_get_real</text>
+</a>
+</g>
+</g>
+<!-- proc~get_restart_defaults&#45;&gt;proc~toml_get_real -->
+<g id="proc~~get_restart_defaults~~CallsGraph_edge4" class="edge">
+<title>proc~get_restart_defaults&#45;&gt;proc~toml_get_real</title>
+<path fill="none" stroke="#ff0000" d="M102.51,-83.53C117.87,-79.06 135.32,-73.97 151.35,-69.3"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="152.09,-72.73 160.71,-66.57 150.13,-66.01 152.09,-72.73"/>
+</g>
+<!-- proc~toml_get_string -->
+<g id="proc~~get_restart_defaults~~CallsGraph_node6" class="node">
+<title>proc~toml_get_string</title>
+<g id="a_proc~~get_restart_defaults~~CallsGraph_node6"><a xlink:href="../proc/toml_get_string.html" xlink:title="toml_get_string">
+<polygon fill="#d9534f" stroke="#d9534f" points="251.04,-24.27 157.77,-24.27 157.77,0 251.04,0 251.04,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="204.4" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">toml_get_string</text>
+</a>
+</g>
+</g>
+<!-- proc~get_restart_defaults&#45;&gt;proc~toml_get_string -->
+<g id="proc~~get_restart_defaults~~CallsGraph_edge5" class="edge">
+<title>proc~get_restart_defaults&#45;&gt;proc~toml_get_string</title>
+<path fill="none" stroke="#ff0000" d="M75.47,-83.69C93.58,-70.15 124.12,-48.39 152.52,-33.13 154.86,-31.88 157.3,-30.64 159.78,-29.44"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="161.08,-32.7 168.73,-25.36 158.18,-26.33 161.08,-32.7"/>
+</g>
+<!-- exists -->
+<g id="proc~~get_restart_defaults~~CallsGraph_node7" class="node">
+<title>exists</title>
+<polygon fill="#777777" stroke="#777777" points="373.42,-213.27 319.42,-213.27 319.42,-189 373.42,-189 373.42,-213.27"/>
+<text xml:space="preserve" text-anchor="middle" x="346.42" y="-197.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">exists</text>
+</g>
+<!-- proc~load_watch_table&#45;&gt;exists -->
+<g id="proc~~get_restart_defaults~~CallsGraph_edge6" class="edge">
+<title>proc~load_watch_table&#45;&gt;exists</title>
+<path fill="none" stroke="#ff0000" d="M256.75,-187.84C273.67,-190.37 292.15,-193.15 307.85,-195.5"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="307.33,-198.96 317.74,-196.98 308.36,-192.04 307.33,-198.96"/>
+</g>
+<!-- get_value -->
+<g id="proc~~get_restart_defaults~~CallsGraph_node8" class="node">
+<title>get_value</title>
+<polygon fill="#777777" stroke="#777777" points="378.06,-108.27 314.79,-108.27 314.79,-84 378.06,-84 378.06,-108.27"/>
+<text xml:space="preserve" text-anchor="middle" x="346.42" y="-92.54" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">get_value</text>
+</g>
+<!-- proc~load_watch_table&#45;&gt;get_value -->
+<g id="proc~~get_restart_defaults~~CallsGraph_edge7" class="edge">
+<title>proc~load_watch_table&#45;&gt;get_value</title>
+<path fill="none" stroke="#ff0000" d="M239.03,-167.51C244.89,-164.96 250.85,-162.13 256.29,-159.13 279.4,-146.41 303.74,-128.89 321.13,-115.56"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="323.09,-118.47 328.83,-109.57 318.79,-112.95 323.09,-118.47"/>
+</g>
+<!-- read_package_file -->
+<g id="proc~~get_restart_defaults~~CallsGraph_node9" class="node">
+<title>read_package_file</title>
+<polygon fill="#777777" stroke="#777777" points="400.56,-171.27 292.29,-171.27 292.29,-147 400.56,-147 400.56,-171.27"/>
+<text xml:space="preserve" text-anchor="middle" x="346.42" y="-155.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">read_package_file</text>
+</g>
+<!-- proc~load_watch_table&#45;&gt;read_package_file -->
+<g id="proc~~get_restart_defaults~~CallsGraph_edge8" class="edge">
+<title>proc~load_watch_table&#45;&gt;read_package_file</title>
+<path fill="none" stroke="#ff0000" d="M256.75,-172.43C264.6,-171.26 272.79,-170.03 280.88,-168.82"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="281.34,-172.29 290.71,-167.34 280.3,-165.36 281.34,-172.29"/>
+</g>
+<!-- proc~toml_get_int&#45;&gt;get_value -->
+<g id="proc~~get_restart_defaults~~CallsGraph_edge9" class="edge">
+<title>proc~toml_get_int&#45;&gt;get_value</title>
+<path fill="none" stroke="#cbff00" d="M242.93,-126.88C261.62,-121.27 284.28,-114.48 303.53,-108.7"/>
+<polygon fill="#cbff00" stroke="#cbff00" points="304.4,-112.1 312.97,-105.87 302.39,-105.39 304.4,-112.1"/>
+</g>
+<!-- proc~toml_get_logical&#45;&gt;get_value -->
+<g id="proc~~get_restart_defaults~~CallsGraph_edge10" class="edge">
+<title>proc~toml_get_logical&#45;&gt;get_value</title>
+<path fill="none" stroke="#00ff66" d="M253.98,-96.14C269.97,-96.14 287.61,-96.14 303.09,-96.14"/>
+<polygon fill="#00ff66" stroke="#00ff66" points="302.94,-99.64 312.94,-96.14 302.94,-92.64 302.94,-99.64"/>
+</g>
+<!-- proc~toml_get_real&#45;&gt;get_value -->
+<g id="proc~~get_restart_defaults~~CallsGraph_edge11" class="edge">
+<title>proc~toml_get_real&#45;&gt;get_value</title>
+<path fill="none" stroke="#0066ff" d="M246.66,-66.51C264.7,-71.92 285.81,-78.25 303.88,-83.67"/>
+<polygon fill="#0066ff" stroke="#0066ff" points="302.65,-86.96 313.24,-86.48 304.66,-80.25 302.65,-86.96"/>
+</g>
+<!-- proc~toml_get_string&#45;&gt;get_value -->
+<g id="proc~~get_restart_defaults~~CallsGraph_edge12" class="edge">
+<title>proc~toml_get_string&#45;&gt;get_value</title>
+<path fill="none" stroke="#cc00ff" d="M239.03,-24.76C244.89,-27.31 250.85,-30.14 256.29,-33.13 279.4,-45.86 303.74,-63.38 321.13,-76.71"/>
+<polygon fill="#cc00ff" stroke="#cc00ff" points="318.79,-79.32 328.83,-82.7 323.09,-73.8 318.79,-79.32"/>
+</g>
+</g>
+</svg>
+</div>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#CallsGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="CallsGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="641pt" height="28pt"
+ viewBox="0.00 0.00 641.00 28.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.873868 0.873868) rotate(0) translate(4 28.27)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-28.27 729.52,-28.27 729.52,4 -4,4"/>
+<!-- Subroutine -->
+<g id="node1" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="69.27,-24.27 0,-24.27 0,0 69.27,0 69.27,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="34.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node2" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="143.89,-24.27 87.38,-24.27 87.38,0 143.89,0 143.89,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="115.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node3" class="node">
+<title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="221.39,-24.27 161.88,-24.27 161.88,0 221.39,0 221.39,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="191.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Type Bound Procedure -->
+<g id="node4" class="node">
+<title>Type Bound Procedure</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="368.27,-24.27 239,-24.27 239,0 368.27,0 368.27,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="303.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type Bound Procedure</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node5" class="node">
+<title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="529.39,-24.27 385.88,-24.27 385.88,0 529.39,0 529.39,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="457.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node6" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="603.89,-24.27 547.38,-24.27 547.38,0 603.89,0 603.89,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="575.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node7" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="725.52,-24.27 621.75,-24.27 621.75,0 725.52,0 725.52,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="673.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.
+</p>
+ Where possible, edges connecting nodes are
+given different colours to make them easier to distinguish in
+large graphs.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+  <h3 class="card-title">Called by</h3>
+      </div>
+      <div class="card-body">
+  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: proc~~get_restart_defaults~~CalledByGraph Pages: 1 -->
+<svg id="procget_restart_defaultsCalledByGraph" width="413pt" height="32pt"
+ viewBox="0.00 0.00 413.00 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~get_restart_defaults~~CalledByGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 28.27)">
+<title>proc~~get_restart_defaults~~CalledByGraph</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-28.27 409.06,-28.27 409.06,4 -4,4"/>
+<!-- proc~get_restart_defaults -->
+<g id="proc~~get_restart_defaults~~CalledByGraph_node1" class="node">
+<title>proc~get_restart_defaults</title>
+<polygon fill="none" stroke="black" points="405.06,-24.27 288.54,-24.27 288.54,0 405.06,0 405.06,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="346.8" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50">get_restart_defaults</text>
+</g>
+<!-- proc~parse_restart_flags -->
+<g id="proc~~get_restart_defaults~~CalledByGraph_node2" class="node">
+<title>proc~parse_restart_flags</title>
+<g id="a_proc~~get_restart_defaults~~CalledByGraph_node2"><a xlink:href="../proc/parse_restart_flags.html" xlink:title="parse_restart_flags">
+<polygon fill="#d9534f" stroke="#d9534f" points="252.54,-24.27 140.52,-24.27 140.52,0 252.54,0 252.54,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="196.53" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">parse_restart_flags</text>
+</a>
+</g>
+</g>
+<!-- proc~parse_restart_flags&#45;&gt;proc~get_restart_defaults -->
+<g id="proc~~get_restart_defaults~~CalledByGraph_edge1" class="edge">
+<title>proc~parse_restart_flags&#45;&gt;proc~get_restart_defaults</title>
+<path fill="none" stroke="#ff0000" d="M252.74,-12.13C260.57,-12.13 268.71,-12.13 276.77,-12.13"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="276.55,-15.64 286.55,-12.14 276.55,-8.64 276.55,-15.64"/>
+</g>
+<!-- proc~maybe_supervise -->
+<g id="proc~~get_restart_defaults~~CalledByGraph_node3" class="node">
+<title>proc~maybe_supervise</title>
+<g id="a_proc~~get_restart_defaults~~CalledByGraph_node3"><a xlink:href="../proc/maybe_supervise.html" xlink:title="maybe_supervise">
+<polygon fill="#d9534f" stroke="#d9534f" points="104.52,-24.27 0,-24.27 0,0 104.52,0 104.52,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="52.26" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">maybe_supervise</text>
+</a>
+</g>
+</g>
+<!-- proc~maybe_supervise&#45;&gt;proc~parse_restart_flags -->
+<g id="proc~~get_restart_defaults~~CalledByGraph_edge2" class="edge">
+<title>proc~maybe_supervise&#45;&gt;proc~parse_restart_flags</title>
+<path fill="none" stroke="#ff0000" d="M104.62,-12.13C112.52,-12.13 120.77,-12.13 128.94,-12.13"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="128.88,-15.64 138.88,-12.14 128.88,-8.64 128.88,-15.64"/>
+</g>
+</g>
+</svg>
+</div>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#CalledByGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="CalledByGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="641pt" height="28pt"
+ viewBox="0.00 0.00 641.00 28.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.873868 0.873868) rotate(0) translate(4 28.27)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-28.27 729.52,-28.27 729.52,4 -4,4"/>
+<!-- Subroutine -->
+<g id="node1" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="69.27,-24.27 0,-24.27 0,0 69.27,0 69.27,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="34.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node2" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="143.89,-24.27 87.38,-24.27 87.38,0 143.89,0 143.89,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="115.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node3" class="node">
+<title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="221.39,-24.27 161.88,-24.27 161.88,0 221.39,0 221.39,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="191.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Type Bound Procedure -->
+<g id="node4" class="node">
+<title>Type Bound Procedure</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="368.27,-24.27 239,-24.27 239,0 368.27,0 368.27,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="303.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type Bound Procedure</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node5" class="node">
+<title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="529.39,-24.27 385.88,-24.27 385.88,0 529.39,0 529.39,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="457.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node6" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="603.89,-24.27 547.38,-24.27 547.38,0 603.89,0 603.89,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="575.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node7" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="725.52,-24.27 621.75,-24.27 621.75,0 725.52,0 725.52,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="673.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.
+</p>
+ Where possible, edges connecting nodes are
+given different colours to make them easier to distinguish in
+large graphs.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+
+
+    
+    
+
+    
+    
+
+
+
+    
+    <section>
+    <h2><span class="anchor" id="src"></span>Source Code</h2>
+    <div class="hl codehilite"><pre><span></span><span class="w">   </span><span class="k">subroutine </span><span class="n">get_restart_defaults</span><span class="p">(</span><span class="n">auto_restart</span><span class="p">,</span><span class="w"> </span><span class="n">restart_delay</span><span class="p">,</span><span class="w"> </span><span class="n">restart_max</span><span class="p">,</span><span class="w"> </span><span class="n">self_exe</span><span class="p">)</span>
+<span class="w">      </span><span class="kt">logical</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">auto_restart</span>
+<span class="w">      </span><span class="kt">real</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">restart_delay</span>
+<span class="w">      </span><span class="kt">integer</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">restart_max</span>
+<span class="w">      </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="w"> </span><span class="k">allocatable</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">self_exe</span>
+
+<span class="w">      </span><span class="k">type</span><span class="p">(</span><span class="n">toml_table</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">root</span>
+<span class="w">      </span><span class="k">type</span><span class="p">(</span><span class="n">toml_table</span><span class="p">),</span><span class="w"> </span><span class="k">pointer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">wt</span>
+<span class="w">      </span><span class="kt">logical</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">ok</span>
+<span class="w">      </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">tmp</span>
+
+<span class="w">      </span><span class="n">auto_restart</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.</span>
+<span class="w">      </span><span class="n">restart_delay</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.0</span>
+<span class="w">      </span><span class="n">restart_max</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">      </span><span class="n">self_exe</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
+
+<span class="w">      </span><span class="k">call </span><span class="n">load_watch_table</span><span class="p">(</span><span class="n">root</span><span class="p">,</span><span class="w"> </span><span class="n">wt</span><span class="p">,</span><span class="w"> </span><span class="n">ok</span><span class="p">)</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="n">ok</span><span class="p">)</span><span class="w"> </span><span class="k">return</span>
+
+<span class="k">      call </span><span class="n">toml_get_logical</span><span class="p">(</span><span class="n">wt</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;auto-restart&quot;</span><span class="p">,</span><span class="w">  </span><span class="n">auto_restart</span><span class="p">)</span>
+<span class="w">      </span><span class="k">call </span><span class="n">toml_get_real</span><span class="p">(</span><span class="n">wt</span><span class="p">,</span><span class="w">    </span><span class="s2">&quot;restart-delay&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">restart_delay</span><span class="p">)</span>
+<span class="w">      </span><span class="k">call </span><span class="n">toml_get_int</span><span class="p">(</span><span class="n">wt</span><span class="p">,</span><span class="w">     </span><span class="s2">&quot;restart-max&quot;</span><span class="p">,</span><span class="w">   </span><span class="n">restart_max</span><span class="p">)</span>
+
+<span class="w">      </span><span class="n">tmp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
+<span class="w">      </span><span class="k">call </span><span class="n">toml_get_string</span><span class="p">(</span><span class="n">wt</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;self&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">tmp</span><span class="p">)</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">len_trim</span><span class="p">(</span><span class="n">tmp</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">call </span><span class="n">toml_get_string</span><span class="p">(</span><span class="n">wt</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;self-exe&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">tmp</span><span class="p">)</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">len_trim</span><span class="p">(</span><span class="n">tmp</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="n">self_exe</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">trim</span><span class="p">(</span><span class="n">tmp</span><span class="p">)</span>
+
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">restart_delay</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mf">0.0</span><span class="p">)</span><span class="w"> </span><span class="n">restart_delay</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">restart_max</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="n">restart_max</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">   </span><span class="k">end subroutine </span><span class="n">get_restart_defaults</span>
+</pre></div>
+
+    </section>
+    <br>
+    
+    </div>
+  </div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              fpm-watch
+ was developed by Seyed Ali Ghasemi<br>              &copy; 2026 <a rel="license" href="https://opensource.org/licenses/MIT">MIT</a>
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+ on 2026-02-24T23:32:32.813097+0000             </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>

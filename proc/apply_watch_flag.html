@@ -1,0 +1,833 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="Documentation for fpm-watch">
+    <meta name="author" content="Seyed Ali Ghasemi" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>apply_watch_flag &ndash; fpm-watch</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">fpm-watch </a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/types.html">Derived Types</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <div class="row">
+    <h1>apply_watch_flag
+      <small>Subroutine</small>
+      
+    </h1>
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+            <li class="list-inline-item" id="meta-license"><i class="fa fa-legal"></i> <a rel="license" href="https://opensource.org/licenses/MIT">MIT</a></li>
+
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title=" 5.2% of total for procedures.">148 statements</a>
+            </li>
+
+            <li class="list-inline-item" id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/watch_cli.f90"> Source File</a>
+            </li>
+        </ul>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+                <li class="breadcrumb-item"><a href='../sourcefile/watch_cli.f90.html'>watch_cli.f90</a></li>
+                <li class="breadcrumb-item"><a href='../module/watch_cli.html'>watch_cli</a></li>
+            <li class="breadcrumb-item active" aria-current="page">apply_watch_flag</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
+  </script>
+
+  </div>
+  
+  <div class="row">
+    <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
+      <div id="sidebar">
+      <h3>Contents</h3>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    <div class="card card-primary">
+      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
+      <div class="list-group">
+        <a class="list-group-item" href="../proc/apply_watch_flag.html#src">apply_watch_flag</a>
+      </div>
+    </div>
+
+
+  </div>
+
+    </div>
+    
+    <div class="col-md-9" id='text'>
+    <h2>private  subroutine apply_watch_flag(a, i, narg, w)  
+</h2>
+    
+
+    <p>Apply a single <code>--watch-*</code> flag to the watcher options.</p>
+<p>Supports both <code>--flag=value</code> and <code>--flag value</code> styles for flags that take
+a value.</p>
+<p>This routine is called while scanning the argv prefix before the <code>fpm</code>
+subcommand token.</p>
+
+
+    <h3>Arguments</h3>
+        <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-a~8"></span>
+              character(len=*),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>a</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-i~35"></span>
+              integer,
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>i</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-narg~4"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>narg</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-w~11"></span>
+              type(<a href='../type/watch_opts_t.html'>watch_opts_t</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>w</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <br>
+    <div class="card">
+      <div class="card-header">
+  <h3 class="card-title">Calls</h3>
+      </div>
+      <div class="card-body">
+  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: proc~~apply_watch_flag~~CallsGraph Pages: 1 -->
+<svg id="procapply_watch_flagCallsGraph" width="504pt" height="284pt"
+ viewBox="0.00 0.00 504.00 284.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~apply_watch_flag~~CallsGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 280.27)">
+<title>proc~~apply_watch_flag~~CallsGraph</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-280.27 499.81,-280.27 499.81,4 -4,4"/>
+<!-- proc~apply_watch_flag -->
+<g id="proc~~apply_watch_flag~~CallsGraph_node1" class="node">
+<title>proc~apply_watch_flag</title>
+<polygon fill="none" stroke="black" points="103.02,-150.27 0,-150.27 0,-126 103.02,-126 103.02,-150.27"/>
+<text xml:space="preserve" text-anchor="middle" x="51.51" y="-134.53" font-family="Helvetica,sans-Serif" font-size="10.50">apply_watch_flag</text>
+</g>
+<!-- proc~get_arg -->
+<g id="proc~~apply_watch_flag~~CallsGraph_node2" class="node">
+<title>proc~get_arg</title>
+<g id="a_proc~~apply_watch_flag~~CallsGraph_node2"><a xlink:href="../proc/get_arg.html" xlink:title="get_arg">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="230.65,-276.27 176.65,-276.27 176.65,-252 230.65,-252 230.65,-276.27"/>
+<text xml:space="preserve" text-anchor="middle" x="203.65" y="-260.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">get_arg</text>
+</a>
+</g>
+</g>
+<!-- proc~apply_watch_flag&#45;&gt;proc~get_arg -->
+<g id="proc~~apply_watch_flag~~CallsGraph_edge1" class="edge">
+<title>proc~apply_watch_flag&#45;&gt;proc~get_arg</title>
+<path fill="none" stroke="#ff0000" d="M59.62,-150.77C72.58,-172.71 102.18,-217.92 139.02,-243.13 146.94,-248.55 156.36,-252.66 165.49,-255.74"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="164.33,-259.05 174.92,-258.57 166.35,-252.34 164.33,-259.05"/>
+</g>
+<!-- proc~normalize_watch_opts -->
+<g id="proc~~apply_watch_flag~~CallsGraph_node3" class="node">
+<title>proc~normalize_watch_opts</title>
+<g id="a_proc~~apply_watch_flag~~CallsGraph_node3"><a xlink:href="../proc/normalize_watch_opts.html" xlink:title="normalize_watch_opts">
+<polygon fill="#d9534f" stroke="#d9534f" points="268.29,-234.27 139.02,-234.27 139.02,-210 268.29,-210 268.29,-234.27"/>
+<text xml:space="preserve" text-anchor="middle" x="203.65" y="-218.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">normalize_watch_opts</text>
+</a>
+</g>
+</g>
+<!-- proc~apply_watch_flag&#45;&gt;proc~normalize_watch_opts -->
+<g id="proc~~apply_watch_flag~~CallsGraph_edge2" class="edge">
+<title>proc~apply_watch_flag&#45;&gt;proc~normalize_watch_opts</title>
+<path fill="none" stroke="#ff0000" d="M66.6,-150.55C83.01,-164.48 111.41,-186.97 139.02,-201.13 141.88,-202.6 144.87,-204 147.92,-205.32"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="146.46,-208.51 157.05,-208.97 149.06,-202.01 146.46,-208.51"/>
+</g>
+<!-- proc~parse_int -->
+<g id="proc~~apply_watch_flag~~CallsGraph_node4" class="node">
+<title>proc~parse_int</title>
+<g id="a_proc~~apply_watch_flag~~CallsGraph_node4"><a xlink:href="../proc/parse_int.html" xlink:title="parse_int">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="233.79,-192.27 173.52,-192.27 173.52,-168 233.79,-168 233.79,-192.27"/>
+<text xml:space="preserve" text-anchor="middle" x="203.65" y="-176.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">parse_int</text>
+</a>
+</g>
+</g>
+<!-- proc~apply_watch_flag&#45;&gt;proc~parse_int -->
+<g id="proc~~apply_watch_flag~~CallsGraph_edge3" class="edge">
+<title>proc~apply_watch_flag&#45;&gt;proc~parse_int</title>
+<path fill="none" stroke="#ff0000" d="M97.56,-150.74C118.16,-156.5 142.38,-163.27 162.37,-168.87"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="161.26,-172.19 171.83,-171.51 163.14,-165.45 161.26,-172.19"/>
+</g>
+<!-- proc~parse_real -->
+<g id="proc~~apply_watch_flag~~CallsGraph_node5" class="node">
+<title>proc~parse_real</title>
+<g id="a_proc~~apply_watch_flag~~CallsGraph_node5"><a xlink:href="../proc/parse_real.html" xlink:title="parse_real">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="237.16,-150.27 170.14,-150.27 170.14,-126 237.16,-126 237.16,-150.27"/>
+<text xml:space="preserve" text-anchor="middle" x="203.65" y="-134.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">parse_real</text>
+</a>
+</g>
+</g>
+<!-- proc~apply_watch_flag&#45;&gt;proc~parse_real -->
+<g id="proc~~apply_watch_flag~~CallsGraph_edge4" class="edge">
+<title>proc~apply_watch_flag&#45;&gt;proc~parse_real</title>
+<path fill="none" stroke="#ff0000" d="M103.34,-138.13C121.18,-138.13 141.05,-138.13 158.31,-138.13"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="158.27,-141.64 168.27,-138.14 158.27,-134.64 158.27,-141.64"/>
+</g>
+<!-- proc~push_feature -->
+<g id="proc~~apply_watch_flag~~CallsGraph_node6" class="node">
+<title>proc~push_feature</title>
+<g id="a_proc~~apply_watch_flag~~CallsGraph_node6"><a xlink:href="../proc/push_feature.html" xlink:title="push_feature">
+<polygon fill="#d9534f" stroke="#d9534f" points="243.91,-108.27 163.39,-108.27 163.39,-84 243.91,-84 243.91,-108.27"/>
+<text xml:space="preserve" text-anchor="middle" x="203.65" y="-92.54" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">push_feature</text>
+</a>
+</g>
+</g>
+<!-- proc~apply_watch_flag&#45;&gt;proc~push_feature -->
+<g id="proc~~apply_watch_flag~~CallsGraph_edge5" class="edge">
+<title>proc~apply_watch_flag&#45;&gt;proc~push_feature</title>
+<path fill="none" stroke="#ff0000" d="M97.56,-125.53C114.79,-120.71 134.54,-115.19 152.24,-110.24"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="153.09,-113.63 161.78,-107.57 151.21,-106.89 153.09,-113.63"/>
+</g>
+<!-- proc~usage_and_stop -->
+<g id="proc~~apply_watch_flag~~CallsGraph_node7" class="node">
+<title>proc~usage_and_stop</title>
+<g id="a_proc~~apply_watch_flag~~CallsGraph_node7"><a xlink:href="../proc/usage_and_stop.html" xlink:title="usage_and_stop">
+<polygon fill="#d9534f" stroke="#d9534f" points="252.16,-66.27 155.14,-66.27 155.14,-42 252.16,-42 252.16,-66.27"/>
+<text xml:space="preserve" text-anchor="middle" x="203.65" y="-50.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">usage_and_stop</text>
+</a>
+</g>
+</g>
+<!-- proc~apply_watch_flag&#45;&gt;proc~usage_and_stop -->
+<g id="proc~~apply_watch_flag~~CallsGraph_edge6" class="edge">
+<title>proc~apply_watch_flag&#45;&gt;proc~usage_and_stop</title>
+<path fill="none" stroke="#ff0000" d="M66.6,-125.72C83.01,-111.79 111.41,-89.3 139.02,-75.14 141.88,-73.67 144.87,-72.27 147.92,-70.95"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="149.06,-74.26 157.05,-67.3 146.46,-67.76 149.06,-74.26"/>
+</g>
+<!-- proc~usage_and_stop_ok -->
+<g id="proc~~apply_watch_flag~~CallsGraph_node8" class="node">
+<title>proc~usage_and_stop_ok</title>
+<g id="a_proc~~apply_watch_flag~~CallsGraph_node8"><a xlink:href="../proc/usage_and_stop_ok.html" xlink:title="usage_and_stop_ok">
+<polygon fill="#d9534f" stroke="#d9534f" points="261.16,-24.27 146.14,-24.27 146.14,0 261.16,0 261.16,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="203.65" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">usage_and_stop_ok</text>
+</a>
+</g>
+</g>
+<!-- proc~apply_watch_flag&#45;&gt;proc~usage_and_stop_ok -->
+<g id="proc~~apply_watch_flag~~CallsGraph_edge7" class="edge">
+<title>proc~apply_watch_flag&#45;&gt;proc~usage_and_stop_ok</title>
+<path fill="none" stroke="#ff0000" d="M59.62,-125.5C72.58,-103.56 102.18,-58.35 139.02,-33.13 140.82,-31.9 142.7,-30.74 144.63,-29.64"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="145.92,-32.91 153.32,-25.33 142.81,-26.64 145.92,-32.91"/>
+</g>
+<!-- colorize -->
+<g id="proc~~apply_watch_flag~~CallsGraph_node9" class="node">
+<title>colorize</title>
+<polygon fill="#777777" stroke="#777777" points="495.81,-46.27 441.81,-46.27 441.81,-22 495.81,-22 495.81,-46.27"/>
+<text xml:space="preserve" text-anchor="middle" x="468.81" y="-30.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">colorize</text>
+</g>
+<!-- proc~usage_and_stop&#45;&gt;colorize -->
+<g id="proc~~apply_watch_flag~~CallsGraph_edge8" class="edge">
+<title>proc~usage_and_stop&#45;&gt;colorize</title>
+<path fill="none" stroke="#4800ff" d="M252.62,-50.49C303.62,-46.61 383.25,-40.56 430,-37.01"/>
+<polygon fill="#4800ff" stroke="#4800ff" points="430.21,-40.5 439.91,-36.26 429.68,-33.52 430.21,-40.5"/>
+</g>
+<!-- proc~usage_print_only -->
+<g id="proc~~apply_watch_flag~~CallsGraph_node10" class="node">
+<title>proc~usage_print_only</title>
+<g id="a_proc~~apply_watch_flag~~CallsGraph_node10"><a xlink:href="../proc/usage_print_only.html" xlink:title="usage_print_only">
+<polygon fill="#d9534f" stroke="#d9534f" points="405.81,-26.27 304.29,-26.27 304.29,-2 405.81,-2 405.81,-26.27"/>
+<text xml:space="preserve" text-anchor="middle" x="355.05" y="-10.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">usage_print_only</text>
+</a>
+</g>
+</g>
+<!-- proc~usage_and_stop&#45;&gt;proc~usage_print_only -->
+<g id="proc~~apply_watch_flag~~CallsGraph_edge9" class="edge">
+<title>proc~usage_and_stop&#45;&gt;proc~usage_print_only</title>
+<path fill="none" stroke="#4800ff" d="M251.51,-41.59C265.63,-37.81 281.29,-33.62 296.04,-29.67"/>
+<polygon fill="#4800ff" stroke="#4800ff" points="296.88,-33.06 305.64,-27.1 295.07,-26.3 296.88,-33.06"/>
+</g>
+<!-- proc~usage_and_stop_ok&#45;&gt;proc~usage_print_only -->
+<g id="proc~~apply_watch_flag~~CallsGraph_edge10" class="edge">
+<title>proc~usage_and_stop_ok&#45;&gt;proc~usage_print_only</title>
+<path fill="none" stroke="#ff00da" d="M261.56,-12.9C271.75,-13.03 282.4,-13.18 292.7,-13.31"/>
+<polygon fill="#ff00da" stroke="#ff00da" points="292.58,-16.81 302.63,-13.45 292.68,-9.81 292.58,-16.81"/>
+</g>
+<!-- proc~usage_print_only&#45;&gt;colorize -->
+<g id="proc~~apply_watch_flag~~CallsGraph_edge11" class="edge">
+<title>proc~usage_print_only&#45;&gt;colorize</title>
+<path fill="none" stroke="#00ffff" d="M406.05,-23.08C414.15,-24.53 422.42,-26.01 430.17,-27.4"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="429.48,-30.83 439.94,-29.15 430.72,-23.94 429.48,-30.83"/>
+</g>
+</g>
+</svg>
+</div>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#CallsGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="CallsGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="641pt" height="28pt"
+ viewBox="0.00 0.00 641.00 28.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.873868 0.873868) rotate(0) translate(4 28.27)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-28.27 729.52,-28.27 729.52,4 -4,4"/>
+<!-- Subroutine -->
+<g id="node1" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="69.27,-24.27 0,-24.27 0,0 69.27,0 69.27,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="34.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node2" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="143.89,-24.27 87.38,-24.27 87.38,0 143.89,0 143.89,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="115.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node3" class="node">
+<title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="221.39,-24.27 161.88,-24.27 161.88,0 221.39,0 221.39,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="191.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Type Bound Procedure -->
+<g id="node4" class="node">
+<title>Type Bound Procedure</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="368.27,-24.27 239,-24.27 239,0 368.27,0 368.27,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="303.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type Bound Procedure</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node5" class="node">
+<title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="529.39,-24.27 385.88,-24.27 385.88,0 529.39,0 529.39,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="457.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node6" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="603.89,-24.27 547.38,-24.27 547.38,0 603.89,0 603.89,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="575.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node7" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="725.52,-24.27 621.75,-24.27 621.75,0 725.52,0 725.52,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="673.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.
+</p>
+ Where possible, edges connecting nodes are
+given different colours to make them easier to distinguish in
+large graphs.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+  <h3 class="card-title">Called by</h3>
+      </div>
+      <div class="card-body">
+  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: proc~~apply_watch_flag~~CalledByGraph Pages: 1 -->
+<svg id="procapply_watch_flagCalledByGraph" width="339pt" height="32pt"
+ viewBox="0.00 0.00 339.00 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~apply_watch_flag~~CalledByGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 28.27)">
+<title>proc~~apply_watch_flag~~CalledByGraph</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-28.27 334.81,-28.27 334.81,4 -4,4"/>
+<!-- proc~apply_watch_flag -->
+<g id="proc~~apply_watch_flag~~CalledByGraph_node1" class="node">
+<title>proc~apply_watch_flag</title>
+<polygon fill="none" stroke="black" points="330.81,-24.27 227.79,-24.27 227.79,0 330.81,0 330.81,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="279.3" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50">apply_watch_flag</text>
+</g>
+<!-- proc~parse_cli -->
+<g id="proc~~apply_watch_flag~~CalledByGraph_node2" class="node">
+<title>proc~parse_cli</title>
+<g id="a_proc~~apply_watch_flag~~CalledByGraph_node2"><a xlink:href="../proc/parse_cli.html" xlink:title="parse_cli">
+<polygon fill="#d9534f" stroke="#d9534f" points="191.79,-24.27 133.02,-24.27 133.02,0 191.79,0 191.79,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="162.4" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">parse_cli</text>
+</a>
+</g>
+</g>
+<!-- proc~parse_cli&#45;&gt;proc~apply_watch_flag -->
+<g id="proc~~apply_watch_flag~~CalledByGraph_edge1" class="edge">
+<title>proc~parse_cli&#45;&gt;proc~apply_watch_flag</title>
+<path fill="none" stroke="#ff0000" d="M192.1,-12.13C199.5,-12.13 207.77,-12.13 216.16,-12.13"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="216.11,-15.64 226.11,-12.14 216.11,-8.64 216.11,-15.64"/>
+</g>
+<!-- proc~parse_cli_config -->
+<g id="proc~~apply_watch_flag~~CalledByGraph_node3" class="node">
+<title>proc~parse_cli_config</title>
+<g id="a_proc~~apply_watch_flag~~CalledByGraph_node3"><a xlink:href="../proc/parse_cli_config.html" xlink:title="parse_cli_config">
+<polygon fill="#d9534f" stroke="#d9534f" points="97.02,-24.27 0,-24.27 0,0 97.02,0 97.02,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="48.51" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">parse_cli_config</text>
+</a>
+</g>
+</g>
+<!-- proc~parse_cli_config&#45;&gt;proc~parse_cli -->
+<g id="proc~~apply_watch_flag~~CalledByGraph_edge2" class="edge">
+<title>proc~parse_cli_config&#45;&gt;proc~parse_cli</title>
+<path fill="none" stroke="#ff0000" d="M97.29,-12.13C105.26,-12.13 113.45,-12.13 121.2,-12.13"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="121.04,-15.64 131.04,-12.14 121.04,-8.64 121.04,-15.64"/>
+</g>
+</g>
+</svg>
+</div>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#CalledByGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="CalledByGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="641pt" height="28pt"
+ viewBox="0.00 0.00 641.00 28.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.873868 0.873868) rotate(0) translate(4 28.27)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-28.27 729.52,-28.27 729.52,4 -4,4"/>
+<!-- Subroutine -->
+<g id="node1" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="69.27,-24.27 0,-24.27 0,0 69.27,0 69.27,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="34.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node2" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="143.89,-24.27 87.38,-24.27 87.38,0 143.89,0 143.89,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="115.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node3" class="node">
+<title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="221.39,-24.27 161.88,-24.27 161.88,0 221.39,0 221.39,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="191.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Type Bound Procedure -->
+<g id="node4" class="node">
+<title>Type Bound Procedure</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="368.27,-24.27 239,-24.27 239,0 368.27,0 368.27,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="303.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type Bound Procedure</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node5" class="node">
+<title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="529.39,-24.27 385.88,-24.27 385.88,0 529.39,0 529.39,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="457.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node6" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="603.89,-24.27 547.38,-24.27 547.38,0 603.89,0 603.89,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="575.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node7" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="725.52,-24.27 621.75,-24.27 621.75,0 725.52,0 725.52,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="673.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.
+</p>
+ Where possible, edges connecting nodes are
+given different colours to make them easier to distinguish in
+large graphs.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+
+
+    
+    
+
+    
+    
+
+
+
+    
+    <section>
+    <h2><span class="anchor" id="src"></span>Source Code</h2>
+    <div class="hl codehilite"><pre><span></span><span class="w">   </span><span class="k">subroutine </span><span class="n">apply_watch_flag</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">narg</span><span class="p">,</span><span class="w"> </span><span class="n">w</span><span class="p">)</span>
+<span class="w">      </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">a</span>
+<span class="w">      </span><span class="kt">integer</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">i</span>
+<span class="w">      </span><span class="kt">integer</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">narg</span>
+<span class="w">      </span><span class="k">type</span><span class="p">(</span><span class="n">watch_opts_t</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">w</span>
+
+<span class="w">      </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="n">val</span>
+<span class="w">      </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">eq</span>
+
+<span class="w">      </span><span class="n">key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">trim</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="w">      </span><span class="n">val</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
+
+<span class="w">      </span><span class="n">eq</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">index</span><span class="p">(</span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;=&quot;</span><span class="p">)</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">eq</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">         </span><span class="n">val</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">key</span><span class="p">(</span><span class="n">eq</span><span class="o">+</span><span class="mi">1</span><span class="p">:)</span>
+<span class="w">         </span><span class="n">key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">key</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="n">eq</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="w">      </span><span class="k">end if</span>
+
+<span class="k">      select case</span><span class="w"> </span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+<span class="w">       </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="s2">&quot;--watch-child&quot;</span><span class="p">)</span>
+<span class="w">         </span><span class="k">continue</span>
+<span class="k">       case</span><span class="w"> </span><span class="p">(</span><span class="s2">&quot;--watch-auto-restart&quot;</span><span class="p">)</span>
+<span class="w">         </span><span class="k">continue</span>
+<span class="k">       case</span><span class="w"> </span><span class="p">(</span><span class="s2">&quot;--watch-restart-delay&quot;</span><span class="p">)</span>
+<span class="w">         </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">len_trim</span><span class="p">(</span><span class="n">val</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">            if</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">narg</span><span class="p">)</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">         </span><span class="k">end if</span>
+<span class="k">       case</span><span class="w"> </span><span class="p">(</span><span class="s2">&quot;--watch-restart-max&quot;</span><span class="p">)</span>
+<span class="w">         </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">len_trim</span><span class="p">(</span><span class="n">val</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">            if</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">narg</span><span class="p">)</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">         </span><span class="k">end if</span>
+<span class="k">       case</span><span class="w"> </span><span class="p">(</span><span class="s2">&quot;--watch-self&quot;</span><span class="p">)</span>
+<span class="w">         </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">len_trim</span><span class="p">(</span><span class="n">val</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">            if</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">narg</span><span class="p">)</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">         </span><span class="k">end if</span>
+
+<span class="k">       case</span><span class="w"> </span><span class="p">(</span><span class="s2">&quot;--watch-deps&quot;</span><span class="p">)</span>
+<span class="w">         </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">len_trim</span><span class="p">(</span><span class="n">val</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">            </span><span class="n">w</span><span class="p">%</span><span class="n">watch_deps</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">parse_bool</span><span class="p">(</span><span class="n">val</span><span class="p">,</span><span class="w"> </span><span class="p">.</span><span class="n">true</span><span class="p">.)</span>
+<span class="w">         </span><span class="k">else</span>
+<span class="k">            </span><span class="n">w</span><span class="p">%</span><span class="n">watch_deps</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">true</span><span class="p">.</span>
+<span class="w">         </span><span class="k">end if</span>
+<span class="k">       case</span><span class="w"> </span><span class="p">(</span><span class="s2">&quot;--watch-no-deps&quot;</span><span class="p">)</span>
+<span class="w">         </span><span class="n">w</span><span class="p">%</span><span class="n">watch_deps</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.</span>
+
+<span class="w">       </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="s2">&quot;--watch-low-cpu&quot;</span><span class="p">)</span>
+<span class="w">         </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">len_trim</span><span class="p">(</span><span class="n">val</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">            </span><span class="n">w</span><span class="p">%</span><span class="n">low_cpu</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">parse_bool</span><span class="p">(</span><span class="n">val</span><span class="p">,</span><span class="w"> </span><span class="p">.</span><span class="n">true</span><span class="p">.)</span>
+<span class="w">         </span><span class="k">else</span>
+<span class="k">            </span><span class="n">w</span><span class="p">%</span><span class="n">low_cpu</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">true</span><span class="p">.</span>
+<span class="w">         </span><span class="k">end if</span>
+<span class="k">       case</span><span class="w"> </span><span class="p">(</span><span class="s2">&quot;--watch-no-low-cpu&quot;</span><span class="p">)</span>
+<span class="w">         </span><span class="n">w</span><span class="p">%</span><span class="n">low_cpu</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.</span>
+
+<span class="w">       </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="s2">&quot;--watch-quiet&quot;</span><span class="p">)</span>
+<span class="w">         </span><span class="n">w</span><span class="p">%</span><span class="n">verbosity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span>
+<span class="w">       </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="s2">&quot;--watch-verbose&quot;</span><span class="p">)</span>
+<span class="w">         </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">len_trim</span><span class="p">(</span><span class="n">val</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">            </span><span class="n">w</span><span class="p">%</span><span class="n">verbosity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">max</span><span class="p">(</span><span class="n">w</span><span class="p">%</span><span class="n">verbosity</span><span class="p">,</span><span class="w"> </span><span class="n">parse_int</span><span class="p">(</span><span class="n">val</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">))</span>
+<span class="w">         </span><span class="k">else</span>
+<span class="k">            </span><span class="n">w</span><span class="p">%</span><span class="n">verbosity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">max</span><span class="p">(</span><span class="n">w</span><span class="p">%</span><span class="n">verbosity</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
+<span class="w">         </span><span class="k">end if</span>
+<span class="k">       case</span><span class="w"> </span><span class="p">(</span><span class="s2">&quot;--watch-very-verbose&quot;</span><span class="p">)</span>
+<span class="w">         </span><span class="n">w</span><span class="p">%</span><span class="n">verbosity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">max</span><span class="p">(</span><span class="n">w</span><span class="p">%</span><span class="n">verbosity</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span>
+<span class="w">       </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="s2">&quot;--watch-debug&quot;</span><span class="p">)</span>
+<span class="w">         </span><span class="n">w</span><span class="p">%</span><span class="n">debug</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">true</span><span class="p">.</span>
+<span class="w">       </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="s2">&quot;--watch-print-files&quot;</span><span class="p">)</span>
+<span class="w">         </span><span class="n">w</span><span class="p">%</span><span class="n">print_files_once</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">true</span><span class="p">.</span>
+<span class="w">         </span><span class="n">w</span><span class="p">%</span><span class="n">verbosity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">max</span><span class="p">(</span><span class="n">w</span><span class="p">%</span><span class="n">verbosity</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span>
+<span class="w">       </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="s2">&quot;--watch-silent-fpm&quot;</span><span class="p">)</span>
+<span class="w">         </span><span class="n">w</span><span class="p">%</span><span class="n">silent_fpm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">true</span><span class="p">.</span>
+<span class="w">       </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="s2">&quot;--watch-run-on-start&quot;</span><span class="p">)</span>
+<span class="w">         </span><span class="n">w</span><span class="p">%</span><span class="n">run_on_start</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">true</span><span class="p">.</span>
+<span class="w">       </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="s2">&quot;--watch-no-run-on-start&quot;</span><span class="p">)</span>
+<span class="w">         </span><span class="n">w</span><span class="p">%</span><span class="n">run_on_start</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.</span>
+<span class="w">       </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="s2">&quot;--watch-rescan&quot;</span><span class="p">)</span>
+<span class="w">         </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">len_trim</span><span class="p">(</span><span class="n">val</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">            if</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">narg</span><span class="p">)</span><span class="w"> </span><span class="k">call </span><span class="n">usage_and_stop</span><span class="p">(</span><span class="s2">&quot;--watch-rescan requires a value&quot;</span><span class="p">)</span>
+<span class="w">            </span><span class="n">val</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_arg</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+<span class="w">            </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">         </span><span class="k">end if</span>
+<span class="k">         </span><span class="n">w</span><span class="p">%</span><span class="n">rescan</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">parse_real</span><span class="p">(</span><span class="n">val</span><span class="p">,</span><span class="w"> </span><span class="n">w</span><span class="p">%</span><span class="n">rescan</span><span class="p">)</span>
+<span class="w">       </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="s2">&quot;--watch-no-rescan&quot;</span><span class="p">)</span>
+<span class="w">         </span><span class="n">w</span><span class="p">%</span><span class="n">rescan</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span>
+<span class="w">       </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="s2">&quot;--watch-ignore&quot;</span><span class="p">)</span>
+<span class="w">         </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">len_trim</span><span class="p">(</span><span class="n">val</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">            if</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">narg</span><span class="p">)</span><span class="w"> </span><span class="k">call </span><span class="n">usage_and_stop</span><span class="p">(</span><span class="s2">&quot;--watch-ignore requires a value&quot;</span><span class="p">)</span>
+<span class="w">            </span><span class="n">val</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_arg</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+<span class="w">            </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">         </span><span class="k">end if</span>
+<span class="k">         call </span><span class="n">push_feature</span><span class="p">(</span><span class="n">w</span><span class="p">%</span><span class="n">ignore</span><span class="p">,</span><span class="w"> </span><span class="nb">trim</span><span class="p">(</span><span class="n">val</span><span class="p">))</span>
+<span class="w">       </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="s2">&quot;--watch-include&quot;</span><span class="p">)</span>
+<span class="w">         </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">len_trim</span><span class="p">(</span><span class="n">val</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">            if</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">narg</span><span class="p">)</span><span class="w"> </span><span class="k">call </span><span class="n">usage_and_stop</span><span class="p">(</span><span class="s2">&quot;--watch-include requires a value&quot;</span><span class="p">)</span>
+<span class="w">            </span><span class="n">val</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_arg</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+<span class="w">            </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">         </span><span class="k">end if</span>
+<span class="k">         call </span><span class="n">push_feature</span><span class="p">(</span><span class="n">w</span><span class="p">%</span><span class="k">include</span><span class="p">,</span><span class="w"> </span><span class="nb">trim</span><span class="p">(</span><span class="n">val</span><span class="p">))</span>
+<span class="w">       </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="s2">&quot;--watch-feature&quot;</span><span class="p">)</span>
+<span class="w">         </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">len_trim</span><span class="p">(</span><span class="n">val</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">            if</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">narg</span><span class="p">)</span><span class="w"> </span><span class="k">call </span><span class="n">usage_and_stop</span><span class="p">(</span><span class="s2">&quot;--watch-feature requires a value&quot;</span><span class="p">)</span>
+<span class="w">            </span><span class="n">val</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_arg</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+<span class="w">            </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">         </span><span class="k">end if</span>
+<span class="k">         call </span><span class="n">push_feature</span><span class="p">(</span><span class="n">w</span><span class="p">%</span><span class="n">enabled_features</span><span class="p">,</span><span class="w"> </span><span class="nb">trim</span><span class="p">(</span><span class="n">val</span><span class="p">))</span>
+<span class="w">       </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="s2">&quot;--watch-poll&quot;</span><span class="p">)</span>
+<span class="w">         </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">len_trim</span><span class="p">(</span><span class="n">val</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">            if</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">narg</span><span class="p">)</span><span class="w"> </span><span class="k">call </span><span class="n">usage_and_stop</span><span class="p">(</span><span class="s2">&quot;--watch-poll requires a value&quot;</span><span class="p">)</span>
+<span class="w">            </span><span class="n">val</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_arg</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+<span class="w">            </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">         </span><span class="k">end if</span>
+<span class="k">         </span><span class="n">w</span><span class="p">%</span><span class="n">poll</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">parse_real</span><span class="p">(</span><span class="n">val</span><span class="p">,</span><span class="w"> </span><span class="n">w</span><span class="p">%</span><span class="n">poll</span><span class="p">)</span>
+<span class="w">       </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="s2">&quot;--watch-debounce&quot;</span><span class="p">)</span>
+<span class="w">         </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">len_trim</span><span class="p">(</span><span class="n">val</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">            if</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">narg</span><span class="p">)</span><span class="w"> </span><span class="k">call </span><span class="n">usage_and_stop</span><span class="p">(</span><span class="s2">&quot;--watch-debounce requires a value&quot;</span><span class="p">)</span>
+<span class="w">            </span><span class="n">val</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_arg</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+<span class="w">            </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">         </span><span class="k">end if</span>
+<span class="k">         </span><span class="n">w</span><span class="p">%</span><span class="n">debounce</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">parse_real</span><span class="p">(</span><span class="n">val</span><span class="p">,</span><span class="w"> </span><span class="n">w</span><span class="p">%</span><span class="n">debounce</span><span class="p">)</span>
+<span class="w">       </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="s2">&quot;--watch-help&quot;</span><span class="p">)</span>
+<span class="w">         </span><span class="k">call </span><span class="n">usage_and_stop_ok</span><span class="p">()</span>
+<span class="w">       </span><span class="k">case </span><span class="n">default</span>
+<span class="w">         </span><span class="k">call </span><span class="n">usage_and_stop</span><span class="p">(</span><span class="s2">&quot;unknown watch flag: &quot;</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="nb">trim</span><span class="p">(</span><span class="n">a</span><span class="p">))</span>
+<span class="w">      </span><span class="k">end select</span>
+
+<span class="k">      call </span><span class="n">normalize_watch_opts</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+
+<span class="w">   </span><span class="k">contains</span>
+
+<span class="k">      pure </span><span class="kt">logical </span><span class="k">function </span><span class="n">parse_bool</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="n">default</span><span class="p">)</span><span class="w"> </span><span class="k">result</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+<span class="w">         </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">s</span>
+<span class="w">         </span><span class="kt">logical</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">default</span>
+<span class="w">         </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">t</span>
+<span class="w">         </span><span class="n">t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">trim</span><span class="p">(</span><span class="nb">adjustl</span><span class="p">(</span><span class="n">lower_ascii</span><span class="p">(</span><span class="n">s</span><span class="p">)))</span>
+<span class="w">         </span><span class="k">select case</span><span class="w"> </span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+<span class="w">          </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="s2">&quot;1&quot;</span><span class="p">,</span><span class="s2">&quot;true&quot;</span><span class="p">,</span><span class="s2">&quot;on&quot;</span><span class="p">,</span><span class="s2">&quot;yes&quot;</span><span class="p">,</span><span class="s2">&quot;y&quot;</span><span class="p">,</span><span class="s2">&quot;t&quot;</span><span class="p">)</span>
+<span class="w">            </span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">true</span><span class="p">.</span>
+<span class="w">          </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="s2">&quot;0&quot;</span><span class="p">,</span><span class="s2">&quot;false&quot;</span><span class="p">,</span><span class="s2">&quot;off&quot;</span><span class="p">,</span><span class="s2">&quot;no&quot;</span><span class="p">,</span><span class="s2">&quot;n&quot;</span><span class="p">,</span><span class="s2">&quot;f&quot;</span><span class="p">)</span>
+<span class="w">            </span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.</span>
+<span class="w">          </span><span class="k">case </span><span class="n">default</span>
+<span class="w">            </span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">default</span>
+<span class="w">         </span><span class="k">end select</span>
+<span class="k">      end function </span><span class="n">parse_bool</span>
+
+<span class="w">      </span><span class="k">pure function </span><span class="n">lower_ascii</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="w"> </span><span class="k">result</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+<span class="w">         </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">s</span>
+<span class="w">         </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">))</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">r</span>
+<span class="w">         </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">k</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">,</span><span class="w"> </span><span class="n">da</span>
+<span class="w">         </span><span class="n">da</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">iachar</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nb">iachar</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">)</span>
+<span class="w">         </span><span class="k">do </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+<span class="w">            </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">iachar</span><span class="p">(</span><span class="n">s</span><span class="p">(</span><span class="n">k</span><span class="p">:</span><span class="n">k</span><span class="p">))</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">c</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="nb">iachar</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">)</span><span class="w"> </span><span class="p">.</span><span class="nb">and</span><span class="p">.</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="nb">iachar</span><span class="p">(</span><span class="s1">&#39;Z&#39;</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
+<span class="k">               </span><span class="n">r</span><span class="p">(</span><span class="n">k</span><span class="p">:</span><span class="n">k</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">achar</span><span class="p">(</span><span class="n">c</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">da</span><span class="p">)</span>
+<span class="w">            </span><span class="k">else</span>
+<span class="k">               </span><span class="n">r</span><span class="p">(</span><span class="n">k</span><span class="p">:</span><span class="n">k</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s</span><span class="p">(</span><span class="n">k</span><span class="p">:</span><span class="n">k</span><span class="p">)</span>
+<span class="w">            </span><span class="k">end if</span>
+<span class="k">         end do</span>
+<span class="k">      end function </span><span class="n">lower_ascii</span>
+
+<span class="w">   </span><span class="k">end subroutine </span><span class="n">apply_watch_flag</span>
+</pre></div>
+
+    </section>
+    <br>
+    
+    </div>
+  </div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              fpm-watch
+ was developed by Seyed Ali Ghasemi<br>              &copy; 2026 <a rel="license" href="https://opensource.org/licenses/MIT">MIT</a>
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+ on 2026-02-24T23:32:32.813097+0000             </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>

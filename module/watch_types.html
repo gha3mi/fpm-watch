@@ -1,0 +1,1185 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="Documentation for fpm-watch">
+    <meta name="author" content="Seyed Ali Ghasemi" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>watch_types &ndash; fpm-watch</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">fpm-watch </a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/types.html">Derived Types</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <div class="row">
+    <h1>watch_types
+      <small>Module</small>
+      
+    </h1>
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+            <li class="list-inline-item" id="meta-license"><i class="fa fa-legal"></i> <a rel="license" href="https://opensource.org/licenses/MIT">MIT</a></li>
+
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title=" 1.1% of total for modules and submodules.">35 statements</a>
+            </li>
+
+            <li class="list-inline-item" id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/watch_types.f90"> Source File</a>
+            </li>
+        </ul>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+                <li class="breadcrumb-item"><a href='../sourcefile/watch_types.f90.html'>watch_types.f90</a></li>
+            <li class="breadcrumb-item active" aria-current="page">watch_types</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
+  </script>
+
+  </div>
+
+  <div class="row">
+    <div class="col-md-3">
+        <div id="sidebar">
+      <h3>Contents</h3>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#types-0"
+         aria-expanded="false" aria-controls="types-0">
+         <h4 class="card-header bg-primary text-white">Derived Types</h4>
+      </a>
+      <div id="types-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../module/watch_types.html#type-root_info_t">root_info_t</a>
+            <a class="list-group-item" href="../module/watch_types.html#type-watch_config_t">watch_config_t</a>
+            <a class="list-group-item" href="../module/watch_types.html#type-watch_opts_t">watch_opts_t</a>
+        </div>
+      </div>
+    </div>
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+
+  </div>
+
+    </div>
+
+    <div class="col-md-9" id='text'>
+      <p>Shared types used throughout <code>fpm-watch</code>.</p>
+<p>This module defines the configuration records used to pass options and
+<code>fpm</code> settings into the engine.</p>
+<br>          <div class="card mb-4">
+      <h3 class="card-header card-title bg-light">Uses</h3>
+      <div class="card-body">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <ul class="list-inline">
+                  <li class="list-inline-item"><a href='http://fortranwiki.org/fortran/show/iso_fortran_env'>iso_fortran_env</a></li>
+                  <li class="list-inline-item">fpm_command_line</li>
+                  <li class="list-inline-item">fpm_strings</li>
+              </ul>
+            </li>
+            <li class="list-group-item">
+              <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: module~~watch_types~~UsesGraph Pages: 1 -->
+<svg id="modulewatch_typesUsesGraph" width="237pt" height="116pt"
+ viewBox="0.00 0.00 237.00 116.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="module~~watch_types~~UsesGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 112.27)">
+<title>module~~watch_types~~UsesGraph</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-112.27 233.29,-112.27 233.29,4 -4,4"/>
+<!-- module~watch_types -->
+<g id="module~~watch_types~~UsesGraph_node1" class="node">
+<title>module~watch_types</title>
+<polygon fill="none" stroke="black" points="229.29,-66.27 152.52,-66.27 152.52,-42 229.29,-42 229.29,-66.27"/>
+<text xml:space="preserve" text-anchor="middle" x="190.9" y="-50.53" font-family="Helvetica,sans-Serif" font-size="10.50">watch_types</text>
+</g>
+<!-- fpm_command_line -->
+<g id="module~~watch_types~~UsesGraph_node2" class="node">
+<title>fpm_command_line</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="116.52,-108.27 0,-108.27 0,-84 116.52,-84 116.52,-108.27"/>
+<text xml:space="preserve" text-anchor="middle" x="58.26" y="-92.54" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">fpm_command_line</text>
+</g>
+<!-- module~watch_types&#45;&gt;fpm_command_line -->
+<g id="module~~watch_types~~UsesGraph_edge1" class="edge">
+<title>module~watch_types&#45;&gt;fpm_command_line</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M152.12,-66.28C138.67,-70.61 123.31,-75.55 109.01,-80.14"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="108.21,-76.72 99.77,-83.11 110.36,-83.38 108.21,-76.72"/>
+</g>
+<!-- fpm_strings -->
+<g id="module~~watch_types~~UsesGraph_node3" class="node">
+<title>fpm_strings</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="94.77,-66.27 21.75,-66.27 21.75,-42 94.77,-42 94.77,-66.27"/>
+<text xml:space="preserve" text-anchor="middle" x="58.26" y="-50.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">fpm_strings</text>
+</g>
+<!-- module~watch_types&#45;&gt;fpm_strings -->
+<g id="module~~watch_types~~UsesGraph_edge2" class="edge">
+<title>module~watch_types&#45;&gt;fpm_strings</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M152.12,-54.13C137.82,-54.13 121.38,-54.13 106.34,-54.13"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="106.68,-50.64 96.68,-54.14 106.68,-57.64 106.68,-50.64"/>
+</g>
+<!-- iso_fortran_env -->
+<g id="module~~watch_types~~UsesGraph_node4" class="node">
+<title>iso_fortran_env</title>
+<g id="a_module~~watch_types~~UsesGraph_node4"><a xlink:href="http://fortranwiki.org/fortran/show/iso_fortran_env" xlink:title="iso_fortran_env">
+<polygon fill="#337ab7" stroke="#337ab7" points="104.89,-24.27 11.62,-24.27 11.62,0 104.89,0 104.89,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="58.26" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">iso_fortran_env</text>
+</a>
+</g>
+</g>
+<!-- module~watch_types&#45;&gt;iso_fortran_env -->
+<g id="module~~watch_types~~UsesGraph_edge3" class="edge">
+<title>module~watch_types&#45;&gt;iso_fortran_env</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M152.12,-41.99C138.67,-37.66 123.31,-32.72 109.01,-28.13"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="110.36,-24.89 99.77,-25.16 108.21,-31.55 110.36,-24.89"/>
+</g>
+</g>
+</svg>
+</div>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#UsesGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="UsesGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="511pt" height="32pt"
+ viewBox="0.00 0.00 511.00 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 28.27)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-28.27 506.88,-28.27 506.88,4 -4,4"/>
+<!-- Module -->
+<g id="node1" class="node">
+<title>Module</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="54,-24.27 0,-24.27 0,0 54,0 54,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="27" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Module</text>
+</g>
+<!-- Submodule -->
+<g id="node2" class="node">
+<title>Submodule</title>
+<polygon fill="#5bc0de" stroke="#5bc0de" points="144.13,-24.27 71.87,-24.27 71.87,0 144.13,0 144.13,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="108" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Submodule</text>
+</g>
+<!-- Subroutine -->
+<g id="node3" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="231.63,-24.27 162.37,-24.27 162.37,0 231.63,0 231.63,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="197" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node4" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="306.26,-24.27 249.74,-24.27 249.74,0 306.26,0 306.26,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="278" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Program -->
+<g id="node5" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="381.26,-24.27 324.74,-24.27 324.74,0 381.26,0 381.26,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="353" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node6" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="502.88,-24.27 399.12,-24.27 399.12,0 502.88,0 502.88,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="451" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a submodule to the (sub)module which it is
+descended from. Dashed arrows point from a module or program unit to 
+modules which it uses.
+</p>
+ Where possible, edges connecting nodes are
+given different colours to make them easier to distinguish in
+large graphs.</div>
+            </div>
+          </div>
+        </div>
+            </li>
+        </ul>
+      </div>
+    </div>
+
+          <div class="card">
+      <h3 class="card-header card-title bg-light">Used by</h3>
+      <div class="card-body">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: module~~watch_types~~UsedByGraph Pages: 1 -->
+<svg id="modulewatch_typesUsedByGraph" width="641pt" height="336pt"
+ viewBox="0.00 0.00 641.00 336.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="module~~watch_types~~UsedByGraph" class="graph" transform="scale(0.926501 0.926501) rotate(0) translate(4 359.15)">
+<title>module~~watch_types~~UsedByGraph</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-359.15 687.85,-359.15 687.85,4 -4,4"/>
+<!-- module~watch_types -->
+<g id="module~~watch_types~~UsedByGraph_node1" class="node">
+<title>module~watch_types</title>
+<polygon fill="none" stroke="black" points="76.77,-168.27 0,-168.27 0,-144 76.77,-144 76.77,-168.27"/>
+<text xml:space="preserve" text-anchor="middle" x="38.38" y="-152.53" font-family="Helvetica,sans-Serif" font-size="10.50">watch_types</text>
+</g>
+<!-- module~watch_banner -->
+<g id="module~~watch_types~~UsedByGraph_node2" class="node">
+<title>module~watch_banner</title>
+<g id="a_module~~watch_types~~UsedByGraph_node2"><a xlink:href="../module/watch_banner.html" xlink:title="watch_banner">
+<polygon fill="#337ab7" stroke="#337ab7" points="541.45,-329.27 454.93,-329.27 454.93,-305 541.45,-305 541.45,-329.27"/>
+<text xml:space="preserve" text-anchor="middle" x="498.19" y="-313.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">watch_banner</text>
+</a>
+</g>
+</g>
+<!-- module~watch_banner&#45;&gt;module~watch_types -->
+<g id="module~~watch_types~~UsedByGraph_edge1" class="edge">
+<title>module~watch_banner&#45;&gt;module~watch_types</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M454.62,-323.23C420.53,-327.8 371.46,-333.66 328.3,-336.13"/>
+</g>
+<!-- module~watch_cli -->
+<g id="module~~watch_types~~UsedByGraph_node3" class="node">
+<title>module~watch_cli</title>
+<g id="a_module~~watch_types~~UsedByGraph_node3"><a xlink:href="../module/watch_cli.html" xlink:title="watch_cli">
+<polygon fill="#337ab7" stroke="#337ab7" points="357.43,-66.27 297.16,-66.27 297.16,-42 357.43,-42 357.43,-66.27"/>
+<text xml:space="preserve" text-anchor="middle" x="327.3" y="-50.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">watch_cli</text>
+</a>
+</g>
+</g>
+<!-- module~watch_cli&#45;&gt;module~watch_types -->
+<g id="module~~watch_types~~UsedByGraph_edge2" class="edge">
+<title>module~watch_cli&#45;&gt;module~watch_types</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M296.7,-61.53C264.79,-69.6 212.56,-83.12 167.9,-96.14"/>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M165.9,-96.14C141.83,-103.15 135.6,-104.76 112.77,-115.14 98.2,-121.76 82.64,-130.23 69.62,-137.75"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="67.94,-134.68 61.09,-142.76 71.49,-140.72 67.94,-134.68"/>
+</g>
+<!-- module~watch_config -->
+<g id="module~~watch_types~~UsedByGraph_node4" class="node">
+<title>module~watch_config</title>
+<g id="a_module~~watch_types~~UsedByGraph_node4"><a xlink:href="../module/watch_config.html" xlink:title="watch_config">
+<polygon fill="#337ab7" stroke="#337ab7" points="207.54,-66.27 126.27,-66.27 126.27,-42 207.54,-42 207.54,-66.27"/>
+<text xml:space="preserve" text-anchor="middle" x="166.9" y="-50.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">watch_config</text>
+</a>
+</g>
+</g>
+<!-- module~watch_cli&#45;&gt;module~watch_config -->
+<g id="module~~watch_types~~UsedByGraph_edge13" class="edge">
+<title>module~watch_cli&#45;&gt;module~watch_config</title>
+<path fill="none" stroke="#e7ff00" stroke-dasharray="5,2" d="M296.88,-54.13C275.15,-54.13 245.03,-54.13 219.36,-54.13"/>
+<polygon fill="#e7ff00" stroke="#e7ff00" points="219.43,-50.64 209.43,-54.14 219.43,-57.64 219.43,-50.64"/>
+</g>
+<!-- module~watch_config&#45;&gt;module~watch_types -->
+<g id="module~~watch_types~~UsedByGraph_edge3" class="edge">
+<title>module~watch_config&#45;&gt;module~watch_types</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M138.19,-66.72C129.71,-71.09 120.56,-76.36 112.77,-82.14 91.74,-97.7 71.05,-119.3 57.03,-135.14"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="54.49,-132.73 50.58,-142.57 59.78,-137.31 54.49,-132.73"/>
+</g>
+<!-- module~watch_engine -->
+<g id="module~~watch_types~~UsedByGraph_node5" class="node">
+<title>module~watch_engine</title>
+<g id="a_module~~watch_types~~UsedByGraph_node5"><a xlink:href="../module/watch_engine.html" xlink:title="watch_engine">
+<polygon fill="#337ab7" stroke="#337ab7" points="683.85,-267.27 598.83,-267.27 598.83,-243 683.85,-243 683.85,-267.27"/>
+<text xml:space="preserve" text-anchor="middle" x="641.34" y="-251.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">watch_engine</text>
+</a>
+</g>
+</g>
+<!-- module~watch_engine&#45;&gt;module~watch_types -->
+<g id="module~~watch_types~~UsedByGraph_edge4" class="edge">
+<title>module~watch_engine&#45;&gt;module~watch_types</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M633.29,-267.71C621.59,-287.13 596.1,-323.68 562.83,-338.13 467.22,-379.67 432.37,-330.17 328.3,-336.13"/>
+</g>
+<!-- module~watch_engine&#45;&gt;module~watch_banner -->
+<g id="module~~watch_types~~UsedByGraph_edge12" class="edge">
+<title>module~watch_engine&#45;&gt;module~watch_banner</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M619.1,-267.62C603.78,-276.3 582.44,-287.78 562.83,-296.13 559.08,-297.73 555.16,-299.29 551.19,-300.78"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="550.3,-297.38 542.07,-304.06 552.67,-303.97 550.3,-297.38"/>
+</g>
+<!-- module~watch_exec -->
+<g id="module~~watch_types~~UsedByGraph_node6" class="node">
+<title>module~watch_exec</title>
+<g id="a_module~~watch_types~~UsedByGraph_node6"><a xlink:href="../module/watch_exec.html" xlink:title="watch_exec">
+<polygon fill="#337ab7" stroke="#337ab7" points="534.7,-287.27 461.68,-287.27 461.68,-263 534.7,-263 534.7,-287.27"/>
+<text xml:space="preserve" text-anchor="middle" x="498.19" y="-271.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">watch_exec</text>
+</a>
+</g>
+</g>
+<!-- module~watch_engine&#45;&gt;module~watch_exec -->
+<g id="module~~watch_types~~UsedByGraph_edge15" class="edge">
+<title>module~watch_engine&#45;&gt;module~watch_exec</title>
+<path fill="none" stroke="#00ff2e" stroke-dasharray="5,2" d="M598.37,-261.08C582,-263.4 563.15,-266.07 546.31,-268.46"/>
+<polygon fill="#00ff2e" stroke="#00ff2e" points="545.94,-264.98 536.53,-269.84 546.92,-271.91 545.94,-264.98"/>
+</g>
+<!-- module~watch_feature_factory -->
+<g id="module~~watch_types~~UsedByGraph_node9" class="node">
+<title>module~watch_feature_factory</title>
+<g id="a_module~~watch_types~~UsedByGraph_node9"><a xlink:href="../module/watch_feature_factory.html" xlink:title="watch_feature_factory">
+<polygon fill="#337ab7" stroke="#337ab7" points="562.83,-207.27 433.56,-207.27 433.56,-183 562.83,-183 562.83,-207.27"/>
+<text xml:space="preserve" text-anchor="middle" x="498.19" y="-191.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">watch_feature_factory</text>
+</a>
+</g>
+</g>
+<!-- module~watch_engine&#45;&gt;module~watch_feature_factory -->
+<g id="module~~watch_types~~UsedByGraph_edge20" class="edge">
+<title>module~watch_engine&#45;&gt;module~watch_feature_factory</title>
+<path fill="none" stroke="#002eff" stroke-dasharray="5,2" d="M612.07,-242.53C597.41,-236.04 579.2,-228.07 562.83,-221.13 555.74,-218.13 548.19,-214.99 540.85,-211.98"/>
+<polygon fill="#002eff" stroke="#002eff" points="542.31,-208.79 531.73,-208.25 539.66,-215.27 542.31,-208.79"/>
+</g>
+<!-- module~watch_feature_manager -->
+<g id="module~~watch_types~~UsedByGraph_node10" class="node">
+<title>module~watch_feature_manager</title>
+<g id="a_module~~watch_types~~UsedByGraph_node10"><a xlink:href="../module/watch_feature_manager.html" xlink:title="watch_feature_manager">
+<polygon fill="#337ab7" stroke="#337ab7" points="397.56,-306.27 257.04,-306.27 257.04,-282 397.56,-282 397.56,-306.27"/>
+<text xml:space="preserve" text-anchor="middle" x="327.3" y="-290.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">watch_feature_manager</text>
+</a>
+</g>
+</g>
+<!-- module~watch_engine&#45;&gt;module~watch_feature_manager -->
+<g id="module~~watch_types~~UsedByGraph_edge21" class="edge">
+<title>module~watch_engine&#45;&gt;module~watch_feature_manager</title>
+<path fill="none" stroke="#5c00ff" stroke-dasharray="5,2" d="M598.51,-254.5C586.95,-254.35 574.4,-254.21 562.83,-254.13 505.38,-253.76 490.03,-243.54 433.56,-254.13 416.69,-257.3 413.6,-262.01 397.56,-268.13 389.55,-271.2 381.01,-274.43 372.76,-277.53"/>
+<polygon fill="#5c00ff" stroke="#5c00ff" points="371.7,-274.19 363.57,-280.99 374.16,-280.75 371.7,-274.19"/>
+</g>
+<!-- module~watch_fpm_graph -->
+<g id="module~~watch_types~~UsedByGraph_node11" class="node">
+<title>module~watch_fpm_graph</title>
+<g id="a_module~~watch_types~~UsedByGraph_node11"><a xlink:href="../module/watch_fpm_graph.html" xlink:title="watch_fpm_graph">
+<polygon fill="#337ab7" stroke="#337ab7" points="380.31,-108.27 274.29,-108.27 274.29,-84 380.31,-84 380.31,-108.27"/>
+<text xml:space="preserve" text-anchor="middle" x="327.3" y="-92.54" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">watch_fpm_graph</text>
+</a>
+</g>
+</g>
+<!-- module~watch_engine&#45;&gt;module~watch_fpm_graph -->
+<g id="module~~watch_types~~UsedByGraph_edge23" class="edge">
+<title>module~watch_engine&#45;&gt;module~watch_fpm_graph</title>
+<path fill="none" stroke="#e700ff" stroke-dasharray="5,2" d="M630.21,-242.6C616.21,-225.76 589.62,-195.48 562.83,-174.13 537.07,-153.61 529.47,-149.12 499.19,-136.13"/>
+<path fill="none" stroke="#e700ff" stroke-dasharray="5,2" d="M497.19,-136.13C463.75,-121.8 424.28,-112.08 391.9,-105.82"/>
+<polygon fill="#e700ff" stroke="#e700ff" points="392.73,-102.42 382.26,-104.03 391.45,-109.3 392.73,-102.42"/>
+</g>
+<!-- module~watch_log -->
+<g id="module~~watch_types~~UsedByGraph_node12" class="node">
+<title>module~watch_log</title>
+<g id="a_module~~watch_types~~UsedByGraph_node12"><a xlink:href="../module/watch_log.html" xlink:title="watch_log">
+<polygon fill="#337ab7" stroke="#337ab7" points="199.29,-148.27 134.52,-148.27 134.52,-124 199.29,-124 199.29,-148.27"/>
+<text xml:space="preserve" text-anchor="middle" x="166.9" y="-132.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">watch_log</text>
+</a>
+</g>
+</g>
+<!-- module~watch_engine&#45;&gt;module~watch_log -->
+<g id="module~~watch_types~~UsedByGraph_edge24" class="edge">
+<title>module~watch_engine&#45;&gt;module~watch_log</title>
+<path fill="none" stroke="#ff008b" stroke-dasharray="5,2" d="M497.19,-136.13C446.97,-114.6 288.1,-125.23 210.88,-131.99"/>
+<polygon fill="#ff008b" stroke="#ff008b" points="210.81,-128.49 201.17,-132.86 211.44,-135.46 210.81,-128.49"/>
+</g>
+<!-- module~watch_exec&#45;&gt;module~watch_types -->
+<g id="module~~watch_types~~UsedByGraph_edge5" class="edge">
+<title>module~watch_exec&#45;&gt;module~watch_types</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M461.46,-285.77C452.26,-288.82 442.45,-292.36 433.56,-296.13 416.91,-303.22 414.29,-308.26 397.56,-315.13 367.81,-327.36 360.41,-334.29 328.3,-336.13"/>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M326.3,-336.13C256.02,-340.17 232.46,-364.21 167.9,-336.13"/>
+</g>
+<!-- module~watch_feat_stats -->
+<g id="module~~watch_types~~UsedByGraph_node7" class="node">
+<title>module~watch_feat_stats</title>
+<g id="a_module~~watch_types~~UsedByGraph_node7"><a xlink:href="../module/watch_feat_stats.html" xlink:title="watch_feat_stats">
+<polygon fill="#337ab7" stroke="#337ab7" points="376.93,-226.27 277.66,-226.27 277.66,-202 376.93,-202 376.93,-226.27"/>
+<text xml:space="preserve" text-anchor="middle" x="327.3" y="-210.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">watch_feat_stats</text>
+</a>
+</g>
+</g>
+<!-- module~watch_feat_stats&#45;&gt;module~watch_types -->
+<g id="module~~watch_types~~UsedByGraph_edge6" class="edge">
+<title>module~watch_feat_stats&#45;&gt;module~watch_types</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M284.06,-201.5C252.4,-192.65 207.85,-181.48 167.9,-176.13"/>
+</g>
+<!-- module~watch_feature_api -->
+<g id="module~~watch_types~~UsedByGraph_node8" class="node">
+<title>module~watch_feature_api</title>
+<g id="a_module~~watch_types~~UsedByGraph_node8"><a xlink:href="../module/watch_feature_api.html" xlink:title="watch_feature_api">
+<polygon fill="#337ab7" stroke="#337ab7" points="221.04,-247.27 112.77,-247.27 112.77,-223 221.04,-223 221.04,-247.27"/>
+<text xml:space="preserve" text-anchor="middle" x="166.9" y="-231.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">watch_feature_api</text>
+</a>
+</g>
+</g>
+<!-- module~watch_feat_stats&#45;&gt;module~watch_feature_api -->
+<g id="module~~watch_types~~UsedByGraph_edge17" class="edge">
+<title>module~watch_feat_stats&#45;&gt;module~watch_feature_api</title>
+<path fill="none" stroke="#00b9ff" stroke-dasharray="5,2" d="M277.48,-220.61C263.36,-222.48 247.71,-224.55 232.77,-226.53"/>
+<polygon fill="#00b9ff" stroke="#00b9ff" points="232.48,-223.04 223.02,-227.83 233.4,-229.98 232.48,-223.04"/>
+</g>
+<!-- module~watch_feat_stats&#45;&gt;module~watch_log -->
+<g id="module~~watch_types~~UsedByGraph_edge25" class="edge">
+<title>module~watch_feat_stats&#45;&gt;module~watch_log</title>
+<path fill="none" stroke="#ff008b" stroke-dasharray="5,2" d="M287.39,-201.6C277.27,-197.79 266.55,-193.23 257.04,-188.13 239.65,-178.81 237.97,-172.29 221.04,-162.13 216.33,-159.31 211.28,-156.53 206.22,-153.91"/>
+<polygon fill="#ff008b" stroke="#ff008b" points="207.82,-150.79 197.31,-149.44 204.68,-157.05 207.82,-150.79"/>
+</g>
+<!-- module~watch_feature_api&#45;&gt;module~watch_types -->
+<g id="module~~watch_types~~UsedByGraph_edge7" class="edge">
+<title>module~watch_feature_api&#45;&gt;module~watch_types</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M145.86,-222.62C125.13,-209.67 92.54,-189.33 68.87,-174.55"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="70.96,-171.72 60.62,-169.4 67.25,-177.66 70.96,-171.72"/>
+</g>
+<!-- module~watch_feature_factory&#45;&gt;module~watch_types -->
+<g id="module~~watch_types~~UsedByGraph_edge8" class="edge">
+<title>module~watch_feature_factory&#45;&gt;module~watch_types</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M326.3,-174.13C256.38,-165.92 237.69,-185.48 167.9,-176.13"/>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M165.9,-176.13C140.24,-172.7 111.74,-168.25 88.31,-164.42"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="89.17,-161.02 78.73,-162.85 88.03,-167.92 89.17,-161.02"/>
+</g>
+<!-- module~watch_feature_factory&#45;&gt;module~watch_feat_stats -->
+<g id="module~~watch_types~~UsedByGraph_edge16" class="edge">
+<title>module~watch_feature_factory&#45;&gt;module~watch_feat_stats</title>
+<path fill="none" stroke="#00ffb9" stroke-dasharray="5,2" d="M433.34,-202.32C418.67,-203.97 403.12,-205.72 388.61,-207.35"/>
+<polygon fill="#00ffb9" stroke="#00ffb9" points="388.28,-203.87 378.74,-208.46 389.06,-210.82 388.28,-203.87"/>
+</g>
+<!-- module~watch_feature_factory&#45;&gt;module~watch_feature_api -->
+<g id="module~~watch_types~~UsedByGraph_edge18" class="edge">
+<title>module~watch_feature_factory&#45;&gt;module~watch_feature_api</title>
+<path fill="none" stroke="#00b9ff" stroke-dasharray="5,2" d="M473.42,-207.69C453.71,-217.35 424.65,-229.9 397.56,-235.13 342.71,-245.73 279.1,-244.73 232.75,-241.65"/>
+<polygon fill="#00b9ff" stroke="#00b9ff" points="233.09,-238.17 222.86,-240.94 232.59,-245.15 233.09,-238.17"/>
+</g>
+<!-- module~watch_feature_factory&#45;&gt;module~watch_feature_manager -->
+<g id="module~~watch_types~~UsedByGraph_edge22" class="edge">
+<title>module~watch_feature_factory&#45;&gt;module~watch_feature_manager</title>
+<path fill="none" stroke="#5c00ff" stroke-dasharray="5,2" d="M457.08,-207.74C448.85,-211.34 440.58,-215.77 433.56,-221.13 412.65,-237.11 418.69,-252.46 397.56,-268.13 393.21,-271.36 388.42,-274.23 383.44,-276.77"/>
+<polygon fill="#5c00ff" stroke="#5c00ff" points="382.06,-273.55 374.43,-280.9 384.98,-279.91 382.06,-273.55"/>
+</g>
+<!-- module~watch_feature_factory&#45;&gt;module~watch_log -->
+<g id="module~~watch_types~~UsedByGraph_edge26" class="edge">
+<title>module~watch_feature_factory&#45;&gt;module~watch_log</title>
+<path fill="none" stroke="#ff008b" stroke-dasharray="5,2" d="M433.46,-187.01C401.84,-183.03 363.07,-178.22 328.3,-174.13"/>
+<path fill="none" stroke="#ff008b" stroke-dasharray="5,2" d="M326.3,-174.13C286.53,-169.46 242.29,-158.33 210.7,-149.32"/>
+<polygon fill="#ff008b" stroke="#ff008b" points="211.69,-145.96 201.11,-146.53 209.74,-152.68 211.69,-145.96"/>
+</g>
+<!-- module~watch_feature_manager&#45;&gt;module~watch_types -->
+<g id="module~~watch_types~~UsedByGraph_edge9" class="edge">
+<title>module~watch_feature_manager&#45;&gt;module~watch_types</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M296.62,-306.67C257.5,-322.39 190.93,-346.15 167.9,-336.13"/>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M165.9,-336.13C98.97,-307.02 61.47,-221.08 46.75,-179.37"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="50.13,-178.42 43.61,-170.07 43.5,-180.66 50.13,-178.42"/>
+</g>
+<!-- module~watch_feature_manager&#45;&gt;module~watch_feature_api -->
+<g id="module~~watch_types~~UsedByGraph_edge19" class="edge">
+<title>module~watch_feature_manager&#45;&gt;module~watch_feature_api</title>
+<path fill="none" stroke="#00b9ff" stroke-dasharray="5,2" d="M292.71,-281.62C269.27,-272.89 237.74,-261.15 212.24,-251.65"/>
+<polygon fill="#00b9ff" stroke="#00b9ff" points="213.73,-248.47 203.14,-248.26 211.29,-255.03 213.73,-248.47"/>
+</g>
+<!-- module~watch_fpm_graph&#45;&gt;module~watch_types -->
+<g id="module~~watch_types~~UsedByGraph_edge10" class="edge">
+<title>module~watch_fpm_graph&#45;&gt;module~watch_types</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M273.9,-88.87C242.54,-86.29 202.23,-86.14 167.9,-96.14"/>
+</g>
+<!-- module~watch_fpm_graph&#45;&gt;module~watch_log -->
+<g id="module~~watch_types~~UsedByGraph_edge27" class="edge">
+<title>module~watch_fpm_graph&#45;&gt;module~watch_log</title>
+<path fill="none" stroke="#ff008b" stroke-dasharray="5,2" d="M276.62,-108.68C255.43,-114.03 230.97,-120.21 210.61,-125.35"/>
+<polygon fill="#ff008b" stroke="#ff008b" points="209.77,-121.95 200.93,-127.79 211.49,-128.74 209.77,-121.95"/>
+</g>
+<!-- module~watch_log&#45;&gt;module~watch_types -->
+<g id="module~~watch_types~~UsedByGraph_edge11" class="edge">
+<title>module~watch_log&#45;&gt;module~watch_types</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M134.31,-141.13C120.29,-143.35 103.48,-146 87.92,-148.46"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="87.7,-144.95 78.37,-149.97 88.79,-151.87 87.7,-144.95"/>
+</g>
+<!-- module~watch_restart -->
+<g id="module~~watch_types~~UsedByGraph_node13" class="node">
+<title>module~watch_restart</title>
+<g id="a_module~~watch_types~~UsedByGraph_node13"><a xlink:href="../module/watch_restart.html" xlink:title="watch_restart">
+<polygon fill="#337ab7" stroke="#337ab7" points="368.68,-24.27 285.91,-24.27 285.91,0 368.68,0 368.68,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="327.3" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">watch_restart</text>
+</a>
+</g>
+</g>
+<!-- module~watch_restart&#45;&gt;module~watch_config -->
+<g id="module~~watch_types~~UsedByGraph_edge14" class="edge">
+<title>module~watch_restart&#45;&gt;module~watch_config</title>
+<path fill="none" stroke="#e7ff00" stroke-dasharray="5,2" d="M285.51,-22.95C265.21,-28.33 240.48,-34.89 218.94,-40.6"/>
+<polygon fill="#e7ff00" stroke="#e7ff00" points="218.24,-37.17 209.47,-43.11 220.04,-43.93 218.24,-37.17"/>
+</g>
+</g>
+</svg>
+</div>                <script>
+                  var panmodulewatch_typesUsedByGraph = svgPanZoom('#modulewatch_typesUsedByGraph',
+                    {zoomEnabled: true, controlIconsEnabled: true, fit: true, center: true,}
+                  );
+                </script>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#UsedByGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="UsedByGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="511pt" height="32pt"
+ viewBox="0.00 0.00 511.00 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 28.27)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-28.27 506.88,-28.27 506.88,4 -4,4"/>
+<!-- Module -->
+<g id="node1" class="node">
+<title>Module</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="54,-24.27 0,-24.27 0,0 54,0 54,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="27" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Module</text>
+</g>
+<!-- Submodule -->
+<g id="node2" class="node">
+<title>Submodule</title>
+<polygon fill="#5bc0de" stroke="#5bc0de" points="144.13,-24.27 71.87,-24.27 71.87,0 144.13,0 144.13,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="108" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Submodule</text>
+</g>
+<!-- Subroutine -->
+<g id="node3" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="231.63,-24.27 162.37,-24.27 162.37,0 231.63,0 231.63,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="197" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node4" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="306.26,-24.27 249.74,-24.27 249.74,0 306.26,0 306.26,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="278" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Program -->
+<g id="node5" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="381.26,-24.27 324.74,-24.27 324.74,0 381.26,0 381.26,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="353" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node6" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="502.88,-24.27 399.12,-24.27 399.12,0 502.88,0 502.88,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="451" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a submodule to the (sub)module which it is
+descended from. Dashed arrows point from a module or program unit to 
+modules which it uses.
+</p>
+ Where possible, edges connecting nodes are
+given different colours to make them easier to distinguish in
+large graphs.</div>
+            </div>
+          </div>
+        </div>
+            </li>
+        </ul>
+      </div>
+    </div>
+
+      <br>
+
+
+
+
+
+
+        <section>
+          <h2>Derived Types</h2>
+              <div class="card">
+    <div class="card-header codesum">
+      <span class="anchor" id="type-root_info_t"></span>
+      <h3>
+        type, public&nbsp;::&nbsp;
+        <a href='../type/root_info_t.html'>root_info_t</a>
+        
+      </h3>
+    </div>
+    <div class="card-body">
+      <p>Root target metadata used for change → target mapping.</p><a href="../type/root_info_t.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+        <h4>Components</h4>
+          <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Visibility</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+<th></th><th scope="col">Initial</th>        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-mask~5"></span>
+              integer(kind=int64),
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>mask</strong></td>
+<td> =</td>
+                <td>0_int64</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-name~3"></span>
+              character(len=:),
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>name</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum">
+      <span class="anchor" id="type-watch_config_t"></span>
+      <h3>
+        type, public&nbsp;::&nbsp;
+        <a href='../type/watch_config_t.html'>watch_config_t</a>
+        
+      </h3>
+    </div>
+    <div class="card-body">
+      <p>Fully assembled watcher configuration.</p><a href="../type/watch_config_t.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+        <h4>Components</h4>
+          <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Visibility</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+<th></th><th scope="col">Initial</th>        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-cmd_prefix~2"></span>
+              character(len=:),
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>cmd_prefix</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+<p>Cached remainder after the subcommand token (for injection).</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-cmd_rest~2"></span>
+              character(len=:),
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>cmd_rest</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-fpm_cmdline~3"></span>
+              character(len=:),
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>fpm_cmdline</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+<p>Selected <code>fpm</code> subcommand (<code>build</code>, <code>test</code>, or <code>run</code>).</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-settings~12"></span>
+              class(fpm_build_settings),
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>settings</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+<p>Cached prefix up to and including the subcommand token (for injection).</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-subcmd~3"></span>
+              character(len=:),
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>subcmd</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+<p>Typed <code>fpm</code> settings corresponding to <code>subcmd</code>.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-w~15"></span>
+              type(<a href='../type/watch_opts_t.html'>watch_opts_t</a>),
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>w</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+<p>Full command line string to execute (e.g., <code>fpm test -- ...</code>).</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum">
+      <span class="anchor" id="type-watch_opts_t"></span>
+      <h3>
+        type, public&nbsp;::&nbsp;
+        <a href='../type/watch_opts_t.html'>watch_opts_t</a>
+        
+      </h3>
+    </div>
+    <div class="card-body">
+      <p>Watcher configuration options.</p><a href="../type/watch_opts_t.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+        <h4>Components</h4>
+          <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Visibility</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+<th></th><th scope="col">Initial</th>        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-debounce"></span>
+              real,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>debounce</strong></td>
+<td> =</td>
+                <td>0.2</td>
+            <td>
+<p>Optional periodic rescan interval (seconds). <code>0</code> disables periodic rescans.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-debug"></span>
+              logical,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>debug</strong></td>
+<td> =</td>
+                <td>.false.</td>
+            <td>
+<p>Poll interval (seconds) between change scans.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-enabled_features"></span>
+              type(string_t),
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>enabled_features</strong>(:)</td>
+                <td></td>
+                <td></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ignore~2"></span>
+              type(string_t),
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>ignore</strong>(:)</td>
+                <td></td>
+                <td></td>
+            <td>
+<p>Glob patterns to include; if empty, includes all.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-include~2"></span>
+              type(string_t),
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>include</strong>(:)</td>
+                <td></td>
+                <td></td>
+            <td>
+<p>Names of optional feature plugins to enable.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-low_cpu"></span>
+              logical,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>low_cpu</strong></td>
+<td> =</td>
+                <td>.false.</td>
+            <td>
+<p>Glob patterns to ignore.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-poll"></span>
+              real,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>poll</strong></td>
+<td> =</td>
+                <td>0.5</td>
+            <td>
+<p>Debounce interval (seconds) used after the first detected change.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-print_files_once"></span>
+              logical,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>print_files_once</strong></td>
+<td> =</td>
+                <td>.false.</td>
+            <td>
+<p>Suppress <code>fpm</code> output; keep only <code>fpm-watch</code> status lines.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-rescan"></span>
+              real,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>rescan</strong></td>
+<td> =</td>
+                <td>0.0</td>
+            <td>
+<p>Run the command once immediately on startup.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-run_on_start"></span>
+              logical,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>run_on_start</strong></td>
+<td> =</td>
+                <td>.true.</td>
+            <td>
+<p>Print the watched file list once at startup (requires high verbosity).</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-silent_fpm"></span>
+              logical,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>silent_fpm</strong></td>
+<td> =</td>
+                <td>.false.</td>
+            <td>
+<p>Also watch dependency project sources (can include paths under build dir).</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-verbosity"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>verbosity</strong></td>
+<td> =</td>
+                <td>0</td>
+            <td>
+<p>Enable extra debug output and internal timing/status messages.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-watch_deps"></span>
+              logical,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>watch_deps</strong></td>
+<td> =</td>
+                <td>.false.</td>
+            <td>
+<p>Use OS sleep for waiting to minimize idle CPU usage.</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+
+    </div>
+  </div>
+
+        </section>
+        <br>
+
+
+
+
+
+    </div>
+  </div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              fpm-watch
+ was developed by Seyed Ali Ghasemi<br>              &copy; 2026 <a rel="license" href="https://opensource.org/licenses/MIT">MIT</a>
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+ on 2026-02-24T23:32:32.813097+0000             </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>

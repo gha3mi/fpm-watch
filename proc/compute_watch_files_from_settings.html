@@ -1,0 +1,1436 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="Documentation for fpm-watch">
+    <meta name="author" content="Seyed Ali Ghasemi" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>compute_watch_files_from_settings &ndash; fpm-watch</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">fpm-watch </a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/types.html">Derived Types</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <div class="row">
+    <h1>compute_watch_files_from_settings
+      <small>Subroutine</small>
+      
+    </h1>
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+            <li class="list-inline-item" id="meta-license"><i class="fa fa-legal"></i> <a rel="license" href="https://opensource.org/licenses/MIT">MIT</a></li>
+
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title=" 6.0% of total for procedures.">169 statements</a>
+            </li>
+
+            <li class="list-inline-item" id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/watch_fpm_graph.f90"> Source File</a>
+            </li>
+        </ul>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+                <li class="breadcrumb-item"><a href='../sourcefile/watch_fpm_graph.f90.html'>watch_fpm_graph.f90</a></li>
+                <li class="breadcrumb-item"><a href='../module/watch_fpm_graph.html'>watch_fpm_graph</a></li>
+            <li class="breadcrumb-item active" aria-current="page">compute_watch_files_from_settings</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
+  </script>
+
+  </div>
+  
+  <div class="row">
+    <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
+      <div id="sidebar">
+      <h3>Contents</h3>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    <div class="card card-primary">
+      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
+      <div class="list-group">
+        <a class="list-group-item" href="../proc/compute_watch_files_from_settings.html#src">compute_watch_files_from_settings</a>
+      </div>
+    </div>
+
+
+  </div>
+
+    </div>
+    
+    <div class="col-md-9" id='text'>
+    <h2>public  subroutine compute_watch_files_from_settings(settings, w, files, file_mask, roots, manifest_key, build_secs, secs_model, secs_targets, secs_watch)  
+</h2>
+    
+
+    <p>Compute watched files and masks from current <code>fpm</code> settings.</p>
+<p>This is the primary "graph to watchlist" entry point.</p>
+<h3>Outputs</h3>
+<ul>
+<li><code>files</code>: normalized, unique file paths to watch.</li>
+<li><code>file_mask</code>: a bitmask per file that encodes which root target(s) the
+  file belongs to (used for name injection on run/test).</li>
+<li><code>roots</code>: root executable/test targets. <code>roots(r)%mask</code> is a 1-bit mask.</li>
+<li><code>manifest_key</code>: placeholder output (computed elsewhere); set to <code>0</code> here.</li>
+<li><code>build_secs</code>: sum of <code>secs_model + secs_targets + secs_watch</code>.</li>
+<li><code>secs_model</code>: time spent building the <code>fpm</code> model.</li>
+<li><code>secs_targets</code>: time spent expanding sources into targets.</li>
+<li><code>secs_watch</code>: time spent collecting and filtering file paths.</li>
+</ul>
+<h3>Notes</h3>
+<ul>
+<li>Root bitmasks are limited to <code>bit_size(0_int64)</code> (typically 64 roots).</li>
+<li>Build directory paths are excluded from the watch list unless dependency
+  watching is enabled and the path is identified as belonging to a dep.</li>
+</ul>
+
+
+    <h3>Arguments</h3>
+        <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-settings~6"></span>
+              class(fpm_build_settings),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>settings</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-w~5"></span>
+              type(<a href='../type/watch_opts_t.html'>watch_opts_t</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>w</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-files~6"></span>
+              type(string_t),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>files</strong>(:)</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-file_mask~2"></span>
+              integer(kind=int64),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>file_mask</strong>(:)</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-roots~4"></span>
+              type(<a href='../type/root_info_t.html'>root_info_t</a>),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>roots</strong>(:)</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-manifest_key"></span>
+              integer(kind=int64),
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>manifest_key</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-build_secs~2"></span>
+              real,
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>build_secs</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-secs_model~2"></span>
+              real,
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>secs_model</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-secs_targets~2"></span>
+              real,
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>secs_targets</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-secs_watch~2"></span>
+              real,
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>secs_watch</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <br>
+    <div class="card">
+      <div class="card-header">
+  <h3 class="card-title">Calls</h3>
+      </div>
+      <div class="card-body">
+  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: proc~~compute_watch_files_from_settings~~CallsGraph Pages: 1 -->
+<svg id="proccompute_watch_files_from_settingsCallsGraph" width="641pt" height="605pt"
+ viewBox="0.00 0.00 641.00 605.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph" class="graph" transform="scale(0.673588 0.673588) rotate(0) translate(4 894.27)">
+<title>proc~~compute_watch_files_from_settings~~CallsGraph</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-894.27 947.62,-894.27 947.62,4 -4,4"/>
+<!-- proc~compute_watch_files_from_settings -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_node1" class="node">
+<title>proc~compute_watch_files_from_settings</title>
+<polygon fill="none" stroke="black" points="199.02,-480.27 0,-480.27 0,-456 199.02,-456 199.02,-480.27"/>
+<text xml:space="preserve" text-anchor="middle" x="99.51" y="-464.53" font-family="Helvetica,sans-Serif" font-size="10.50">compute_watch_files_from_settings</text>
+</g>
+<!-- add -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_node2" class="node">
+<title>add</title>
+<polygon fill="#777777" stroke="#777777" points="329.28,-890.27 275.28,-890.27 275.28,-866 329.28,-866 329.28,-890.27"/>
+<text xml:space="preserve" text-anchor="middle" x="302.28" y="-874.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">add</text>
+</g>
+<!-- proc~compute_watch_files_from_settings&#45;&gt;add -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_edge1" class="edge">
+<title>proc~compute_watch_files_from_settings&#45;&gt;add</title>
+<path fill="none" stroke="#ff0000" d="M101.24,-480.68C104.96,-533.37 126.2,-739.22 235.02,-852.13 242.91,-860.32 253.69,-865.99 264.27,-869.88"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="263.05,-873.16 273.64,-872.87 265.17,-866.49 263.05,-873.16"/>
+</g>
+<!-- basename -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_node3" class="node">
+<title>basename</title>
+<polygon fill="#777777" stroke="#777777" points="504.81,-730.27 437.04,-730.27 437.04,-706 504.81,-706 504.81,-730.27"/>
+<text xml:space="preserve" text-anchor="middle" x="470.92" y="-714.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">basename</text>
+</g>
+<!-- proc~compute_watch_files_from_settings&#45;&gt;basename -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_edge2" class="edge">
+<title>proc~compute_watch_files_from_settings&#45;&gt;basename</title>
+<path fill="none" stroke="#ff0000" d="M104.06,-480.69C115.61,-518.96 155.99,-634.73 235.02,-686.13 292.68,-723.64 375.15,-725.81 425.48,-722.8"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="425.69,-726.3 435.42,-722.1 425.2,-719.32 425.69,-726.3"/>
+</g>
+<!-- build_model -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_node4" class="node">
+<title>build_model</title>
+<polygon fill="#777777" stroke="#777777" points="340.66,-564.27 263.89,-564.27 263.89,-540 340.66,-540 340.66,-564.27"/>
+<text xml:space="preserve" text-anchor="middle" x="302.28" y="-548.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">build_model</text>
+</g>
+<!-- proc~compute_watch_files_from_settings&#45;&gt;build_model -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_edge3" class="edge">
+<title>proc~compute_watch_files_from_settings&#45;&gt;build_model</title>
+<path fill="none" stroke="#ff0000" d="M124.88,-480.73C151.5,-494.22 195.63,-515.74 235.02,-531.13 240.71,-533.36 246.74,-535.52 252.76,-537.57"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="251.46,-540.82 262.05,-540.63 253.64,-534.17 251.46,-540.82"/>
+</g>
+<!-- dep -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_node5" class="node">
+<title>dep</title>
+<polygon fill="#777777" stroke="#777777" points="329.28,-522.27 275.28,-522.27 275.28,-498 329.28,-498 329.28,-522.27"/>
+<text xml:space="preserve" text-anchor="middle" x="302.28" y="-506.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">dep</text>
+</g>
+<!-- proc~compute_watch_files_from_settings&#45;&gt;dep -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_edge4" class="edge">
+<title>proc~compute_watch_files_from_settings&#45;&gt;dep</title>
+<path fill="none" stroke="#ff0000" d="M160.75,-480.74C194.15,-487.72 234.64,-496.2 263.57,-502.25"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="262.83,-505.67 273.34,-504.29 264.27,-498.82 262.83,-505.67"/>
+</g>
+<!-- get_package_data -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_node6" class="node">
+<title>get_package_data</title>
+<polygon fill="#777777" stroke="#777777" points="356.79,-480.27 247.77,-480.27 247.77,-456 356.79,-456 356.79,-480.27"/>
+<text xml:space="preserve" text-anchor="middle" x="302.28" y="-464.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">get_package_data</text>
+</g>
+<!-- proc~compute_watch_files_from_settings&#45;&gt;get_package_data -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_edge5" class="edge">
+<title>proc~compute_watch_files_from_settings&#45;&gt;get_package_data</title>
+<path fill="none" stroke="#ff0000" d="M199.42,-468.13C211.82,-468.13 224.25,-468.13 235.95,-468.13"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="235.87,-471.64 245.87,-468.14 235.87,-464.64 235.87,-471.64"/>
+</g>
+<!-- is_executable_target -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_node7" class="node">
+<title>is_executable_target</title>
+<polygon fill="#777777" stroke="#777777" points="531.43,-688.27 410.41,-688.27 410.41,-664 531.43,-664 531.43,-688.27"/>
+<text xml:space="preserve" text-anchor="middle" x="470.92" y="-672.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">is_executable_target</text>
+</g>
+<!-- proc~compute_watch_files_from_settings&#45;&gt;is_executable_target -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_edge6" class="edge">
+<title>proc~compute_watch_files_from_settings&#45;&gt;is_executable_target</title>
+<path fill="none" stroke="#ff0000" d="M105.05,-480.7C118.49,-515.9 161.83,-615.57 235.02,-657.13 284.7,-685.35 350.06,-688.44 399.23,-685.42"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="399.17,-688.93 408.89,-684.72 398.67,-681.95 399.17,-688.93"/>
+</g>
+<!-- join_path -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_node8" class="node">
+<title>join_path</title>
+<polygon fill="#777777" stroke="#777777" points="332.41,-438.27 272.14,-438.27 272.14,-414 332.41,-414 332.41,-438.27"/>
+<text xml:space="preserve" text-anchor="middle" x="302.28" y="-422.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">join_path</text>
+</g>
+<!-- proc~compute_watch_files_from_settings&#45;&gt;join_path -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_edge7" class="edge">
+<title>proc~compute_watch_files_from_settings&#45;&gt;join_path</title>
+<path fill="none" stroke="#ff0000" d="M160.75,-455.53C193.03,-448.78 231.94,-440.64 260.63,-434.64"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="261.31,-438.07 270.38,-432.6 259.87,-431.22 261.31,-438.07"/>
+</g>
+<!-- new_dependency_tree -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_node9" class="node">
+<title>new_dependency_tree</title>
+<polygon fill="#777777" stroke="#777777" points="367.66,-396.27 236.89,-396.27 236.89,-372 367.66,-372 367.66,-396.27"/>
+<text xml:space="preserve" text-anchor="middle" x="302.28" y="-380.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">new_dependency_tree</text>
+</g>
+<!-- proc~compute_watch_files_from_settings&#45;&gt;new_dependency_tree -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_edge8" class="edge">
+<title>proc~compute_watch_files_from_settings&#45;&gt;new_dependency_tree</title>
+<path fill="none" stroke="#ff0000" d="M124.88,-455.54C151.5,-442.05 195.63,-420.53 235.02,-405.13 239.14,-403.53 243.44,-401.95 247.78,-400.42"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="248.79,-403.77 257.14,-397.25 246.55,-397.14 248.79,-403.77"/>
+</g>
+<!-- proc~dfs_mark_bool -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_node10" class="node">
+<title>proc~dfs_mark_bool</title>
+<g id="a_proc~~compute_watch_files_from_settings~~CallsGraph_node10"><a xlink:href="../proc/dfs_mark_bool.html" xlink:title="dfs_mark_bool">
+<polygon fill="#d9534f" stroke="#d9534f" points="346.66,-336.27 257.89,-336.27 257.89,-312 346.66,-312 346.66,-336.27"/>
+<text xml:space="preserve" text-anchor="middle" x="302.28" y="-320.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">dfs_mark_bool</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_watch_files_from_settings&#45;&gt;proc~dfs_mark_bool -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_edge9" class="edge">
+<title>proc~compute_watch_files_from_settings&#45;&gt;proc~dfs_mark_bool</title>
+<path fill="none" stroke="#ff0000" d="M114.96,-455.83C139.1,-435.51 189.46,-394.13 235.02,-363.13 245.64,-355.91 257.64,-348.6 268.48,-342.3"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="270.19,-345.36 277.13,-337.35 266.71,-339.28 270.19,-345.36"/>
+</g>
+<!-- proc~dfs_mark_mask -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_node11" class="node">
+<title>proc~dfs_mark_mask</title>
+<g id="a_proc~~compute_watch_files_from_settings~~CallsGraph_node11"><a xlink:href="../proc/dfs_mark_mask.html" xlink:title="dfs_mark_mask">
+<polygon fill="#d9534f" stroke="#d9534f" points="349.29,-276.27 255.27,-276.27 255.27,-252 349.29,-252 349.29,-276.27"/>
+<text xml:space="preserve" text-anchor="middle" x="302.28" y="-260.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">dfs_mark_mask</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_watch_files_from_settings&#45;&gt;proc~dfs_mark_mask -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_edge10" class="edge">
+<title>proc~compute_watch_files_from_settings&#45;&gt;proc~dfs_mark_mask</title>
+<path fill="none" stroke="#ff0000" d="M108.38,-455.7C127.37,-426.38 178.38,-351.77 235.02,-303.13 244.14,-295.31 255.03,-288.17 265.33,-282.19"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="266.98,-285.28 274.02,-277.36 263.57,-279.16 266.98,-285.28"/>
+</g>
+<!-- proc~filter_watch_files -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_node12" class="node">
+<title>proc~filter_watch_files</title>
+<g id="a_proc~~compute_watch_files_from_settings~~CallsGraph_node12"><a xlink:href="../proc/filter_watch_files.html" xlink:title="filter_watch_files">
+<polygon fill="#d9534f" stroke="#d9534f" points="352.29,-808.27 252.27,-808.27 252.27,-784 352.29,-784 352.29,-808.27"/>
+<text xml:space="preserve" text-anchor="middle" x="302.28" y="-792.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">filter_watch_files</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_watch_files_from_settings&#45;&gt;proc~filter_watch_files -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_edge11" class="edge">
+<title>proc~compute_watch_files_from_settings&#45;&gt;proc~filter_watch_files</title>
+<path fill="none" stroke="#ff0000" d="M102.24,-480.49C109.33,-526.58 140.48,-690.12 235.02,-775.13 237.18,-777.08 239.52,-778.84 241.98,-780.44"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="240.21,-783.46 250.68,-785.12 243.53,-777.29 240.21,-783.46"/>
+</g>
+<!-- proc~ftoa -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_node13" class="node">
+<title>proc~ftoa</title>
+<g id="a_proc~~compute_watch_files_from_settings~~CallsGraph_node13"><a xlink:href="../proc/ftoa.html" xlink:title="ftoa">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="329.28,-234.27 275.28,-234.27 275.28,-210 329.28,-210 329.28,-234.27"/>
+<text xml:space="preserve" text-anchor="middle" x="302.28" y="-218.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">ftoa</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_watch_files_from_settings&#45;&gt;proc~ftoa -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_edge12" class="edge">
+<title>proc~compute_watch_files_from_settings&#45;&gt;proc~ftoa</title>
+<path fill="none" stroke="#ff0000" d="M104.45,-455.52C116.97,-417.48 159.54,-302.87 235.02,-243.13 243.43,-236.48 253.98,-231.92 264.18,-228.79"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="264.75,-232.26 273.52,-226.32 262.96,-225.49 264.75,-232.26"/>
+</g>
+<!-- proc~gather_files_with_mask -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_node14" class="node">
+<title>proc~gather_files_with_mask</title>
+<g id="a_proc~~compute_watch_files_from_settings~~CallsGraph_node14"><a xlink:href="../proc/gather_files_with_mask.html" xlink:title="gather_files_with_mask">
+<polygon fill="#d9534f" stroke="#d9534f" points="369.54,-606.27 235.02,-606.27 235.02,-582 369.54,-582 369.54,-606.27"/>
+<text xml:space="preserve" text-anchor="middle" x="302.28" y="-590.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">gather_files_with_mask</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_watch_files_from_settings&#45;&gt;proc~gather_files_with_mask -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_edge13" class="edge">
+<title>proc~compute_watch_files_from_settings&#45;&gt;proc~gather_files_with_mask</title>
+<path fill="none" stroke="#ff0000" d="M113.15,-480.58C135.77,-502.24 185.48,-547.04 235.02,-573.13 237.87,-574.64 240.85,-576.06 243.9,-577.39"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="242.45,-580.58 253.04,-581.04 245.05,-574.08 242.45,-580.58"/>
+</g>
+<!-- proc~is_run_or_test -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_node15" class="node">
+<title>proc~is_run_or_test</title>
+<g id="a_proc~~compute_watch_files_from_settings~~CallsGraph_node15"><a xlink:href="../proc/is_run_or_test.html" xlink:title="is_run_or_test">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="344.41,-192.27 260.14,-192.27 260.14,-168 344.41,-168 344.41,-192.27"/>
+<text xml:space="preserve" text-anchor="middle" x="302.28" y="-176.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">is_run_or_test</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_watch_files_from_settings&#45;&gt;proc~is_run_or_test -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_edge14" class="edge">
+<title>proc~compute_watch_files_from_settings&#45;&gt;proc~is_run_or_test</title>
+<path fill="none" stroke="#ff0000" d="M103.15,-455.65C112.76,-413.29 149.87,-273.66 235.02,-201.13 239.33,-197.46 244.29,-194.43 249.51,-191.93"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="250.43,-195.33 258.37,-188.31 247.79,-188.85 250.43,-195.33"/>
+</g>
+<!-- proc~log_info -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_node16" class="node">
+<title>proc~log_info</title>
+<g id="a_proc~~compute_watch_files_from_settings~~CallsGraph_node16"><a xlink:href="../proc/log_info.html" xlink:title="log_info">
+<polygon fill="#d9534f" stroke="#d9534f" points="329.28,-150.27 275.28,-150.27 275.28,-126 329.28,-126 329.28,-150.27"/>
+<text xml:space="preserve" text-anchor="middle" x="302.28" y="-134.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">log_info</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_watch_files_from_settings&#45;&gt;proc~log_info -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_edge15" class="edge">
+<title>proc~compute_watch_files_from_settings&#45;&gt;proc~log_info</title>
+<path fill="none" stroke="#ff0000" d="M102.21,-455.7C109.21,-409.31 140.06,-244.73 235.02,-159.13 243.05,-151.9 253.58,-147.15 263.87,-144.04"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="264.51,-147.49 273.34,-141.64 262.79,-140.71 264.51,-147.49"/>
+</g>
+<!-- proc~normalize_path -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_node17" class="node">
+<title>proc~normalize_path</title>
+<g id="a_proc~~compute_watch_files_from_settings~~CallsGraph_node17"><a xlink:href="../proc/normalize_path.html" xlink:title="normalize_path">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="820.35,-687.27 726.33,-687.27 726.33,-663 820.35,-663 820.35,-687.27"/>
+<text xml:space="preserve" text-anchor="middle" x="773.34" y="-671.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">normalize_path</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_watch_files_from_settings&#45;&gt;proc~normalize_path -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_edge16" class="edge">
+<title>proc~compute_watch_files_from_settings&#45;&gt;proc~normalize_path</title>
+<path fill="none" stroke="#ff0000" d="M100.8,-480.52C102.75,-532.37 117.86,-733.14 235.02,-817.13 313.09,-873.1 583.68,-851.79 667.08,-804.13 711.34,-778.85 744.57,-727.19 760.96,-697.49"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="763.89,-699.43 765.52,-688.96 757.72,-696.13 763.89,-699.43"/>
+</g>
+<!-- proc~push_file_with_mask -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_node18" class="node">
+<title>proc~push_file_with_mask</title>
+<g id="a_proc~~compute_watch_files_from_settings~~CallsGraph_node18"><a xlink:href="../proc/push_file_with_mask.html" xlink:title="push_file_with_mask">
+<polygon fill="#d9534f" stroke="#d9534f" points="362.04,-648.27 242.52,-648.27 242.52,-624 362.04,-624 362.04,-648.27"/>
+<text xml:space="preserve" text-anchor="middle" x="302.28" y="-632.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">push_file_with_mask</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_watch_files_from_settings&#45;&gt;proc~push_file_with_mask -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_edge17" class="edge">
+<title>proc~compute_watch_files_from_settings&#45;&gt;proc~push_file_with_mask</title>
+<path fill="none" stroke="#ff0000" d="M108.35,-480.39C126.92,-508.43 176.42,-577.71 235.02,-615.13 237.01,-616.4 239.08,-617.6 241.2,-618.73"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="239.58,-621.84 250.12,-622.89 242.54,-615.49 239.58,-621.84"/>
+</g>
+<!-- proc~select_names_or_all -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_node19" class="node">
+<title>proc~select_names_or_all</title>
+<g id="a_proc~~compute_watch_files_from_settings~~CallsGraph_node19"><a xlink:href="../proc/select_names_or_all.html" xlink:title="select_names_or_all">
+<polygon fill="#d9534f" stroke="#d9534f" points="361.66,-766.27 242.89,-766.27 242.89,-742 361.66,-742 361.66,-766.27"/>
+<text xml:space="preserve" text-anchor="middle" x="302.28" y="-750.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">select_names_or_all</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_watch_files_from_settings&#45;&gt;proc~select_names_or_all -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_edge18" class="edge">
+<title>proc~compute_watch_files_from_settings&#45;&gt;proc~select_names_or_all</title>
+<path fill="none" stroke="#ff0000" d="M103.59,-480.66C114.33,-521.93 154.05,-655.14 235.02,-728.13 238.48,-731.25 242.36,-734.02 246.45,-736.46"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="244.49,-739.39 254.97,-740.91 247.73,-733.18 244.49,-739.39"/>
+</g>
+<!-- proc~trim_or_empty -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_node20" class="node">
+<title>proc~trim_or_empty</title>
+<g id="a_proc~~compute_watch_files_from_settings~~CallsGraph_node20"><a xlink:href="../proc/trim_or_empty.html" xlink:title="trim_or_empty">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="346.66,-108.27 257.89,-108.27 257.89,-84 346.66,-84 346.66,-108.27"/>
+<text xml:space="preserve" text-anchor="middle" x="302.28" y="-92.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">trim_or_empty</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_watch_files_from_settings&#45;&gt;proc~trim_or_empty -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_edge19" class="edge">
+<title>proc~compute_watch_files_from_settings&#45;&gt;proc~trim_or_empty</title>
+<path fill="none" stroke="#ff0000" d="M101.48,-455.79C106.08,-405.77 130.07,-216.06 235.02,-117.13 238.68,-113.69 242.89,-110.81 247.4,-108.4"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="248.51,-111.74 256.21,-104.47 245.65,-105.35 248.51,-111.74"/>
+</g>
+<!-- str -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_node21" class="node">
+<title>str</title>
+<polygon fill="#777777" stroke="#777777" points="329.28,-66.27 275.28,-66.27 275.28,-42 329.28,-42 329.28,-66.27"/>
+<text xml:space="preserve" text-anchor="middle" x="302.28" y="-50.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">str</text>
+</g>
+<!-- proc~compute_watch_files_from_settings&#45;&gt;str -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_edge20" class="edge">
+<title>proc~compute_watch_files_from_settings&#45;&gt;str</title>
+<path fill="none" stroke="#ff0000" d="M100.91,-455.83C103.3,-402.33 120.01,-187.54 235.02,-75.13 242.82,-67.52 253.36,-62.66 263.74,-59.56"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="264.46,-62.99 273.33,-57.21 262.79,-56.19 264.46,-62.99"/>
+</g>
+<!-- targets_from_sources -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_node22" class="node">
+<title>targets_from_sources</title>
+<polygon fill="#777777" stroke="#777777" points="364.66,-24.27 239.89,-24.27 239.89,0 364.66,0 364.66,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="302.28" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">targets_from_sources</text>
+</g>
+<!-- proc~compute_watch_files_from_settings&#45;&gt;targets_from_sources -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_edge21" class="edge">
+<title>proc~compute_watch_files_from_settings&#45;&gt;targets_from_sources</title>
+<path fill="none" stroke="#ff0000" d="M100.44,-455.72C100.8,-398.66 109.98,-159.06 235.02,-33.13 235.75,-32.4 236.5,-31.7 237.27,-31.02"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="238.93,-34.13 245.08,-25.5 234.89,-28.41 238.93,-34.13"/>
+</g>
+<!-- proc~dfs_mark_bool&#45;&gt;proc~dfs_mark_bool -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_edge23" class="edge">
+<title>proc~dfs_mark_bool&#45;&gt;proc~dfs_mark_bool</title>
+<path fill="none" stroke="#00ff48" d="M274.06,-336.52C264.88,-345.41 274.28,-354.27 302.28,-354.27 317.59,-354.27 327.34,-351.62 331.53,-347.76"/>
+<polygon fill="#00ff48" stroke="#00ff48" points="335.04,-347.66 330.64,-338.02 328.07,-348.3 335.04,-347.66"/>
+</g>
+<!-- dependencies -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_node24" class="node">
+<title>dependencies</title>
+<polygon fill="#777777" stroke="#777777" points="514.18,-327.27 427.66,-327.27 427.66,-303 514.18,-303 514.18,-327.27"/>
+<text xml:space="preserve" text-anchor="middle" x="470.92" y="-311.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">dependencies</text>
+</g>
+<!-- proc~dfs_mark_bool&#45;&gt;dependencies -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_edge22" class="edge">
+<title>proc~dfs_mark_bool&#45;&gt;dependencies</title>
+<path fill="none" stroke="#00ff48" d="M347.06,-321.77C368.17,-320.63 393.68,-319.25 415.97,-318.05"/>
+<polygon fill="#00ff48" stroke="#00ff48" points="415.99,-321.55 425.79,-317.52 415.61,-314.56 415.99,-321.55"/>
+</g>
+<!-- proc~find_ptr_index -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_node27" class="node">
+<title>proc~find_ptr_index</title>
+<g id="a_proc~~compute_watch_files_from_settings~~CallsGraph_node27"><a xlink:href="../proc/find_ptr_index.html" xlink:title="find_ptr_index">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="513.81,-281.27 428.04,-281.27 428.04,-257 513.81,-257 513.81,-281.27"/>
+<text xml:space="preserve" text-anchor="middle" x="470.92" y="-265.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">find_ptr_index</text>
+</a>
+</g>
+</g>
+<!-- proc~dfs_mark_bool&#45;&gt;proc~find_ptr_index -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_edge24" class="edge">
+<title>proc~dfs_mark_bool&#45;&gt;proc~find_ptr_index</title>
+<path fill="none" stroke="#00ff48" d="M343.26,-311.6C351.94,-308.84 361.05,-305.92 369.54,-303.13 386.9,-297.45 405.88,-291.06 422.63,-285.37"/>
+<polygon fill="#00ff48" stroke="#00ff48" points="423.5,-288.77 431.84,-282.23 421.24,-282.14 423.5,-288.77"/>
+</g>
+<!-- proc~dfs_mark_mask&#45;&gt;proc~dfs_mark_mask -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_edge26" class="edge">
+<title>proc~dfs_mark_mask&#45;&gt;proc~dfs_mark_mask</title>
+<path fill="none" stroke="#00ff91" d="M274.06,-276.52C264.88,-285.41 274.28,-294.27 302.28,-294.27 317.59,-294.27 327.34,-291.62 331.53,-287.76"/>
+<polygon fill="#00ff91" stroke="#00ff91" points="335.04,-287.66 330.64,-278.02 328.07,-288.3 335.04,-287.66"/>
+</g>
+<!-- proc~dfs_mark_mask&#45;&gt;dependencies -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_edge25" class="edge">
+<title>proc~dfs_mark_mask&#45;&gt;dependencies</title>
+<path fill="none" stroke="#00ff91" d="M344.47,-276.74C366.69,-283.54 394.33,-292 418,-299.25"/>
+<polygon fill="#00ff91" stroke="#00ff91" points="416.88,-302.56 427.47,-302.14 418.93,-295.87 416.88,-302.56"/>
+</g>
+<!-- proc~dfs_mark_mask&#45;&gt;proc~find_ptr_index -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_edge27" class="edge">
+<title>proc~dfs_mark_mask&#45;&gt;proc~find_ptr_index</title>
+<path fill="none" stroke="#00ff91" d="M349.7,-265.53C370.44,-266.15 394.99,-266.89 416.49,-267.53"/>
+<polygon fill="#00ff91" stroke="#00ff91" points="416.13,-271.02 426.23,-267.82 416.34,-264.03 416.13,-271.02"/>
+</g>
+<!-- proc~filter_watch_files&#45;&gt;basename -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_edge28" class="edge">
+<title>proc~filter_watch_files&#45;&gt;basename</title>
+<path fill="none" stroke="#00ffda" d="M352.23,-783.59C358.26,-781.2 364.18,-778.39 369.54,-775.13 388.88,-763.38 386.25,-750.97 405.54,-739.13 411.86,-735.26 418.98,-732.01 426.11,-729.33"/>
+<polygon fill="#00ffda" stroke="#00ffda" points="427.08,-732.7 435.42,-726.16 424.83,-726.07 427.08,-732.7"/>
+</g>
+<!-- proc~filter_watch_files&#45;&gt;proc~normalize_path -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_edge30" class="edge">
+<title>proc~filter_watch_files&#45;&gt;proc~normalize_path</title>
+<path fill="none" stroke="#00ffda" d="M352.54,-804.09C424.87,-813.5 562.57,-822.67 667.08,-777.13 706.24,-760.07 739.31,-721.53 757.43,-697.01"/>
+<polygon fill="#00ffda" stroke="#00ffda" points="760.19,-699.17 763.16,-689 754.5,-695.09 760.19,-699.17"/>
+</g>
+<!-- glob -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_node25" class="node">
+<title>glob</title>
+<polygon fill="#777777" stroke="#777777" points="497.92,-772.27 443.92,-772.27 443.92,-748 497.92,-748 497.92,-772.27"/>
+<text xml:space="preserve" text-anchor="middle" x="470.92" y="-756.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">glob</text>
+</g>
+<!-- proc~filter_watch_files&#45;&gt;glob -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_edge29" class="edge">
+<title>proc~filter_watch_files&#45;&gt;glob</title>
+<path fill="none" stroke="#00ffda" d="M352.38,-785.53C378.12,-779.97 409.14,-773.27 432.84,-768.15"/>
+<polygon fill="#00ffda" stroke="#00ffda" points="433.33,-771.62 442.36,-766.09 431.85,-764.78 433.33,-771.62"/>
+</g>
+<!-- include_dependencies -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_node26" class="node">
+<title>include_dependencies</title>
+<polygon fill="#777777" stroke="#777777" points="536.31,-604.27 405.54,-604.27 405.54,-580 536.31,-580 536.31,-604.27"/>
+<text xml:space="preserve" text-anchor="middle" x="470.92" y="-588.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">include_dependencies</text>
+</g>
+<!-- proc~gather_files_with_mask&#45;&gt;include_dependencies -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_edge31" class="edge">
+<title>proc~gather_files_with_mask&#45;&gt;include_dependencies</title>
+<path fill="none" stroke="#0091ff" d="M369.62,-593.34C377.58,-593.24 385.75,-593.15 393.84,-593.05"/>
+<polygon fill="#0091ff" stroke="#0091ff" points="393.7,-596.55 403.66,-592.93 393.62,-589.55 393.7,-596.55"/>
+</g>
+<!-- proc~vec_push_unique -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_node28" class="node">
+<title>proc~vec_push_unique</title>
+<g id="a_proc~~compute_watch_files_from_settings~~CallsGraph_node28"><a xlink:href="../proc/vec_push_unique.html" xlink:title="vec_push_unique">
+<polygon fill="#d9534f" stroke="#d9534f" points="522.43,-646.27 419.41,-646.27 419.41,-622 522.43,-622 522.43,-646.27"/>
+<text xml:space="preserve" text-anchor="middle" x="470.92" y="-630.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">vec_push_unique</text>
+</a>
+</g>
+</g>
+<!-- proc~gather_files_with_mask&#45;&gt;proc~vec_push_unique -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_edge32" class="edge">
+<title>proc~gather_files_with_mask&#45;&gt;proc~vec_push_unique</title>
+<path fill="none" stroke="#0091ff" d="M355.55,-606.68C372.15,-610.67 390.67,-615.11 407.89,-619.24"/>
+<polygon fill="#0091ff" stroke="#0091ff" points="406.97,-622.62 417.51,-621.55 408.6,-615.82 406.97,-622.62"/>
+</g>
+<!-- colorize -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_node23" class="node">
+<title>colorize</title>
+<polygon fill="#777777" stroke="#777777" points="497.92,-150.27 443.92,-150.27 443.92,-126 497.92,-126 497.92,-150.27"/>
+<text xml:space="preserve" text-anchor="middle" x="470.92" y="-134.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">colorize</text>
+</g>
+<!-- proc~log_info&#45;&gt;colorize -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_edge33" class="edge">
+<title>proc~log_info&#45;&gt;colorize</title>
+<path fill="none" stroke="#0000ff" d="M329.69,-138.13C357.35,-138.13 401.06,-138.13 432.33,-138.13"/>
+<polygon fill="#0000ff" stroke="#0000ff" points="432.13,-141.64 442.13,-138.14 432.13,-134.64 432.13,-141.64"/>
+</g>
+<!-- proc~push_file_with_mask&#45;&gt;proc~vec_push_unique -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_edge34" class="edge">
+<title>proc~push_file_with_mask&#45;&gt;proc~vec_push_unique</title>
+<path fill="none" stroke="#9100ff" d="M362.5,-635.42C377.26,-635.25 393.13,-635.06 408.01,-634.88"/>
+<polygon fill="#9100ff" stroke="#9100ff" points="407.7,-638.38 417.66,-634.76 407.62,-631.38 407.7,-638.38"/>
+</g>
+<!-- proc~select_names_or_all&#45;&gt;basename -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_edge35" class="edge">
+<title>proc~select_names_or_all&#45;&gt;basename</title>
+<path fill="none" stroke="#da00ff" d="M361.56,-741.54C382.59,-737 405.96,-731.95 425.6,-727.71"/>
+<polygon fill="#da00ff" stroke="#da00ff" points="426.17,-731.17 435.21,-725.63 424.7,-724.32 426.17,-731.17"/>
+</g>
+<!-- proc~select_names_or_all&#45;&gt;is_executable_target -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_edge37" class="edge">
+<title>proc~select_names_or_all&#45;&gt;is_executable_target</title>
+<path fill="none" stroke="#da00ff" d="M323.06,-741.59C343.24,-729.17 375.74,-710.15 405.54,-697.13 409.26,-695.51 413.15,-693.94 417.09,-692.44"/>
+<polygon fill="#da00ff" stroke="#da00ff" points="417.94,-695.86 426.16,-689.17 415.56,-689.27 417.94,-695.86"/>
+</g>
+<!-- proc~select_names_or_all&#45;&gt;glob -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_edge36" class="edge">
+<title>proc~select_names_or_all&#45;&gt;glob</title>
+<path fill="none" stroke="#da00ff" d="M362.03,-756.25C385.49,-757.09 411.79,-758.04 432.55,-758.79"/>
+<polygon fill="#da00ff" stroke="#da00ff" points="432.14,-762.28 442.26,-759.14 432.39,-755.28 432.14,-762.28"/>
+</g>
+<!-- proc~vec_push_unique&#45;&gt;proc~normalize_path -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_edge41" class="edge">
+<title>proc~vec_push_unique&#45;&gt;proc~normalize_path</title>
+<path fill="none" stroke="#ff00ff" d="M522.8,-645.88C538.6,-649.23 556.12,-652.64 572.31,-655.13 620.03,-662.49 674.59,-667.74 714.66,-671.01"/>
+<polygon fill="#ff00ff" stroke="#ff00ff" points="714.33,-674.49 724.57,-671.8 714.88,-667.51 714.33,-674.49"/>
+</g>
+<!-- exists -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_node29" class="node">
+<title>exists</title>
+<polygon fill="#777777" stroke="#777777" points="646.69,-768.27 592.69,-768.27 592.69,-744 646.69,-744 646.69,-768.27"/>
+<text xml:space="preserve" text-anchor="middle" x="619.69" y="-752.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">exists</text>
+</g>
+<!-- proc~vec_push_unique&#45;&gt;exists -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_edge38" class="edge">
+<title>proc~vec_push_unique&#45;&gt;exists</title>
+<path fill="none" stroke="#ff00ff" d="M522.7,-646.05C527.63,-648.53 532.29,-651.52 536.31,-655.13 565.32,-681.18 544.77,-707.53 572.31,-735.13 575.3,-738.13 578.78,-740.73 582.48,-743"/>
+<polygon fill="#ff00ff" stroke="#ff00ff" points="580.73,-746.03 591.22,-747.51 583.94,-739.81 580.73,-746.03"/>
+</g>
+<!-- proc~is_ignored_path -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_node30" class="node">
+<title>proc~is_ignored_path</title>
+<g id="a_proc~~compute_watch_files_from_settings~~CallsGraph_node30"><a xlink:href="../proc/is_ignored_path.html" xlink:title="is_ignored_path">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="667.08,-604.27 572.31,-604.27 572.31,-580 667.08,-580 667.08,-604.27"/>
+<text xml:space="preserve" text-anchor="middle" x="619.69" y="-588.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">is_ignored_path</text>
+</a>
+</g>
+</g>
+<!-- proc~vec_push_unique&#45;&gt;proc~is_ignored_path -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_edge39" class="edge">
+<title>proc~vec_push_unique&#45;&gt;proc~is_ignored_path</title>
+<path fill="none" stroke="#ff00ff" d="M515.96,-621.53C531.05,-617.21 548.13,-612.33 563.97,-607.8"/>
+<polygon fill="#ff00ff" stroke="#ff00ff" points="564.58,-611.26 573.24,-605.14 562.66,-604.53 564.58,-611.26"/>
+</g>
+<!-- proc~is_in_dep_dirs -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_node31" class="node">
+<title>proc~is_in_dep_dirs</title>
+<g id="a_proc~~compute_watch_files_from_settings~~CallsGraph_node31"><a xlink:href="../proc/is_in_dep_dirs.html" xlink:title="is_in_dep_dirs">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="662.2,-646.27 577.18,-646.27 577.18,-622 662.2,-622 662.2,-646.27"/>
+<text xml:space="preserve" text-anchor="middle" x="619.69" y="-630.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">is_in_dep_dirs</text>
+</a>
+</g>
+</g>
+<!-- proc~vec_push_unique&#45;&gt;proc~is_in_dep_dirs -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_edge40" class="edge">
+<title>proc~vec_push_unique&#45;&gt;proc~is_in_dep_dirs</title>
+<path fill="none" stroke="#ff00ff" d="M522.85,-634.13C536.69,-634.13 551.71,-634.13 565.67,-634.13"/>
+<polygon fill="#ff00ff" stroke="#ff00ff" points="565.58,-637.64 575.58,-634.14 565.58,-630.64 565.58,-637.64"/>
+</g>
+<!-- proc~vec_grow -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_node32" class="node">
+<title>proc~vec_grow</title>
+<g id="a_proc~~compute_watch_files_from_settings~~CallsGraph_node32"><a xlink:href="../proc/vec_grow.html" xlink:title="vec_grow">
+<polygon fill="#d9534f" stroke="#d9534f" points="650.2,-726.27 589.18,-726.27 589.18,-702 650.2,-702 650.2,-726.27"/>
+<text xml:space="preserve" text-anchor="middle" x="619.69" y="-710.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">vec_grow</text>
+</a>
+</g>
+</g>
+<!-- proc~vec_push_unique&#45;&gt;proc~vec_grow -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_edge42" class="edge">
+<title>proc~vec_push_unique&#45;&gt;proc~vec_grow</title>
+<path fill="none" stroke="#ff00ff" d="M518.68,-646.75C524.79,-649.15 530.83,-651.93 536.31,-655.13 555.05,-666.08 554.73,-675.41 572.31,-688.13 576.1,-690.87 580.2,-693.55 584.34,-696.07"/>
+<polygon fill="#ff00ff" stroke="#ff00ff" points="582.25,-698.91 592.66,-700.9 585.77,-692.85 582.25,-698.91"/>
+</g>
+<!-- proc~is_ignored_path&#45;&gt;proc~normalize_path -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_edge44" class="edge">
+<title>proc~is_ignored_path&#45;&gt;proc~normalize_path</title>
+<path fill="none" stroke="#7fff00" d="M653.14,-604.66C658.01,-607.15 662.82,-609.98 667.08,-613.13 686.56,-627.57 682.69,-641 703.08,-654.13 707,-656.66 711.24,-658.9 715.63,-660.87"/>
+<polygon fill="#7fff00" stroke="#7fff00" points="714.05,-664.01 724.63,-664.46 716.64,-657.51 714.05,-664.01"/>
+</g>
+<!-- proc~contains_path_fragment -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_node33" class="node">
+<title>proc~contains_path_fragment</title>
+<g id="a_proc~~compute_watch_files_from_settings~~CallsGraph_node33"><a xlink:href="../proc/contains_path_fragment.html" xlink:title="contains_path_fragment">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="843.6,-603.27 703.08,-603.27 703.08,-579 843.6,-579 843.6,-603.27"/>
+<text xml:space="preserve" text-anchor="middle" x="773.34" y="-587.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">contains_path_fragment</text>
+</a>
+</g>
+</g>
+<!-- proc~is_ignored_path&#45;&gt;proc~contains_path_fragment -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_edge43" class="edge">
+<title>proc~is_ignored_path&#45;&gt;proc~contains_path_fragment</title>
+<path fill="none" stroke="#7fff00" d="M667.43,-591.83C675,-591.78 683.03,-591.72 691.14,-591.67"/>
+<polygon fill="#7fff00" stroke="#7fff00" points="691.13,-595.17 701.11,-591.6 691.08,-588.17 691.13,-595.17"/>
+</g>
+<!-- proc~starts_with -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_node34" class="node">
+<title>proc~starts_with</title>
+<g id="a_proc~~compute_watch_files_from_settings~~CallsGraph_node34"><a xlink:href="../proc/starts_with.html" xlink:title="starts_with">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="807.23,-645.27 739.46,-645.27 739.46,-621 807.23,-621 807.23,-645.27"/>
+<text xml:space="preserve" text-anchor="middle" x="773.34" y="-629.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">starts_with</text>
+</a>
+</g>
+</g>
+<!-- proc~is_ignored_path&#45;&gt;proc~starts_with -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_edge45" class="edge">
+<title>proc~is_ignored_path&#45;&gt;proc~starts_with</title>
+<path fill="none" stroke="#7fff00" d="M667.02,-604.66C686.53,-609.93 709.13,-616.05 728.38,-621.25"/>
+<polygon fill="#7fff00" stroke="#7fff00" points="727.26,-624.57 737.82,-623.8 729.08,-617.81 727.26,-624.57"/>
+</g>
+<!-- proc~is_in_dep_dirs&#45;&gt;proc~normalize_path -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_edge46" class="edge">
+<title>proc~is_in_dep_dirs&#45;&gt;proc~normalize_path</title>
+<path fill="none" stroke="#00ffff" d="M662.53,-645.45C678.8,-649.84 697.69,-654.95 715.17,-659.68"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="713.81,-662.94 724.38,-662.17 715.64,-656.18 713.81,-662.94"/>
+</g>
+<!-- proc~is_in_dep_dirs&#45;&gt;proc~starts_with -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_edge47" class="edge">
+<title>proc~is_in_dep_dirs&#45;&gt;proc~starts_with</title>
+<path fill="none" stroke="#00ffff" d="M662.53,-633.86C682.86,-633.73 707.28,-633.56 727.93,-633.43"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="727.79,-636.93 737.77,-633.36 727.74,-629.93 727.79,-636.93"/>
+</g>
+<!-- proc~ends_with -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_node35" class="node">
+<title>proc~ends_with</title>
+<g id="a_proc~~compute_watch_files_from_settings~~CallsGraph_node35"><a xlink:href="../proc/ends_with.html" xlink:title="ends_with">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="943.62,-603.27 879.6,-603.27 879.6,-579 943.62,-579 943.62,-603.27"/>
+<text xml:space="preserve" text-anchor="middle" x="911.61" y="-587.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">ends_with</text>
+</a>
+</g>
+</g>
+<!-- proc~contains_path_fragment&#45;&gt;proc~ends_with -->
+<g id="proc~~compute_watch_files_from_settings~~CallsGraph_edge48" class="edge">
+<title>proc~contains_path_fragment&#45;&gt;proc~ends_with</title>
+<path fill="none" stroke="#ff0000" d="M844.07,-591.13C852.15,-591.13 860.2,-591.13 867.76,-591.13"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="867.67,-594.64 877.67,-591.14 867.67,-587.64 867.67,-594.64"/>
+</g>
+</g>
+</svg>
+</div>                <script>
+                  var panproccompute_watch_files_from_settingsCallsGraph = svgPanZoom('#proccompute_watch_files_from_settingsCallsGraph',
+                    {zoomEnabled: true, controlIconsEnabled: true, fit: true, center: true,}
+                  );
+                </script>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#CallsGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="CallsGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="641pt" height="28pt"
+ viewBox="0.00 0.00 641.00 28.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.873868 0.873868) rotate(0) translate(4 28.27)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-28.27 729.52,-28.27 729.52,4 -4,4"/>
+<!-- Subroutine -->
+<g id="node1" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="69.27,-24.27 0,-24.27 0,0 69.27,0 69.27,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="34.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node2" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="143.89,-24.27 87.38,-24.27 87.38,0 143.89,0 143.89,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="115.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node3" class="node">
+<title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="221.39,-24.27 161.88,-24.27 161.88,0 221.39,0 221.39,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="191.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Type Bound Procedure -->
+<g id="node4" class="node">
+<title>Type Bound Procedure</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="368.27,-24.27 239,-24.27 239,0 368.27,0 368.27,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="303.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type Bound Procedure</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node5" class="node">
+<title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="529.39,-24.27 385.88,-24.27 385.88,0 529.39,0 529.39,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="457.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node6" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="603.89,-24.27 547.38,-24.27 547.38,0 603.89,0 603.89,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="575.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node7" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="725.52,-24.27 621.75,-24.27 621.75,0 725.52,0 725.52,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="673.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.
+</p>
+ Where possible, edges connecting nodes are
+given different colours to make them easier to distinguish in
+large graphs.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+  <h3 class="card-title">Called by</h3>
+      </div>
+      <div class="card-body">
+  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: proc~~compute_watch_files_from_settings~~CalledByGraph Pages: 1 -->
+<svg id="proccompute_watch_files_from_settingsCalledByGraph" width="641pt" height="86pt"
+ viewBox="0.00 0.00 641.00 86.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~compute_watch_files_from_settings~~CalledByGraph" class="graph" transform="scale(0.910085 0.910085) rotate(0) translate(4 90.27)">
+<title>proc~~compute_watch_files_from_settings~~CalledByGraph</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-90.27 700.33,-90.27 700.33,4 -4,4"/>
+<!-- proc~compute_watch_files_from_settings -->
+<g id="proc~~compute_watch_files_from_settings~~CalledByGraph_node1" class="node">
+<title>proc~compute_watch_files_from_settings</title>
+<polygon fill="none" stroke="black" points="696.33,-66.27 497.31,-66.27 497.31,-42 696.33,-42 696.33,-66.27"/>
+<text xml:space="preserve" text-anchor="middle" x="596.82" y="-50.53" font-family="Helvetica,sans-Serif" font-size="10.50">compute_watch_files_from_settings</text>
+</g>
+<!-- proc~rebuild_watch_list -->
+<g id="proc~~compute_watch_files_from_settings~~CalledByGraph_node2" class="node">
+<title>proc~rebuild_watch_list</title>
+<g id="a_proc~~compute_watch_files_from_settings~~CalledByGraph_node2"><a xlink:href="../proc/rebuild_watch_list.html" xlink:title="rebuild_watch_list">
+<polygon fill="#d9534f" stroke="#d9534f" points="461.31,-66.27 356.04,-66.27 356.04,-42 461.31,-42 461.31,-66.27"/>
+<text xml:space="preserve" text-anchor="middle" x="408.67" y="-50.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rebuild_watch_list</text>
+</a>
+</g>
+</g>
+<!-- proc~rebuild_watch_list&#45;&gt;proc~compute_watch_files_from_settings -->
+<g id="proc~~compute_watch_files_from_settings~~CalledByGraph_edge1" class="edge">
+<title>proc~rebuild_watch_list&#45;&gt;proc~compute_watch_files_from_settings</title>
+<path fill="none" stroke="#ff0000" d="M461.53,-54.13C469.14,-54.13 477.22,-54.13 485.49,-54.13"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="485.34,-57.64 495.34,-54.14 485.34,-50.64 485.34,-57.64"/>
+</g>
+<!-- proc~handle_manifest_change -->
+<g id="proc~~compute_watch_files_from_settings~~CalledByGraph_node3" class="node">
+<title>proc~handle_manifest_change</title>
+<g id="a_proc~~compute_watch_files_from_settings~~CalledByGraph_node3"><a xlink:href="../proc/handle_manifest_change.html" xlink:title="handle_manifest_change">
+<polygon fill="#d9534f" stroke="#d9534f" points="320.04,-66.27 175.02,-66.27 175.02,-42 320.04,-42 320.04,-66.27"/>
+<text xml:space="preserve" text-anchor="middle" x="247.53" y="-50.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">handle_manifest_change</text>
+</a>
+</g>
+</g>
+<!-- proc~handle_manifest_change&#45;&gt;proc~rebuild_watch_list -->
+<g id="proc~~compute_watch_files_from_settings~~CalledByGraph_edge2" class="edge">
+<title>proc~handle_manifest_change&#45;&gt;proc~rebuild_watch_list</title>
+<path fill="none" stroke="#ff0000" d="M320.19,-54.13C328.28,-54.13 336.48,-54.13 344.46,-54.13"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="344.42,-57.64 354.42,-54.14 344.42,-50.64 344.42,-57.64"/>
+</g>
+<!-- proc~watcher_init -->
+<g id="proc~~compute_watch_files_from_settings~~CalledByGraph_node4" class="node">
+<title>proc~watcher_init</title>
+<g id="a_proc~~compute_watch_files_from_settings~~CalledByGraph_node4"><a xlink:href="../proc/watcher_init.html" xlink:title="watcher_t%watcher_init">
+<polygon fill="#d9534f" stroke="#d9534f" points="316.29,-24.27 178.77,-24.27 178.77,0 316.29,0 316.29,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="247.53" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">watcher_t%watcher_init</text>
+</a>
+</g>
+</g>
+<!-- proc~watcher_init&#45;&gt;proc~rebuild_watch_list -->
+<g id="proc~~compute_watch_files_from_settings~~CalledByGraph_edge3" class="edge">
+<title>proc~watcher_init&#45;&gt;proc~rebuild_watch_list</title>
+<path fill="none" stroke="#ff0000" d="M296.28,-24.74C312.96,-29.14 331.87,-34.13 349.32,-38.73"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="347.93,-41.99 358.5,-41.16 349.72,-35.22 347.93,-41.99"/>
+</g>
+<!-- proc~watcher_run -->
+<g id="proc~~compute_watch_files_from_settings~~CalledByGraph_node5" class="node">
+<title>proc~watcher_run</title>
+<g id="a_proc~~compute_watch_files_from_settings~~CalledByGraph_node5"><a xlink:href="../proc/watcher_run.html" xlink:title="watcher_t%watcher_run">
+<polygon fill="#d9534f" stroke="#d9534f" points="139.02,-86.27 0,-86.27 0,-62 139.02,-62 139.02,-86.27"/>
+<text xml:space="preserve" text-anchor="middle" x="69.51" y="-70.54" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">watcher_t%watcher_run</text>
+</a>
+</g>
+</g>
+<!-- proc~watcher_run&#45;&gt;proc~rebuild_watch_list -->
+<g id="proc~~compute_watch_files_from_settings~~CalledByGraph_edge4" class="edge">
+<title>proc~watcher_run&#45;&gt;proc~rebuild_watch_list</title>
+<path fill="none" stroke="#ff0000" d="M139.34,-78.89C189.6,-81.27 259.27,-82.31 320.04,-75.14 330.76,-73.87 342.08,-71.76 352.88,-69.35"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="353.5,-72.8 362.43,-67.1 351.9,-65.99 353.5,-72.8"/>
+</g>
+<!-- proc~watcher_run&#45;&gt;proc~handle_manifest_change -->
+<g id="proc~~compute_watch_files_from_settings~~CalledByGraph_edge5" class="edge">
+<title>proc~watcher_run&#45;&gt;proc~handle_manifest_change</title>
+<path fill="none" stroke="#ff0000" d="M139.32,-66.32C147.18,-65.42 155.26,-64.5 163.29,-63.59"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="163.53,-67.09 173.07,-62.48 162.74,-60.13 163.53,-67.09"/>
+</g>
+</g>
+</svg>
+</div>                <script>
+                  var panproccompute_watch_files_from_settingsCalledByGraph = svgPanZoom('#proccompute_watch_files_from_settingsCalledByGraph',
+                    {zoomEnabled: true, controlIconsEnabled: true, fit: true, center: true,}
+                  );
+                </script>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#CalledByGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="CalledByGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="641pt" height="28pt"
+ viewBox="0.00 0.00 641.00 28.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.873868 0.873868) rotate(0) translate(4 28.27)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-28.27 729.52,-28.27 729.52,4 -4,4"/>
+<!-- Subroutine -->
+<g id="node1" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="69.27,-24.27 0,-24.27 0,0 69.27,0 69.27,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="34.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node2" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="143.89,-24.27 87.38,-24.27 87.38,0 143.89,0 143.89,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="115.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node3" class="node">
+<title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="221.39,-24.27 161.88,-24.27 161.88,0 221.39,0 221.39,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="191.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Type Bound Procedure -->
+<g id="node4" class="node">
+<title>Type Bound Procedure</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="368.27,-24.27 239,-24.27 239,0 368.27,0 368.27,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="303.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type Bound Procedure</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node5" class="node">
+<title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="529.39,-24.27 385.88,-24.27 385.88,0 529.39,0 529.39,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="457.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node6" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="603.89,-24.27 547.38,-24.27 547.38,0 603.89,0 603.89,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="575.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node7" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="725.52,-24.27 621.75,-24.27 621.75,0 725.52,0 725.52,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="673.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.
+</p>
+ Where possible, edges connecting nodes are
+given different colours to make them easier to distinguish in
+large graphs.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+
+
+    
+    
+
+    
+    
+
+
+
+    
+    <section>
+    <h2><span class="anchor" id="src"></span>Source Code</h2>
+    <div class="hl codehilite"><pre><span></span><span class="w">   </span><span class="k">subroutine </span><span class="n">compute_watch_files_from_settings</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span><span class="w"> </span><span class="n">w</span><span class="p">,</span><span class="w"> </span><span class="n">files</span><span class="p">,</span><span class="w"> </span><span class="n">file_mask</span><span class="p">,</span><span class="w"> </span><span class="n">roots</span><span class="p">,</span><span class="w"> </span><span class="n">manifest_key</span><span class="p">,</span><span class="w"> </span><span class="n">build_secs</span><span class="p">,</span><span class="w"> </span><span class="n">secs_model</span><span class="p">,</span><span class="w"> </span><span class="n">secs_targets</span><span class="p">,</span><span class="w"> </span><span class="n">secs_watch</span><span class="p">)</span>
+<span class="w">      </span><span class="k">class</span><span class="p">(</span><span class="n">fpm_build_settings</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">settings</span>
+<span class="w">      </span><span class="k">type</span><span class="p">(</span><span class="n">watch_opts_t</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">w</span>
+<span class="w">      </span><span class="k">type</span><span class="p">(</span><span class="n">string_t</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">files</span><span class="p">(:)</span>
+<span class="w">      </span><span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">file_mask</span><span class="p">(:)</span>
+<span class="w">      </span><span class="k">type</span><span class="p">(</span><span class="n">root_info_t</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">roots</span><span class="p">(:)</span>
+<span class="w">      </span><span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">manifest_key</span>
+<span class="w">      </span><span class="kt">real</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">build_secs</span>
+<span class="w">      </span><span class="kt">real</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">secs_model</span><span class="p">,</span><span class="w"> </span><span class="n">secs_targets</span><span class="p">,</span><span class="w"> </span><span class="n">secs_watch</span>
+
+<span class="w">      </span><span class="k">type</span><span class="p">(</span><span class="n">package_config_t</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">package</span>
+<span class="w">      </span><span class="k">type</span><span class="p">(</span><span class="n">fpm_model_t</span><span class="p">),</span><span class="w">       </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">model</span>
+<span class="w">      </span><span class="k">type</span><span class="p">(</span><span class="n">build_target_ptr</span><span class="p">),</span><span class="w">  </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">targets</span><span class="p">(:)</span>
+<span class="w">      </span><span class="k">type</span><span class="p">(</span><span class="n">error_t</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">err</span>
+<span class="w">      </span><span class="k">type</span><span class="p">(</span><span class="n">dependency_tree_t</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">tree</span>
+
+<span class="w">      </span><span class="kt">logical</span><span class="p">,</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">keep</span><span class="p">(:)</span>
+<span class="w">      </span><span class="kt">logical</span><span class="p">,</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">visited</span><span class="p">(:)</span>
+<span class="w">      </span><span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">target_mask</span><span class="p">(:)</span>
+
+<span class="w">      </span><span class="k">type</span><span class="p">(</span><span class="n">string_t</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">dep_dirs</span><span class="p">(:)</span>
+
+<span class="w">      </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">r</span><span class="p">,</span><span class="w"> </span><span class="n">nroots</span>
+<span class="w">      </span><span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">rate</span><span class="p">,</span><span class="w"> </span><span class="n">t0</span><span class="p">,</span><span class="w"> </span><span class="n">t1</span><span class="p">,</span><span class="w"> </span><span class="n">tw0</span><span class="p">,</span><span class="w"> </span><span class="n">tw1</span>
+<span class="w">      </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">n_before</span><span class="p">,</span><span class="w"> </span><span class="n">n_after</span>
+
+<span class="w">      </span><span class="n">secs_model</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span>
+<span class="w">      </span><span class="n">secs_targets</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span>
+<span class="w">      </span><span class="n">secs_watch</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span>
+<span class="w">      </span><span class="n">build_secs</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span>
+
+<span class="w">      </span><span class="k">call </span><span class="nb">system_clock</span><span class="p">(</span><span class="n">count_rate</span><span class="o">=</span><span class="n">rate</span><span class="p">)</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">rate</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">0_int64</span><span class="p">)</span><span class="w"> </span><span class="n">rate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1000_int64</span>
+
+<span class="w">      </span><span class="k">allocate</span><span class="p">(</span><span class="n">package</span><span class="p">,</span><span class="w"> </span><span class="n">model</span><span class="p">)</span>
+
+<span class="w">      </span><span class="k">call </span><span class="n">get_package_data</span><span class="p">(</span><span class="n">package</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;fpm.toml&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">err</span><span class="p">,</span><span class="w"> </span><span class="n">apply_defaults</span><span class="o">=</span><span class="p">.</span><span class="n">true</span><span class="p">.)</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">allocated</span><span class="p">(</span><span class="n">err</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
+<span class="k">         write</span><span class="p">(</span><span class="n">error_unit</span><span class="p">,</span><span class="s1">&#39;(a)&#39;</span><span class="p">)</span><span class="w"> </span><span class="s2">&quot;fpm-watch: manifest error: &quot;</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="n">err</span><span class="p">%</span><span class="n">message</span>
+<span class="w">         </span><span class="k">stop </span><span class="mi">1</span>
+<span class="w">      </span><span class="k">end if</span>
+
+<span class="k">      call </span><span class="n">new_dependency_tree</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span><span class="w"> </span><span class="n">build_dir</span><span class="o">=</span><span class="n">trim_or_empty</span><span class="p">(</span><span class="n">settings</span><span class="p">%</span><span class="n">build_dir</span><span class="p">),</span><span class="w"> </span><span class="n">path_to_config</span><span class="o">=</span><span class="n">trim_or_empty</span><span class="p">(</span><span class="n">settings</span><span class="p">%</span><span class="n">path_to_config</span><span class="p">))</span>
+
+<span class="w">      </span><span class="k">call </span><span class="n">tree</span><span class="p">%</span><span class="n">add</span><span class="p">(</span><span class="n">package</span><span class="p">,</span><span class="w"> </span><span class="n">err</span><span class="p">)</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">allocated</span><span class="p">(</span><span class="n">err</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
+<span class="k">         write</span><span class="p">(</span><span class="n">error_unit</span><span class="p">,</span><span class="s1">&#39;(a)&#39;</span><span class="p">)</span><span class="w"> </span><span class="s2">&quot;fpm-watch: dependency error: &quot;</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="n">err</span><span class="p">%</span><span class="n">message</span>
+<span class="w">         </span><span class="k">stop </span><span class="mi">1</span>
+<span class="w">      </span><span class="k">end if</span>
+
+<span class="k">      if</span><span class="w"> </span><span class="p">(</span><span class="n">w</span><span class="p">%</span><span class="n">watch_deps</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">         call </span><span class="n">collect_dep_dirs</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span><span class="w"> </span><span class="n">dep_dirs</span><span class="p">)</span>
+<span class="w">         </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">w</span><span class="p">%</span><span class="n">verbosity</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">            call </span><span class="n">log_info</span><span class="p">(</span><span class="n">w</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;deps: watching dependency sources (deps=&quot;</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="n">str</span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">dep_dirs</span><span class="p">))</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="s2">&quot;)&quot;</span><span class="p">)</span>
+<span class="w">         </span><span class="k">end if</span>
+<span class="k">      else</span>
+<span class="k">         if</span><span class="w"> </span><span class="p">(</span><span class="nb">allocated</span><span class="p">(</span><span class="n">dep_dirs</span><span class="p">))</span><span class="w"> </span><span class="k">deallocate</span><span class="p">(</span><span class="n">dep_dirs</span><span class="p">)</span>
+<span class="w">         </span><span class="k">allocate</span><span class="p">(</span><span class="n">dep_dirs</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+<span class="w">      </span><span class="k">end if</span>
+
+<span class="k">      call </span><span class="nb">system_clock</span><span class="p">(</span><span class="n">t0</span><span class="p">)</span>
+<span class="w">      </span><span class="k">call </span><span class="n">build_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="w"> </span><span class="n">settings</span><span class="p">,</span><span class="w"> </span><span class="n">package</span><span class="p">,</span><span class="w"> </span><span class="n">err</span><span class="p">)</span>
+<span class="w">      </span><span class="k">call </span><span class="nb">system_clock</span><span class="p">(</span><span class="n">t1</span><span class="p">)</span>
+<span class="w">      </span><span class="n">secs_model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">real</span><span class="p">(</span><span class="n">t1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">t0</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="kt">real</span><span class="p">(</span><span class="n">rate</span><span class="p">)</span>
+
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">allocated</span><span class="p">(</span><span class="n">err</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
+<span class="k">         write</span><span class="p">(</span><span class="n">error_unit</span><span class="p">,</span><span class="s1">&#39;(a)&#39;</span><span class="p">)</span><span class="w"> </span><span class="s2">&quot;fpm-watch: model error: &quot;</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="n">err</span><span class="p">%</span><span class="n">message</span>
+<span class="w">         </span><span class="k">stop </span><span class="mi">1</span>
+<span class="w">      </span><span class="k">end if</span>
+
+<span class="k">      call </span><span class="nb">system_clock</span><span class="p">(</span><span class="n">t0</span><span class="p">)</span>
+<span class="w">      </span><span class="k">call </span><span class="n">targets_from_sources</span><span class="p">(</span><span class="n">targets</span><span class="p">,</span><span class="w"> </span><span class="n">model</span><span class="p">,</span><span class="w"> </span><span class="n">settings</span><span class="p">%</span><span class="n">prune</span><span class="p">,</span><span class="w"> </span><span class="n">package</span><span class="p">%</span><span class="n">library</span><span class="p">,</span><span class="w"> </span><span class="n">err</span><span class="p">)</span>
+<span class="w">      </span><span class="k">call </span><span class="nb">system_clock</span><span class="p">(</span><span class="n">t1</span><span class="p">)</span>
+<span class="w">      </span><span class="n">secs_targets</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">real</span><span class="p">(</span><span class="n">t1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">t0</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="kt">real</span><span class="p">(</span><span class="n">rate</span><span class="p">)</span>
+
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">allocated</span><span class="p">(</span><span class="n">err</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
+<span class="k">         write</span><span class="p">(</span><span class="n">error_unit</span><span class="p">,</span><span class="s1">&#39;(a)&#39;</span><span class="p">)</span><span class="w"> </span><span class="s2">&quot;fpm-watch: targets error: &quot;</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="n">err</span><span class="p">%</span><span class="n">message</span>
+<span class="w">         </span><span class="k">stop </span><span class="mi">1</span>
+<span class="w">      </span><span class="k">end if</span>
+
+<span class="k">      call </span><span class="nb">system_clock</span><span class="p">(</span><span class="n">tw0</span><span class="p">)</span>
+
+<span class="w">      </span><span class="k">allocate</span><span class="p">(</span><span class="n">keep</span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">targets</span><span class="p">)))</span>
+<span class="w">      </span><span class="n">keep</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.</span>
+
+<span class="w">      </span><span class="k">select type</span><span class="w"> </span><span class="p">(</span><span class="n">s</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">settings</span><span class="p">)</span>
+<span class="w">       </span><span class="k">type is</span><span class="w"> </span><span class="p">(</span><span class="n">fpm_test_settings</span><span class="p">)</span>
+<span class="w">         </span><span class="k">do </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="p">(</span><span class="n">targets</span><span class="p">)</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">targets</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">ptr</span><span class="p">%</span><span class="n">is_executable_target</span><span class="p">(</span><span class="n">FPM_SCOPE_TEST</span><span class="p">))</span><span class="w"> </span><span class="n">keep</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">true</span><span class="p">.</span>
+<span class="w">         </span><span class="k">end do</span>
+<span class="k">       type is</span><span class="w"> </span><span class="p">(</span><span class="n">fpm_run_settings</span><span class="p">)</span>
+<span class="w">         </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">s</span><span class="p">%</span><span class="n">example</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">            call </span><span class="n">select_names_or_all</span><span class="p">(</span><span class="n">targets</span><span class="p">,</span><span class="w"> </span><span class="n">FPM_SCOPE_EXAMPLE</span><span class="p">,</span><span class="w"> </span><span class="n">s</span><span class="p">%</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">keep</span><span class="p">)</span>
+<span class="w">         </span><span class="k">else</span>
+<span class="k">            call </span><span class="n">select_names_or_all</span><span class="p">(</span><span class="n">targets</span><span class="p">,</span><span class="w"> </span><span class="n">FPM_SCOPE_APP</span><span class="p">,</span><span class="w"> </span><span class="n">s</span><span class="p">%</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">keep</span><span class="p">)</span>
+<span class="w">         </span><span class="k">end if</span>
+<span class="k">       class </span><span class="n">default</span>
+<span class="w">         </span><span class="n">keep</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">true</span><span class="p">.</span>
+<span class="w">      </span><span class="k">end select</span>
+
+<span class="k">      </span><span class="n">nroots</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">count</span><span class="p">(</span><span class="n">keep</span><span class="p">)</span>
+
+<span class="w">      </span><span class="k">allocate</span><span class="p">(</span><span class="n">visited</span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">targets</span><span class="p">)))</span>
+<span class="w">      </span><span class="n">visited</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.</span>
+
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">is_run_or_test</span><span class="p">(</span><span class="n">settings</span><span class="p">)</span><span class="w"> </span><span class="p">.</span><span class="nb">and</span><span class="p">.</span><span class="w"> </span><span class="n">nroots</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">.</span><span class="nb">and</span><span class="p">.</span><span class="w"> </span><span class="n">nroots</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="nb">bit_size</span><span class="p">(</span><span class="mi">0_int64</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
+<span class="k">         allocate</span><span class="p">(</span><span class="n">roots</span><span class="p">(</span><span class="n">nroots</span><span class="p">))</span>
+<span class="w">         </span><span class="k">allocate</span><span class="p">(</span><span class="n">target_mask</span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">targets</span><span class="p">)))</span>
+<span class="w">         </span><span class="n">target_mask</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0_int64</span>
+
+<span class="w">         </span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">         </span><span class="k">do </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="p">(</span><span class="n">targets</span><span class="p">)</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="n">keep</span><span class="p">(</span><span class="n">i</span><span class="p">))</span><span class="w"> </span><span class="k">cycle</span>
+<span class="k">            </span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">            </span><span class="n">roots</span><span class="p">(</span><span class="n">r</span><span class="p">)%</span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">basename</span><span class="p">(</span><span class="n">targets</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">ptr</span><span class="p">%</span><span class="n">output_file</span><span class="p">,</span><span class="w"> </span><span class="n">suffix</span><span class="o">=</span><span class="p">.</span><span class="n">false</span><span class="p">.)</span>
+<span class="w">            </span><span class="n">roots</span><span class="p">(</span><span class="n">r</span><span class="p">)%</span><span class="n">mask</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">shiftl</span><span class="p">(</span><span class="mi">1_int64</span><span class="p">,</span><span class="w"> </span><span class="n">r</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="w">            </span><span class="k">call </span><span class="n">dfs_mark_mask</span><span class="p">(</span><span class="n">targets</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">ptr</span><span class="p">,</span><span class="w"> </span><span class="n">targets</span><span class="p">,</span><span class="w"> </span><span class="n">target_mask</span><span class="p">,</span><span class="w"> </span><span class="n">roots</span><span class="p">(</span><span class="n">r</span><span class="p">)%</span><span class="n">mask</span><span class="p">)</span>
+<span class="w">         </span><span class="k">end do</span>
+
+<span class="k">         </span><span class="n">visited</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">target_mask</span><span class="w"> </span><span class="o">/=</span><span class="w"> </span><span class="mi">0_int64</span><span class="p">)</span>
+<span class="w">      </span><span class="k">else</span>
+<span class="k">         if</span><span class="w"> </span><span class="p">(</span><span class="nb">allocated</span><span class="p">(</span><span class="n">roots</span><span class="p">))</span><span class="w"> </span><span class="k">deallocate</span><span class="p">(</span><span class="n">roots</span><span class="p">)</span>
+<span class="w">         </span><span class="k">allocate</span><span class="p">(</span><span class="n">roots</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+<span class="w">         </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">allocated</span><span class="p">(</span><span class="n">target_mask</span><span class="p">))</span><span class="w"> </span><span class="k">deallocate</span><span class="p">(</span><span class="n">target_mask</span><span class="p">)</span>
+<span class="w">         </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="k">all</span><span class="p">(</span><span class="n">keep</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
+<span class="k">            </span><span class="n">visited</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">true</span><span class="p">.</span>
+<span class="w">         </span><span class="k">else</span>
+<span class="k">            do </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="p">(</span><span class="n">targets</span><span class="p">)</span>
+<span class="w">               </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">keep</span><span class="p">(</span><span class="n">i</span><span class="p">))</span><span class="w"> </span><span class="k">call </span><span class="n">dfs_mark_bool</span><span class="p">(</span><span class="n">targets</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">ptr</span><span class="p">,</span><span class="w"> </span><span class="n">targets</span><span class="p">,</span><span class="w"> </span><span class="n">visited</span><span class="p">)</span>
+<span class="w">            </span><span class="k">end do</span>
+<span class="k">         end if</span>
+<span class="k">      end if</span>
+
+<span class="k">      if</span><span class="w"> </span><span class="p">(</span><span class="n">w</span><span class="p">%</span><span class="n">watch_deps</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">         call </span><span class="n">gather_files_with_mask</span><span class="p">(</span><span class="n">targets</span><span class="p">,</span><span class="w"> </span><span class="n">visited</span><span class="p">,</span><span class="w"> </span><span class="n">target_mask</span><span class="p">,</span><span class="w"> </span><span class="n">files</span><span class="p">,</span><span class="w"> </span><span class="n">file_mask</span><span class="p">,</span><span class="w"> </span><span class="n">trim_or_empty</span><span class="p">(</span><span class="n">settings</span><span class="p">%</span><span class="n">build_dir</span><span class="p">),</span><span class="w"> </span><span class="n">dep_dirs</span><span class="p">)</span>
+<span class="w">      </span><span class="k">else</span>
+<span class="k">         call </span><span class="n">gather_files_with_mask</span><span class="p">(</span><span class="n">targets</span><span class="p">,</span><span class="w"> </span><span class="n">visited</span><span class="p">,</span><span class="w"> </span><span class="n">target_mask</span><span class="p">,</span><span class="w"> </span><span class="n">files</span><span class="p">,</span><span class="w"> </span><span class="n">file_mask</span><span class="p">,</span><span class="w"> </span><span class="n">trim_or_empty</span><span class="p">(</span><span class="n">settings</span><span class="p">%</span><span class="n">build_dir</span><span class="p">))</span>
+<span class="w">      </span><span class="k">end if</span>
+
+<span class="k">      if</span><span class="w"> </span><span class="p">(</span><span class="n">w</span><span class="p">%</span><span class="n">watch_deps</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">         call </span><span class="n">push_file_with_mask</span><span class="p">(</span><span class="n">files</span><span class="p">,</span><span class="w"> </span><span class="n">file_mask</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;fpm.toml&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">trim_or_empty</span><span class="p">(</span><span class="n">settings</span><span class="p">%</span><span class="n">build_dir</span><span class="p">),</span><span class="w"> </span><span class="mi">0_int64</span><span class="p">,</span><span class="w"> </span><span class="n">dep_dirs</span><span class="p">)</span>
+<span class="w">      </span><span class="k">else</span>
+<span class="k">         call </span><span class="n">push_file_with_mask</span><span class="p">(</span><span class="n">files</span><span class="p">,</span><span class="w"> </span><span class="n">file_mask</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;fpm.toml&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">trim_or_empty</span><span class="p">(</span><span class="n">settings</span><span class="p">%</span><span class="n">build_dir</span><span class="p">),</span><span class="w"> </span><span class="mi">0_int64</span><span class="p">)</span>
+<span class="w">      </span><span class="k">end if</span>
+
+<span class="k">      do </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">tree</span><span class="p">%</span><span class="n">ndep</span>
+<span class="w">         </span><span class="k">if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="nb">allocated</span><span class="p">(</span><span class="n">tree</span><span class="p">%</span><span class="n">dep</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">proj_dir</span><span class="p">))</span><span class="w"> </span><span class="k">cycle</span>
+<span class="k">         if</span><span class="w"> </span><span class="p">(</span><span class="nb">len_trim</span><span class="p">(</span><span class="n">tree</span><span class="p">%</span><span class="n">dep</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">proj_dir</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">cycle</span>
+
+<span class="k">         if</span><span class="w"> </span><span class="p">(</span><span class="n">w</span><span class="p">%</span><span class="n">watch_deps</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">            call </span><span class="n">push_file_with_mask</span><span class="p">(</span><span class="n">files</span><span class="p">,</span><span class="w"> </span><span class="n">file_mask</span><span class="p">,</span><span class="w"> </span><span class="n">join_path</span><span class="p">(</span><span class="n">tree</span><span class="p">%</span><span class="n">dep</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">proj_dir</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;fpm.toml&quot;</span><span class="p">),</span><span class="w"> </span><span class="n">trim_or_empty</span><span class="p">(</span><span class="n">settings</span><span class="p">%</span><span class="n">build_dir</span><span class="p">),</span><span class="w"> </span><span class="mi">0_int64</span><span class="p">,</span><span class="w"> </span><span class="n">dep_dirs</span><span class="p">)</span>
+<span class="w">         </span><span class="k">else</span>
+<span class="k">            call </span><span class="n">push_file_with_mask</span><span class="p">(</span><span class="n">files</span><span class="p">,</span><span class="w"> </span><span class="n">file_mask</span><span class="p">,</span><span class="w"> </span><span class="n">join_path</span><span class="p">(</span><span class="n">tree</span><span class="p">%</span><span class="n">dep</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">proj_dir</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;fpm.toml&quot;</span><span class="p">),</span><span class="w"> </span><span class="n">trim_or_empty</span><span class="p">(</span><span class="n">settings</span><span class="p">%</span><span class="n">build_dir</span><span class="p">),</span><span class="w"> </span><span class="mi">0_int64</span><span class="p">)</span>
+<span class="w">         </span><span class="k">end if</span>
+<span class="k">      end do</span>
+
+<span class="k">      </span><span class="n">n_before</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">allocated</span><span class="p">(</span><span class="n">files</span><span class="p">))</span><span class="w"> </span><span class="n">n_before</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">size</span><span class="p">(</span><span class="n">files</span><span class="p">)</span>
+
+<span class="w">      </span><span class="k">call </span><span class="n">filter_watch_files</span><span class="p">(</span><span class="n">files</span><span class="p">,</span><span class="w"> </span><span class="n">w</span><span class="p">%</span><span class="k">include</span><span class="p">,</span><span class="w"> </span><span class="n">w</span><span class="p">%</span><span class="n">ignore</span><span class="p">,</span><span class="w"> </span><span class="n">file_mask</span><span class="p">)</span>
+
+<span class="w">      </span><span class="n">n_after</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">allocated</span><span class="p">(</span><span class="n">files</span><span class="p">))</span><span class="w"> </span><span class="n">n_after</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">size</span><span class="p">(</span><span class="n">files</span><span class="p">)</span>
+
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">w</span><span class="p">%</span><span class="n">debug</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">         call </span><span class="n">log_info</span><span class="p">(</span><span class="n">w</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;debug: watch files filtered: &quot;</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="n">str</span><span class="p">(</span><span class="n">n_before</span><span class="p">)</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="s2">&quot; -&gt; &quot;</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="n">str</span><span class="p">(</span><span class="n">n_after</span><span class="p">))</span>
+<span class="w">      </span><span class="k">end if</span>
+
+<span class="k">      call </span><span class="nb">system_clock</span><span class="p">(</span><span class="n">tw1</span><span class="p">)</span>
+<span class="w">      </span><span class="n">secs_watch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">real</span><span class="p">(</span><span class="n">tw1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">tw0</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="kt">real</span><span class="p">(</span><span class="n">rate</span><span class="p">)</span>
+
+<span class="w">      </span><span class="n">build_secs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">secs_model</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">secs_targets</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">secs_watch</span>
+<span class="w">      </span><span class="n">manifest_key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0_int64</span>
+
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">w</span><span class="p">%</span><span class="n">verbosity</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">         call </span><span class="n">log_info</span><span class="p">(</span><span class="n">w</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;timings: model=&quot;</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="n">ftoa</span><span class="p">(</span><span class="n">secs_model</span><span class="p">)</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="s2">&quot;s targets=&quot;</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="n">ftoa</span><span class="p">(</span><span class="n">secs_targets</span><span class="p">)</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="s2">&quot;s watchlist=&quot;</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="n">ftoa</span><span class="p">(</span><span class="n">secs_watch</span><span class="p">)</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="s2">&quot;s&quot;</span><span class="p">)</span>
+<span class="w">         </span><span class="k">call </span><span class="n">log_info</span><span class="p">(</span><span class="n">w</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;targets: total=&quot;</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="n">str</span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">targets</span><span class="p">))</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="s2">&quot; closure=&quot;</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="n">str</span><span class="p">(</span><span class="nb">count</span><span class="p">(</span><span class="n">visited</span><span class="p">)))</span>
+<span class="w">      </span><span class="k">end if</span>
+
+<span class="k">      deallocate</span><span class="p">(</span><span class="n">package</span><span class="p">,</span><span class="w"> </span><span class="n">model</span><span class="p">)</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">allocated</span><span class="p">(</span><span class="n">targets</span><span class="p">))</span><span class="w"> </span><span class="k">deallocate</span><span class="p">(</span><span class="n">targets</span><span class="p">)</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">allocated</span><span class="p">(</span><span class="n">keep</span><span class="p">))</span><span class="w"> </span><span class="k">deallocate</span><span class="p">(</span><span class="n">keep</span><span class="p">)</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">allocated</span><span class="p">(</span><span class="n">visited</span><span class="p">))</span><span class="w"> </span><span class="k">deallocate</span><span class="p">(</span><span class="n">visited</span><span class="p">)</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">allocated</span><span class="p">(</span><span class="n">target_mask</span><span class="p">))</span><span class="w"> </span><span class="k">deallocate</span><span class="p">(</span><span class="n">target_mask</span><span class="p">)</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">allocated</span><span class="p">(</span><span class="n">dep_dirs</span><span class="p">))</span><span class="w"> </span><span class="k">deallocate</span><span class="p">(</span><span class="n">dep_dirs</span><span class="p">)</span>
+
+<span class="w">   </span><span class="k">contains</span>
+
+<span class="k">      subroutine </span><span class="n">collect_dep_dirs</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span><span class="w"> </span><span class="n">dep_dirs</span><span class="p">)</span>
+<span class="w">         </span><span class="k">type</span><span class="p">(</span><span class="n">dependency_tree_t</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">tree</span>
+<span class="w">         </span><span class="k">type</span><span class="p">(</span><span class="n">string_t</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">dep_dirs</span><span class="p">(:)</span>
+<span class="w">         </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">i</span>
+
+<span class="w">         </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">tree</span><span class="p">%</span><span class="n">ndep</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">            allocate</span><span class="p">(</span><span class="n">dep_dirs</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+<span class="w">            </span><span class="k">return</span>
+<span class="k">         end if</span>
+
+<span class="k">         allocate</span><span class="p">(</span><span class="n">dep_dirs</span><span class="p">(</span><span class="n">tree</span><span class="p">%</span><span class="n">ndep</span><span class="p">))</span>
+<span class="w">         </span><span class="k">do </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">tree</span><span class="p">%</span><span class="n">ndep</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">allocated</span><span class="p">(</span><span class="n">tree</span><span class="p">%</span><span class="n">dep</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">proj_dir</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
+<span class="k">               </span><span class="n">dep_dirs</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">normalize_path</span><span class="p">(</span><span class="nb">trim</span><span class="p">(</span><span class="n">tree</span><span class="p">%</span><span class="n">dep</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">proj_dir</span><span class="p">))</span>
+<span class="w">            </span><span class="k">else</span>
+<span class="k">               </span><span class="n">dep_dirs</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
+<span class="w">            </span><span class="k">end if</span>
+<span class="k">         end do</span>
+<span class="k">      end subroutine </span><span class="n">collect_dep_dirs</span>
+
+<span class="w">   </span><span class="k">end subroutine </span><span class="n">compute_watch_files_from_settings</span>
+</pre></div>
+
+    </section>
+    <br>
+    
+    </div>
+  </div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              fpm-watch
+ was developed by Seyed Ali Ghasemi<br>              &copy; 2026 <a rel="license" href="https://opensource.org/licenses/MIT">MIT</a>
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+ on 2026-02-24T23:32:32.813097+0000             </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>

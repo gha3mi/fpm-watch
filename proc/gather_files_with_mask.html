@@ -1,0 +1,862 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="Documentation for fpm-watch">
+    <meta name="author" content="Seyed Ali Ghasemi" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>gather_files_with_mask &ndash; fpm-watch</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">fpm-watch </a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/types.html">Derived Types</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <div class="row">
+    <h1>gather_files_with_mask
+      <small>Subroutine</small>
+      
+    </h1>
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+            <li class="list-inline-item" id="meta-license"><i class="fa fa-legal"></i> <a rel="license" href="https://opensource.org/licenses/MIT">MIT</a></li>
+
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title=" 2.1% of total for procedures.">60 statements</a>
+            </li>
+
+            <li class="list-inline-item" id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/watch_fpm_graph.f90"> Source File</a>
+            </li>
+        </ul>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+                <li class="breadcrumb-item"><a href='../sourcefile/watch_fpm_graph.f90.html'>watch_fpm_graph.f90</a></li>
+                <li class="breadcrumb-item"><a href='../module/watch_fpm_graph.html'>watch_fpm_graph</a></li>
+            <li class="breadcrumb-item active" aria-current="page">gather_files_with_mask</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
+  </script>
+
+  </div>
+  
+  <div class="row">
+    <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
+      <div id="sidebar">
+      <h3>Contents</h3>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    <div class="card card-primary">
+      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
+      <div class="list-group">
+        <a class="list-group-item" href="../proc/gather_files_with_mask.html#src">gather_files_with_mask</a>
+      </div>
+    </div>
+
+
+  </div>
+
+    </div>
+    
+    <div class="col-md-9" id='text'>
+    <h2>private  subroutine gather_files_with_mask(targets, visited, target_mask, files, file_mask, build_dir, dep_dirs)  
+</h2>
+    
+
+
+
+    <h3>Arguments</h3>
+        <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-targets~2"></span>
+              type(build_target_ptr),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>targets</strong>(:)</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-visited~2"></span>
+              logical,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>visited</strong>(:)</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-target_mask~2"></span>
+              integer(kind=int64),
+            </td>
+<td>intent(in),</td>
+              <td>optional,</td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>target_mask</strong>(:)</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-files~7"></span>
+              type(string_t),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>files</strong>(:)</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-file_mask~3"></span>
+              integer(kind=int64),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>file_mask</strong>(:)</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-build_dir~2"></span>
+              character(len=*),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>build_dir</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-dep_dirs~3"></span>
+              type(string_t),
+            </td>
+<td>intent(in),</td>
+              <td>optional,</td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>dep_dirs</strong>(:)</td>
+            <td>
+                
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <br>
+    <div class="card">
+      <div class="card-header">
+  <h3 class="card-title">Calls</h3>
+      </div>
+      <div class="card-body">
+  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: proc~~gather_files_with_mask~~CallsGraph Pages: 1 -->
+<svg id="procgather_files_with_maskCallsGraph" width="641pt" height="176pt"
+ viewBox="0.00 0.00 641.00 176.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~gather_files_with_mask~~CallsGraph" class="graph" transform="scale(0.894502 0.894502) rotate(0) translate(4 192.27)">
+<title>proc~~gather_files_with_mask~~CallsGraph</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-192.27 712.6,-192.27 712.6,4 -4,4"/>
+<!-- proc~gather_files_with_mask -->
+<g id="proc~~gather_files_with_mask~~CallsGraph_node1" class="node">
+<title>proc~gather_files_with_mask</title>
+<polygon fill="none" stroke="black" points="134.52,-129.27 0,-129.27 0,-105 134.52,-105 134.52,-129.27"/>
+<text xml:space="preserve" text-anchor="middle" x="67.26" y="-113.53" font-family="Helvetica,sans-Serif" font-size="10.50">gather_files_with_mask</text>
+</g>
+<!-- include_dependencies -->
+<g id="proc~~gather_files_with_mask~~CallsGraph_node2" class="node">
+<title>include_dependencies</title>
+<polygon fill="#777777" stroke="#777777" points="301.29,-150.27 170.52,-150.27 170.52,-126 301.29,-126 301.29,-150.27"/>
+<text xml:space="preserve" text-anchor="middle" x="235.9" y="-134.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">include_dependencies</text>
+</g>
+<!-- proc~gather_files_with_mask&#45;&gt;include_dependencies -->
+<g id="proc~~gather_files_with_mask~~CallsGraph_edge1" class="edge">
+<title>proc~gather_files_with_mask&#45;&gt;include_dependencies</title>
+<path fill="none" stroke="#ff0000" d="M134.6,-125.5C142.56,-126.5 150.73,-127.53 158.82,-128.55"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="158.29,-132.01 168.65,-129.79 159.16,-125.06 158.29,-132.01"/>
+</g>
+<!-- proc~vec_push_unique -->
+<g id="proc~~gather_files_with_mask~~CallsGraph_node3" class="node">
+<title>proc~vec_push_unique</title>
+<g id="a_proc~~gather_files_with_mask~~CallsGraph_node3"><a xlink:href="../proc/vec_push_unique.html" xlink:title="vec_push_unique">
+<polygon fill="#d9534f" stroke="#d9534f" points="287.41,-108.27 184.39,-108.27 184.39,-84 287.41,-84 287.41,-108.27"/>
+<text xml:space="preserve" text-anchor="middle" x="235.9" y="-92.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">vec_push_unique</text>
+</a>
+</g>
+</g>
+<!-- proc~gather_files_with_mask&#45;&gt;proc~vec_push_unique -->
+<g id="proc~~gather_files_with_mask~~CallsGraph_edge2" class="edge">
+<title>proc~gather_files_with_mask&#45;&gt;proc~vec_push_unique</title>
+<path fill="none" stroke="#ff0000" d="M134.6,-108.77C147.18,-107.19 160.3,-105.54 172.74,-103.97"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="172.96,-107.47 182.44,-102.75 172.08,-100.52 172.96,-107.47"/>
+</g>
+<!-- exists -->
+<g id="proc~~gather_files_with_mask~~CallsGraph_node4" class="node">
+<title>exists</title>
+<polygon fill="#777777" stroke="#777777" points="411.68,-188.27 357.68,-188.27 357.68,-164 411.68,-164 411.68,-188.27"/>
+<text xml:space="preserve" text-anchor="middle" x="384.68" y="-172.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">exists</text>
+</g>
+<!-- proc~vec_push_unique&#45;&gt;exists -->
+<g id="proc~~gather_files_with_mask~~CallsGraph_edge3" class="edge">
+<title>proc~vec_push_unique&#45;&gt;exists</title>
+<path fill="none" stroke="#00ffff" d="M283.66,-108.75C289.77,-111.15 295.81,-113.93 301.29,-117.13 320.03,-128.08 319.71,-137.41 337.29,-150.13 341.08,-152.87 345.18,-155.55 349.32,-158.07"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="347.23,-160.91 357.64,-162.9 350.75,-154.85 347.23,-160.91"/>
+</g>
+<!-- proc~is_ignored_path -->
+<g id="proc~~gather_files_with_mask~~CallsGraph_node5" class="node">
+<title>proc~is_ignored_path</title>
+<g id="a_proc~~gather_files_with_mask~~CallsGraph_node5"><a xlink:href="../proc/is_ignored_path.html" xlink:title="is_ignored_path">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="432.06,-66.27 337.29,-66.27 337.29,-42 432.06,-42 432.06,-66.27"/>
+<text xml:space="preserve" text-anchor="middle" x="384.68" y="-50.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">is_ignored_path</text>
+</a>
+</g>
+</g>
+<!-- proc~vec_push_unique&#45;&gt;proc~is_ignored_path -->
+<g id="proc~~gather_files_with_mask~~CallsGraph_edge4" class="edge">
+<title>proc~vec_push_unique&#45;&gt;proc~is_ignored_path</title>
+<path fill="none" stroke="#00ffff" d="M280.94,-83.53C296.03,-79.21 313.11,-74.33 328.95,-69.8"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="329.56,-73.26 338.22,-67.14 327.64,-66.53 329.56,-73.26"/>
+</g>
+<!-- proc~is_in_dep_dirs -->
+<g id="proc~~gather_files_with_mask~~CallsGraph_node6" class="node">
+<title>proc~is_in_dep_dirs</title>
+<g id="a_proc~~gather_files_with_mask~~CallsGraph_node6"><a xlink:href="../proc/is_in_dep_dirs.html" xlink:title="is_in_dep_dirs">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="427.19,-108.27 342.17,-108.27 342.17,-84 427.19,-84 427.19,-108.27"/>
+<text xml:space="preserve" text-anchor="middle" x="384.68" y="-92.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">is_in_dep_dirs</text>
+</a>
+</g>
+</g>
+<!-- proc~vec_push_unique&#45;&gt;proc~is_in_dep_dirs -->
+<g id="proc~~gather_files_with_mask~~CallsGraph_edge5" class="edge">
+<title>proc~vec_push_unique&#45;&gt;proc~is_in_dep_dirs</title>
+<path fill="none" stroke="#00ffff" d="M287.83,-96.13C301.67,-96.13 316.69,-96.13 330.65,-96.13"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="330.56,-99.64 340.56,-96.14 330.56,-92.64 330.56,-99.64"/>
+</g>
+<!-- proc~normalize_path -->
+<g id="proc~~gather_files_with_mask~~CallsGraph_node7" class="node">
+<title>proc~normalize_path</title>
+<g id="a_proc~~gather_files_with_mask~~CallsGraph_node7"><a xlink:href="../proc/normalize_path.html" xlink:title="normalize_path">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="585.33,-128.27 491.31,-128.27 491.31,-104 585.33,-104 585.33,-128.27"/>
+<text xml:space="preserve" text-anchor="middle" x="538.32" y="-112.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">normalize_path</text>
+</a>
+</g>
+</g>
+<!-- proc~vec_push_unique&#45;&gt;proc~normalize_path -->
+<g id="proc~~gather_files_with_mask~~CallsGraph_edge6" class="edge">
+<title>proc~vec_push_unique&#45;&gt;proc~normalize_path</title>
+<path fill="none" stroke="#00ffff" d="M287.14,-108.76C303.07,-112.19 320.82,-115.43 337.29,-117.13 385.08,-122.08 439.63,-121.39 479.68,-119.71"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="479.76,-123.21 489.59,-119.26 479.44,-116.22 479.76,-123.21"/>
+</g>
+<!-- proc~vec_grow -->
+<g id="proc~~gather_files_with_mask~~CallsGraph_node8" class="node">
+<title>proc~vec_grow</title>
+<g id="a_proc~~gather_files_with_mask~~CallsGraph_node8"><a xlink:href="../proc/vec_grow.html" xlink:title="vec_grow">
+<polygon fill="#d9534f" stroke="#d9534f" points="415.19,-24.27 354.17,-24.27 354.17,0 415.19,0 415.19,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="384.68" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">vec_grow</text>
+</a>
+</g>
+</g>
+<!-- proc~vec_push_unique&#45;&gt;proc~vec_grow -->
+<g id="proc~~gather_files_with_mask~~CallsGraph_edge7" class="edge">
+<title>proc~vec_push_unique&#45;&gt;proc~vec_grow</title>
+<path fill="none" stroke="#00ffff" d="M255.33,-83.51C275.12,-70.2 307.74,-49 337.29,-33.13 339.5,-31.95 341.8,-30.76 344.13,-29.6"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="345.57,-32.79 353.07,-25.3 342.54,-26.48 345.57,-32.79"/>
+</g>
+<!-- proc~is_ignored_path&#45;&gt;proc~normalize_path -->
+<g id="proc~~gather_files_with_mask~~CallsGraph_edge9" class="edge">
+<title>proc~is_ignored_path&#45;&gt;proc~normalize_path</title>
+<path fill="none" stroke="#cbff00" d="M414.3,-66.65C420.22,-69.36 426.37,-72.27 432.06,-75.13 448.41,-83.36 451.21,-87.99 468.06,-95.13 472.05,-96.82 476.21,-98.44 480.44,-99.97"/>
+<polygon fill="#cbff00" stroke="#cbff00" points="478.98,-103.17 489.58,-103.1 481.25,-96.55 478.98,-103.17"/>
+</g>
+<!-- proc~contains_path_fragment -->
+<g id="proc~~gather_files_with_mask~~CallsGraph_node9" class="node">
+<title>proc~contains_path_fragment</title>
+<g id="a_proc~~gather_files_with_mask~~CallsGraph_node9"><a xlink:href="../proc/contains_path_fragment.html" xlink:title="contains_path_fragment">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="608.58,-44.27 468.06,-44.27 468.06,-20 608.58,-20 608.58,-44.27"/>
+<text xml:space="preserve" text-anchor="middle" x="538.32" y="-28.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">contains_path_fragment</text>
+</a>
+</g>
+</g>
+<!-- proc~is_ignored_path&#45;&gt;proc~contains_path_fragment -->
+<g id="proc~~gather_files_with_mask~~CallsGraph_edge8" class="edge">
+<title>proc~is_ignored_path&#45;&gt;proc~contains_path_fragment</title>
+<path fill="none" stroke="#cbff00" d="M432.41,-47.35C440.07,-46.24 448.19,-45.07 456.4,-43.87"/>
+<polygon fill="#cbff00" stroke="#cbff00" points="456.71,-47.37 466.1,-42.47 455.7,-40.44 456.71,-47.37"/>
+</g>
+<!-- proc~starts_with -->
+<g id="proc~~gather_files_with_mask~~CallsGraph_node10" class="node">
+<title>proc~starts_with</title>
+<g id="a_proc~~gather_files_with_mask~~CallsGraph_node10"><a xlink:href="../proc/starts_with.html" xlink:title="starts_with">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="572.21,-86.27 504.44,-86.27 504.44,-62 572.21,-62 572.21,-86.27"/>
+<text xml:space="preserve" text-anchor="middle" x="538.32" y="-70.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">starts_with</text>
+</a>
+</g>
+</g>
+<!-- proc~is_ignored_path&#45;&gt;proc~starts_with -->
+<g id="proc~~gather_files_with_mask~~CallsGraph_edge10" class="edge">
+<title>proc~is_ignored_path&#45;&gt;proc~starts_with</title>
+<path fill="none" stroke="#cbff00" d="M432.41,-60.3C451.58,-62.83 473.67,-65.74 492.63,-68.24"/>
+<polygon fill="#cbff00" stroke="#cbff00" points="492.1,-71.7 502.47,-69.54 493.01,-64.76 492.1,-71.7"/>
+</g>
+<!-- proc~is_in_dep_dirs&#45;&gt;proc~normalize_path -->
+<g id="proc~~gather_files_with_mask~~CallsGraph_edge11" class="edge">
+<title>proc~is_in_dep_dirs&#45;&gt;proc~normalize_path</title>
+<path fill="none" stroke="#00ff66" d="M427.51,-101.65C443.62,-103.78 462.31,-106.24 479.66,-108.53"/>
+<polygon fill="#00ff66" stroke="#00ff66" points="478.94,-111.97 489.32,-109.8 479.86,-105.03 478.94,-111.97"/>
+</g>
+<!-- proc~is_in_dep_dirs&#45;&gt;proc~starts_with -->
+<g id="proc~~gather_files_with_mask~~CallsGraph_edge12" class="edge">
+<title>proc~is_in_dep_dirs&#45;&gt;proc~starts_with</title>
+<path fill="none" stroke="#00ff66" d="M427.51,-90.07C447.84,-87.12 472.26,-83.57 492.91,-80.58"/>
+<polygon fill="#00ff66" stroke="#00ff66" points="493.37,-84.05 502.76,-79.15 492.36,-77.12 493.37,-84.05"/>
+</g>
+<!-- proc~ends_with -->
+<g id="proc~~gather_files_with_mask~~CallsGraph_node11" class="node">
+<title>proc~ends_with</title>
+<g id="a_proc~~gather_files_with_mask~~CallsGraph_node11"><a xlink:href="../proc/ends_with.html" xlink:title="ends_with">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="708.6,-44.27 644.58,-44.27 644.58,-20 708.6,-20 708.6,-44.27"/>
+<text xml:space="preserve" text-anchor="middle" x="676.59" y="-28.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">ends_with</text>
+</a>
+</g>
+</g>
+<!-- proc~contains_path_fragment&#45;&gt;proc~ends_with -->
+<g id="proc~~gather_files_with_mask~~CallsGraph_edge13" class="edge">
+<title>proc~contains_path_fragment&#45;&gt;proc~ends_with</title>
+<path fill="none" stroke="#ff0000" d="M609.05,-32.13C617.13,-32.13 625.18,-32.13 632.74,-32.13"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="632.65,-35.64 642.65,-32.14 632.65,-28.64 632.65,-35.64"/>
+</g>
+</g>
+</svg>
+</div>                <script>
+                  var panprocgather_files_with_maskCallsGraph = svgPanZoom('#procgather_files_with_maskCallsGraph',
+                    {zoomEnabled: true, controlIconsEnabled: true, fit: true, center: true,}
+                  );
+                </script>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#CallsGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="CallsGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="641pt" height="28pt"
+ viewBox="0.00 0.00 641.00 28.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.873868 0.873868) rotate(0) translate(4 28.27)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-28.27 729.52,-28.27 729.52,4 -4,4"/>
+<!-- Subroutine -->
+<g id="node1" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="69.27,-24.27 0,-24.27 0,0 69.27,0 69.27,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="34.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node2" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="143.89,-24.27 87.38,-24.27 87.38,0 143.89,0 143.89,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="115.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node3" class="node">
+<title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="221.39,-24.27 161.88,-24.27 161.88,0 221.39,0 221.39,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="191.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Type Bound Procedure -->
+<g id="node4" class="node">
+<title>Type Bound Procedure</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="368.27,-24.27 239,-24.27 239,0 368.27,0 368.27,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="303.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type Bound Procedure</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node5" class="node">
+<title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="529.39,-24.27 385.88,-24.27 385.88,0 529.39,0 529.39,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="457.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node6" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="603.89,-24.27 547.38,-24.27 547.38,0 603.89,0 603.89,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="575.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node7" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="725.52,-24.27 621.75,-24.27 621.75,0 725.52,0 725.52,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="673.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.
+</p>
+ Where possible, edges connecting nodes are
+given different colours to make them easier to distinguish in
+large graphs.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+  <h3 class="card-title">Called by</h3>
+      </div>
+      <div class="card-body">
+  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: proc~~gather_files_with_mask~~CalledByGraph Pages: 1 -->
+<svg id="procgather_files_with_maskCalledByGraph" width="641pt" height="69pt"
+ viewBox="0.00 0.00 641.00 69.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~gather_files_with_mask~~CalledByGraph" class="graph" transform="scale(0.732697 0.732697) rotate(0) translate(4 90.27)">
+<title>proc~~gather_files_with_mask~~CalledByGraph</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-90.27 870.85,-90.27 870.85,4 -4,4"/>
+<!-- proc~gather_files_with_mask -->
+<g id="proc~~gather_files_with_mask~~CalledByGraph_node1" class="node">
+<title>proc~gather_files_with_mask</title>
+<polygon fill="none" stroke="black" points="866.85,-66.27 732.33,-66.27 732.33,-42 866.85,-42 866.85,-66.27"/>
+<text xml:space="preserve" text-anchor="middle" x="799.59" y="-50.53" font-family="Helvetica,sans-Serif" font-size="10.50">gather_files_with_mask</text>
+</g>
+<!-- proc~compute_watch_files_from_settings -->
+<g id="proc~~gather_files_with_mask~~CalledByGraph_node2" class="node">
+<title>proc~compute_watch_files_from_settings</title>
+<g id="a_proc~~gather_files_with_mask~~CalledByGraph_node2"><a xlink:href="../proc/compute_watch_files_from_settings.html" xlink:title="compute_watch_files_from_settings">
+<polygon fill="#d9534f" stroke="#d9534f" points="696.33,-66.27 497.31,-66.27 497.31,-42 696.33,-42 696.33,-66.27"/>
+<text xml:space="preserve" text-anchor="middle" x="596.82" y="-50.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">compute_watch_files_from_settings</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_watch_files_from_settings&#45;&gt;proc~gather_files_with_mask -->
+<g id="proc~~gather_files_with_mask~~CalledByGraph_edge1" class="edge">
+<title>proc~compute_watch_files_from_settings&#45;&gt;proc~gather_files_with_mask</title>
+<path fill="none" stroke="#ff0000" d="M696.73,-54.13C704.78,-54.13 712.84,-54.13 720.71,-54.13"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="720.55,-57.64 730.55,-54.14 720.55,-50.64 720.55,-57.64"/>
+</g>
+<!-- proc~rebuild_watch_list -->
+<g id="proc~~gather_files_with_mask~~CalledByGraph_node3" class="node">
+<title>proc~rebuild_watch_list</title>
+<g id="a_proc~~gather_files_with_mask~~CalledByGraph_node3"><a xlink:href="../proc/rebuild_watch_list.html" xlink:title="rebuild_watch_list">
+<polygon fill="#d9534f" stroke="#d9534f" points="461.31,-66.27 356.04,-66.27 356.04,-42 461.31,-42 461.31,-66.27"/>
+<text xml:space="preserve" text-anchor="middle" x="408.67" y="-50.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rebuild_watch_list</text>
+</a>
+</g>
+</g>
+<!-- proc~rebuild_watch_list&#45;&gt;proc~compute_watch_files_from_settings -->
+<g id="proc~~gather_files_with_mask~~CalledByGraph_edge2" class="edge">
+<title>proc~rebuild_watch_list&#45;&gt;proc~compute_watch_files_from_settings</title>
+<path fill="none" stroke="#ff0000" d="M461.53,-54.13C469.14,-54.13 477.22,-54.13 485.49,-54.13"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="485.34,-57.64 495.34,-54.14 485.34,-50.64 485.34,-57.64"/>
+</g>
+<!-- proc~handle_manifest_change -->
+<g id="proc~~gather_files_with_mask~~CalledByGraph_node4" class="node">
+<title>proc~handle_manifest_change</title>
+<g id="a_proc~~gather_files_with_mask~~CalledByGraph_node4"><a xlink:href="../proc/handle_manifest_change.html" xlink:title="handle_manifest_change">
+<polygon fill="#d9534f" stroke="#d9534f" points="320.04,-66.27 175.02,-66.27 175.02,-42 320.04,-42 320.04,-66.27"/>
+<text xml:space="preserve" text-anchor="middle" x="247.53" y="-50.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">handle_manifest_change</text>
+</a>
+</g>
+</g>
+<!-- proc~handle_manifest_change&#45;&gt;proc~rebuild_watch_list -->
+<g id="proc~~gather_files_with_mask~~CalledByGraph_edge3" class="edge">
+<title>proc~handle_manifest_change&#45;&gt;proc~rebuild_watch_list</title>
+<path fill="none" stroke="#ff0000" d="M320.19,-54.13C328.28,-54.13 336.48,-54.13 344.46,-54.13"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="344.42,-57.64 354.42,-54.14 344.42,-50.64 344.42,-57.64"/>
+</g>
+<!-- proc~watcher_init -->
+<g id="proc~~gather_files_with_mask~~CalledByGraph_node5" class="node">
+<title>proc~watcher_init</title>
+<g id="a_proc~~gather_files_with_mask~~CalledByGraph_node5"><a xlink:href="../proc/watcher_init.html" xlink:title="watcher_t%watcher_init">
+<polygon fill="#d9534f" stroke="#d9534f" points="316.29,-24.27 178.77,-24.27 178.77,0 316.29,0 316.29,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="247.53" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">watcher_t%watcher_init</text>
+</a>
+</g>
+</g>
+<!-- proc~watcher_init&#45;&gt;proc~rebuild_watch_list -->
+<g id="proc~~gather_files_with_mask~~CalledByGraph_edge4" class="edge">
+<title>proc~watcher_init&#45;&gt;proc~rebuild_watch_list</title>
+<path fill="none" stroke="#ff0000" d="M296.28,-24.74C312.96,-29.14 331.87,-34.13 349.32,-38.73"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="347.93,-41.99 358.5,-41.16 349.72,-35.22 347.93,-41.99"/>
+</g>
+<!-- proc~watcher_run -->
+<g id="proc~~gather_files_with_mask~~CalledByGraph_node6" class="node">
+<title>proc~watcher_run</title>
+<g id="a_proc~~gather_files_with_mask~~CalledByGraph_node6"><a xlink:href="../proc/watcher_run.html" xlink:title="watcher_t%watcher_run">
+<polygon fill="#d9534f" stroke="#d9534f" points="139.02,-86.27 0,-86.27 0,-62 139.02,-62 139.02,-86.27"/>
+<text xml:space="preserve" text-anchor="middle" x="69.51" y="-70.54" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">watcher_t%watcher_run</text>
+</a>
+</g>
+</g>
+<!-- proc~watcher_run&#45;&gt;proc~rebuild_watch_list -->
+<g id="proc~~gather_files_with_mask~~CalledByGraph_edge5" class="edge">
+<title>proc~watcher_run&#45;&gt;proc~rebuild_watch_list</title>
+<path fill="none" stroke="#ff0000" d="M139.34,-78.89C189.6,-81.27 259.27,-82.31 320.04,-75.14 330.76,-73.87 342.08,-71.76 352.88,-69.35"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="353.5,-72.8 362.43,-67.1 351.9,-65.99 353.5,-72.8"/>
+</g>
+<!-- proc~watcher_run&#45;&gt;proc~handle_manifest_change -->
+<g id="proc~~gather_files_with_mask~~CalledByGraph_edge6" class="edge">
+<title>proc~watcher_run&#45;&gt;proc~handle_manifest_change</title>
+<path fill="none" stroke="#ff0000" d="M139.32,-66.32C147.18,-65.42 155.26,-64.5 163.29,-63.59"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="163.53,-67.09 173.07,-62.48 162.74,-60.13 163.53,-67.09"/>
+</g>
+</g>
+</svg>
+</div>                <script>
+                  var panprocgather_files_with_maskCalledByGraph = svgPanZoom('#procgather_files_with_maskCalledByGraph',
+                    {zoomEnabled: true, controlIconsEnabled: true, fit: true, center: true,}
+                  );
+                </script>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#CalledByGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="CalledByGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="641pt" height="28pt"
+ viewBox="0.00 0.00 641.00 28.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.873868 0.873868) rotate(0) translate(4 28.27)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-28.27 729.52,-28.27 729.52,4 -4,4"/>
+<!-- Subroutine -->
+<g id="node1" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="69.27,-24.27 0,-24.27 0,0 69.27,0 69.27,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="34.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node2" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="143.89,-24.27 87.38,-24.27 87.38,0 143.89,0 143.89,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="115.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node3" class="node">
+<title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="221.39,-24.27 161.88,-24.27 161.88,0 221.39,0 221.39,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="191.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Type Bound Procedure -->
+<g id="node4" class="node">
+<title>Type Bound Procedure</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="368.27,-24.27 239,-24.27 239,0 368.27,0 368.27,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="303.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type Bound Procedure</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node5" class="node">
+<title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="529.39,-24.27 385.88,-24.27 385.88,0 529.39,0 529.39,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="457.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node6" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="603.89,-24.27 547.38,-24.27 547.38,0 603.89,0 603.89,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="575.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node7" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="725.52,-24.27 621.75,-24.27 621.75,0 725.52,0 725.52,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="673.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.
+</p>
+ Where possible, edges connecting nodes are
+given different colours to make them easier to distinguish in
+large graphs.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+
+
+    
+    
+
+    
+    
+
+
+
+    
+    <section>
+    <h2><span class="anchor" id="src"></span>Source Code</h2>
+    <div class="hl codehilite"><pre><span></span><span class="w">   </span><span class="k">subroutine </span><span class="n">gather_files_with_mask</span><span class="p">(</span><span class="n">targets</span><span class="p">,</span><span class="w"> </span><span class="n">visited</span><span class="p">,</span><span class="w"> </span><span class="n">target_mask</span><span class="p">,</span><span class="w"> </span><span class="n">files</span><span class="p">,</span><span class="w"> </span><span class="n">file_mask</span><span class="p">,</span><span class="w"> </span><span class="n">build_dir</span><span class="p">,</span><span class="w"> </span><span class="n">dep_dirs</span><span class="p">)</span>
+<span class="w">      </span><span class="k">type</span><span class="p">(</span><span class="n">build_target_ptr</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">targets</span><span class="p">(:)</span>
+<span class="w">      </span><span class="kt">logical</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">visited</span><span class="p">(:)</span>
+<span class="w">      </span><span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="w"> </span><span class="k">optional</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">target_mask</span><span class="p">(:)</span>
+<span class="w">      </span><span class="k">type</span><span class="p">(</span><span class="n">string_t</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">files</span><span class="p">(:)</span>
+<span class="w">      </span><span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">file_mask</span><span class="p">(:)</span>
+<span class="w">      </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">build_dir</span>
+<span class="w">      </span><span class="k">type</span><span class="p">(</span><span class="n">string_t</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="w"> </span><span class="k">optional</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">dep_dirs</span><span class="p">(:)</span>
+
+<span class="w">      </span><span class="k">type</span><span class="p">(</span><span class="n">string_t</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">buf</span><span class="p">(:)</span>
+<span class="w">      </span><span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">mbuf</span><span class="p">(:)</span>
+<span class="w">      </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="n">cap</span>
+<span class="w">      </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">j</span>
+<span class="w">      </span><span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">m</span>
+
+<span class="w">      </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">      </span><span class="n">cap</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">256</span>
+<span class="w">      </span><span class="k">allocate</span><span class="p">(</span><span class="n">buf</span><span class="p">(</span><span class="n">cap</span><span class="p">),</span><span class="w"> </span><span class="n">mbuf</span><span class="p">(</span><span class="n">cap</span><span class="p">))</span>
+
+<span class="w">      </span><span class="k">do </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="p">(</span><span class="n">targets</span><span class="p">)</span>
+<span class="w">         </span><span class="k">if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="n">visited</span><span class="p">(</span><span class="n">i</span><span class="p">))</span><span class="w"> </span><span class="k">cycle</span>
+<span class="k">         if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="nb">allocated</span><span class="p">(</span><span class="n">targets</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">ptr</span><span class="p">%</span><span class="n">source</span><span class="p">))</span><span class="w"> </span><span class="k">cycle</span>
+
+<span class="k">         </span><span class="n">m</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0_int64</span>
+<span class="w">         </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">target_mask</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
+<span class="k">            if</span><span class="w"> </span><span class="p">(</span><span class="nb">allocated</span><span class="p">(</span><span class="n">target_mask</span><span class="p">))</span><span class="w"> </span><span class="n">m</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">target_mask</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+<span class="w">         </span><span class="k">end if</span>
+
+<span class="k">         if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">dep_dirs</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
+<span class="k">            call </span><span class="n">vec_push_unique</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span><span class="w"> </span><span class="n">mbuf</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="n">cap</span><span class="p">,</span><span class="w"> </span><span class="n">targets</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">ptr</span><span class="p">%</span><span class="n">source</span><span class="p">%</span><span class="n">file_name</span><span class="p">,</span><span class="w"> </span><span class="n">build_dir</span><span class="p">,</span><span class="w"> </span><span class="n">m</span><span class="p">,</span><span class="w"> </span><span class="n">dep_dirs</span><span class="p">)</span>
+<span class="w">         </span><span class="k">else</span>
+<span class="k">            call </span><span class="n">vec_push_unique</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span><span class="w"> </span><span class="n">mbuf</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="n">cap</span><span class="p">,</span><span class="w"> </span><span class="n">targets</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">ptr</span><span class="p">%</span><span class="n">source</span><span class="p">%</span><span class="n">file_name</span><span class="p">,</span><span class="w"> </span><span class="n">build_dir</span><span class="p">,</span><span class="w"> </span><span class="n">m</span><span class="p">)</span>
+<span class="w">         </span><span class="k">end if</span>
+
+<span class="k">         if</span><span class="w"> </span><span class="p">(</span><span class="nb">allocated</span><span class="p">(</span><span class="n">targets</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">ptr</span><span class="p">%</span><span class="n">source</span><span class="p">%</span><span class="n">include_dependencies</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
+<span class="k">            do </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="p">(</span><span class="n">targets</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">ptr</span><span class="p">%</span><span class="n">source</span><span class="p">%</span><span class="n">include_dependencies</span><span class="p">)</span>
+<span class="w">               </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">dep_dirs</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
+<span class="k">                  call </span><span class="n">vec_push_unique</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span><span class="w"> </span><span class="n">mbuf</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="n">cap</span><span class="p">,</span><span class="w"> </span><span class="n">targets</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">ptr</span><span class="p">%</span><span class="n">source</span><span class="p">%</span><span class="n">include_dependencies</span><span class="p">(</span><span class="n">j</span><span class="p">)%</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="n">build_dir</span><span class="p">,</span><span class="w"> </span><span class="n">m</span><span class="p">,</span><span class="w"> </span><span class="n">dep_dirs</span><span class="p">)</span>
+<span class="w">               </span><span class="k">else</span>
+<span class="k">                  call </span><span class="n">vec_push_unique</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span><span class="w"> </span><span class="n">mbuf</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="n">cap</span><span class="p">,</span><span class="w"> </span><span class="n">targets</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">ptr</span><span class="p">%</span><span class="n">source</span><span class="p">%</span><span class="n">include_dependencies</span><span class="p">(</span><span class="n">j</span><span class="p">)%</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="n">build_dir</span><span class="p">,</span><span class="w"> </span><span class="n">m</span><span class="p">)</span>
+<span class="w">               </span><span class="k">end if</span>
+<span class="k">            end do</span>
+<span class="k">         end if</span>
+<span class="k">      end do</span>
+
+<span class="k">      call </span><span class="n">finalize_vec</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span><span class="w"> </span><span class="n">mbuf</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="n">files</span><span class="p">,</span><span class="w"> </span><span class="n">file_mask</span><span class="p">)</span>
+
+<span class="w">   </span><span class="k">contains</span>
+
+<span class="k">      subroutine </span><span class="n">finalize_vec</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span><span class="w"> </span><span class="n">mbuf</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="n">files</span><span class="p">,</span><span class="w"> </span><span class="n">file_mask</span><span class="p">)</span>
+<span class="w">         </span><span class="k">type</span><span class="p">(</span><span class="n">string_t</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">buf</span><span class="p">(:)</span>
+<span class="w">         </span><span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">mbuf</span><span class="p">(:)</span>
+<span class="w">         </span><span class="kt">integer</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">n</span>
+<span class="w">         </span><span class="k">type</span><span class="p">(</span><span class="n">string_t</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">files</span><span class="p">(:)</span>
+<span class="w">         </span><span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">file_mask</span><span class="p">(:)</span>
+<span class="w">         </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">k</span>
+
+<span class="w">         </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">n</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">            allocate</span><span class="p">(</span><span class="n">files</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span><span class="w"> </span><span class="n">file_mask</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+<span class="w">            </span><span class="k">deallocate</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span><span class="w"> </span><span class="n">mbuf</span><span class="p">)</span>
+<span class="w">            </span><span class="k">return</span>
+<span class="k">         end if</span>
+
+<span class="k">         allocate</span><span class="p">(</span><span class="n">files</span><span class="p">(</span><span class="n">n</span><span class="p">),</span><span class="w"> </span><span class="n">file_mask</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+<span class="w">         </span><span class="k">do </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">n</span>
+<span class="w">            </span><span class="k">call </span><span class="nb">move_alloc</span><span class="p">(</span><span class="n">buf</span><span class="p">(</span><span class="n">k</span><span class="p">)%</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="n">files</span><span class="p">(</span><span class="n">k</span><span class="p">)%</span><span class="n">s</span><span class="p">)</span>
+<span class="w">            </span><span class="n">file_mask</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mbuf</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+<span class="w">         </span><span class="k">end do</span>
+<span class="k">         deallocate</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span><span class="w"> </span><span class="n">mbuf</span><span class="p">)</span>
+<span class="w">      </span><span class="k">end subroutine </span><span class="n">finalize_vec</span>
+
+<span class="w">   </span><span class="k">end subroutine </span><span class="n">gather_files_with_mask</span>
+</pre></div>
+
+    </section>
+    <br>
+    
+    </div>
+  </div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              fpm-watch
+ was developed by Seyed Ali Ghasemi<br>              &copy; 2026 <a rel="license" href="https://opensource.org/licenses/MIT">MIT</a>
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+ on 2026-02-24T23:32:32.813097+0000             </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>

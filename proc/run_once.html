@@ -1,0 +1,618 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="Documentation for fpm-watch">
+    <meta name="author" content="Seyed Ali Ghasemi" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>run_once &ndash; fpm-watch</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">fpm-watch </a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/types.html">Derived Types</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <div class="row">
+    <h1>run_once
+      <small>Subroutine</small>
+      
+    </h1>
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+            <li class="list-inline-item" id="meta-license"><i class="fa fa-legal"></i> <a rel="license" href="https://opensource.org/licenses/MIT">MIT</a></li>
+
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title=" 0.4% of total for procedures.">11 statements</a>
+            </li>
+
+            <li class="list-inline-item" id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/watch_engine.f90"> Source File</a>
+            </li>
+        </ul>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+                <li class="breadcrumb-item"><a href='../sourcefile/watch_engine.f90.html'>watch_engine.f90</a></li>
+                <li class="breadcrumb-item"><a href='../module/watch_engine.html'>watch_engine</a></li>
+            <li class="breadcrumb-item active" aria-current="page">run_once</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
+  </script>
+
+  </div>
+  
+  <div class="row">
+    <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
+      <div id="sidebar">
+      <h3>Contents</h3>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    <div class="card card-primary">
+      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
+      <div class="list-group">
+        <a class="list-group-item" href="../proc/run_once.html#src">run_once</a>
+      </div>
+    </div>
+
+
+  </div>
+
+    </div>
+    
+    <div class="col-md-9" id='text'>
+    <h2>private  subroutine run_once(self, cmd0)  
+</h2>
+    
+
+    <p>Run the configured command once without change detection.</p>
+<p>Used for the optional "run on start" behavior.</p>
+
+
+    <h3>Arguments</h3>
+        <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-self~21"></span>
+              class(<a href='../type/watcher_t.html'>watcher_t</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>self</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-cmd0"></span>
+              character(len=*),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>cmd0</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <br>
+    <div class="card">
+      <div class="card-header">
+  <h3 class="card-title">Calls</h3>
+      </div>
+      <div class="card-body">
+  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: proc~~run_once~~CallsGraph Pages: 1 -->
+<svg id="procrun_onceCallsGraph" width="556pt" height="242pt"
+ viewBox="0.00 0.00 556.00 242.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~run_once~~CallsGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 238.27)">
+<title>proc~~run_once~~CallsGraph</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-238.27 552.31,-238.27 552.31,4 -4,4"/>
+<!-- proc~run_once -->
+<g id="proc~~run_once~~CallsGraph_node1" class="node">
+<title>proc~run_once</title>
+<polygon fill="none" stroke="black" points="61.02,-192.27 0,-192.27 0,-168 61.02,-168 61.02,-192.27"/>
+<text xml:space="preserve" text-anchor="middle" x="30.51" y="-176.53" font-family="Helvetica,sans-Serif" font-size="10.50">run_once</text>
+</g>
+<!-- proc~on_after_run_all -->
+<g id="proc~~run_once~~CallsGraph_node2" class="node">
+<title>proc~on_after_run_all</title>
+<g id="a_proc~~run_once~~CallsGraph_node2"><a xlink:href="../proc/on_after_run_all.html" xlink:title="feature_manager_t%on_after_run_all">
+<polygon fill="#d9534f" stroke="#d9534f" points="309.54,-234.27 101.52,-234.27 101.52,-210 309.54,-210 309.54,-234.27"/>
+<text xml:space="preserve" text-anchor="middle" x="205.53" y="-218.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">feature_manager_t%on_after_run_all</text>
+</a>
+</g>
+</g>
+<!-- proc~run_once&#45;&gt;proc~on_after_run_all -->
+<g id="proc~~run_once~~CallsGraph_edge1" class="edge">
+<title>proc~run_once&#45;&gt;proc~on_after_run_all</title>
+<path fill="none" stroke="#ff0000" d="M61.3,-190.5C72.42,-194.15 85.22,-198.1 97.02,-201.13 105.31,-203.27 114.01,-205.3 122.71,-207.19"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="121.72,-210.56 132.23,-209.21 123.17,-203.72 121.72,-210.56"/>
+</g>
+<!-- proc~on_before_run_all -->
+<g id="proc~~run_once~~CallsGraph_node3" class="node">
+<title>proc~on_before_run_all</title>
+<g id="a_proc~~run_once~~CallsGraph_node3"><a xlink:href="../proc/on_before_run_all.html" xlink:title="feature_manager_t%on_before_run_all">
+<polygon fill="#d9534f" stroke="#d9534f" points="314.04,-192.27 97.02,-192.27 97.02,-168 314.04,-168 314.04,-192.27"/>
+<text xml:space="preserve" text-anchor="middle" x="205.53" y="-176.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">feature_manager_t%on_before_run_all</text>
+</a>
+</g>
+</g>
+<!-- proc~run_once&#45;&gt;proc~on_before_run_all -->
+<g id="proc~~run_once~~CallsGraph_edge2" class="edge">
+<title>proc~run_once&#45;&gt;proc~on_before_run_all</title>
+<path fill="none" stroke="#ff0000" d="M61.25,-180.13C68.52,-180.13 76.75,-180.13 85.49,-180.13"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="85.3,-183.64 95.3,-180.14 85.3,-176.64 85.3,-183.64"/>
+</g>
+<!-- proc~run_command_and_report -->
+<g id="proc~~run_once~~CallsGraph_node4" class="node">
+<title>proc~run_command_and_report</title>
+<g id="a_proc~~run_once~~CallsGraph_node4"><a xlink:href="../proc/run_command_and_report.html" xlink:title="run_command_and_report">
+<polygon fill="#d9534f" stroke="#d9534f" points="281.42,-108.27 129.65,-108.27 129.65,-84 281.42,-84 281.42,-108.27"/>
+<text xml:space="preserve" text-anchor="middle" x="205.53" y="-92.54" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">run_command_and_report</text>
+</a>
+</g>
+</g>
+<!-- proc~run_once&#45;&gt;proc~run_command_and_report -->
+<g id="proc~~run_once~~CallsGraph_edge3" class="edge">
+<title>proc~run_once&#45;&gt;proc~run_command_and_report</title>
+<path fill="none" stroke="#ff0000" d="M57.41,-167.56C86.93,-153.23 135.37,-129.71 168.54,-113.61"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="169.9,-116.84 177.37,-109.32 166.85,-110.54 169.9,-116.84"/>
+</g>
+<!-- proc~feat_after_noop -->
+<g id="proc~~run_once~~CallsGraph_node6" class="node">
+<title>proc~feat_after_noop</title>
+<g id="a_proc~~run_once~~CallsGraph_node6"><a xlink:href="../proc/feat_after_noop.html" xlink:title="watch_feature_t%feat_after_noop">
+<polygon fill="#d9534f" stroke="#d9534f" points="543.81,-234.27 354.54,-234.27 354.54,-210 543.81,-210 543.81,-234.27"/>
+<text xml:space="preserve" text-anchor="middle" x="449.18" y="-218.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">watch_feature_t%feat_after_noop</text>
+</a>
+</g>
+</g>
+<!-- proc~on_after_run_all&#45;&gt;proc~feat_after_noop -->
+<g id="proc~~run_once~~CallsGraph_edge4" class="edge">
+<title>proc~on_after_run_all&#45;&gt;proc~feat_after_noop</title>
+<path fill="none" stroke="#ff0000" d="M309.71,-222.13C320.66,-222.13 331.81,-222.13 342.78,-222.13"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="342.62,-225.64 352.62,-222.14 342.62,-218.64 342.62,-225.64"/>
+</g>
+<!-- proc~feat_before_noop -->
+<g id="proc~~run_once~~CallsGraph_node7" class="node">
+<title>proc~feat_before_noop</title>
+<g id="a_proc~~run_once~~CallsGraph_node7"><a xlink:href="../proc/feat_before_noop.html" xlink:title="watch_feature_t%feat_before_noop">
+<polygon fill="#d9534f" stroke="#d9534f" points="548.31,-192.27 350.04,-192.27 350.04,-168 548.31,-168 548.31,-192.27"/>
+<text xml:space="preserve" text-anchor="middle" x="449.18" y="-176.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">watch_feature_t%feat_before_noop</text>
+</a>
+</g>
+</g>
+<!-- proc~on_before_run_all&#45;&gt;proc~feat_before_noop -->
+<g id="proc~~run_once~~CallsGraph_edge5" class="edge">
+<title>proc~on_before_run_all&#45;&gt;proc~feat_before_noop</title>
+<path fill="none" stroke="#00ff00" d="M314.28,-180.13C322.32,-180.13 330.44,-180.13 338.49,-180.13"/>
+<polygon fill="#00ff00" stroke="#00ff00" points="338.3,-183.64 348.3,-180.14 338.3,-176.64 338.3,-183.64"/>
+</g>
+<!-- colorize -->
+<g id="proc~~run_once~~CallsGraph_node5" class="node">
+<title>colorize</title>
+<polygon fill="#777777" stroke="#777777" points="476.18,-150.27 422.18,-150.27 422.18,-126 476.18,-126 476.18,-150.27"/>
+<text xml:space="preserve" text-anchor="middle" x="449.18" y="-134.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">colorize</text>
+</g>
+<!-- proc~run_command_and_report&#45;&gt;colorize -->
+<g id="proc~~run_once~~CallsGraph_edge6" class="edge">
+<title>proc~run_command_and_report&#45;&gt;colorize</title>
+<path fill="none" stroke="#0000ff" d="M279.03,-108.74C322.37,-116.27 375.64,-125.53 410.68,-131.62"/>
+<polygon fill="#0000ff" stroke="#0000ff" points="409.88,-135.03 420.34,-133.3 411.08,-128.14 409.88,-135.03"/>
+</g>
+<!-- proc~ftoa -->
+<g id="proc~~run_once~~CallsGraph_node8" class="node">
+<title>proc~ftoa</title>
+<g id="a_proc~~run_once~~CallsGraph_node8"><a xlink:href="../proc/ftoa.html" xlink:title="ftoa">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="476.18,-108.27 422.18,-108.27 422.18,-84 476.18,-84 476.18,-108.27"/>
+<text xml:space="preserve" text-anchor="middle" x="449.18" y="-92.54" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">ftoa</text>
+</a>
+</g>
+</g>
+<!-- proc~run_command_and_report&#45;&gt;proc~ftoa -->
+<g id="proc~~run_once~~CallsGraph_edge7" class="edge">
+<title>proc~run_command_and_report&#45;&gt;proc~ftoa</title>
+<path fill="none" stroke="#0000ff" d="M281.66,-96.14C324.42,-96.14 376.13,-96.14 410.47,-96.14"/>
+<polygon fill="#0000ff" stroke="#0000ff" points="410.33,-99.64 420.33,-96.14 410.33,-92.64 410.33,-99.64"/>
+</g>
+<!-- run -->
+<g id="proc~~run_once~~CallsGraph_node9" class="node">
+<title>run</title>
+<polygon fill="#777777" stroke="#777777" points="476.18,-66.27 422.18,-66.27 422.18,-42 476.18,-42 476.18,-66.27"/>
+<text xml:space="preserve" text-anchor="middle" x="449.18" y="-50.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">run</text>
+</g>
+<!-- proc~run_command_and_report&#45;&gt;run -->
+<g id="proc~~run_once~~CallsGraph_edge8" class="edge">
+<title>proc~run_command_and_report&#45;&gt;run</title>
+<path fill="none" stroke="#0000ff" d="M279.03,-83.53C322.37,-76 375.64,-66.74 410.68,-60.65"/>
+<polygon fill="#0000ff" stroke="#0000ff" points="411.08,-64.13 420.34,-58.97 409.88,-57.24 411.08,-64.13"/>
+</g>
+<!-- str -->
+<g id="proc~~run_once~~CallsGraph_node10" class="node">
+<title>str</title>
+<polygon fill="#777777" stroke="#777777" points="476.18,-24.27 422.18,-24.27 422.18,0 476.18,0 476.18,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="449.18" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">str</text>
+</g>
+<!-- proc~run_command_and_report&#45;&gt;str -->
+<g id="proc~~run_once~~CallsGraph_edge9" class="edge">
+<title>proc~run_command_and_report&#45;&gt;str</title>
+<path fill="none" stroke="#0000ff" d="M231.08,-83.52C259.19,-69.52 306.93,-47.05 350.04,-33.13 369.72,-26.78 392.24,-21.81 410.75,-18.3"/>
+<polygon fill="#0000ff" stroke="#0000ff" points="411.27,-21.76 420.48,-16.52 410.02,-14.87 411.27,-21.76"/>
+</g>
+</g>
+</svg>
+</div>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#CallsGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="CallsGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="641pt" height="28pt"
+ viewBox="0.00 0.00 641.00 28.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.873868 0.873868) rotate(0) translate(4 28.27)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-28.27 729.52,-28.27 729.52,4 -4,4"/>
+<!-- Subroutine -->
+<g id="node1" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="69.27,-24.27 0,-24.27 0,0 69.27,0 69.27,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="34.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node2" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="143.89,-24.27 87.38,-24.27 87.38,0 143.89,0 143.89,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="115.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node3" class="node">
+<title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="221.39,-24.27 161.88,-24.27 161.88,0 221.39,0 221.39,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="191.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Type Bound Procedure -->
+<g id="node4" class="node">
+<title>Type Bound Procedure</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="368.27,-24.27 239,-24.27 239,0 368.27,0 368.27,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="303.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type Bound Procedure</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node5" class="node">
+<title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="529.39,-24.27 385.88,-24.27 385.88,0 529.39,0 529.39,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="457.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node6" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="603.89,-24.27 547.38,-24.27 547.38,0 603.89,0 603.89,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="575.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node7" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="725.52,-24.27 621.75,-24.27 621.75,0 725.52,0 725.52,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="673.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.
+</p>
+ Where possible, edges connecting nodes are
+given different colours to make them easier to distinguish in
+large graphs.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+  <h3 class="card-title">Called by</h3>
+      </div>
+      <div class="card-body">
+  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: proc~~run_once~~CalledByGraph Pages: 1 -->
+<svg id="procrun_onceCalledByGraph" width="243pt" height="32pt"
+ viewBox="0.00 0.00 243.00 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~run_once~~CalledByGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 28.27)">
+<title>proc~~run_once~~CalledByGraph</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-28.27 238.54,-28.27 238.54,4 -4,4"/>
+<!-- proc~run_once -->
+<g id="proc~~run_once~~CalledByGraph_node1" class="node">
+<title>proc~run_once</title>
+<polygon fill="none" stroke="black" points="234.54,-24.27 173.52,-24.27 173.52,0 234.54,0 234.54,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="204.03" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50">run_once</text>
+</g>
+<!-- proc~watcher_init -->
+<g id="proc~~run_once~~CalledByGraph_node2" class="node">
+<title>proc~watcher_init</title>
+<g id="a_proc~~run_once~~CalledByGraph_node2"><a xlink:href="../proc/watcher_init.html" xlink:title="watcher_t%watcher_init">
+<polygon fill="#d9534f" stroke="#d9534f" points="137.52,-24.27 0,-24.27 0,0 137.52,0 137.52,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="68.76" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">watcher_t%watcher_init</text>
+</a>
+</g>
+</g>
+<!-- proc~watcher_init&#45;&gt;proc~run_once -->
+<g id="proc~~run_once~~CalledByGraph_edge1" class="edge">
+<title>proc~watcher_init&#45;&gt;proc~run_once</title>
+<path fill="none" stroke="#ff0000" d="M137.96,-12.13C146.11,-12.13 154.23,-12.13 161.83,-12.13"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="161.77,-15.64 171.77,-12.14 161.77,-8.64 161.77,-15.64"/>
+</g>
+</g>
+</svg>
+</div>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#CalledByGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="CalledByGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="641pt" height="28pt"
+ viewBox="0.00 0.00 641.00 28.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.873868 0.873868) rotate(0) translate(4 28.27)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-28.27 729.52,-28.27 729.52,4 -4,4"/>
+<!-- Subroutine -->
+<g id="node1" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="69.27,-24.27 0,-24.27 0,0 69.27,0 69.27,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="34.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node2" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="143.89,-24.27 87.38,-24.27 87.38,0 143.89,0 143.89,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="115.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node3" class="node">
+<title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="221.39,-24.27 161.88,-24.27 161.88,0 221.39,0 221.39,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="191.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Type Bound Procedure -->
+<g id="node4" class="node">
+<title>Type Bound Procedure</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="368.27,-24.27 239,-24.27 239,0 368.27,0 368.27,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="303.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type Bound Procedure</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node5" class="node">
+<title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="529.39,-24.27 385.88,-24.27 385.88,0 529.39,0 529.39,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="457.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node6" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="603.89,-24.27 547.38,-24.27 547.38,0 603.89,0 603.89,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="575.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node7" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="725.52,-24.27 621.75,-24.27 621.75,0 725.52,0 725.52,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="673.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.
+</p>
+ Where possible, edges connecting nodes are
+given different colours to make them easier to distinguish in
+large graphs.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+
+
+    
+    
+
+    
+    
+
+
+
+    
+    <section>
+    <h2><span class="anchor" id="src"></span>Source Code</h2>
+    <div class="hl codehilite"><pre><span></span><span class="w">   </span><span class="k">subroutine </span><span class="n">run_once</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="n">cmd0</span><span class="p">)</span>
+<span class="w">      </span><span class="k">class</span><span class="p">(</span><span class="n">watcher_t</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">self</span>
+<span class="w">      </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">cmd0</span>
+<span class="w">      </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">cmd</span>
+<span class="w">      </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">exitstat</span>
+<span class="w">      </span><span class="kt">real</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">secs</span>
+<span class="w">      </span><span class="n">cmd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">trim</span><span class="p">(</span><span class="n">cmd0</span><span class="p">)</span>
+<span class="w">      </span><span class="k">call </span><span class="n">self</span><span class="p">%</span><span class="n">fm</span><span class="p">%</span><span class="n">on_before_run_all</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
+<span class="w">      </span><span class="k">call </span><span class="n">run_command_and_report</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span><span class="w"> </span><span class="n">self</span><span class="p">%</span><span class="n">cfg</span><span class="p">%</span><span class="n">w</span><span class="p">,</span><span class="w"> </span><span class="n">exitstat</span><span class="p">,</span><span class="w"> </span><span class="n">secs</span><span class="p">)</span>
+<span class="w">      </span><span class="k">call </span><span class="n">self</span><span class="p">%</span><span class="n">fm</span><span class="p">%</span><span class="n">on_after_run_all</span><span class="p">(</span><span class="n">exitstat</span><span class="p">,</span><span class="w"> </span><span class="n">secs</span><span class="p">)</span>
+<span class="w">   </span><span class="k">end subroutine </span><span class="n">run_once</span>
+</pre></div>
+
+    </section>
+    <br>
+    
+    </div>
+  </div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              fpm-watch
+ was developed by Seyed Ali Ghasemi<br>              &copy; 2026 <a rel="license" href="https://opensource.org/licenses/MIT">MIT</a>
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+ on 2026-02-24T23:32:32.813097+0000             </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>

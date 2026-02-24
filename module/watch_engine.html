@@ -1,0 +1,1517 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="Documentation for fpm-watch">
+    <meta name="author" content="Seyed Ali Ghasemi" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>watch_engine &ndash; fpm-watch</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">fpm-watch </a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/types.html">Derived Types</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <div class="row">
+    <h1>watch_engine
+      <small>Module</small>
+      
+    </h1>
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+            <li class="list-inline-item" id="meta-license"><i class="fa fa-legal"></i> <a rel="license" href="https://opensource.org/licenses/MIT">MIT</a></li>
+
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title=" 5.8% of total for modules and submodules.">183 statements</a>
+            </li>
+
+            <li class="list-inline-item" id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/watch_engine.f90"> Source File</a>
+            </li>
+        </ul>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+                <li class="breadcrumb-item"><a href='../sourcefile/watch_engine.f90.html'>watch_engine.f90</a></li>
+            <li class="breadcrumb-item active" aria-current="page">watch_engine</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
+  </script>
+
+  </div>
+
+  <div class="row">
+    <div class="col-md-3">
+        <div id="sidebar">
+      <h3>Contents</h3>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#types-0"
+         aria-expanded="false" aria-controls="types-0">
+         <h4 class="card-header bg-primary text-white">Derived Types</h4>
+      </a>
+      <div id="types-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../module/watch_engine.html#type-watcher_t">watcher_t</a>
+        </div>
+      </div>
+    </div>
+
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#funcs-0"
+         aria-expanded="false" aria-controls="funcs-0">
+         <h4 class="card-header bg-primary text-white">Functions</h4>
+      </a>
+      <div id="funcs-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../module/watch_engine.html#proc-any_manifest_changed">any_manifest_changed</a>
+        </div>
+      </div>
+    </div>
+
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#subs-0"
+         aria-expanded="false" aria-controls="subs-0">
+         <h4 class="card-header bg-primary text-white">Subroutines</h4>
+      </a>
+      <div id="subs-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../module/watch_engine.html#proc-handle_manifest_change">handle_manifest_change</a>
+            <a class="list-group-item" href="../module/watch_engine.html#proc-rebuild_watch_list">rebuild_watch_list</a>
+            <a class="list-group-item" href="../module/watch_engine.html#proc-run_once">run_once</a>
+            <a class="list-group-item" href="../module/watch_engine.html#proc-watcher_init">watcher_init</a>
+            <a class="list-group-item" href="../module/watch_engine.html#proc-watcher_run">watcher_run</a>
+        </div>
+      </div>
+    </div>
+
+  
+  
+  
+  
+  
+  
+  
+
+
+  </div>
+
+    </div>
+
+    <div class="col-md-9" id='text'>
+      <p>Watch loop engine and watcher state.</p>
+<p>This module contains the <code>watcher_t</code> type, which:
+- Builds and maintains the watch list,
+- Tracks file fingerprints for change detection,
+- Runs <code>fpm</code> commands when changes are detected,
+- Coordinates optional feature plugins.</p>
+<p>The engine is intentionally "poll-based" to remain portable across platforms.</p>
+<br>          <div class="card mb-4">
+      <h3 class="card-header card-title bg-light">Uses</h3>
+      <div class="card-body">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <ul class="list-inline">
+                  <li class="list-inline-item"><a href='watch_feature_factory.html'>watch_feature_factory</a></li>
+                  <li class="list-inline-item"><a href='watch_banner.html'>watch_banner</a></li>
+                  <li class="list-inline-item">fpm_filesystem</li>
+                  <li class="list-inline-item"><a href='watch_types.html'>watch_types</a></li>
+                  <li class="list-inline-item"><a href='http://fortranwiki.org/fortran/show/iso_fortran_env'>iso_fortran_env</a></li>
+                  <li class="list-inline-item">fpm_strings</li>
+                  <li class="list-inline-item"><a href='watch_log.html'>watch_log</a></li>
+                  <li class="list-inline-item"><a href='watch_feature_manager.html'>watch_feature_manager</a></li>
+                  <li class="list-inline-item"><a href='watch_exec.html'>watch_exec</a></li>
+                  <li class="list-inline-item"><a href='watch_fpm_graph.html'>watch_fpm_graph</a></li>
+                  <li class="list-inline-item"><a href='watch_time.html'>watch_time</a></li>
+                  <li class="list-inline-item"><a href='watch_util.html'>watch_util</a></li>
+                  <li class="list-inline-item"><a href='watch_fingerprint.html'>watch_fingerprint</a></li>
+              </ul>
+            </li>
+            <li class="list-group-item">
+              <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: module~~watch_engine~~UsesGraph Pages: 1 -->
+<svg id="modulewatch_engineUsesGraph" width="641pt" height="659pt"
+ viewBox="0.00 0.00 641.00 659.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="module~~watch_engine~~UsesGraph" class="graph" transform="scale(0.745895 0.745895) rotate(0) translate(4 879.05)">
+<title>module~~watch_engine~~UsesGraph</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-879.05 855.37,-879.05 855.37,4 -4,4"/>
+<!-- module~watch_engine -->
+<g id="module~~watch_engine~~UsesGraph_node1" class="node">
+<title>module~watch_engine</title>
+<polygon fill="none" stroke="black" points="851.37,-409.27 766.35,-409.27 766.35,-385 851.37,-385 851.37,-409.27"/>
+<text xml:space="preserve" text-anchor="middle" x="808.86" y="-393.53" font-family="Helvetica,sans-Serif" font-size="10.50">watch_engine</text>
+</g>
+<!-- fpm_filesystem -->
+<g id="module~~watch_engine~~UsesGraph_node2" class="node">
+<title>fpm_filesystem</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="244.29,-380.27 152.52,-380.27 152.52,-356 244.29,-356 244.29,-380.27"/>
+<text xml:space="preserve" text-anchor="middle" x="198.4" y="-364.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">fpm_filesystem</text>
+</g>
+<!-- module~watch_engine&#45;&gt;fpm_filesystem -->
+<g id="module~~watch_engine~~UsesGraph_edge1" class="edge">
+<title>module~watch_engine&#45;&gt;fpm_filesystem</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M493.82,-92.14C476.3,-87.39 351.14,-123.05 335.42,-132.13"/>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M333.42,-132.13C311.71,-144.68 296.58,-132.06 280.29,-151.13 224.19,-216.82 294.2,-271.63 244.29,-342.13 242.61,-344.51 240.63,-346.71 238.46,-348.72"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="236.41,-345.89 230.57,-354.73 240.65,-351.46 236.41,-345.89"/>
+</g>
+<!-- fpm_strings -->
+<g id="module~~watch_engine~~UsesGraph_node3" class="node">
+<title>fpm_strings</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="94.77,-712.27 21.75,-712.27 21.75,-688 94.77,-688 94.77,-712.27"/>
+<text xml:space="preserve" text-anchor="middle" x="58.26" y="-696.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">fpm_strings</text>
+</g>
+<!-- module~watch_engine&#45;&gt;fpm_strings -->
+<g id="module~~watch_engine~~UsesGraph_edge2" class="edge">
+<title>module~watch_engine&#45;&gt;fpm_strings</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M493.82,-780.13C439.75,-780.05 437.61,-818.38 388.56,-841.13 365.81,-851.69 359.26,-852.34 335.42,-860.13"/>
+</g>
+<!-- iso_fortran_env -->
+<g id="module~~watch_engine~~UsesGraph_node4" class="node">
+<title>iso_fortran_env</title>
+<g id="a_module~~watch_engine~~UsesGraph_node4"><a xlink:href="http://fortranwiki.org/fortran/show/iso_fortran_env" xlink:title="iso_fortran_env">
+<polygon fill="#337ab7" stroke="#337ab7" points="104.89,-496.27 11.62,-496.27 11.62,-472 104.89,-472 104.89,-496.27"/>
+<text xml:space="preserve" text-anchor="middle" x="58.26" y="-480.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">iso_fortran_env</text>
+</a>
+</g>
+</g>
+<!-- module~watch_engine&#45;&gt;iso_fortran_env -->
+<g id="module~~watch_engine~~UsesGraph_edge3" class="edge">
+<title>module~watch_engine&#45;&gt;iso_fortran_env</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M804.25,-384.7C792.34,-346.38 750.2,-230.36 666.71,-192.13"/>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M664.71,-192.13C585.4,-155.82 580.02,-114.96 495.82,-92.14"/>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M493.82,-92.14C463.23,-83.84 455.3,-82.87 424.56,-75.14 384.88,-65.15 376.29,-50.1 335.42,-52.13"/>
+</g>
+<!-- module~watch_banner -->
+<g id="module~~watch_engine~~UsesGraph_node5" class="node">
+<title>module~watch_banner</title>
+<g id="a_module~~watch_engine~~UsesGraph_node5"><a xlink:href="../module/watch_banner.html" xlink:title="watch_banner">
+<polygon fill="#337ab7" stroke="#337ab7" points="377.68,-832.27 291.16,-832.27 291.16,-808 377.68,-808 377.68,-832.27"/>
+<text xml:space="preserve" text-anchor="middle" x="334.42" y="-816.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">watch_banner</text>
+</a>
+</g>
+</g>
+<!-- module~watch_engine&#45;&gt;module~watch_banner -->
+<g id="module~~watch_engine~~UsesGraph_edge4" class="edge">
+<title>module~watch_engine&#45;&gt;module~watch_banner</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M493.82,-780.13C453.1,-780.13 408.23,-792.72 376.68,-803.77"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="375.74,-800.38 367.53,-807.07 378.12,-806.97 375.74,-800.38"/>
+</g>
+<!-- module~watch_exec -->
+<g id="module~~watch_engine~~UsesGraph_node6" class="node">
+<title>module~watch_exec</title>
+<g id="a_module~~watch_engine~~UsesGraph_node6"><a xlink:href="../module/watch_exec.html" xlink:title="watch_exec">
+<polygon fill="#337ab7" stroke="#337ab7" points="370.93,-752.27 297.91,-752.27 297.91,-728 370.93,-728 370.93,-752.27"/>
+<text xml:space="preserve" text-anchor="middle" x="334.42" y="-736.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">watch_exec</text>
+</a>
+</g>
+</g>
+<!-- module~watch_engine&#45;&gt;module~watch_exec -->
+<g id="module~~watch_engine~~UsesGraph_edge5" class="edge">
+<title>module~watch_engine&#45;&gt;module~watch_exec</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M493.82,-780.13C453.1,-780.13 408.23,-767.55 376.68,-756.5"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="378.12,-753.3 367.53,-753.2 375.74,-759.89 378.12,-753.3"/>
+</g>
+<!-- module~watch_feature_factory -->
+<g id="module~~watch_engine~~UsesGraph_node7" class="node">
+<title>module~watch_feature_factory</title>
+<g id="a_module~~watch_engine~~UsesGraph_node7"><a xlink:href="../module/watch_feature_factory.html" xlink:title="watch_feature_factory">
+<polygon fill="#337ab7" stroke="#337ab7" points="730.35,-614.27 601.08,-614.27 601.08,-590 730.35,-590 730.35,-614.27"/>
+<text xml:space="preserve" text-anchor="middle" x="665.71" y="-598.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">watch_feature_factory</text>
+</a>
+</g>
+</g>
+<!-- module~watch_engine&#45;&gt;module~watch_feature_factory -->
+<g id="module~~watch_engine~~UsesGraph_edge6" class="edge">
+<title>module~watch_engine&#45;&gt;module~watch_feature_factory</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M799.24,-409.65C775.92,-443.53 711.31,-537.37 681.78,-580.25"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="679.04,-578.06 676.26,-588.28 684.81,-582.02 679.04,-578.06"/>
+</g>
+<!-- module~watch_feature_manager -->
+<g id="module~~watch_engine~~UsesGraph_node8" class="node">
+<title>module~watch_feature_manager</title>
+<g id="a_module~~watch_engine~~UsesGraph_node8"><a xlink:href="../module/watch_feature_manager.html" xlink:title="watch_feature_manager">
+<polygon fill="#337ab7" stroke="#337ab7" points="565.08,-694.27 424.56,-694.27 424.56,-670 565.08,-670 565.08,-694.27"/>
+<text xml:space="preserve" text-anchor="middle" x="494.82" y="-678.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">watch_feature_manager</text>
+</a>
+</g>
+</g>
+<!-- module~watch_engine&#45;&gt;module~watch_feature_manager -->
+<g id="module~~watch_engine~~UsesGraph_edge7" class="edge">
+<title>module~watch_engine&#45;&gt;module~watch_feature_manager</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M808.42,-409.47C810.23,-466.89 809.09,-708.36 666.71,-780.13"/>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M664.71,-780.13C606.92,-809.27 541.38,-740.43 511.8,-703.55"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="514.6,-701.46 505.7,-695.72 509.08,-705.76 514.6,-701.46"/>
+</g>
+<!-- module~watch_fingerprint -->
+<g id="module~~watch_engine~~UsesGraph_node9" class="node">
+<title>module~watch_fingerprint</title>
+<g id="a_module~~watch_engine~~UsesGraph_node9"><a xlink:href="../module/watch_fingerprint.html" xlink:title="watch_fingerprint">
+<polygon fill="#337ab7" stroke="#337ab7" points="386.68,-104.27 282.16,-104.27 282.16,-80 386.68,-80 386.68,-104.27"/>
+<text xml:space="preserve" text-anchor="middle" x="334.42" y="-88.54" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">watch_fingerprint</text>
+</a>
+</g>
+</g>
+<!-- module~watch_engine&#45;&gt;module~watch_fingerprint -->
+<g id="module~~watch_engine~~UsesGraph_edge8" class="edge">
+<title>module~watch_engine&#45;&gt;module~watch_fingerprint</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M493.82,-92.14C463.13,-83.81 427.84,-83.01 398.37,-84.63"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="398.22,-81.13 388.48,-85.29 398.69,-88.12 398.22,-81.13"/>
+</g>
+<!-- module~watch_fpm_graph -->
+<g id="module~~watch_engine~~UsesGraph_node10" class="node">
+<title>module~watch_fpm_graph</title>
+<g id="a_module~~watch_engine~~UsesGraph_node10"><a xlink:href="../module/watch_fpm_graph.html" xlink:title="watch_fpm_graph">
+<polygon fill="#337ab7" stroke="#337ab7" points="547.83,-184.27 441.81,-184.27 441.81,-160 547.83,-160 547.83,-184.27"/>
+<text xml:space="preserve" text-anchor="middle" x="494.82" y="-168.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">watch_fpm_graph</text>
+</a>
+</g>
+</g>
+<!-- module~watch_engine&#45;&gt;module~watch_fpm_graph -->
+<g id="module~~watch_engine~~UsesGraph_edge9" class="edge">
+<title>module~watch_engine&#45;&gt;module~watch_fpm_graph</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M664.71,-192.13C633.92,-172.09 593.16,-166.81 559.4,-166.67"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="559.71,-163.17 549.75,-166.79 559.79,-170.17 559.71,-163.17"/>
+</g>
+<!-- module~watch_log -->
+<g id="module~~watch_engine~~UsesGraph_node11" class="node">
+<title>module~watch_log</title>
+<g id="a_module~~watch_engine~~UsesGraph_node11"><a xlink:href="../module/watch_log.html" xlink:title="watch_log">
+<polygon fill="#337ab7" stroke="#337ab7" points="366.81,-554.27 302.04,-554.27 302.04,-530 366.81,-530 366.81,-554.27"/>
+<text xml:space="preserve" text-anchor="middle" x="334.42" y="-538.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">watch_log</text>
+</a>
+</g>
+</g>
+<!-- module~watch_engine&#45;&gt;module~watch_log -->
+<g id="module~~watch_engine~~UsesGraph_edge10" class="edge">
+<title>module~watch_engine&#45;&gt;module~watch_log</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M664.71,-192.13C585.42,-140.53 463.3,-458.13 388.56,-516.13 384.82,-519.04 380.7,-521.74 376.46,-524.22"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="374.96,-521.05 367.81,-528.87 378.28,-527.22 374.96,-521.05"/>
+</g>
+<!-- module~watch_time -->
+<g id="module~~watch_engine~~UsesGraph_node12" class="node">
+<title>module~watch_time</title>
+<g id="a_module~~watch_engine~~UsesGraph_node12"><a xlink:href="../module/watch_time.html" xlink:title="watch_time">
+<polygon fill="#337ab7" stroke="#337ab7" points="701.85,-64.27 629.58,-64.27 629.58,-40 701.85,-40 701.85,-64.27"/>
+<text xml:space="preserve" text-anchor="middle" x="665.71" y="-48.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">watch_time</text>
+</a>
+</g>
+</g>
+<!-- module~watch_engine&#45;&gt;module~watch_time -->
+<g id="module~~watch_engine~~UsesGraph_edge11" class="edge">
+<title>module~watch_engine&#45;&gt;module~watch_time</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M804.03,-384.57C793.59,-350.71 763.16,-254.9 730.35,-178.13 714.49,-141.04 692.71,-99.54 679.19,-74.65"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="682.37,-73.17 674.5,-66.08 676.23,-76.54 682.37,-73.17"/>
+</g>
+<!-- module~watch_types -->
+<g id="module~~watch_engine~~UsesGraph_node13" class="node">
+<title>module~watch_types</title>
+<g id="a_module~~watch_engine~~UsesGraph_node13"><a xlink:href="../module/watch_types.html" xlink:title="watch_types">
+<polygon fill="#337ab7" stroke="#337ab7" points="236.79,-594.27 160.02,-594.27 160.02,-570 236.79,-570 236.79,-594.27"/>
+<text xml:space="preserve" text-anchor="middle" x="198.4" y="-578.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">watch_types</text>
+</a>
+</g>
+</g>
+<!-- module~watch_engine&#45;&gt;module~watch_types -->
+<g id="module~~watch_engine~~UsesGraph_edge12" class="edge">
+<title>module~watch_engine&#45;&gt;module~watch_types</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M664.71,-780.13C597.69,-813.93 570.88,-780.13 495.82,-780.13"/>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M493.82,-780.13C439.75,-780.13 437.21,-742.73 388.56,-719.13 341.98,-696.54 318.84,-710.7 280.29,-676.13 254.83,-653.31 268.01,-632.77 244.29,-608.13 241.87,-605.62 239.15,-603.27 236.29,-601.1"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="238.31,-598.24 228.05,-595.59 234.42,-604.06 238.31,-598.24"/>
+</g>
+<!-- module~watch_util -->
+<g id="module~~watch_engine~~UsesGraph_node14" class="node">
+<title>module~watch_util</title>
+<g id="a_module~~watch_engine~~UsesGraph_node14"><a xlink:href="../module/watch_util.html" xlink:title="watch_util">
+<polygon fill="#337ab7" stroke="#337ab7" points="230.79,-792.27 166.02,-792.27 166.02,-768 230.79,-768 230.79,-792.27"/>
+<text xml:space="preserve" text-anchor="middle" x="198.4" y="-776.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">watch_util</text>
+</a>
+</g>
+</g>
+<!-- module~watch_engine&#45;&gt;module~watch_util -->
+<g id="module~~watch_engine~~UsesGraph_edge13" class="edge">
+<title>module~watch_engine&#45;&gt;module~watch_util</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M493.82,-780.13C423.42,-780.03 395.71,-743.78 335.42,-780.13"/>
+</g>
+<!-- module~watch_banner&#45;&gt;fpm_strings -->
+<g id="module~~watch_engine~~UsesGraph_edge16" class="edge">
+<title>module~watch_banner&#45;&gt;fpm_strings</title>
+<path fill="none" stroke="#9cff00" stroke-dasharray="5,2" d="M197.4,-820.13C178.53,-809.5 170.24,-813.59 152.52,-801.13 120.72,-778.77 91.63,-743.98 74.67,-721.62"/>
+<polygon fill="#9cff00" stroke="#9cff00" points="77.65,-719.76 68.88,-713.81 72.03,-723.93 77.65,-719.76"/>
+</g>
+<!-- module~watch_banner&#45;&gt;iso_fortran_env -->
+<g id="module~~watch_engine~~UsesGraph_edge17" class="edge">
+<title>module~watch_banner&#45;&gt;iso_fortran_env</title>
+<path fill="none" stroke="#9cff00" stroke-dasharray="5,2" d="M290.86,-830.37C263.08,-834.7 226.97,-835.67 199.4,-820.13"/>
+<path fill="none" stroke="#9cff00" stroke-dasharray="5,2" d="M197.4,-820.13C178.53,-809.5 165.8,-818.25 152.52,-801.13 86.42,-715.9 157.94,-660.72 116.52,-561.13 107.73,-539.99 91.86,-519.35 79.06,-504.77"/>
+<polygon fill="#9cff00" stroke="#9cff00" points="81.91,-502.7 72.59,-497.65 76.73,-507.4 81.91,-502.7"/>
+</g>
+<!-- module~watch_banner&#45;&gt;module~watch_types -->
+<g id="module~~watch_engine~~UsesGraph_edge18" class="edge">
+<title>module~watch_banner&#45;&gt;module~watch_types</title>
+<path fill="none" stroke="#9cff00" stroke-dasharray="5,2" d="M318.57,-807.59C306.47,-796.56 289.88,-779.46 280.29,-761.13 247.9,-699.24 285.92,-664.23 244.29,-608.13 242.55,-605.79 240.54,-603.63 238.34,-601.63"/>
+<polygon fill="#9cff00" stroke="#9cff00" points="240.49,-598.87 230.4,-595.67 236.29,-604.47 240.49,-598.87"/>
+</g>
+<!-- module~watch_banner&#45;&gt;module~watch_util -->
+<g id="module~~watch_engine~~UsesGraph_edge19" class="edge">
+<title>module~watch_banner&#45;&gt;module~watch_util</title>
+<path fill="none" stroke="#9cff00" stroke-dasharray="5,2" d="M291.39,-807.59C275.55,-802.86 257.53,-797.48 241.67,-792.75"/>
+<polygon fill="#9cff00" stroke="#9cff00" points="243.12,-789.53 232.53,-790.02 241.11,-796.24 243.12,-789.53"/>
+</g>
+<!-- face -->
+<g id="module~~watch_engine~~UsesGraph_node15" class="node">
+<title>face</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="225.4,-712.27 171.4,-712.27 171.4,-688 225.4,-688 225.4,-712.27"/>
+<text xml:space="preserve" text-anchor="middle" x="198.4" y="-696.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">face</text>
+</g>
+<!-- module~watch_banner&#45;&gt;face -->
+<g id="module~~watch_engine~~UsesGraph_edge14" class="edge">
+<title>module~watch_banner&#45;&gt;face</title>
+<path fill="none" stroke="#9cff00" stroke-dasharray="5,2" d="M322.36,-807.61C302.47,-785.22 261.14,-739.45 244.29,-726.13 240.99,-723.53 237.39,-721 233.72,-718.62"/>
+<polygon fill="#9cff00" stroke="#9cff00" points="235.64,-715.69 225.28,-713.47 232,-721.67 235.64,-715.69"/>
+</g>
+<!-- fpm_command_line -->
+<g id="module~~watch_engine~~UsesGraph_node17" class="node">
+<title>fpm_command_line</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="116.52,-594.27 0,-594.27 0,-570 116.52,-570 116.52,-594.27"/>
+<text xml:space="preserve" text-anchor="middle" x="58.26" y="-578.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">fpm_command_line</text>
+</g>
+<!-- module~watch_banner&#45;&gt;fpm_command_line -->
+<g id="module~~watch_engine~~UsesGraph_edge15" class="edge">
+<title>module~watch_banner&#45;&gt;fpm_command_line</title>
+<path fill="none" stroke="#9cff00" stroke-dasharray="5,2" d="M197.4,-820.13C178.53,-809.5 166.94,-817.3 152.52,-801.13 114.88,-758.96 139.06,-730.98 116.52,-679.13 104.74,-652.05 86.93,-623.16 74.31,-604.02"/>
+<polygon fill="#9cff00" stroke="#9cff00" points="77.22,-602.08 68.74,-595.73 71.4,-605.98 77.22,-602.08"/>
+</g>
+<!-- module~watch_exec&#45;&gt;fpm_filesystem -->
+<g id="module~~watch_engine~~UsesGraph_edge22" class="edge">
+<title>module~watch_exec&#45;&gt;fpm_filesystem</title>
+<path fill="none" stroke="#27ff00" stroke-dasharray="5,2" d="M319.55,-727.93C307.04,-716.04 289.27,-696.8 280.29,-676.13 229.93,-560.25 314.2,-499.38 244.29,-394.13 242.72,-391.77 240.86,-389.6 238.8,-387.6"/>
+<polygon fill="#27ff00" stroke="#27ff00" points="241.29,-385.11 231.27,-381.69 236.97,-390.61 241.29,-385.11"/>
+</g>
+<!-- module~watch_exec&#45;&gt;fpm_strings -->
+<g id="module~~watch_engine~~UsesGraph_edge23" class="edge">
+<title>module~watch_exec&#45;&gt;fpm_strings</title>
+<path fill="none" stroke="#27ff00" stroke-dasharray="5,2" d="M197.4,-740.13C167.21,-730.55 133.01,-720.64 106.2,-713.08"/>
+<polygon fill="#27ff00" stroke="#27ff00" points="107.22,-709.73 96.65,-710.4 105.33,-716.47 107.22,-709.73"/>
+</g>
+<!-- module~watch_exec&#45;&gt;iso_fortran_env -->
+<g id="module~~watch_engine~~UsesGraph_edge24" class="edge">
+<title>module~watch_exec&#45;&gt;iso_fortran_env</title>
+<path fill="none" stroke="#27ff00" stroke-dasharray="5,2" d="M302.43,-727.51C294.84,-723.75 286.98,-719.25 280.29,-714.13 237.02,-681.08 242.68,-655.17 199.4,-622.13"/>
+</g>
+<!-- module~watch_exec&#45;&gt;module~watch_types -->
+<g id="module~~watch_engine~~UsesGraph_edge25" class="edge">
+<title>module~watch_exec&#45;&gt;module~watch_types</title>
+<path fill="none" stroke="#27ff00" stroke-dasharray="5,2" d="M297.83,-727.6C291.34,-724.05 285.11,-719.61 280.29,-714.13 247.42,-676.78 275.83,-646.62 244.29,-608.13 242.2,-605.59 239.8,-603.24 237.2,-601.08"/>
+<polygon fill="#27ff00" stroke="#27ff00" points="239.29,-598.27 229.11,-595.36 235.25,-603.99 239.29,-598.27"/>
+</g>
+<!-- module~watch_exec&#45;&gt;module~watch_util -->
+<g id="module~~watch_engine~~UsesGraph_edge26" class="edge">
+<title>module~watch_exec&#45;&gt;module~watch_util</title>
+<path fill="none" stroke="#27ff00" stroke-dasharray="5,2" d="M297.51,-750.85C280.38,-755.97 259.77,-762.12 241.88,-767.46"/>
+<polygon fill="#27ff00" stroke="#27ff00" points="240.88,-764.1 232.3,-770.32 242.89,-770.81 240.88,-764.1"/>
+</g>
+<!-- module~watch_exec&#45;&gt;face -->
+<g id="module~~watch_engine~~UsesGraph_edge20" class="edge">
+<title>module~watch_exec&#45;&gt;face</title>
+<path fill="none" stroke="#27ff00" stroke-dasharray="5,2" d="M297.51,-729.42C278.67,-723.79 255.62,-716.91 236.6,-711.24"/>
+<polygon fill="#27ff00" stroke="#27ff00" points="237.67,-707.9 227.09,-708.4 235.67,-714.61 237.67,-707.9"/>
+</g>
+<!-- module~watch_exec&#45;&gt;fpm_command_line -->
+<g id="module~~watch_engine~~UsesGraph_edge21" class="edge">
+<title>module~watch_exec&#45;&gt;fpm_command_line</title>
+<path fill="none" stroke="#27ff00" stroke-dasharray="5,2" d="M297.54,-745.93C270.02,-749 231.45,-750.31 199.4,-740.13"/>
+<path fill="none" stroke="#27ff00" stroke-dasharray="5,2" d="M197.4,-740.13C176.76,-733.58 169.23,-734.93 152.52,-721.13 131.8,-704.03 92.37,-639.14 72.06,-604.4"/>
+<polygon fill="#27ff00" stroke="#27ff00" points="75.22,-602.87 67.17,-595.98 69.17,-606.39 75.22,-602.87"/>
+</g>
+<!-- module~watch_feature_factory&#45;&gt;module~watch_feature_manager -->
+<g id="module~~watch_engine~~UsesGraph_edge29" class="edge">
+<title>module~watch_feature_factory&#45;&gt;module~watch_feature_manager</title>
+<path fill="none" stroke="#00ff4e" stroke-dasharray="5,2" d="M643.77,-614.59C623.9,-626.13 593.01,-643.4 565.08,-656.13 557.93,-659.4 550.24,-662.58 542.69,-665.54"/>
+<polygon fill="#00ff4e" stroke="#00ff4e" points="541.66,-662.19 533.57,-669.03 544.16,-668.73 541.66,-662.19"/>
+</g>
+<!-- module~watch_feature_factory&#45;&gt;module~watch_log -->
+<g id="module~~watch_engine~~UsesGraph_edge30" class="edge">
+<title>module~watch_feature_factory&#45;&gt;module~watch_log</title>
+<path fill="none" stroke="#00ff4e" stroke-dasharray="5,2" d="M623.55,-589.52C589.65,-579.82 540.12,-567.25 495.82,-562.13"/>
+<path fill="none" stroke="#00ff4e" stroke-dasharray="5,2" d="M493.82,-562.13C454.71,-557.62 410.23,-551.96 378.38,-547.81"/>
+<polygon fill="#00ff4e" stroke="#00ff4e" points="379.13,-544.38 368.76,-546.55 378.22,-551.32 379.13,-544.38"/>
+</g>
+<!-- module~watch_feature_factory&#45;&gt;module~watch_types -->
+<g id="module~~watch_engine~~UsesGraph_edge31" class="edge">
+<title>module~watch_feature_factory&#45;&gt;module~watch_types</title>
+<path fill="none" stroke="#00ff4e" stroke-dasharray="5,2" d="M493.82,-562.13C423.33,-554 406.38,-582.13 335.42,-582.13"/>
+<path fill="none" stroke="#00ff4e" stroke-dasharray="5,2" d="M333.42,-582.13C305.28,-582.13 273.81,-582.13 248.44,-582.13"/>
+<polygon fill="#00ff4e" stroke="#00ff4e" points="248.76,-578.64 238.76,-582.14 248.76,-585.64 248.76,-578.64"/>
+</g>
+<!-- module~watch_feat_stats -->
+<g id="module~~watch_engine~~UsesGraph_node24" class="node">
+<title>module~watch_feat_stats</title>
+<g id="a_module~~watch_engine~~UsesGraph_node24"><a xlink:href="../module/watch_feat_stats.html" xlink:title="watch_feat_stats">
+<polygon fill="#337ab7" stroke="#337ab7" points="544.45,-614.27 445.18,-614.27 445.18,-590 544.45,-590 544.45,-614.27"/>
+<text xml:space="preserve" text-anchor="middle" x="494.82" y="-598.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">watch_feat_stats</text>
+</a>
+</g>
+</g>
+<!-- module~watch_feature_factory&#45;&gt;module~watch_feat_stats -->
+<g id="module~~watch_engine~~UsesGraph_edge27" class="edge">
+<title>module~watch_feature_factory&#45;&gt;module~watch_feat_stats</title>
+<path fill="none" stroke="#00ff4e" stroke-dasharray="5,2" d="M600.86,-602.13C586.19,-602.13 570.64,-602.13 556.13,-602.13"/>
+<polygon fill="#00ff4e" stroke="#00ff4e" points="556.26,-598.64 546.26,-602.14 556.26,-605.64 556.26,-598.64"/>
+</g>
+<!-- module~watch_feature_api -->
+<g id="module~~watch_engine~~UsesGraph_node25" class="node">
+<title>module~watch_feature_api</title>
+<g id="a_module~~watch_engine~~UsesGraph_node25"><a xlink:href="../module/watch_feature_api.html" xlink:title="watch_feature_api">
+<polygon fill="#337ab7" stroke="#337ab7" points="388.56,-634.27 280.29,-634.27 280.29,-610 388.56,-610 388.56,-634.27"/>
+<text xml:space="preserve" text-anchor="middle" x="334.42" y="-618.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">watch_feature_api</text>
+</a>
+</g>
+</g>
+<!-- module~watch_feature_factory&#45;&gt;module~watch_feature_api -->
+<g id="module~~watch_engine~~UsesGraph_edge28" class="edge">
+<title>module~watch_feature_factory&#45;&gt;module~watch_feature_api</title>
+<path fill="none" stroke="#00ff4e" stroke-dasharray="5,2" d="M614.86,-614.76C599.05,-618.19 581.43,-621.43 565.08,-623.13 502.96,-629.61 487.01,-623.49 424.56,-623.13 416.67,-623.09 408.39,-623.02 400.18,-622.95"/>
+<polygon fill="#00ff4e" stroke="#00ff4e" points="400.23,-619.45 390.2,-622.85 400.16,-626.45 400.23,-619.45"/>
+</g>
+<!-- module~watch_feature_manager&#45;&gt;fpm_strings -->
+<g id="module~~watch_engine~~UsesGraph_edge32" class="edge">
+<title>module~watch_feature_manager&#45;&gt;fpm_strings</title>
+<path fill="none" stroke="#00ffc4" stroke-dasharray="5,2" d="M481.74,-694.76C467.02,-710.57 441.96,-738.9 424.56,-766.13 404.65,-797.29 416.03,-816.39 388.56,-841.13 369.93,-857.92 359.08,-851.8 335.42,-860.13"/>
+<path fill="none" stroke="#00ffc4" stroke-dasharray="5,2" d="M333.42,-860.13C256.81,-887.12 221.65,-876.78 152.52,-834.13 109.95,-807.88 81.76,-754.15 68.35,-723.3"/>
+<polygon fill="#00ffc4" stroke="#00ffc4" points="71.59,-721.98 64.51,-714.1 65.13,-724.68 71.59,-721.98"/>
+</g>
+<!-- module~watch_feature_manager&#45;&gt;iso_fortran_env -->
+<g id="module~~watch_engine~~UsesGraph_edge33" class="edge">
+<title>module~watch_feature_manager&#45;&gt;iso_fortran_env</title>
+<path fill="none" stroke="#00ffc4" stroke-dasharray="5,2" d="M333.42,-662.13C273.51,-645.57 248.82,-659.85 199.4,-622.13"/>
+<path fill="none" stroke="#00ffc4" stroke-dasharray="5,2" d="M197.4,-622.13C180.19,-608.99 169.72,-616.3 152.52,-603.13 142.98,-595.83 99.4,-538.12 75.33,-505.83"/>
+<polygon fill="#00ffc4" stroke="#00ffc4" points="78.23,-503.86 69.46,-497.93 72.61,-508.04 78.23,-503.86"/>
+</g>
+<!-- module~watch_feature_manager&#45;&gt;module~watch_types -->
+<g id="module~~watch_engine~~UsesGraph_edge35" class="edge">
+<title>module~watch_feature_manager&#45;&gt;module~watch_types</title>
+<path fill="none" stroke="#00ffc4" stroke-dasharray="5,2" d="M424.36,-677.73C396.37,-674.83 364.01,-670.04 335.42,-662.13"/>
+<path fill="none" stroke="#00ffc4" stroke-dasharray="5,2" d="M333.42,-662.13C309.25,-655.45 301.57,-656.4 280.29,-643.13 261.35,-631.33 262.08,-621.61 244.29,-608.13 240.76,-605.46 236.92,-602.85 233.03,-600.38"/>
+<polygon fill="#00ffc4" stroke="#00ffc4" points="235.07,-597.52 224.69,-595.36 231.46,-603.52 235.07,-597.52"/>
+</g>
+<!-- module~watch_feature_manager&#45;&gt;module~watch_feature_api -->
+<g id="module~~watch_engine~~UsesGraph_edge34" class="edge">
+<title>module~watch_feature_manager&#45;&gt;module~watch_feature_api</title>
+<path fill="none" stroke="#00ffc4" stroke-dasharray="5,2" d="M460.34,-669.61C448.98,-665.35 436.21,-660.54 424.56,-656.13 409.62,-650.48 393.29,-644.27 378.74,-638.71"/>
+<polygon fill="#00ffc4" stroke="#00ffc4" points="380.01,-635.45 369.42,-635.15 377.51,-641.99 380.01,-635.45"/>
+</g>
+<!-- module~watch_fingerprint&#45;&gt;fpm_filesystem -->
+<g id="module~~watch_engine~~UsesGraph_edge37" class="edge">
+<title>module~watch_fingerprint&#45;&gt;fpm_filesystem</title>
+<path fill="none" stroke="#00c4ff" stroke-dasharray="5,2" d="M296,-104.68C289.98,-108.19 284.39,-112.61 280.29,-118.14 220.27,-199.16 301.44,-259.06 244.29,-342.13 242.64,-344.54 240.69,-346.75 238.54,-348.78"/>
+<polygon fill="#00c4ff" stroke="#00c4ff" points="236.49,-345.94 230.68,-354.8 240.75,-351.49 236.49,-345.94"/>
+</g>
+<!-- module~watch_fingerprint&#45;&gt;fpm_strings -->
+<g id="module~~watch_engine~~UsesGraph_edge38" class="edge">
+<title>module~watch_fingerprint&#45;&gt;fpm_strings</title>
+<path fill="none" stroke="#00c4ff" stroke-dasharray="5,2" d="M197.4,-328.13C186.87,-347.06 165.72,-329.96 152.52,-347.13 82.53,-438.25 154.46,-494.68 116.52,-603.13 106.78,-630.99 88.63,-659.7 75.37,-678.59"/>
+<polygon fill="#00c4ff" stroke="#00c4ff" points="72.65,-676.37 69.65,-686.53 78.33,-680.46 72.65,-676.37"/>
+</g>
+<!-- module~watch_fingerprint&#45;&gt;iso_fortran_env -->
+<g id="module~~watch_engine~~UsesGraph_edge39" class="edge">
+<title>module~watch_fingerprint&#45;&gt;iso_fortran_env</title>
+<path fill="none" stroke="#00c4ff" stroke-dasharray="5,2" d="M298.28,-104.67C291.67,-108.24 285.29,-112.68 280.29,-118.14 212.72,-191.88 248.06,-240.75 199.4,-328.13"/>
+<path fill="none" stroke="#00c4ff" stroke-dasharray="5,2" d="M197.4,-328.13C186.87,-347.06 169.27,-333.4 152.52,-347.13 113.46,-379.16 84.11,-431.7 69.52,-461.55"/>
+<polygon fill="#00c4ff" stroke="#00c4ff" points="66.44,-459.88 65.32,-470.42 72.76,-462.88 66.44,-459.88"/>
+</g>
+<!-- module~watch_fingerprint&#45;&gt;fpm_command_line -->
+<g id="module~~watch_engine~~UsesGraph_edge36" class="edge">
+<title>module~watch_fingerprint&#45;&gt;fpm_command_line</title>
+<path fill="none" stroke="#00c4ff" stroke-dasharray="5,2" d="M197.4,-328.13C186.87,-347.06 166.43,-330.53 152.52,-347.13 106.28,-402.35 146.66,-439.72 116.52,-505.13 106.94,-525.93 91.14,-546.6 78.56,-561.28"/>
+<polygon fill="#00c4ff" stroke="#00c4ff" points="76.22,-558.64 72.23,-568.45 81.47,-563.27 76.22,-558.64"/>
+</g>
+<!-- module~watch_fpm_graph&#45;&gt;fpm_filesystem -->
+<g id="module~~watch_engine~~UsesGraph_edge44" class="edge">
+<title>module~watch_fpm_graph&#45;&gt;fpm_filesystem</title>
+<path fill="none" stroke="#004eff" stroke-dasharray="5,2" d="M476,-159.52C445.38,-139.53 381.59,-105.46 335.42,-132.13"/>
+</g>
+<!-- module~watch_fpm_graph&#45;&gt;fpm_strings -->
+<g id="module~~watch_engine~~UsesGraph_edge47" class="edge">
+<title>module~watch_fpm_graph&#45;&gt;fpm_strings</title>
+<path fill="none" stroke="#004eff" stroke-dasharray="5,2" d="M479.51,-184.64C463.35,-199.65 437.59,-226.42 424.56,-255.13 382.17,-348.55 454.02,-404.14 388.56,-483.13 372.56,-502.45 354.02,-485.31 335.42,-502.13"/>
+<path fill="none" stroke="#004eff" stroke-dasharray="5,2" d="M333.42,-502.13C325.59,-509.23 160.95,-554.76 152.52,-561.13 130.99,-577.42 91.59,-643.27 71.6,-678.17"/>
+<polygon fill="#004eff" stroke="#004eff" points="68.71,-676.18 66.81,-686.61 74.79,-679.64 68.71,-676.18"/>
+</g>
+<!-- module~watch_fpm_graph&#45;&gt;iso_fortran_env -->
+<g id="module~~watch_engine~~UsesGraph_edge49" class="edge">
+<title>module~watch_fpm_graph&#45;&gt;iso_fortran_env</title>
+<path fill="none" stroke="#004eff" stroke-dasharray="5,2" d="M480.5,-159.52C466.53,-146.27 443.95,-124.79 424.56,-106.14 408.48,-90.66 407.5,-82.94 388.56,-71.14 367.28,-57.87 360.18,-56.14 335.42,-52.13"/>
+</g>
+<!-- module~watch_fpm_graph&#45;&gt;module~watch_log -->
+<g id="module~~watch_engine~~UsesGraph_edge51" class="edge">
+<title>module~watch_fpm_graph&#45;&gt;module~watch_log</title>
+<path fill="none" stroke="#004eff" stroke-dasharray="5,2" d="M441.49,-184.38C434.99,-187.87 429.06,-192.36 424.56,-198.13 337.11,-310.31 470.53,-399.9 388.56,-516.13 385.43,-520.57 381.33,-524.28 376.79,-527.38"/>
+<polygon fill="#004eff" stroke="#004eff" points="375.32,-524.19 368.35,-532.17 378.78,-530.28 375.32,-524.19"/>
+</g>
+<!-- module~watch_fpm_graph&#45;&gt;module~watch_types -->
+<g id="module~~watch_engine~~UsesGraph_edge52" class="edge">
+<title>module~watch_fpm_graph&#45;&gt;module~watch_types</title>
+<path fill="none" stroke="#004eff" stroke-dasharray="5,2" d="M333.42,-502.13C314.83,-518.96 302.36,-509.23 280.29,-521.13 258.94,-532.65 237.12,-549.47 221.53,-562.53"/>
+<polygon fill="#004eff" stroke="#004eff" points="219.6,-559.57 214.27,-568.73 224.14,-564.89 219.6,-559.57"/>
+</g>
+<!-- module~watch_fpm_graph&#45;&gt;module~watch_util -->
+<g id="module~~watch_engine~~UsesGraph_edge53" class="edge">
+<title>module~watch_fpm_graph&#45;&gt;module~watch_util</title>
+<path fill="none" stroke="#004eff" stroke-dasharray="5,2" d="M491.48,-184.46C482.55,-231.59 449.84,-404.99 424.56,-548.13 407.86,-642.68 450.22,-687.54 388.56,-761.13 372.45,-780.36 356.9,-767.18 335.42,-780.13"/>
+<path fill="none" stroke="#004eff" stroke-dasharray="5,2" d="M333.42,-780.13C306.28,-796.5 270.07,-795.45 242.14,-790.88"/>
+<polygon fill="#004eff" stroke="#004eff" points="243.07,-787.5 232.59,-789.11 241.78,-794.38 243.07,-787.5"/>
+</g>
+<!-- fpm -->
+<g id="module~~watch_engine~~UsesGraph_node16" class="node">
+<title>fpm</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="361.42,-226.27 307.42,-226.27 307.42,-202 361.42,-202 361.42,-226.27"/>
+<text xml:space="preserve" text-anchor="middle" x="334.42" y="-210.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">fpm</text>
+</g>
+<!-- module~watch_fpm_graph&#45;&gt;fpm -->
+<g id="module~~watch_engine~~UsesGraph_edge40" class="edge">
+<title>module~watch_fpm_graph&#45;&gt;fpm</title>
+<path fill="none" stroke="#004eff" stroke-dasharray="5,2" d="M446.3,-184.74C422.71,-190.99 394.63,-198.44 372.63,-204.27"/>
+<polygon fill="#004eff" stroke="#004eff" points="371.97,-200.82 363.2,-206.77 373.76,-207.59 371.97,-200.82"/>
+</g>
+<!-- module~watch_fpm_graph&#45;&gt;fpm_command_line -->
+<g id="module~~watch_engine~~UsesGraph_edge41" class="edge">
+<title>module~watch_fpm_graph&#45;&gt;fpm_command_line</title>
+<path fill="none" stroke="#004eff" stroke-dasharray="5,2" d="M480.91,-184.52C465.59,-199.84 440.17,-227.31 424.56,-255.13 400.21,-298.52 423.56,-325.78 388.56,-361.13 352.68,-397.38 324.68,-374.04 280.29,-399.13 237.31,-423.44 128.37,-519.82 81.38,-562.09"/>
+<polygon fill="#004eff" stroke="#004eff" points="79.31,-559.25 74.23,-568.54 84,-564.45 79.31,-559.25"/>
+</g>
+<!-- fpm_dependency -->
+<g id="module~~watch_engine~~UsesGraph_node18" class="node">
+<title>fpm_dependency</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="386.31,-184.27 282.54,-184.27 282.54,-160 386.31,-160 386.31,-184.27"/>
+<text xml:space="preserve" text-anchor="middle" x="334.42" y="-168.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">fpm_dependency</text>
+</g>
+<!-- module~watch_fpm_graph&#45;&gt;fpm_dependency -->
+<g id="module~~watch_engine~~UsesGraph_edge42" class="edge">
+<title>module~watch_fpm_graph&#45;&gt;fpm_dependency</title>
+<path fill="none" stroke="#004eff" stroke-dasharray="5,2" d="M441.52,-172.13C427.58,-172.13 412.38,-172.13 397.96,-172.13"/>
+<polygon fill="#004eff" stroke="#004eff" points="398.11,-168.64 388.11,-172.14 398.11,-175.64 398.11,-168.64"/>
+</g>
+<!-- fpm_error -->
+<g id="module~~watch_engine~~UsesGraph_node19" class="node">
+<title>fpm_error</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="366.43,-474.27 302.41,-474.27 302.41,-450 366.43,-450 366.43,-474.27"/>
+<text xml:space="preserve" text-anchor="middle" x="334.42" y="-458.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">fpm_error</text>
+</g>
+<!-- module~watch_fpm_graph&#45;&gt;fpm_error -->
+<g id="module~~watch_engine~~UsesGraph_edge43" class="edge">
+<title>module~watch_fpm_graph&#45;&gt;fpm_error</title>
+<path fill="none" stroke="#004eff" stroke-dasharray="5,2" d="M441.33,-184.7C434.94,-188.15 429.08,-192.54 424.56,-198.13 355.96,-283.07 456.42,-355.61 388.56,-441.13 385.39,-445.13 381.34,-448.37 376.91,-451"/>
+<polygon fill="#004eff" stroke="#004eff" points="375.66,-447.72 368.12,-455.16 378.66,-454.04 375.66,-447.72"/>
+</g>
+<!-- fpm_manifest -->
+<g id="module~~watch_engine~~UsesGraph_node20" class="node">
+<title>fpm_manifest</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="376.56,-432.27 292.29,-432.27 292.29,-408 376.56,-408 376.56,-432.27"/>
+<text xml:space="preserve" text-anchor="middle" x="334.42" y="-416.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">fpm_manifest</text>
+</g>
+<!-- module~watch_fpm_graph&#45;&gt;fpm_manifest -->
+<g id="module~~watch_engine~~UsesGraph_edge45" class="edge">
+<title>module~watch_fpm_graph&#45;&gt;fpm_manifest</title>
+<path fill="none" stroke="#004eff" stroke-dasharray="5,2" d="M441.85,-184.66C435.3,-188.12 429.26,-192.52 424.56,-198.13 367.73,-266.07 442.07,-323.56 388.56,-394.13 386.61,-396.71 384.34,-399.04 381.86,-401.15"/>
+<polygon fill="#004eff" stroke="#004eff" points="380.18,-398.05 373.99,-406.64 384.19,-403.79 380.18,-398.05"/>
+</g>
+<!-- fpm_model -->
+<g id="module~~watch_engine~~UsesGraph_node21" class="node">
+<title>fpm_model</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="370.18,-352.27 298.66,-352.27 298.66,-328 370.18,-328 370.18,-352.27"/>
+<text xml:space="preserve" text-anchor="middle" x="334.42" y="-336.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">fpm_model</text>
+</g>
+<!-- module~watch_fpm_graph&#45;&gt;fpm_model -->
+<g id="module~~watch_engine~~UsesGraph_edge46" class="edge">
+<title>module~watch_fpm_graph&#45;&gt;fpm_model</title>
+<path fill="none" stroke="#004eff" stroke-dasharray="5,2" d="M443.43,-184.61C436.41,-188.08 429.82,-192.5 424.56,-198.13 386.3,-239.17 426.47,-277.77 388.56,-319.13 386.19,-321.72 383.46,-323.99 380.52,-325.99"/>
+<polygon fill="#004eff" stroke="#004eff" points="378.96,-322.85 371.89,-330.74 382.34,-328.98 378.96,-322.85"/>
+</g>
+<!-- fpm_targets -->
+<g id="module~~watch_engine~~UsesGraph_node22" class="node">
+<title>fpm_targets</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="372.06,-310.27 296.79,-310.27 296.79,-286 372.06,-286 372.06,-310.27"/>
+<text xml:space="preserve" text-anchor="middle" x="334.42" y="-294.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">fpm_targets</text>
+</g>
+<!-- module~watch_fpm_graph&#45;&gt;fpm_targets -->
+<g id="module~~watch_engine~~UsesGraph_edge48" class="edge">
+<title>module~watch_fpm_graph&#45;&gt;fpm_targets</title>
+<path fill="none" stroke="#004eff" stroke-dasharray="5,2" d="M445.16,-184.77C437.67,-188.23 430.47,-192.61 424.56,-198.13 396.36,-224.47 416.53,-250.56 388.56,-277.13 386.55,-279.05 384.34,-280.79 382,-282.39"/>
+<polygon fill="#004eff" stroke="#004eff" points="380.77,-279.06 373.81,-287.05 384.23,-285.14 380.77,-279.06"/>
+</g>
+<!-- module~watch_filter -->
+<g id="module~~watch_engine~~UsesGraph_node26" class="node">
+<title>module~watch_filter</title>
+<g id="a_module~~watch_engine~~UsesGraph_node26"><a xlink:href="../module/watch_filter.html" xlink:title="watch_filter">
+<polygon fill="#337ab7" stroke="#337ab7" points="370.93,-268.27 297.91,-268.27 297.91,-244 370.93,-244 370.93,-268.27"/>
+<text xml:space="preserve" text-anchor="middle" x="334.42" y="-252.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">watch_filter</text>
+</a>
+</g>
+</g>
+<!-- module~watch_fpm_graph&#45;&gt;module~watch_filter -->
+<g id="module~~watch_engine~~UsesGraph_edge50" class="edge">
+<title>module~watch_fpm_graph&#45;&gt;module~watch_filter</title>
+<path fill="none" stroke="#004eff" stroke-dasharray="5,2" d="M451.37,-184.7C442.15,-188.33 432.73,-192.79 424.56,-198.13 405.36,-210.69 407.65,-222.41 388.56,-235.13 386.33,-236.62 383.98,-238.03 381.56,-239.35"/>
+<polygon fill="#004eff" stroke="#004eff" points="380.14,-236.15 372.7,-243.69 383.22,-242.44 380.14,-236.15"/>
+</g>
+<!-- module~watch_log&#45;&gt;iso_fortran_env -->
+<g id="module~~watch_engine~~UsesGraph_edge55" class="edge">
+<title>module~watch_log&#45;&gt;iso_fortran_env</title>
+<path fill="none" stroke="#2700ff" stroke-dasharray="5,2" d="M301.59,-529.59C294.18,-525.88 286.62,-521.37 280.29,-516.13 234.1,-477.89 259.36,-406.66 199.4,-408.13"/>
+</g>
+<!-- module~watch_log&#45;&gt;module~watch_types -->
+<g id="module~~watch_engine~~UsesGraph_edge56" class="edge">
+<title>module~watch_log&#45;&gt;module~watch_types</title>
+<path fill="none" stroke="#2700ff" stroke-dasharray="5,2" d="M301.66,-551.61C285.64,-556.4 265.85,-562.3 247.97,-567.64"/>
+<polygon fill="#2700ff" stroke="#2700ff" points="247.16,-564.23 238.58,-570.44 249.16,-570.94 247.16,-564.23"/>
+</g>
+<!-- module~watch_log&#45;&gt;face -->
+<g id="module~~watch_engine~~UsesGraph_edge54" class="edge">
+<title>module~watch_log&#45;&gt;face</title>
+<path fill="none" stroke="#2700ff" stroke-dasharray="5,2" d="M321.85,-554.64C310.96,-566.48 294.29,-584.81 280.29,-601.13 257.69,-627.48 232.51,-658.59 216.34,-678.8"/>
+<polygon fill="#2700ff" stroke="#2700ff" points="213.62,-676.6 210.12,-686.6 219.1,-680.97 213.62,-676.6"/>
+</g>
+<!-- module~watch_time&#45;&gt;iso_fortran_env -->
+<g id="module~~watch_engine~~UsesGraph_edge58" class="edge">
+<title>module~watch_time&#45;&gt;iso_fortran_env</title>
+<path fill="none" stroke="#9c00ff" stroke-dasharray="5,2" d="M629.33,-55.81C568.7,-61.3 441.24,-69.27 335.42,-52.13"/>
+<path fill="none" stroke="#9c00ff" stroke-dasharray="5,2" d="M333.42,-52.13C139.85,-19.06 76.15,-365.28 62.37,-460.36"/>
+<polygon fill="#9c00ff" stroke="#9c00ff" points="58.93,-459.71 61.01,-470.09 65.86,-460.67 58.93,-459.71"/>
+</g>
+<!-- iso_c_binding -->
+<g id="module~~watch_engine~~UsesGraph_node23" class="node">
+<title>iso_c_binding</title>
+<g id="a_module~~watch_engine~~UsesGraph_node23"><a xlink:href="http://fortranwiki.org/fortran/show/iso_c_binding" xlink:title="iso_c_binding">
+<polygon fill="#337ab7" stroke="#337ab7" points="536.2,-24.27 453.43,-24.27 453.43,0 536.2,0 536.2,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="494.82" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">iso_c_binding</text>
+</a>
+</g>
+</g>
+<!-- module~watch_time&#45;&gt;iso_c_binding -->
+<g id="module~~watch_engine~~UsesGraph_edge57" class="edge">
+<title>module~watch_time&#45;&gt;iso_c_binding</title>
+<path fill="none" stroke="#9c00ff" stroke-dasharray="5,2" d="M629.31,-43.75C605.61,-38.14 574.03,-30.66 547.53,-24.38"/>
+<polygon fill="#9c00ff" stroke="#9c00ff" points="548.53,-21.02 538,-22.12 546.92,-27.83 548.53,-21.02"/>
+</g>
+<!-- module~watch_types&#45;&gt;fpm_strings -->
+<g id="module~~watch_engine~~UsesGraph_edge60" class="edge">
+<title>module~watch_types&#45;&gt;fpm_strings</title>
+<path fill="none" stroke="#ff00eb" stroke-dasharray="5,2" d="M182.62,-594.76C158.63,-615.26 111.03,-655.92 82.48,-680.3"/>
+<polygon fill="#ff00eb" stroke="#ff00eb" points="80.42,-677.46 75.09,-686.61 84.97,-682.78 80.42,-677.46"/>
+</g>
+<!-- module~watch_types&#45;&gt;iso_fortran_env -->
+<g id="module~~watch_engine~~UsesGraph_edge61" class="edge">
+<title>module~watch_types&#45;&gt;iso_fortran_env</title>
+<path fill="none" stroke="#ff00eb" stroke-dasharray="5,2" d="M179.63,-569.52C155.9,-552.69 113.67,-522.73 86.07,-503.15"/>
+<polygon fill="#ff00eb" stroke="#ff00eb" points="88.38,-500.5 78.2,-497.57 84.33,-506.21 88.38,-500.5"/>
+</g>
+<!-- module~watch_types&#45;&gt;fpm_command_line -->
+<g id="module~~watch_engine~~UsesGraph_edge59" class="edge">
+<title>module~watch_types&#45;&gt;fpm_command_line</title>
+<path fill="none" stroke="#ff00eb" stroke-dasharray="5,2" d="M159.66,-582.13C149.87,-582.13 139.03,-582.13 128.18,-582.13"/>
+<polygon fill="#ff00eb" stroke="#ff00eb" points="128.45,-578.64 118.45,-582.14 128.45,-585.64 128.45,-578.64"/>
+</g>
+<!-- module~watch_util&#45;&gt;fpm_strings -->
+<g id="module~~watch_engine~~UsesGraph_edge62" class="edge">
+<title>module~watch_util&#45;&gt;fpm_strings</title>
+<path fill="none" stroke="#ff0075" stroke-dasharray="5,2" d="M175.82,-767.63C152.91,-754.37 116.49,-733.27 90.45,-718.2"/>
+<polygon fill="#ff0075" stroke="#ff0075" points="92.41,-715.29 82,-713.31 88.9,-721.35 92.41,-715.29"/>
+</g>
+<!-- module~watch_feat_stats&#45;&gt;module~watch_log -->
+<g id="module~~watch_engine~~UsesGraph_edge64" class="edge">
+<title>module~watch_feat_stats&#45;&gt;module~watch_log</title>
+<path fill="none" stroke="#7f00ff" stroke-dasharray="5,2" d="M460.34,-589.61C448.98,-585.35 436.21,-580.54 424.56,-576.13 409.23,-570.33 392.43,-563.94 377.59,-558.27"/>
+<polygon fill="#7f00ff" stroke="#7f00ff" points="379.18,-555.13 368.59,-554.83 376.68,-561.67 379.18,-555.13"/>
+</g>
+<!-- module~watch_feat_stats&#45;&gt;module~watch_types -->
+<g id="module~~watch_engine~~UsesGraph_edge65" class="edge">
+<title>module~watch_feat_stats&#45;&gt;module~watch_types</title>
+<path fill="none" stroke="#7f00ff" stroke-dasharray="5,2" d="M444.79,-592.72C413.6,-587.53 372.29,-582.13 335.42,-582.13"/>
+</g>
+<!-- module~watch_feat_stats&#45;&gt;module~watch_feature_api -->
+<g id="module~~watch_engine~~UsesGraph_edge63" class="edge">
+<title>module~watch_feat_stats&#45;&gt;module~watch_feature_api</title>
+<path fill="none" stroke="#7f00ff" stroke-dasharray="5,2" d="M445,-608.3C430.88,-610.08 415.23,-612.06 400.29,-613.94"/>
+<polygon fill="#7f00ff" stroke="#7f00ff" points="400.03,-610.45 390.54,-615.18 400.9,-617.39 400.03,-610.45"/>
+</g>
+<!-- module~watch_feature_api&#45;&gt;fpm_strings -->
+<g id="module~~watch_engine~~UsesGraph_edge66" class="edge">
+<title>module~watch_feature_api&#45;&gt;fpm_strings</title>
+<path fill="none" stroke="#ff00ff" stroke-dasharray="5,2" d="M289.07,-634.75C238.81,-649.05 157.23,-672.26 106,-686.84"/>
+<polygon fill="#ff00ff" stroke="#ff00ff" points="105.35,-683.38 96.69,-689.49 107.27,-690.12 105.35,-683.38"/>
+</g>
+<!-- module~watch_feature_api&#45;&gt;iso_fortran_env -->
+<g id="module~~watch_engine~~UsesGraph_edge67" class="edge">
+<title>module~watch_feature_api&#45;&gt;iso_fortran_env</title>
+<path fill="none" stroke="#ff00ff" stroke-dasharray="5,2" d="M320.61,-609.8C309.17,-598.38 292.4,-580.57 280.29,-563.13 235.96,-499.31 277.09,-406.23 199.4,-408.13"/>
+</g>
+<!-- module~watch_feature_api&#45;&gt;module~watch_types -->
+<g id="module~~watch_engine~~UsesGraph_edge68" class="edge">
+<title>module~watch_feature_api&#45;&gt;module~watch_types</title>
+<path fill="none" stroke="#ff00ff" stroke-dasharray="5,2" d="M291.39,-609.59C277.56,-605.46 262.08,-600.84 247.82,-596.59"/>
+<polygon fill="#ff00ff" stroke="#ff00ff" points="249.24,-593.36 238.65,-593.85 247.24,-600.06 249.24,-593.36"/>
+</g>
+<!-- module~watch_filter&#45;&gt;fpm_filesystem -->
+<g id="module~~watch_engine~~UsesGraph_edge69" class="edge">
+<title>module~watch_filter&#45;&gt;fpm_filesystem</title>
+<path fill="none" stroke="#ff007f" stroke-dasharray="5,2" d="M297.47,-266.4C291.3,-269.22 285.28,-272.75 280.29,-277.13 255.48,-298.93 267.42,-318.56 244.29,-342.13 241.7,-344.77 238.8,-347.23 235.73,-349.5"/>
+<polygon fill="#ff007f" stroke="#ff007f" points="233.95,-346.48 227.52,-354.9 237.8,-352.33 233.95,-346.48"/>
+</g>
+<!-- module~watch_filter&#45;&gt;fpm_strings -->
+<g id="module~~watch_engine~~UsesGraph_edge70" class="edge">
+<title>module~watch_filter&#45;&gt;fpm_strings</title>
+<path fill="none" stroke="#ff007f" stroke-dasharray="5,2" d="M297.55,-264.88C291.08,-267.86 284.93,-271.84 280.29,-277.13 236.56,-327.1 277.89,-364.86 244.29,-422.13 216,-470.35 183.62,-461.69 152.52,-508.13 127.4,-545.65 136.07,-562.43 116.52,-603.13 103.73,-629.76 86.1,-658.73 73.8,-678.01"/>
+<polygon fill="#ff007f" stroke="#ff007f" points="70.88,-676.08 68.39,-686.38 76.76,-679.88 70.88,-676.08"/>
+</g>
+<!-- module~watch_filter&#45;&gt;iso_fortran_env -->
+<g id="module~~watch_engine~~UsesGraph_edge71" class="edge">
+<title>module~watch_filter&#45;&gt;iso_fortran_env</title>
+<path fill="none" stroke="#ff007f" stroke-dasharray="5,2" d="M297.55,-265.26C291.16,-268.2 285.04,-272.07 280.29,-277.13 244.55,-315.3 279.57,-350.55 244.29,-389.13 229.67,-405.12 221.06,-407.6 199.4,-408.13"/>
+<path fill="none" stroke="#ff007f" stroke-dasharray="5,2" d="M197.4,-408.13C151.34,-409.27 106.13,-441.77 80.56,-463.9"/>
+<polygon fill="#ff007f" stroke="#ff007f" points="78.31,-461.22 73.19,-470.49 82.98,-466.43 78.31,-461.22"/>
+</g>
+</g>
+</svg>
+</div>                <script>
+                  var panmodulewatch_engineUsesGraph = svgPanZoom('#modulewatch_engineUsesGraph',
+                    {zoomEnabled: true, controlIconsEnabled: true, fit: true, center: true,}
+                  );
+                </script>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#UsesGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="UsesGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="511pt" height="32pt"
+ viewBox="0.00 0.00 511.00 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 28.27)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-28.27 506.88,-28.27 506.88,4 -4,4"/>
+<!-- Module -->
+<g id="node1" class="node">
+<title>Module</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="54,-24.27 0,-24.27 0,0 54,0 54,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="27" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Module</text>
+</g>
+<!-- Submodule -->
+<g id="node2" class="node">
+<title>Submodule</title>
+<polygon fill="#5bc0de" stroke="#5bc0de" points="144.13,-24.27 71.87,-24.27 71.87,0 144.13,0 144.13,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="108" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Submodule</text>
+</g>
+<!-- Subroutine -->
+<g id="node3" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="231.63,-24.27 162.37,-24.27 162.37,0 231.63,0 231.63,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="197" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node4" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="306.26,-24.27 249.74,-24.27 249.74,0 306.26,0 306.26,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="278" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Program -->
+<g id="node5" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="381.26,-24.27 324.74,-24.27 324.74,0 381.26,0 381.26,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="353" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node6" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="502.88,-24.27 399.12,-24.27 399.12,0 502.88,0 502.88,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="451" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a submodule to the (sub)module which it is
+descended from. Dashed arrows point from a module or program unit to 
+modules which it uses.
+</p>
+ Where possible, edges connecting nodes are
+given different colours to make them easier to distinguish in
+large graphs.</div>
+            </div>
+          </div>
+        </div>
+            </li>
+        </ul>
+      </div>
+    </div>
+
+      
+      <br>
+
+
+
+
+
+
+        <section>
+          <h2>Derived Types</h2>
+              <div class="card">
+    <div class="card-header codesum">
+      <span class="anchor" id="type-watcher_t"></span>
+      <h3>
+        type, public&nbsp;::&nbsp;
+        <a href='../type/watcher_t.html'>watcher_t</a>
+        
+      </h3>
+    </div>
+    <div class="card-body">
+      <p>Main watcher state and methods.</p><a href="../type/watcher_t.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+        <h4>Components</h4>
+          <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Visibility</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+<th></th><th scope="col">Initial</th>        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-cfg~4"></span>
+              type(<a href='../type/watch_config_t.html'>watch_config_t</a>),
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>cfg</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-changed_idx~6"></span>
+              integer,
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>changed_idx</strong>(:)</td>
+                <td></td>
+                <td></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-file_mask~7"></span>
+              integer(kind=int64),
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>file_mask</strong>(:)</td>
+                <td></td>
+                <td></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-files~15"></span>
+              type(string_t),
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>files</strong>(:)</td>
+                <td></td>
+                <td></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-fm~3"></span>
+              type(<a href='../type/feature_manager_t.html'>feature_manager_t</a>),
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>fm</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-fp_now~4"></span>
+              integer(kind=int64),
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>fp_now</strong>(:)</td>
+                <td></td>
+                <td></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-fp_prev~4"></span>
+              integer(kind=int64),
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>fp_prev</strong>(:)</td>
+                <td></td>
+                <td></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-man_prev"></span>
+              integer(kind=int64),
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>man_prev</strong></td>
+<td> =</td>
+                <td>0_int64</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-roots~6"></span>
+              type(<a href='../type/root_info_t.html'>root_info_t</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>roots</strong>(:)</td>
+                <td></td>
+                <td></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+
+        <h4>Type-Bound Procedures</h4>
+        <table class="table table-striped varlist">
+          <tbody>
+              <tr>
+                <td>  procedure, public ::
+  <strong><a href='../type/watcher_t.html#boundprocedure-init~2'>init</a></strong> => <a href='/home/runner/work/fpm-watch/fpm-watch/doc/proc/watcher_init.html'>watcher_init</a></td>
+                  <td></td>
+              </tr>
+              <tr>
+                <td>  procedure, public ::
+  <strong><a href='../type/watcher_t.html#boundprocedure-run'>run</a></strong> => <a href='/home/runner/work/fpm-watch/fpm-watch/doc/proc/watcher_run.html'>watcher_run</a></td>
+                  <td></td>
+              </tr>
+          </tbody>
+        </table>
+    </div>
+  </div>
+
+        </section>
+        <br>
+
+        <section>
+          <h2>Functions</h2>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-any_manifest_changed"></span> <h3>private  function <a href='../proc/any_manifest_changed.html'>any_manifest_changed</a>(files, changed_idx, changed_count) result(hit)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Return whether the changed set contains <code>fpm.toml</code>.</p><a href="../proc/any_manifest_changed.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-files~16"></span>
+              type(string_t),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>files</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-changed_idx~7"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>changed_idx</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-changed_count~6"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>changed_count</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <h4>
+    Return Value
+    <small>logical</small>
+    </h4>
+    
+
+    </div>
+  </div>
+
+        </section>
+        <br>
+
+        <section>
+          <h2>Subroutines</h2>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-handle_manifest_change"></span> <h3>private  subroutine <a href='../proc/handle_manifest_change.html'>handle_manifest_change</a>(self)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Handle a manifest change (<code>fpm.toml</code>) by rebuilding the watch list.</p><a href="../proc/handle_manifest_change.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-self~20"></span>
+              class(<a href='../type/watcher_t.html'>watcher_t</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>self</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rebuild_watch_list"></span> <h3>private  subroutine <a href='../proc/rebuild_watch_list.html'>rebuild_watch_list</a>(self, print_header)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Recompute the watch list, rebuild fingerprints, and print/log the result.</p><a href="../proc/rebuild_watch_list.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-self~22"></span>
+              class(<a href='../type/watcher_t.html'>watcher_t</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>self</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-print_header"></span>
+              logical,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>print_header</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-run_once"></span> <h3>private  subroutine <a href='../proc/run_once.html'>run_once</a>(self, cmd0)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Run the configured command once without change detection.</p><a href="../proc/run_once.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-self~21"></span>
+              class(<a href='../type/watcher_t.html'>watcher_t</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>self</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-cmd0"></span>
+              character(len=*),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>cmd0</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-watcher_init"></span> <h3>private  subroutine <a href='../proc/watcher_init.html'>watcher_init</a>(self, cfg)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Initialize a watcher instance from configuration.</p><a href="../proc/watcher_init.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-self~18"></span>
+              class(<a href='../type/watcher_t.html'>watcher_t</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>self</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-cfg~5"></span>
+              type(<a href='../type/watch_config_t.html'>watch_config_t</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>cfg</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-watcher_run"></span> <h3>private  subroutine <a href='../proc/watcher_run.html'>watcher_run</a>(self)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Run the main watch loop until termination.</p><a href="../proc/watcher_run.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-self~19"></span>
+              class(<a href='../type/watcher_t.html'>watcher_t</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>self</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+        </section>
+        <br>
+
+
+
+    </div>
+  </div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              fpm-watch
+ was developed by Seyed Ali Ghasemi<br>              &copy; 2026 <a rel="license" href="https://opensource.org/licenses/MIT">MIT</a>
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+ on 2026-02-24T23:32:32.813097+0000             </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>

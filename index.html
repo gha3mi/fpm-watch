@@ -1,0 +1,313 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="Documentation for fpm-watch">
+    <meta name="author" content="Seyed Ali Ghasemi" >
+    <link rel="icon" href="./favicon.png">
+
+    <title> fpm-watch </title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="./css/fontawesome.min.css" rel="stylesheet">
+    <link href="./css/brands.min.css" rel="stylesheet">
+    <link href="./css/regular.min.css" rel="stylesheet">
+    <link href="./css/solid.min.css" rel="stylesheet">
+    <link href="./css/v4-font-face.min.css" rel="stylesheet">
+    <link href="./css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="./css/local.css" rel="stylesheet">
+    <link href="./css/pygments.css" rel="stylesheet">
+    <script src="./js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="./index.html">fpm-watch </a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="./lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="./lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="./lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="./lists/types.html">Derived Types</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="./search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <!-- Main component for a primary marketing message or call to action -->
+
+      <div class="row" id='text'>
+        <div class=col-md-8>
+          <h1>fpm-watch</h1>
+          <p><strong>fpm-watch</strong> is a plugin for the <a href="https://fpm.fortran-lang.org">Fortran Package Manager (fpm)</a> that automatically rebuilds, tests or runs your project whenever relevant source files change. It supports dependency awareness, low CPU idle mode and automatic restart capability.</p>
+<h2>Requirements</h2>
+<ul>
+<li><a href="https://fpm.fortran-lang.org">Fortran Package Manager (fpm)</a> version <strong>0.13.0 or newer</strong></li>
+<li>A supported Fortran compiler.</li>
+<li>Tested on Ubuntu with gfortran.</li>
+</ul>
+<h2>Installation</h2>
+<div class="codehilite"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/gha3mi/fpm-watch.git
+<span class="nb">cd</span><span class="w"> </span>fpm-watch
+fpm<span class="w"> </span>install<span class="w"> </span>--profile<span class="w"> </span>release
+</code></pre></div>
+
+<h2>Basic Usage</h2>
+<div class="codehilite"><pre><span></span><code>fpm-watch<span class="w"> </span>build
+fpm-watch<span class="w"> </span><span class="nb">test</span>
+fpm-watch<span class="w"> </span>run
+</code></pre></div>
+
+<p>Everything after <code>&lt;build|test|run&gt;</code> is passed directly to <code>fpm</code>.</p>
+<p>Example:</p>
+<div class="codehilite"><pre><span></span><code>fpm-watch<span class="w"> </span>--watch-low-cpu<span class="w"> </span>--watch-auto-restart<span class="w"> </span>run<span class="w"> </span>--example<span class="w"> </span>my_example
+</code></pre></div>
+
+<h2>Watch Options</h2>
+<div class="codehilite"><pre><span></span><code><span class="o">--</span><span class="nv">watch</span><span class="o">-</span><span class="nv">help</span>
+<span class="w">    </span><span class="k">Show</span><span class="w"> </span><span class="nv">help</span><span class="w"> </span><span class="nv">and</span><span class="w"> </span><span class="k">exit</span>.
+
+<span class="o">--</span><span class="nv">watch</span><span class="o">-</span><span class="nv">quiet</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="o">-</span><span class="nv">q</span>
+<span class="w">    </span><span class="nv">Quiet</span><span class="w"> </span><span class="nv">mode</span><span class="w"> </span><span class="ss">(</span><span class="nv">errors</span><span class="w"> </span><span class="nv">only</span><span class="ss">)</span>.
+
+<span class="o">--</span><span class="nv">watch</span><span class="o">-</span><span class="nv">verbose</span>[<span class="o">=</span><span class="nv">N</span>]<span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="o">-</span><span class="nv">v</span>
+<span class="w">    </span><span class="nv">Increase</span><span class="w"> </span><span class="nv">verbosity</span><span class="w"> </span><span class="ss">(</span><span class="mi">0</span>–<span class="mi">2</span><span class="ss">)</span>.
+
+<span class="o">--</span><span class="nv">watch</span><span class="o">-</span><span class="nv">very</span><span class="o">-</span><span class="nv">verbose</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="o">-</span><span class="nv">vv</span>
+<span class="w">    </span><span class="nv">Maximum</span><span class="w"> </span><span class="nv">verbosity</span><span class="w"> </span><span class="ss">(</span><span class="nv">prints</span><span class="w"> </span><span class="nv">watch</span><span class="w"> </span><span class="nv">list</span><span class="ss">)</span>.
+
+<span class="o">--</span><span class="nv">watch</span><span class="o">-</span><span class="nv">debug</span>
+<span class="w">    </span><span class="nv">Enable</span><span class="w"> </span><span class="nv">debug</span><span class="w"> </span><span class="nv">logging</span>.
+</code></pre></div>
+
+<h3>Dependency Watching</h3>
+<div class="codehilite"><pre><span></span><code>--watch-deps
+    Also watch dependency source trees.
+
+--watch-no-deps
+    Disable dependency watching (default).
+</code></pre></div>
+
+<h3>CPU Mode</h3>
+<div class="codehilite"><pre><span></span><code>--watch-low-cpu
+    Use OS sleep instead of busy-waiting (near 0% idle CPU).
+
+--watch-no-low-cpu
+    Use busy polling (default).
+</code></pre></div>
+
+<h3>Polling &amp; Execution</h3>
+<div class="codehilite"><pre><span></span><code><span class="o">--</span><span class="nv">watch</span><span class="o">-</span><span class="nv">poll</span><span class="w"> </span><span class="o">&lt;</span><span class="nv">sec</span><span class="o">&gt;</span>
+<span class="w">    </span><span class="nv">Poll</span><span class="w"> </span><span class="nv">interval</span><span class="w"> </span><span class="ss">(</span><span class="nv">default</span>:<span class="w"> </span><span class="mi">0</span>.<span class="mi">5</span><span class="ss">)</span>.
+
+<span class="o">--</span><span class="nv">watch</span><span class="o">-</span><span class="nv">debounce</span><span class="w"> </span><span class="o">&lt;</span><span class="nv">sec</span><span class="o">&gt;</span>
+<span class="w">    </span><span class="nv">Debounce</span><span class="w"> </span><span class="nv">delay</span><span class="w"> </span><span class="nv">before</span><span class="w"> </span><span class="nv">running</span><span class="w"> </span><span class="ss">(</span><span class="nv">default</span>:<span class="w"> </span><span class="mi">0</span>.<span class="mi">2</span><span class="ss">)</span>.
+
+<span class="o">--</span><span class="nv">watch</span><span class="o">-</span><span class="nv">rescan</span><span class="w"> </span><span class="o">&lt;</span><span class="nv">sec</span><span class="o">&gt;</span>
+<span class="w">    </span><span class="nv">Periodically</span><span class="w"> </span><span class="nv">rebuild</span><span class="w"> </span><span class="nv">fpm</span><span class="w"> </span><span class="nv">model</span><span class="w"> </span><span class="ss">(</span><span class="nv">default</span>:<span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">disabled</span><span class="ss">)</span>.
+
+<span class="o">--</span><span class="nv">watch</span><span class="o">-</span><span class="nv">no</span><span class="o">-</span><span class="nv">rescan</span>
+<span class="w">    </span><span class="nv">Disable</span><span class="w"> </span><span class="nv">periodic</span><span class="w"> </span><span class="nv">rescan</span>.
+
+<span class="o">--</span><span class="nv">watch</span><span class="o">-</span><span class="nv">run</span><span class="o">-</span><span class="nv">on</span><span class="o">-</span><span class="nv">start</span>
+<span class="w">    </span><span class="nv">Run</span><span class="w"> </span><span class="nv">once</span><span class="w"> </span><span class="nv">immediately</span><span class="w"> </span><span class="nv">on</span><span class="w"> </span><span class="nv">startup</span><span class="w"> </span><span class="ss">(</span><span class="nv">default</span><span class="ss">)</span>.
+
+<span class="o">--</span><span class="nv">watch</span><span class="o">-</span><span class="nv">no</span><span class="o">-</span><span class="nv">run</span><span class="o">-</span><span class="nv">on</span><span class="o">-</span><span class="nv">start</span>
+<span class="w">    </span><span class="k">Wait</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nv">first</span><span class="w"> </span><span class="nv">change</span><span class="w"> </span><span class="nv">before</span><span class="w"> </span><span class="nv">running</span>.
+</code></pre></div>
+
+<h3>Output Control</h3>
+<div class="codehilite"><pre><span></span><code><span class="o">--</span><span class="nv">watch</span><span class="o">-</span><span class="nv">silent</span><span class="o">-</span><span class="nv">fpm</span>
+<span class="w">    </span><span class="nv">Suppress</span><span class="w"> </span><span class="nv">fpm</span><span class="w"> </span><span class="nv">output</span><span class="c1">; show only fpm-watch status.</span>
+
+<span class="o">--</span><span class="nv">watch</span><span class="o">-</span><span class="nv">print</span><span class="o">-</span><span class="nv">files</span>
+<span class="w">    </span><span class="nv">Print</span><span class="w"> </span><span class="nv">watched</span><span class="w"> </span><span class="nv">file</span><span class="w"> </span><span class="nv">list</span><span class="w"> </span><span class="nv">at</span><span class="w"> </span><span class="nv">startup</span>.
+</code></pre></div>
+
+<h3>Filtering</h3>
+<div class="codehilite"><pre><span></span><code><span class="o">--</span><span class="nv">watch</span><span class="o">-</span><span class="nv">ignore</span><span class="w"> </span><span class="o">&lt;</span><span class="nv">glob</span><span class="o">&gt;</span>
+<span class="w">    </span><span class="nv">Ignore</span><span class="w"> </span><span class="nv">matching</span><span class="w"> </span><span class="nv">files</span><span class="w"> </span><span class="ss">(</span><span class="nv">repeatable</span><span class="ss">)</span>.
+
+<span class="o">--</span><span class="nv">watch</span><span class="o">-</span><span class="k">include</span><span class="w"> </span><span class="o">&lt;</span><span class="nv">glob</span><span class="o">&gt;</span>
+<span class="w">    </span><span class="nv">Only</span><span class="w"> </span><span class="nv">watch</span><span class="w"> </span><span class="nv">matching</span><span class="w"> </span><span class="nv">files</span><span class="w"> </span><span class="ss">(</span><span class="nv">repeatable</span><span class="ss">)</span>.
+
+<span class="o">--</span><span class="nv">watch</span><span class="o">-</span><span class="nv">feature</span><span class="w"> </span><span class="o">&lt;</span><span class="nv">name</span><span class="o">&gt;</span>
+<span class="w">    </span><span class="nv">Enable</span><span class="w"> </span><span class="nv">optional</span><span class="w"> </span><span class="nv">feature</span><span class="w"> </span><span class="nv">plugin</span><span class="w"> </span><span class="ss">(</span><span class="nv">repeatable</span><span class="ss">)</span>.
+</code></pre></div>
+
+<h3>Auto-Restart (Supervisor Mode)</h3>
+<div class="codehilite"><pre><span></span><code><span class="o">--</span><span class="nv">watch</span><span class="o">-</span><span class="nv">auto</span><span class="o">-</span><span class="nv">restart</span>
+<span class="w">    </span><span class="nv">Restart</span><span class="w"> </span><span class="nv">fpm</span><span class="o">-</span><span class="nv">watch</span><span class="w"> </span><span class="nv">automatically</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="nv">it</span><span class="w"> </span><span class="nv">crashes</span>.
+
+<span class="o">--</span><span class="nv">watch</span><span class="o">-</span><span class="nv">restart</span><span class="o">-</span><span class="nv">delay</span><span class="w"> </span><span class="o">&lt;</span><span class="nv">sec</span><span class="o">&gt;</span>
+<span class="w">    </span><span class="nv">Delay</span><span class="w"> </span><span class="nv">before</span><span class="w"> </span><span class="nv">restart</span><span class="w"> </span><span class="ss">(</span><span class="nv">default</span>:<span class="w"> </span><span class="mi">1</span>.<span class="mi">0</span><span class="ss">)</span>.
+
+<span class="o">--</span><span class="nv">watch</span><span class="o">-</span><span class="nv">restart</span><span class="o">-</span><span class="nv">max</span><span class="w"> </span><span class="o">&lt;</span><span class="nv">N</span><span class="o">&gt;</span>
+<span class="w">    </span><span class="nv">Maximum</span><span class="w"> </span><span class="nv">restart</span><span class="w"> </span><span class="nv">attempts</span><span class="w"> </span><span class="ss">(</span><span class="mi">0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">unlimited</span><span class="ss">)</span>.
+
+<span class="o">--</span><span class="nv">watch</span><span class="o">-</span><span class="nv">self</span><span class="w"> </span><span class="o">&lt;</span><span class="nv">path</span><span class="o">&gt;</span>
+<span class="w">    </span><span class="nv">Explicit</span><span class="w"> </span><span class="nv">path</span><span class="w"> </span><span class="nv">to</span><span class="w"> </span><span class="nv">fpm</span><span class="o">-</span><span class="nv">watch</span><span class="w"> </span><span class="nv">executable</span><span class="w"> </span><span class="ss">(</span><span class="nv">advanced</span><span class="ss">)</span>.
+</code></pre></div>
+
+<h2>Configuration via <code>fpm.toml</code></h2>
+<p>Defaults can be defined in your project:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">[extra.fpm-watch]</span>
+<span class="n">poll</span><span class="w">          </span><span class="o">=</span><span class="w"> </span><span class="mf">0.5</span>
+<span class="n">debounce</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="mf">0.2</span>
+<span class="n">rescan</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span>
+<span class="n">run-on-start</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+<span class="n">silent-fpm</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span>
+<span class="n">print-files</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span>
+<span class="n">deps</span><span class="w">          </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span>
+<span class="n">low-cpu</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span>
+<span class="n">auto-restart</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span>
+<span class="n">restart-delay</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.0</span>
+<span class="n">restart-max</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
+<span class="n">self</span><span class="w">          </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
+<span class="n">debug</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span>
+<span class="n">verbosity</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
+<span class="n">ignore</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="p">[]</span>
+<span class="n">include</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="p">[]</span>
+<span class="n">features</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="p">[]</span>
+</code></pre></div>
+
+<h2>Stopping</h2>
+<p>Press:</p>
+<div class="codehilite"><pre><span></span><code>Ctrl+C
+</code></pre></div>
+
+<p>Or create:</p>
+<div class="codehilite"><pre><span></span><code>touch .fpm-watch.stop
+</code></pre></div>
+        </div>
+          <div class="col-md-4">
+            <div class="card card-body bg-light">
+              <h2 class="card-title">Developer Info</h2>
+              <h4 class="card-text">Seyed Ali Ghasemi</h4>
+              <p class="card-text"></p>
+                <div class="text-center"><div class="btn-group" role="group">
+                      <a class="btn btn-lg btn-primary" href="mailto:info@gha3mi.com"><i class="fa fa-envelope fa-lg"></i></a>
+                    
+                    <a class="btn btn-lg btn-primary" href="https://github.com/gha3mi"><i class="fa fa-github fa-lg"></i></a>
+                    
+                    
+                    
+                    
+                    
+                    
+                </div></div>
+            </div>
+          </div>
+      </div>
+        <div class="row">
+          <hr>
+          <div class="col-xs-6 col-sm-3">
+            <div>
+              <h3>Source Files</h3>
+              <ul><li><a href='sourcefile/watch_banner.f90.html'>watch_banner.f90</a></li><li><a href='sourcefile/watch_cli.f90.html'>watch_cli.f90</a></li><li><a href='sourcefile/watch_clock.f90.html'>watch_clock.f90</a></li><li><a href='sourcefile/watch_cmdline.f90.html'>watch_cmdline.f90</a></li><li><a href='sourcefile/watch_cmdsplice.f90.html'>watch_cmdsplice.f90</a></li><li><a href='sourcefile/watch_config.f90.html'>watch_config.f90</a></li><li><a href='sourcefile/watch_engine.f90.html'>watch_engine.f90</a></li><li><a href='sourcefile/watch_exec.f90.html'>watch_exec.f90</a></li><li><a href='sourcefile/watch_feat_stats.f90.html'>watch_feat_stats.f90</a></li><li><a href='sourcefile/watch_feature_api.f90.html'>watch_feature_api.f90</a></li></ul>
+            </div>
+            <div>
+              <ul>
+                <li><a href="./lists/files.html"><em>All source files&hellip;</em></a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-xs-6 col-sm-3">
+            <div>
+              <h3>Modules</h3>
+              <ul><li><a href='module/watch_banner.html'>watch_banner</a></li><li><a href='module/watch_cli.html'>watch_cli</a></li><li><a href='module/watch_clock.html'>watch_clock</a></li><li><a href='module/watch_cmdline.html'>watch_cmdline</a></li><li><a href='module/watch_cmdsplice.html'>watch_cmdsplice</a></li><li><a href='module/watch_config.html'>watch_config</a></li><li><a href='module/watch_engine.html'>watch_engine</a></li><li><a href='module/watch_exec.html'>watch_exec</a></li><li><a href='module/watch_feat_stats.html'>watch_feat_stats</a></li><li><a href='module/watch_feature_api.html'>watch_feature_api</a></li></ul>
+            </div>
+            <div>
+              <ul>
+                <li><a href="./lists/modules.html"><em>All modules&hellip;</em></a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-xs-6 col-sm-3">
+            <div>
+              <h3>Procedures</h3>
+              <ul><li><a href='proc/accept_changes.html'>accept_changes</a></li><li><a href='proc/accum_push.html'>accum_push</a></li><li><a href='proc/accum_to_array.html'>accum_to_array</a></li><li><a href='proc/active_features.html'>active_features</a></li><li><a href='proc/active_profile.html'>active_profile</a></li><li><a href='proc/add_features_csv.html'>add_features_csv</a></li><li><a href='proc/add_stats.html'>add_stats</a></li><li><a href='proc/any_manifest_changed.html'>any_manifest_changed</a></li><li><a href='proc/apply_watch_flag.html'>apply_watch_flag</a></li><li><a href='proc/apply_watch_from_manifest.html'>apply_watch_from_manifest</a></li></ul>
+            </div>
+            <div>
+              <ul>
+                <li><a href="./lists/procedures.html"><em>All procedures&hellip;</em></a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-xs-6 col-sm-3">
+            <div>
+              <h3>Derived Types</h3>
+              <ul><li><a href='type/feature_box_t.html'>feature_box_t</a></li><li><a href='type/feature_manager_t.html'>feature_manager_t</a></li><li><a href='type/root_info_t.html'>root_info_t</a></li><li><a href='type/stats_feature_t.html'>stats_feature_t</a></li><li><a href='type/string_accum_t.html'>string_accum_t</a></li><li><a href='type/timespec.html'>timespec</a></li><li><a href='type/watch_config_t.html'>watch_config_t</a></li><li><a href='type/watch_feature_t.html'>watch_feature_t</a></li><li><a href='type/watch_opts_t.html'>watch_opts_t</a></li><li><a href='type/watcher_t.html'>watcher_t</a></li></ul>
+            </div>
+            <div>
+              <ul>
+                <li><a href="./lists/types.html"><em>All derived types&hellip;</em></a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              fpm-watch
+ was developed by Seyed Ali Ghasemi<br>              &copy; 2026 <a rel="license" href="https://opensource.org/licenses/MIT">MIT</a>
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+ on 2026-02-24T23:32:32.813097+0000             </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>

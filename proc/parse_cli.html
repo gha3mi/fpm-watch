@@ -1,0 +1,1299 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="Documentation for fpm-watch">
+    <meta name="author" content="Seyed Ali Ghasemi" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>parse_cli &ndash; fpm-watch</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">fpm-watch </a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/types.html">Derived Types</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <div class="row">
+    <h1>parse_cli
+      <small>Subroutine</small>
+      
+    </h1>
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+            <li class="list-inline-item" id="meta-license"><i class="fa fa-legal"></i> <a rel="license" href="https://opensource.org/licenses/MIT">MIT</a></li>
+
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title=" 6.8% of total for procedures.">193 statements</a>
+            </li>
+
+            <li class="list-inline-item" id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/watch_cli.f90"> Source File</a>
+            </li>
+        </ul>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+                <li class="breadcrumb-item"><a href='../sourcefile/watch_cli.f90.html'>watch_cli.f90</a></li>
+                <li class="breadcrumb-item"><a href='../module/watch_cli.html'>watch_cli</a></li>
+            <li class="breadcrumb-item active" aria-current="page">parse_cli</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
+  </script>
+
+  </div>
+  
+  <div class="row">
+    <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
+      <div id="sidebar">
+      <h3>Contents</h3>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    <div class="card card-primary">
+      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
+      <div class="list-group">
+        <a class="list-group-item" href="../proc/parse_cli.html#src">parse_cli</a>
+      </div>
+    </div>
+
+
+  </div>
+
+    </div>
+    
+    <div class="col-md-9" id='text'>
+    <h2>private  subroutine parse_cli(w, settings, fpm_cmdline, subcmd)  
+</h2>
+    
+
+    <p>Parse the complete CLI and produce watcher options + typed <code>fpm</code> settings.</p>
+<p>Parsing order:
+1. Initialize watcher options from defaults and <code>fpm.toml</code>.
+2. Consume leading <code>--watch-*</code> options and verbosity flags (<code>-q</code>, <code>-v</code>).
+3. Identify the <code>fpm</code> subcommand (<code>build|test|run</code>).
+4. Parse selected <code>fpm</code> settings used to build the model (profile, flags,
+   compilers, build-dir, features, and run/test names).</p>
+<p>All arguments after the subcommand are also preserved in <code>fpm_cmdline</code>.</p>
+
+
+    <h3>Arguments</h3>
+        <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-w~10"></span>
+              type(<a href='../type/watch_opts_t.html'>watch_opts_t</a>),
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>w</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-settings~9"></span>
+              class(fpm_build_settings),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>settings</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-fpm_cmdline~2"></span>
+              character(len=:),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>fpm_cmdline</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-subcmd~2"></span>
+              character(len=:),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>subcmd</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <br>
+    <div class="card">
+      <div class="card-header">
+  <h3 class="card-title">Calls</h3>
+      </div>
+      <div class="card-body">
+  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: proc~~parse_cli~~CallsGraph Pages: 1 -->
+<svg id="procparse_cliCallsGraph" width="641pt" height="622pt"
+ viewBox="0.00 0.00 641.00 622.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~parse_cli~~CallsGraph" class="graph" transform="scale(0.939745 0.939745) rotate(0) translate(4 658.27)">
+<title>proc~~parse_cli~~CallsGraph</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-658.27 678.1,-658.27 678.1,4 -4,4"/>
+<!-- proc~parse_cli -->
+<g id="proc~~parse_cli~~CallsGraph_node1" class="node">
+<title>proc~parse_cli</title>
+<polygon fill="none" stroke="black" points="58.77,-319.27 0,-319.27 0,-295 58.77,-295 58.77,-319.27"/>
+<text xml:space="preserve" text-anchor="middle" x="29.38" y="-303.53" font-family="Helvetica,sans-Serif" font-size="10.50">parse_cli</text>
+</g>
+<!-- proc~add_features_csv -->
+<g id="proc~~parse_cli~~CallsGraph_node2" class="node">
+<title>proc~add_features_csv</title>
+<g id="a_proc~~parse_cli~~CallsGraph_node2"><a xlink:href="../proc/add_features_csv.html" xlink:title="add_features_csv">
+<polygon fill="#d9534f" stroke="#d9534f" points="225.91,-647.27 122.89,-647.27 122.89,-623 225.91,-623 225.91,-647.27"/>
+<text xml:space="preserve" text-anchor="middle" x="174.4" y="-631.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">add_features_csv</text>
+</a>
+</g>
+</g>
+<!-- proc~parse_cli&#45;&gt;proc~add_features_csv -->
+<g id="proc~~parse_cli~~CallsGraph_edge1" class="edge">
+<title>proc~parse_cli&#45;&gt;proc~add_features_csv</title>
+<path fill="none" stroke="#ff0000" d="M31.57,-319.73C36.56,-370.38 57.37,-558.66 94.77,-603.13 99.68,-608.97 105.81,-613.75 112.48,-617.67"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="110.7,-620.7 121.2,-622.13 113.89,-614.46 110.7,-620.7"/>
+</g>
+<!-- proc~apply_watch_flag -->
+<g id="proc~~parse_cli~~CallsGraph_node3" class="node">
+<title>proc~apply_watch_flag</title>
+<g id="a_proc~~parse_cli~~CallsGraph_node3"><a xlink:href="../proc/apply_watch_flag.html" xlink:title="apply_watch_flag">
+<polygon fill="#d9534f" stroke="#d9534f" points="225.91,-442.27 122.89,-442.27 122.89,-418 225.91,-418 225.91,-442.27"/>
+<text xml:space="preserve" text-anchor="middle" x="174.4" y="-426.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">apply_watch_flag</text>
+</a>
+</g>
+</g>
+<!-- proc~parse_cli&#45;&gt;proc~apply_watch_flag -->
+<g id="proc~~parse_cli~~CallsGraph_edge2" class="edge">
+<title>proc~parse_cli&#45;&gt;proc~apply_watch_flag</title>
+<path fill="none" stroke="#ff0000" d="M35.83,-319.63C45.13,-339.57 65.9,-378.65 94.77,-401.13 100.71,-405.76 107.46,-409.7 114.45,-413.04"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="112.84,-416.16 123.41,-416.92 115.62,-409.74 112.84,-416.16"/>
+</g>
+<!-- proc~apply_watch_from_manifest -->
+<g id="proc~~parse_cli~~CallsGraph_node4" class="node">
+<title>proc~apply_watch_from_manifest</title>
+<g id="a_proc~~parse_cli~~CallsGraph_node4"><a xlink:href="../proc/apply_watch_from_manifest.html" xlink:title="apply_watch_from_manifest">
+<polygon fill="#d9534f" stroke="#d9534f" points="254.04,-279.27 94.77,-279.27 94.77,-255 254.04,-255 254.04,-279.27"/>
+<text xml:space="preserve" text-anchor="middle" x="174.4" y="-263.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">apply_watch_from_manifest</text>
+</a>
+</g>
+</g>
+<!-- proc~parse_cli&#45;&gt;proc~apply_watch_from_manifest -->
+<g id="proc~~parse_cli~~CallsGraph_edge3" class="edge">
+<title>proc~parse_cli&#45;&gt;proc~apply_watch_from_manifest</title>
+<path fill="none" stroke="#ff0000" d="M58.98,-299.14C75.7,-294.46 97.37,-288.4 117.36,-282.81"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="118.1,-286.24 126.79,-280.17 116.21,-279.5 118.1,-286.24"/>
+</g>
+<!-- proc~default_build_dir -->
+<g id="proc~~parse_cli~~CallsGraph_node5" class="node">
+<title>proc~default_build_dir</title>
+<g id="a_proc~~parse_cli~~CallsGraph_node5"><a xlink:href="../proc/default_build_dir.html" xlink:title="default_build_dir">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="224.41,-237.27 124.39,-237.27 124.39,-213 224.41,-213 224.41,-237.27"/>
+<text xml:space="preserve" text-anchor="middle" x="174.4" y="-221.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">default_build_dir</text>
+</a>
+</g>
+</g>
+<!-- proc~parse_cli&#45;&gt;proc~default_build_dir -->
+<g id="proc~~parse_cli~~CallsGraph_edge4" class="edge">
+<title>proc~parse_cli&#45;&gt;proc~default_build_dir</title>
+<path fill="none" stroke="#ff0000" d="M40.18,-294.69C51.76,-280.82 72.32,-258.68 94.77,-246.13 100.54,-242.91 106.82,-240.16 113.24,-237.83"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="114.26,-241.18 122.67,-234.74 112.08,-234.53 114.26,-241.18"/>
+</g>
+<!-- proc~get_arg -->
+<g id="proc~~parse_cli~~CallsGraph_node6" class="node">
+<title>proc~get_arg</title>
+<g id="a_proc~~parse_cli~~CallsGraph_node6"><a xlink:href="../proc/get_arg.html" xlink:title="get_arg">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="381.68,-528.27 327.68,-528.27 327.68,-504 381.68,-504 381.68,-528.27"/>
+<text xml:space="preserve" text-anchor="middle" x="354.68" y="-512.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">get_arg</text>
+</a>
+</g>
+</g>
+<!-- proc~parse_cli&#45;&gt;proc~get_arg -->
+<g id="proc~~parse_cli~~CallsGraph_edge5" class="edge">
+<title>proc~parse_cli&#45;&gt;proc~get_arg</title>
+<path fill="none" stroke="#ff0000" d="M32.26,-319.74C37.12,-347.84 52.81,-415.93 94.77,-451.13 158.77,-504.84 261.02,-515.14 315.91,-516.53"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="315.63,-520.03 325.68,-516.69 315.74,-513.03 315.63,-520.03"/>
+</g>
+<!-- proc~init_build_settings -->
+<g id="proc~~parse_cli~~CallsGraph_node7" class="node">
+<title>proc~init_build_settings</title>
+<g id="a_proc~~parse_cli~~CallsGraph_node7"><a xlink:href="../proc/init_build_settings.html" xlink:title="init_build_settings">
+<polygon fill="#d9534f" stroke="#d9534f" points="227.41,-195.27 121.39,-195.27 121.39,-171 227.41,-171 227.41,-195.27"/>
+<text xml:space="preserve" text-anchor="middle" x="174.4" y="-179.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">init_build_settings</text>
+</a>
+</g>
+</g>
+<!-- proc~parse_cli&#45;&gt;proc~init_build_settings -->
+<g id="proc~~parse_cli~~CallsGraph_edge6" class="edge">
+<title>proc~parse_cli&#45;&gt;proc~init_build_settings</title>
+<path fill="none" stroke="#ff0000" d="M34.72,-294.53C42.9,-272.68 62.72,-227.83 94.77,-204.13 99.48,-200.65 104.72,-197.75 110.21,-195.33"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="111.45,-198.6 119.55,-191.77 108.96,-192.06 111.45,-198.6"/>
+</g>
+<!-- proc~is_supported_subcmd -->
+<g id="proc~~parse_cli~~CallsGraph_node8" class="node">
+<title>proc~is_supported_subcmd</title>
+<g id="a_proc~~parse_cli~~CallsGraph_node8"><a xlink:href="../proc/is_supported_subcmd.html" xlink:title="is_supported_subcmd">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="237.54,-153.27 111.27,-153.27 111.27,-129 237.54,-129 237.54,-153.27"/>
+<text xml:space="preserve" text-anchor="middle" x="174.4" y="-137.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">is_supported_subcmd</text>
+</a>
+</g>
+</g>
+<!-- proc~parse_cli&#45;&gt;proc~is_supported_subcmd -->
+<g id="proc~~parse_cli~~CallsGraph_edge7" class="edge">
+<title>proc~parse_cli&#45;&gt;proc~is_supported_subcmd</title>
+<path fill="none" stroke="#ff0000" d="M32.19,-294.91C36.99,-266.97 52.67,-198.09 94.77,-162.13 96.73,-160.46 98.82,-158.91 101,-157.49"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="102.63,-160.59 109.73,-152.72 99.27,-154.44 102.63,-160.59"/>
+</g>
+<!-- proc~is_watch_flag -->
+<g id="proc~~parse_cli~~CallsGraph_node9" class="node">
+<title>proc~is_watch_flag</title>
+<g id="a_proc~~parse_cli~~CallsGraph_node9"><a xlink:href="../proc/is_watch_flag.html" xlink:title="is_watch_flag">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="215.41,-111.27 133.39,-111.27 133.39,-87 215.41,-87 215.41,-111.27"/>
+<text xml:space="preserve" text-anchor="middle" x="174.4" y="-95.54" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">is_watch_flag</text>
+</a>
+</g>
+</g>
+<!-- proc~parse_cli&#45;&gt;proc~is_watch_flag -->
+<g id="proc~~parse_cli~~CallsGraph_edge8" class="edge">
+<title>proc~parse_cli&#45;&gt;proc~is_watch_flag</title>
+<path fill="none" stroke="#ff0000" d="M30.84,-294.53C32.77,-260.95 42.77,-168.59 94.77,-120.14 102.36,-113.06 112.07,-108.32 122.05,-105.15"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="122.66,-108.61 131.45,-102.68 120.88,-101.84 122.66,-108.61"/>
+</g>
+<!-- proc~join_argv -->
+<g id="proc~~parse_cli~~CallsGraph_node10" class="node">
+<title>proc~join_argv</title>
+<g id="a_proc~~parse_cli~~CallsGraph_node10"><a xlink:href="../proc/join_argv.html" xlink:title="join_argv">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="204.54,-549.27 144.27,-549.27 144.27,-525 204.54,-525 204.54,-549.27"/>
+<text xml:space="preserve" text-anchor="middle" x="174.4" y="-533.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">join_argv</text>
+</a>
+</g>
+</g>
+<!-- proc~parse_cli&#45;&gt;proc~join_argv -->
+<g id="proc~~parse_cli~~CallsGraph_edge9" class="edge">
+<title>proc~parse_cli&#45;&gt;proc~join_argv</title>
+<path fill="none" stroke="#ff0000" d="M30.74,-319.38C32.41,-353.85 41.8,-452.82 94.77,-508.13 105.01,-518.83 119.54,-525.61 133.33,-529.89"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="132.11,-533.18 142.67,-532.42 133.94,-526.43 132.11,-533.18"/>
+</g>
+<!-- proc~normalize_watch_opts -->
+<g id="proc~~parse_cli~~CallsGraph_node11" class="node">
+<title>proc~normalize_watch_opts</title>
+<g id="a_proc~~parse_cli~~CallsGraph_node11"><a xlink:href="../proc/normalize_watch_opts.html" xlink:title="normalize_watch_opts">
+<polygon fill="#d9534f" stroke="#d9534f" points="419.31,-318.27 290.04,-318.27 290.04,-294 419.31,-294 419.31,-318.27"/>
+<text xml:space="preserve" text-anchor="middle" x="354.68" y="-302.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">normalize_watch_opts</text>
+</a>
+</g>
+</g>
+<!-- proc~parse_cli&#45;&gt;proc~normalize_watch_opts -->
+<g id="proc~~parse_cli~~CallsGraph_edge10" class="edge">
+<title>proc~parse_cli&#45;&gt;proc~normalize_watch_opts</title>
+<path fill="none" stroke="#ff0000" d="M59.07,-307.05C107.82,-306.9 208.32,-306.58 278.31,-306.37"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="278.2,-309.87 288.18,-306.34 278.17,-302.87 278.2,-309.87"/>
+</g>
+<!-- proc~push_feature -->
+<g id="proc~~parse_cli~~CallsGraph_node12" class="node">
+<title>proc~push_feature</title>
+<g id="a_proc~~parse_cli~~CallsGraph_node12"><a xlink:href="../proc/push_feature.html" xlink:title="push_feature">
+<polygon fill="#d9534f" stroke="#d9534f" points="394.94,-654.27 314.42,-654.27 314.42,-630 394.94,-630 394.94,-654.27"/>
+<text xml:space="preserve" text-anchor="middle" x="354.68" y="-638.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">push_feature</text>
+</a>
+</g>
+</g>
+<!-- proc~parse_cli&#45;&gt;proc~push_feature -->
+<g id="proc~~parse_cli~~CallsGraph_edge11" class="edge">
+<title>proc~parse_cli&#45;&gt;proc~push_feature</title>
+<path fill="none" stroke="#ff0000" d="M32,-319.72C38.11,-365.51 61.2,-522.39 94.77,-558.13 102.14,-565.98 230.09,-605.19 303.31,-627.15"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="302.09,-630.44 312.68,-629.96 304.1,-623.74 302.09,-630.44"/>
+</g>
+<!-- proc~set_names -->
+<g id="proc~~parse_cli~~CallsGraph_node13" class="node">
+<title>proc~set_names</title>
+<g id="a_proc~~parse_cli~~CallsGraph_node13"><a xlink:href="../proc/set_names.html" xlink:title="set_names">
+<polygon fill="#d9534f" stroke="#d9534f" points="208.66,-69.27 140.14,-69.27 140.14,-45 208.66,-45 208.66,-69.27"/>
+<text xml:space="preserve" text-anchor="middle" x="174.4" y="-53.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">set_names</text>
+</a>
+</g>
+</g>
+<!-- proc~parse_cli&#45;&gt;proc~set_names -->
+<g id="proc~~parse_cli~~CallsGraph_edge12" class="edge">
+<title>proc~parse_cli&#45;&gt;proc~set_names</title>
+<path fill="none" stroke="#ff0000" d="M29.91,-294.62C29.19,-256.32 32.46,-139.64 94.77,-78.14 103.86,-69.17 116.32,-63.91 128.65,-60.87"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="129.22,-64.33 138.35,-58.95 127.86,-57.46 129.22,-64.33"/>
+</g>
+<!-- proc~set_watch_defaults -->
+<g id="proc~~parse_cli~~CallsGraph_node14" class="node">
+<title>proc~set_watch_defaults</title>
+<g id="a_proc~~parse_cli~~CallsGraph_node14"><a xlink:href="../proc/set_watch_defaults.html" xlink:title="set_watch_defaults">
+<polygon fill="#d9534f" stroke="#d9534f" points="230.41,-27.27 118.39,-27.27 118.39,-3 230.41,-3 230.41,-27.27"/>
+<text xml:space="preserve" text-anchor="middle" x="174.4" y="-11.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">set_watch_defaults</text>
+</a>
+</g>
+</g>
+<!-- proc~parse_cli&#45;&gt;proc~set_watch_defaults -->
+<g id="proc~~parse_cli~~CallsGraph_edge13" class="edge">
+<title>proc~parse_cli&#45;&gt;proc~set_watch_defaults</title>
+<path fill="none" stroke="#ff0000" d="M31.65,-294.83C36.79,-247 57.68,-74.27 94.77,-36.13 98.57,-32.23 103.02,-29.02 107.82,-26.39"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="109.03,-29.68 116.72,-22.39 106.16,-23.3 109.03,-29.68"/>
+</g>
+<!-- proc~usage_and_stop -->
+<g id="proc~~parse_cli~~CallsGraph_node15" class="node">
+<title>proc~usage_and_stop</title>
+<g id="a_proc~~parse_cli~~CallsGraph_node15"><a xlink:href="../proc/usage_and_stop.html" xlink:title="usage_and_stop">
+<polygon fill="#d9534f" stroke="#d9534f" points="403.19,-360.27 306.17,-360.27 306.17,-336 403.19,-336 403.19,-360.27"/>
+<text xml:space="preserve" text-anchor="middle" x="354.68" y="-344.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">usage_and_stop</text>
+</a>
+</g>
+</g>
+<!-- proc~parse_cli&#45;&gt;proc~usage_and_stop -->
+<g id="proc~~parse_cli~~CallsGraph_edge14" class="edge">
+<title>proc~parse_cli&#45;&gt;proc~usage_and_stop</title>
+<path fill="none" stroke="#ff0000" d="M59.1,-314.09C70.19,-316.59 83.02,-319.25 94.77,-321.13 162.81,-332.05 241.64,-339.54 294.27,-343.81"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="293.99,-347.3 304.24,-344.61 294.55,-340.32 293.99,-347.3"/>
+</g>
+<!-- proc~usage_and_stop_ok -->
+<g id="proc~~parse_cli~~CallsGraph_node16" class="node">
+<title>proc~usage_and_stop_ok</title>
+<g id="a_proc~~parse_cli~~CallsGraph_node16"><a xlink:href="../proc/usage_and_stop_ok.html" xlink:title="usage_and_stop_ok">
+<polygon fill="#d9534f" stroke="#d9534f" points="412.19,-402.27 297.17,-402.27 297.17,-378 412.19,-378 412.19,-402.27"/>
+<text xml:space="preserve" text-anchor="middle" x="354.68" y="-386.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">usage_and_stop_ok</text>
+</a>
+</g>
+</g>
+<!-- proc~parse_cli&#45;&gt;proc~usage_and_stop_ok -->
+<g id="proc~~parse_cli~~CallsGraph_edge15" class="edge">
+<title>proc~parse_cli&#45;&gt;proc~usage_and_stop_ok</title>
+<path fill="none" stroke="#ff0000" d="M48.16,-319.6C60.65,-327.78 78.05,-338.06 94.77,-344.13 157.23,-366.84 232.37,-378.6 285.57,-384.52"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="285.1,-387.99 295.41,-385.57 285.84,-381.03 285.1,-387.99"/>
+</g>
+<!-- proc~add_features_csv&#45;&gt;proc~push_feature -->
+<g id="proc~~parse_cli~~CallsGraph_edge16" class="edge">
+<title>proc~add_features_csv&#45;&gt;proc~push_feature</title>
+<path fill="none" stroke="#ff0000" d="M226.01,-637.12C249.99,-638.06 278.56,-639.19 302.6,-640.13"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="302.35,-643.62 312.48,-640.52 302.62,-636.63 302.35,-643.62"/>
+</g>
+<!-- proc~apply_watch_flag&#45;&gt;proc~get_arg -->
+<g id="proc~~parse_cli~~CallsGraph_edge17" class="edge">
+<title>proc~apply_watch_flag&#45;&gt;proc~get_arg</title>
+<path fill="none" stroke="#ff6600" d="M194.67,-442.63C216.97,-456.71 255.11,-479.65 290.04,-495.13 298.42,-498.85 307.66,-502.26 316.45,-505.21"/>
+<polygon fill="#ff6600" stroke="#ff6600" points="315.2,-508.49 325.79,-508.22 317.34,-501.83 315.2,-508.49"/>
+</g>
+<!-- proc~apply_watch_flag&#45;&gt;proc~normalize_watch_opts -->
+<g id="proc~~parse_cli~~CallsGraph_edge18" class="edge">
+<title>proc~apply_watch_flag&#45;&gt;proc~normalize_watch_opts</title>
+<path fill="none" stroke="#ff6600" d="M186.16,-417.53C205.1,-396.09 246.52,-352.36 290.04,-327.13 292.38,-325.78 294.81,-324.5 297.31,-323.29"/>
+<polygon fill="#ff6600" stroke="#ff6600" points="298.67,-326.51 306.44,-319.31 295.87,-320.1 298.67,-326.51"/>
+</g>
+<!-- proc~apply_watch_flag&#45;&gt;proc~push_feature -->
+<g id="proc~~parse_cli~~CallsGraph_edge21" class="edge">
+<title>proc~apply_watch_flag&#45;&gt;proc~push_feature</title>
+<path fill="none" stroke="#ff6600" d="M190.12,-442.72C207.57,-458.34 236.49,-486.56 254.04,-516.13 279.21,-558.56 254.96,-586.45 290.04,-621.13 293.97,-625.02 298.63,-628.19 303.62,-630.77"/>
+<polygon fill="#ff6600" stroke="#ff6600" points="302.22,-633.98 312.79,-634.69 304.97,-627.54 302.22,-633.98"/>
+</g>
+<!-- proc~apply_watch_flag&#45;&gt;proc~usage_and_stop -->
+<g id="proc~~parse_cli~~CallsGraph_edge22" class="edge">
+<title>proc~apply_watch_flag&#45;&gt;proc~usage_and_stop</title>
+<path fill="none" stroke="#ff6600" d="M196.42,-417.55C219.01,-404.36 256.25,-383.58 290.04,-369.13 293.79,-367.53 297.71,-365.97 301.68,-364.48"/>
+<polygon fill="#ff6600" stroke="#ff6600" points="302.57,-367.88 310.79,-361.19 300.2,-361.29 302.57,-367.88"/>
+</g>
+<!-- proc~apply_watch_flag&#45;&gt;proc~usage_and_stop_ok -->
+<g id="proc~~parse_cli~~CallsGraph_edge23" class="edge">
+<title>proc~apply_watch_flag&#45;&gt;proc~usage_and_stop_ok</title>
+<path fill="none" stroke="#ff6600" d="M226.01,-418.78C244.86,-414.55 266.55,-409.68 286.65,-405.17"/>
+<polygon fill="#ff6600" stroke="#ff6600" points="287.15,-408.65 296.14,-403.04 285.62,-401.82 287.15,-408.65"/>
+</g>
+<!-- proc~parse_int -->
+<g id="proc~~parse_cli~~CallsGraph_node22" class="node">
+<title>proc~parse_int</title>
+<g id="a_proc~~parse_cli~~CallsGraph_node22"><a xlink:href="../proc/parse_int.html" xlink:title="parse_int">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="384.81,-486.27 324.54,-486.27 324.54,-462 384.81,-462 384.81,-486.27"/>
+<text xml:space="preserve" text-anchor="middle" x="354.68" y="-470.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">parse_int</text>
+</a>
+</g>
+</g>
+<!-- proc~apply_watch_flag&#45;&gt;proc~parse_int -->
+<g id="proc~~parse_cli~~CallsGraph_edge19" class="edge">
+<title>proc~apply_watch_flag&#45;&gt;proc~parse_int</title>
+<path fill="none" stroke="#ff6600" d="M226.01,-442.63C253.63,-449.44 287.36,-457.77 313.21,-464.15"/>
+<polygon fill="#ff6600" stroke="#ff6600" points="312.11,-467.48 322.66,-466.48 313.79,-460.68 312.11,-467.48"/>
+</g>
+<!-- proc~parse_real -->
+<g id="proc~~parse_cli~~CallsGraph_node23" class="node">
+<title>proc~parse_real</title>
+<g id="a_proc~~parse_cli~~CallsGraph_node23"><a xlink:href="../proc/parse_real.html" xlink:title="parse_real">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="388.19,-444.27 321.17,-444.27 321.17,-420 388.19,-420 388.19,-444.27"/>
+<text xml:space="preserve" text-anchor="middle" x="354.68" y="-428.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">parse_real</text>
+</a>
+</g>
+</g>
+<!-- proc~apply_watch_flag&#45;&gt;proc~parse_real -->
+<g id="proc~~parse_cli~~CallsGraph_edge20" class="edge">
+<title>proc~apply_watch_flag&#45;&gt;proc~parse_real</title>
+<path fill="none" stroke="#ff6600" d="M226.01,-430.7C252.23,-431 283.95,-431.35 309.21,-431.64"/>
+<polygon fill="#ff6600" stroke="#ff6600" points="309.13,-435.14 319.17,-431.75 309.21,-428.14 309.13,-435.14"/>
+</g>
+<!-- proc~apply_watch_from_manifest&#45;&gt;proc~normalize_watch_opts -->
+<g id="proc~~parse_cli~~CallsGraph_edge25" class="edge">
+<title>proc~apply_watch_from_manifest&#45;&gt;proc~normalize_watch_opts</title>
+<path fill="none" stroke="#ffcc00" d="M232.79,-279.69C249.41,-283.32 267.72,-287.33 284.95,-291.1"/>
+<polygon fill="#ffcc00" stroke="#ffcc00" points="284.09,-294.5 294.61,-293.21 285.59,-287.66 284.09,-294.5"/>
+</g>
+<!-- proc~load_watch_table -->
+<g id="proc~~parse_cli~~CallsGraph_node20" class="node">
+<title>proc~load_watch_table</title>
+<g id="a_proc~~parse_cli~~CallsGraph_node20"><a xlink:href="../proc/load_watch_table.html" xlink:title="load_watch_table">
+<polygon fill="#d9534f" stroke="#d9534f" points="406.56,-234.27 302.79,-234.27 302.79,-210 406.56,-210 406.56,-234.27"/>
+<text xml:space="preserve" text-anchor="middle" x="354.68" y="-218.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">load_watch_table</text>
+</a>
+</g>
+</g>
+<!-- proc~apply_watch_from_manifest&#45;&gt;proc~load_watch_table -->
+<g id="proc~~parse_cli~~CallsGraph_edge24" class="edge">
+<title>proc~apply_watch_from_manifest&#45;&gt;proc~load_watch_table</title>
+<path fill="none" stroke="#ffcc00" d="M225.06,-254.6C246.04,-249.31 270.67,-243.09 292.73,-237.52"/>
+<polygon fill="#ffcc00" stroke="#ffcc00" points="293.36,-240.97 302.2,-235.13 291.64,-234.18 293.36,-240.97"/>
+</g>
+<!-- proc~toml_get_int -->
+<g id="proc~~parse_cli~~CallsGraph_node25" class="node">
+<title>proc~toml_get_int</title>
+<g id="a_proc~~parse_cli~~CallsGraph_node25"><a xlink:href="../proc/toml_get_int.html" xlink:title="toml_get_int">
+<polygon fill="#d9534f" stroke="#d9534f" points="393.06,-192.27 316.29,-192.27 316.29,-168 393.06,-168 393.06,-192.27"/>
+<text xml:space="preserve" text-anchor="middle" x="354.68" y="-176.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">toml_get_int</text>
+</a>
+</g>
+</g>
+<!-- proc~apply_watch_from_manifest&#45;&gt;proc~toml_get_int -->
+<g id="proc~~parse_cli~~CallsGraph_edge26" class="edge">
+<title>proc~apply_watch_from_manifest&#45;&gt;proc~toml_get_int</title>
+<path fill="none" stroke="#ffcc00" d="M237.56,-254.61C243.36,-252.26 248.95,-249.46 254.04,-246.13 275.48,-232.13 269.01,-215.75 290.04,-201.13 294.76,-197.86 300.02,-195.06 305.44,-192.69"/>
+<polygon fill="#ffcc00" stroke="#ffcc00" points="306.49,-196.03 314.56,-189.16 303.97,-189.51 306.49,-196.03"/>
+</g>
+<!-- proc~toml_get_list_strings -->
+<g id="proc~~parse_cli~~CallsGraph_node26" class="node">
+<title>proc~toml_get_list_strings</title>
+<g id="a_proc~~parse_cli~~CallsGraph_node26"><a xlink:href="../proc/toml_get_list_strings.html" xlink:title="toml_get_list_strings">
+<polygon fill="#d9534f" stroke="#d9534f" points="414.06,-276.27 295.29,-276.27 295.29,-252 414.06,-252 414.06,-276.27"/>
+<text xml:space="preserve" text-anchor="middle" x="354.68" y="-260.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">toml_get_list_strings</text>
+</a>
+</g>
+</g>
+<!-- proc~apply_watch_from_manifest&#45;&gt;proc~toml_get_list_strings -->
+<g id="proc~~parse_cli~~CallsGraph_edge27" class="edge">
+<title>proc~apply_watch_from_manifest&#45;&gt;proc~toml_get_list_strings</title>
+<path fill="none" stroke="#ffcc00" d="M254.38,-265.81C264.04,-265.64 273.87,-265.48 283.4,-265.32"/>
+<polygon fill="#ffcc00" stroke="#ffcc00" points="283.39,-268.82 293.33,-265.15 283.27,-261.82 283.39,-268.82"/>
+</g>
+<!-- proc~toml_get_logical -->
+<g id="proc~~parse_cli~~CallsGraph_node27" class="node">
+<title>proc~toml_get_logical</title>
+<g id="a_proc~~parse_cli~~CallsGraph_node27"><a xlink:href="../proc/toml_get_logical.html" xlink:title="toml_get_logical">
+<polygon fill="#d9534f" stroke="#d9534f" points="403.94,-150.27 305.42,-150.27 305.42,-126 403.94,-126 403.94,-150.27"/>
+<text xml:space="preserve" text-anchor="middle" x="354.68" y="-134.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">toml_get_logical</text>
+</a>
+</g>
+</g>
+<!-- proc~apply_watch_from_manifest&#45;&gt;proc~toml_get_logical -->
+<g id="proc~~parse_cli~~CallsGraph_edge28" class="edge">
+<title>proc~apply_watch_from_manifest&#45;&gt;proc~toml_get_logical</title>
+<path fill="none" stroke="#ffcc00" d="M241.34,-254.69C245.91,-252.31 250.21,-249.49 254.04,-246.13 285.51,-218.55 259.38,-187.62 290.04,-159.13 291.67,-157.62 293.41,-156.22 295.24,-154.91"/>
+<polygon fill="#ffcc00" stroke="#ffcc00" points="296.82,-158.04 303.67,-149.96 293.27,-152.01 296.82,-158.04"/>
+</g>
+<!-- proc~toml_get_real -->
+<g id="proc~~parse_cli~~CallsGraph_node28" class="node">
+<title>proc~toml_get_real</title>
+<g id="a_proc~~parse_cli~~CallsGraph_node28"><a xlink:href="../proc/toml_get_real.html" xlink:title="toml_get_real">
+<polygon fill="#d9534f" stroke="#d9534f" points="396.44,-108.27 312.92,-108.27 312.92,-84 396.44,-84 396.44,-108.27"/>
+<text xml:space="preserve" text-anchor="middle" x="354.68" y="-92.54" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">toml_get_real</text>
+</a>
+</g>
+</g>
+<!-- proc~apply_watch_from_manifest&#45;&gt;proc~toml_get_real -->
+<g id="proc~~parse_cli~~CallsGraph_edge29" class="edge">
+<title>proc~apply_watch_from_manifest&#45;&gt;proc~toml_get_real</title>
+<path fill="none" stroke="#ffcc00" d="M242.91,-254.56C246.96,-252.2 250.72,-249.41 254.04,-246.13 296.36,-204.28 248.94,-160.19 290.04,-117.14 293.57,-113.44 297.76,-110.39 302.29,-107.88"/>
+<polygon fill="#ffcc00" stroke="#ffcc00" points="303.56,-111.15 311.21,-103.82 300.66,-104.77 303.56,-111.15"/>
+</g>
+<!-- features -->
+<g id="proc~~parse_cli~~CallsGraph_node18" class="node">
+<title>features</title>
+<polygon fill="#777777" stroke="#777777" points="382.19,-66.27 327.17,-66.27 327.17,-42 382.19,-42 382.19,-66.27"/>
+<text xml:space="preserve" text-anchor="middle" x="354.68" y="-50.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">features</text>
+</g>
+<!-- proc~init_build_settings&#45;&gt;features -->
+<g id="proc~~parse_cli~~CallsGraph_edge30" class="edge">
+<title>proc~init_build_settings&#45;&gt;features</title>
+<path fill="none" stroke="#00ff00" d="M227.84,-176.31C237.35,-173.18 246.6,-168.65 254.04,-162.13 285.51,-134.55 259.38,-103.62 290.04,-75.14 297.27,-68.42 306.69,-63.85 316.06,-60.74"/>
+<polygon fill="#00ff00" stroke="#00ff00" points="316.75,-64.18 325.45,-58.12 314.87,-57.44 316.75,-64.18"/>
+</g>
+<!-- proc~join_argv&#45;&gt;proc~get_arg -->
+<g id="proc~~parse_cli~~CallsGraph_edge31" class="edge">
+<title>proc~join_argv&#45;&gt;proc~get_arg</title>
+<path fill="none" stroke="#00cbff" d="M204.84,-533.67C235.36,-530.07 283.16,-524.44 316.33,-520.53"/>
+<polygon fill="#00cbff" stroke="#00cbff" points="316.37,-524.05 325.89,-519.41 315.55,-517.1 316.37,-524.05"/>
+</g>
+<!-- proc~needs_quotes -->
+<g id="proc~~parse_cli~~CallsGraph_node21" class="node">
+<title>proc~needs_quotes</title>
+<g id="a_proc~~parse_cli~~CallsGraph_node21"><a xlink:href="../proc/needs_quotes.html" xlink:title="needs_quotes">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="397.19,-570.27 312.17,-570.27 312.17,-546 397.19,-546 397.19,-570.27"/>
+<text xml:space="preserve" text-anchor="middle" x="354.68" y="-554.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">needs_quotes</text>
+</a>
+</g>
+</g>
+<!-- proc~join_argv&#45;&gt;proc~needs_quotes -->
+<g id="proc~~parse_cli~~CallsGraph_edge32" class="edge">
+<title>proc~join_argv&#45;&gt;proc~needs_quotes</title>
+<path fill="none" stroke="#00cbff" d="M204.84,-540.6C230.83,-543.66 269.33,-548.2 300.67,-551.89"/>
+<polygon fill="#00cbff" stroke="#00cbff" points="300.01,-555.34 310.35,-553.03 300.83,-548.39 300.01,-555.34"/>
+</g>
+<!-- proc~quote_arg -->
+<g id="proc~~parse_cli~~CallsGraph_node24" class="node">
+<title>proc~quote_arg</title>
+<g id="a_proc~~parse_cli~~CallsGraph_node24"><a xlink:href="../proc/quote_arg.html" xlink:title="quote_arg">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="387.44,-612.27 321.92,-612.27 321.92,-588 387.44,-588 387.44,-612.27"/>
+<text xml:space="preserve" text-anchor="middle" x="354.68" y="-596.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">quote_arg</text>
+</a>
+</g>
+</g>
+<!-- proc~join_argv&#45;&gt;proc~quote_arg -->
+<g id="proc~~parse_cli~~CallsGraph_edge33" class="edge">
+<title>proc~join_argv&#45;&gt;proc~quote_arg</title>
+<path fill="none" stroke="#00cbff" d="M205,-548.28C228.09,-556.9 261.01,-569.03 290.04,-579.13 296.75,-581.47 303.87,-583.88 310.83,-586.21"/>
+<polygon fill="#00cbff" stroke="#00cbff" points="309.53,-589.46 320.12,-589.29 311.73,-582.82 309.53,-589.46"/>
+</g>
+<!-- name -->
+<g id="proc~~parse_cli~~CallsGraph_node19" class="node">
+<title>name</title>
+<polygon fill="#777777" stroke="#777777" points="381.68,-24.27 327.68,-24.27 327.68,0 381.68,0 381.68,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="354.68" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">name</text>
+</g>
+<!-- proc~set_names&#45;&gt;name -->
+<g id="proc~~parse_cli~~CallsGraph_edge34" class="edge">
+<title>proc~set_names&#45;&gt;name</title>
+<path fill="none" stroke="#6500ff" d="M208.94,-48.67C239.48,-40.96 284.52,-29.59 316.23,-21.59"/>
+<polygon fill="#6500ff" stroke="#6500ff" points="316.95,-25.02 325.79,-19.17 315.24,-18.23 316.95,-25.02"/>
+</g>
+<!-- colorize -->
+<g id="proc~~parse_cli~~CallsGraph_node17" class="node">
+<title>colorize</title>
+<polygon fill="#777777" stroke="#777777" points="663.84,-380.27 609.84,-380.27 609.84,-356 663.84,-356 663.84,-380.27"/>
+<text xml:space="preserve" text-anchor="middle" x="636.84" y="-364.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">colorize</text>
+</g>
+<!-- proc~usage_and_stop&#45;&gt;colorize -->
+<g id="proc~~parse_cli~~CallsGraph_edge35" class="edge">
+<title>proc~usage_and_stop&#45;&gt;colorize</title>
+<path fill="none" stroke="#ff00cb" d="M403.52,-351.55C458.64,-355.49 548.08,-361.87 598.38,-365.46"/>
+<polygon fill="#ff00cb" stroke="#ff00cb" points="597.96,-368.94 608.18,-366.16 598.46,-361.96 597.96,-368.94"/>
+</g>
+<!-- proc~usage_print_only -->
+<g id="proc~~parse_cli~~CallsGraph_node29" class="node">
+<title>proc~usage_print_only</title>
+<g id="a_proc~~parse_cli~~CallsGraph_node29"><a xlink:href="../proc/usage_print_only.html" xlink:title="usage_print_only">
+<polygon fill="#d9534f" stroke="#d9534f" points="560.21,-400.27 458.69,-400.27 458.69,-376 560.21,-376 560.21,-400.27"/>
+<text xml:space="preserve" text-anchor="middle" x="509.45" y="-384.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">usage_print_only</text>
+</a>
+</g>
+</g>
+<!-- proc~usage_and_stop&#45;&gt;proc~usage_print_only -->
+<g id="proc~~parse_cli~~CallsGraph_edge36" class="edge">
+<title>proc~usage_and_stop&#45;&gt;proc~usage_print_only</title>
+<path fill="none" stroke="#ff00cb" d="M403.59,-360.68C418.17,-364.5 434.36,-368.74 449.57,-372.72"/>
+<polygon fill="#ff00cb" stroke="#ff00cb" points="448.41,-376.03 458.97,-375.18 450.18,-369.26 448.41,-376.03"/>
+</g>
+<!-- proc~usage_and_stop_ok&#45;&gt;proc~usage_print_only -->
+<g id="proc~~parse_cli~~CallsGraph_edge37" class="edge">
+<title>proc~usage_and_stop_ok&#45;&gt;proc~usage_print_only</title>
+<path fill="none" stroke="#ff0066" d="M412.56,-389.39C423.89,-389.24 435.82,-389.09 447.29,-388.94"/>
+<polygon fill="#ff0066" stroke="#ff0066" points="447.08,-392.44 457.03,-388.81 446.99,-385.44 447.08,-392.44"/>
+</g>
+<!-- exists -->
+<g id="proc~~parse_cli~~CallsGraph_node30" class="node">
+<title>exists</title>
+<polygon fill="#777777" stroke="#777777" points="536.45,-234.27 482.45,-234.27 482.45,-210 536.45,-210 536.45,-234.27"/>
+<text xml:space="preserve" text-anchor="middle" x="509.45" y="-218.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">exists</text>
+</g>
+<!-- proc~load_watch_table&#45;&gt;exists -->
+<g id="proc~~parse_cli~~CallsGraph_edge38" class="edge">
+<title>proc~load_watch_table&#45;&gt;exists</title>
+<path fill="none" stroke="#9cff00" d="M406.97,-222.13C427.93,-222.13 451.73,-222.13 471.01,-222.13"/>
+<polygon fill="#9cff00" stroke="#9cff00" points="470.85,-225.64 480.85,-222.14 470.85,-218.64 470.85,-225.64"/>
+</g>
+<!-- get_value -->
+<g id="proc~~parse_cli~~CallsGraph_node32" class="node">
+<title>get_value</title>
+<polygon fill="#777777" stroke="#777777" points="541.08,-150.27 477.81,-150.27 477.81,-126 541.08,-126 541.08,-150.27"/>
+<text xml:space="preserve" text-anchor="middle" x="509.45" y="-134.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">get_value</text>
+</g>
+<!-- proc~load_watch_table&#45;&gt;get_value -->
+<g id="proc~~parse_cli~~CallsGraph_edge39" class="edge">
+<title>proc~load_watch_table&#45;&gt;get_value</title>
+<path fill="none" stroke="#9cff00" d="M403.59,-209.52C409.11,-207.15 414.48,-204.37 419.31,-201.13 439.73,-187.45 435.29,-173.41 455.31,-159.13 458.93,-156.55 462.92,-154.23 467.02,-152.16"/>
+<polygon fill="#9cff00" stroke="#9cff00" points="468.29,-155.43 475.97,-148.13 465.42,-149.04 468.29,-155.43"/>
+</g>
+<!-- read_package_file -->
+<g id="proc~~parse_cli~~CallsGraph_node34" class="node">
+<title>read_package_file</title>
+<polygon fill="#777777" stroke="#777777" points="563.58,-192.27 455.31,-192.27 455.31,-168 563.58,-168 563.58,-192.27"/>
+<text xml:space="preserve" text-anchor="middle" x="509.45" y="-176.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">read_package_file</text>
+</g>
+<!-- proc~load_watch_table&#45;&gt;read_package_file -->
+<g id="proc~~parse_cli~~CallsGraph_edge40" class="edge">
+<title>proc~load_watch_table&#45;&gt;read_package_file</title>
+<path fill="none" stroke="#9cff00" d="M401.51,-209.53C417.37,-205.17 435.34,-200.23 451.95,-195.67"/>
+<polygon fill="#9cff00" stroke="#9cff00" points="452.47,-199.15 461.18,-193.13 450.61,-192.4 452.47,-199.15"/>
+</g>
+<!-- proc~is_windows_os -->
+<g id="proc~~parse_cli~~CallsGraph_node33" class="node">
+<title>proc~is_windows_os</title>
+<g id="a_proc~~parse_cli~~CallsGraph_node33"><a xlink:href="../proc/is_windows_os.html" xlink:title="is_windows_os">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="553.08,-612.27 465.81,-612.27 465.81,-588 553.08,-588 553.08,-612.27"/>
+<text xml:space="preserve" text-anchor="middle" x="509.45" y="-596.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">is_windows_os</text>
+</a>
+</g>
+</g>
+<!-- proc~quote_arg&#45;&gt;proc~is_windows_os -->
+<g id="proc~~parse_cli~~CallsGraph_edge41" class="edge">
+<title>proc~quote_arg&#45;&gt;proc~is_windows_os</title>
+<path fill="none" stroke="#00c4ff" d="M387.7,-600.13C406.92,-600.13 431.88,-600.13 454.11,-600.13"/>
+<polygon fill="#00c4ff" stroke="#00c4ff" points="453.93,-603.64 463.93,-600.14 453.93,-596.64 453.93,-603.64"/>
+</g>
+<!-- proc~toml_get_int&#45;&gt;get_value -->
+<g id="proc~~parse_cli~~CallsGraph_edge42" class="edge">
+<title>proc~toml_get_int&#45;&gt;get_value</title>
+<path fill="none" stroke="#004eff" d="M393.44,-169.75C415.66,-163.64 443.8,-155.91 466.69,-149.62"/>
+<polygon fill="#004eff" stroke="#004eff" points="467.61,-152.99 476.32,-146.97 465.75,-146.24 467.61,-152.99"/>
+</g>
+<!-- get_list -->
+<g id="proc~~parse_cli~~CallsGraph_node31" class="node">
+<title>get_list</title>
+<polygon fill="#777777" stroke="#777777" points="536.45,-276.27 482.45,-276.27 482.45,-252 536.45,-252 536.45,-276.27"/>
+<text xml:space="preserve" text-anchor="middle" x="509.45" y="-260.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">get_list</text>
+</g>
+<!-- proc~toml_get_list_strings&#45;&gt;get_list -->
+<g id="proc~~parse_cli~~CallsGraph_edge43" class="edge">
+<title>proc~toml_get_list_strings&#45;&gt;get_list</title>
+<path fill="none" stroke="#2700ff" d="M414.3,-264.13C433.31,-264.13 453.87,-264.13 470.91,-264.13"/>
+<polygon fill="#2700ff" stroke="#2700ff" points="470.57,-267.64 480.57,-264.14 470.57,-260.64 470.57,-267.64"/>
+</g>
+<!-- proc~toml_get_logical&#45;&gt;get_value -->
+<g id="proc~~parse_cli~~CallsGraph_edge44" class="edge">
+<title>proc~toml_get_logical&#45;&gt;get_value</title>
+<path fill="none" stroke="#9c00ff" d="M404.43,-138.13C424.25,-138.13 446.93,-138.13 466.04,-138.13"/>
+<polygon fill="#9c00ff" stroke="#9c00ff" points="465.91,-141.64 475.91,-138.14 465.91,-134.64 465.91,-141.64"/>
+</g>
+<!-- proc~toml_get_real&#45;&gt;get_value -->
+<g id="proc~~parse_cli~~CallsGraph_edge45" class="edge">
+<title>proc~toml_get_real&#45;&gt;get_value</title>
+<path fill="none" stroke="#ff00eb" d="M396.61,-107.39C418.29,-113.35 444.86,-120.65 466.66,-126.65"/>
+<polygon fill="#ff00eb" stroke="#ff00eb" points="465.55,-129.97 476.12,-129.25 467.4,-123.22 465.55,-129.97"/>
+</g>
+<!-- proc~usage_print_only&#45;&gt;colorize -->
+<g id="proc~~parse_cli~~CallsGraph_edge46" class="edge">
+<title>proc~usage_print_only&#45;&gt;colorize</title>
+<path fill="none" stroke="#ff0075" d="M560.36,-380.17C572.97,-378.16 586.29,-376.04 598.17,-374.14"/>
+<polygon fill="#ff0075" stroke="#ff0075" points="598.68,-377.61 608,-372.58 597.58,-370.69 598.68,-377.61"/>
+</g>
+<!-- get_os_type -->
+<g id="proc~~parse_cli~~CallsGraph_node35" class="node">
+<title>get_os_type</title>
+<polygon fill="#777777" stroke="#777777" points="674.1,-612.27 599.58,-612.27 599.58,-588 674.1,-588 674.1,-612.27"/>
+<text xml:space="preserve" text-anchor="middle" x="636.84" y="-596.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">get_os_type</text>
+</g>
+<!-- proc~is_windows_os&#45;&gt;get_os_type -->
+<g id="proc~~parse_cli~~CallsGraph_edge47" class="edge">
+<title>proc~is_windows_os&#45;&gt;get_os_type</title>
+<path fill="none" stroke="#0066ff" d="M553.25,-600.13C564.31,-600.13 576.29,-600.13 587.6,-600.13"/>
+<polygon fill="#0066ff" stroke="#0066ff" points="587.57,-603.64 597.57,-600.14 587.57,-596.64 587.57,-603.64"/>
+</g>
+</g>
+</svg>
+</div>                <script>
+                  var panprocparse_cliCallsGraph = svgPanZoom('#procparse_cliCallsGraph',
+                    {zoomEnabled: true, controlIconsEnabled: true, fit: true, center: true,}
+                  );
+                </script>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#CallsGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="CallsGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="641pt" height="28pt"
+ viewBox="0.00 0.00 641.00 28.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.873868 0.873868) rotate(0) translate(4 28.27)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-28.27 729.52,-28.27 729.52,4 -4,4"/>
+<!-- Subroutine -->
+<g id="node1" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="69.27,-24.27 0,-24.27 0,0 69.27,0 69.27,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="34.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node2" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="143.89,-24.27 87.38,-24.27 87.38,0 143.89,0 143.89,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="115.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node3" class="node">
+<title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="221.39,-24.27 161.88,-24.27 161.88,0 221.39,0 221.39,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="191.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Type Bound Procedure -->
+<g id="node4" class="node">
+<title>Type Bound Procedure</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="368.27,-24.27 239,-24.27 239,0 368.27,0 368.27,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="303.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type Bound Procedure</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node5" class="node">
+<title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="529.39,-24.27 385.88,-24.27 385.88,0 529.39,0 529.39,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="457.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node6" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="603.89,-24.27 547.38,-24.27 547.38,0 603.89,0 603.89,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="575.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node7" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="725.52,-24.27 621.75,-24.27 621.75,0 725.52,0 725.52,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="673.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.
+</p>
+ Where possible, edges connecting nodes are
+given different colours to make them easier to distinguish in
+large graphs.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+  <h3 class="card-title">Called by</h3>
+      </div>
+      <div class="card-body">
+  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: proc~~parse_cli~~CalledByGraph Pages: 1 -->
+<svg id="procparse_cliCalledByGraph" width="200pt" height="32pt"
+ viewBox="0.00 0.00 200.00 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~parse_cli~~CalledByGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 28.27)">
+<title>proc~~parse_cli~~CalledByGraph</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-28.27 195.79,-28.27 195.79,4 -4,4"/>
+<!-- proc~parse_cli -->
+<g id="proc~~parse_cli~~CalledByGraph_node1" class="node">
+<title>proc~parse_cli</title>
+<polygon fill="none" stroke="black" points="191.79,-24.27 133.02,-24.27 133.02,0 191.79,0 191.79,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="162.41" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50">parse_cli</text>
+</g>
+<!-- proc~parse_cli_config -->
+<g id="proc~~parse_cli~~CalledByGraph_node2" class="node">
+<title>proc~parse_cli_config</title>
+<g id="a_proc~~parse_cli~~CalledByGraph_node2"><a xlink:href="../proc/parse_cli_config.html" xlink:title="parse_cli_config">
+<polygon fill="#d9534f" stroke="#d9534f" points="97.02,-24.27 0,-24.27 0,0 97.02,0 97.02,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="48.51" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">parse_cli_config</text>
+</a>
+</g>
+</g>
+<!-- proc~parse_cli_config&#45;&gt;proc~parse_cli -->
+<g id="proc~~parse_cli~~CalledByGraph_edge1" class="edge">
+<title>proc~parse_cli_config&#45;&gt;proc~parse_cli</title>
+<path fill="none" stroke="#ff0000" d="M97.29,-12.13C105.26,-12.13 113.45,-12.13 121.2,-12.13"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="121.04,-15.64 131.04,-12.14 121.04,-8.64 121.04,-15.64"/>
+</g>
+</g>
+</svg>
+</div>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#CalledByGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="CalledByGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="641pt" height="28pt"
+ viewBox="0.00 0.00 641.00 28.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.873868 0.873868) rotate(0) translate(4 28.27)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-28.27 729.52,-28.27 729.52,4 -4,4"/>
+<!-- Subroutine -->
+<g id="node1" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="69.27,-24.27 0,-24.27 0,0 69.27,0 69.27,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="34.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node2" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="143.89,-24.27 87.38,-24.27 87.38,0 143.89,0 143.89,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="115.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node3" class="node">
+<title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="221.39,-24.27 161.88,-24.27 161.88,0 221.39,0 221.39,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="191.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Type Bound Procedure -->
+<g id="node4" class="node">
+<title>Type Bound Procedure</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="368.27,-24.27 239,-24.27 239,0 368.27,0 368.27,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="303.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type Bound Procedure</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node5" class="node">
+<title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="529.39,-24.27 385.88,-24.27 385.88,0 529.39,0 529.39,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="457.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node6" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="603.89,-24.27 547.38,-24.27 547.38,0 603.89,0 603.89,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="575.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node7" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="725.52,-24.27 621.75,-24.27 621.75,0 725.52,0 725.52,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="673.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.
+</p>
+ Where possible, edges connecting nodes are
+given different colours to make them easier to distinguish in
+large graphs.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+
+
+    
+    
+
+    
+    
+
+
+
+    
+    <section>
+    <h2><span class="anchor" id="src"></span>Source Code</h2>
+    <div class="hl codehilite"><pre><span></span><span class="w">   </span><span class="k">subroutine </span><span class="n">parse_cli</span><span class="p">(</span><span class="n">w</span><span class="p">,</span><span class="w"> </span><span class="n">settings</span><span class="p">,</span><span class="w"> </span><span class="n">fpm_cmdline</span><span class="p">,</span><span class="w"> </span><span class="n">subcmd</span><span class="p">)</span>
+<span class="w">      </span><span class="k">type</span><span class="p">(</span><span class="n">watch_opts_t</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">w</span>
+<span class="w">      </span><span class="k">class</span><span class="p">(</span><span class="n">fpm_build_settings</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">settings</span>
+<span class="w">      </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="w"> </span><span class="k">allocatable</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">fpm_cmdline</span>
+<span class="w">      </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="w"> </span><span class="k">allocatable</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">subcmd</span>
+
+<span class="w">      </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">narg</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">subcmd_pos</span>
+<span class="w">      </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">a</span>
+<span class="w">      </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">profile</span><span class="p">,</span><span class="w"> </span><span class="n">build_dir</span>
+<span class="w">      </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">compiler</span><span class="p">,</span><span class="w"> </span><span class="n">c_compiler</span><span class="p">,</span><span class="w"> </span><span class="n">cxx_compiler</span><span class="p">,</span><span class="w"> </span><span class="n">archiver</span>
+<span class="w">      </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">flag</span><span class="p">,</span><span class="w"> </span><span class="n">cflag</span><span class="p">,</span><span class="w"> </span><span class="n">cxxflag</span><span class="p">,</span><span class="w"> </span><span class="n">ldflag</span>
+<span class="w">      </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">runner</span>
+<span class="w">      </span><span class="k">type</span><span class="p">(</span><span class="n">string_t</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">features</span><span class="p">(:)</span>
+<span class="w">      </span><span class="k">type</span><span class="p">(</span><span class="n">string_t</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">names</span><span class="p">(:)</span>
+<span class="w">      </span><span class="kt">logical</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">prune</span><span class="p">,</span><span class="w"> </span><span class="n">example</span>
+
+<span class="w">      </span><span class="k">call </span><span class="n">set_watch_defaults</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+<span class="w">      </span><span class="k">call </span><span class="n">apply_watch_from_manifest</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+
+<span class="w">      </span><span class="n">prune</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">true</span><span class="p">.</span>
+<span class="w">      </span><span class="n">example</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.</span>
+
+<span class="w">      </span><span class="n">profile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
+<span class="w">      </span><span class="n">build_dir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">default_build_dir</span><span class="p">()</span>
+<span class="w">      </span><span class="n">compiler</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
+<span class="w">      </span><span class="n">c_compiler</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
+<span class="w">      </span><span class="n">cxx_compiler</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
+<span class="w">      </span><span class="n">archiver</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
+<span class="w">      </span><span class="n">flag</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
+<span class="w">      </span><span class="n">cflag</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
+<span class="w">      </span><span class="n">cxxflag</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
+<span class="w">      </span><span class="n">ldflag</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
+<span class="w">      </span><span class="n">runner</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
+
+<span class="w">      </span><span class="k">allocate</span><span class="p">(</span><span class="n">features</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+<span class="w">      </span><span class="k">allocate</span><span class="p">(</span><span class="n">names</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+
+<span class="w">      </span><span class="n">narg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">command_argument_count</span><span class="p">()</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">narg</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">         call </span><span class="n">usage_and_stop</span><span class="p">(</span><span class="s2">&quot;missing fpm subcommand (build/test/run)&quot;</span><span class="p">)</span>
+<span class="w">      </span><span class="k">end if</span>
+
+<span class="k">      </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_arg</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;--help&quot;</span><span class="w"> </span><span class="p">.</span><span class="nb">or</span><span class="p">.</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;-h&quot;</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">         call </span><span class="n">usage_and_stop_ok</span><span class="p">()</span>
+<span class="w">      </span><span class="k">end if</span>
+
+<span class="k">      </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">      </span><span class="k">do while</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">narg</span><span class="p">)</span>
+<span class="w">         </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_arg</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+
+<span class="w">         </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">is_watch_flag</span><span class="p">(</span><span class="n">a</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
+<span class="k">            call </span><span class="n">apply_watch_flag</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">narg</span><span class="p">,</span><span class="w"> </span><span class="n">w</span><span class="p">)</span>
+<span class="w">            </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">            </span><span class="k">cycle</span>
+<span class="k">         end if</span>
+
+<span class="k">         if</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;-q&quot;</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">            </span><span class="n">w</span><span class="p">%</span><span class="n">verbosity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span>
+<span class="w">            </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">            </span><span class="k">cycle</span>
+<span class="k">         end if</span>
+<span class="k">         if</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;-v&quot;</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">            </span><span class="n">w</span><span class="p">%</span><span class="n">verbosity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">max</span><span class="p">(</span><span class="n">w</span><span class="p">%</span><span class="n">verbosity</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
+<span class="w">            </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">            </span><span class="k">cycle</span>
+<span class="k">         end if</span>
+<span class="k">         if</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;-vv&quot;</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">            </span><span class="n">w</span><span class="p">%</span><span class="n">verbosity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">max</span><span class="p">(</span><span class="n">w</span><span class="p">%</span><span class="n">verbosity</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span>
+<span class="w">            </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">            </span><span class="k">cycle</span>
+<span class="k">         end if</span>
+
+<span class="k">         exit</span>
+<span class="k">      end do</span>
+
+<span class="k">      if</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">narg</span><span class="p">)</span><span class="w"> </span><span class="k">call </span><span class="n">usage_and_stop</span><span class="p">(</span><span class="s2">&quot;missing fpm subcommand (build/test/run)&quot;</span><span class="p">)</span>
+
+<span class="w">      </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_arg</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;--help&quot;</span><span class="w"> </span><span class="p">.</span><span class="nb">or</span><span class="p">.</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;-h&quot;</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">         call </span><span class="n">usage_and_stop_ok</span><span class="p">()</span>
+<span class="w">      </span><span class="k">end if</span>
+
+<span class="k">      </span><span class="n">subcmd_pos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span>
+<span class="w">      </span><span class="n">subcmd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_arg</span><span class="p">(</span><span class="n">subcmd_pos</span><span class="p">)</span>
+
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="n">is_supported_subcmd</span><span class="p">(</span><span class="n">subcmd</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
+<span class="k">         call </span><span class="n">usage_and_stop</span><span class="p">(</span><span class="s2">&quot;unsupported subcommand: &quot;</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="nb">trim</span><span class="p">(</span><span class="n">subcmd</span><span class="p">)</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="s2">&quot; (supported: build,test,run)&quot;</span><span class="p">)</span>
+<span class="w">      </span><span class="k">end if</span>
+
+<span class="k">      if</span><span class="w"> </span><span class="p">(</span><span class="n">subcmd_pos</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">narg</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">         </span><span class="n">fpm_cmdline</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;fpm &quot;</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="nb">trim</span><span class="p">(</span><span class="n">subcmd</span><span class="p">)</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="s2">&quot; &quot;</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="n">join_argv</span><span class="p">(</span><span class="n">subcmd_pos</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">narg</span><span class="p">)</span>
+<span class="w">      </span><span class="k">else</span>
+<span class="k">         </span><span class="n">fpm_cmdline</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;fpm &quot;</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="nb">trim</span><span class="p">(</span><span class="n">subcmd</span><span class="p">)</span>
+<span class="w">      </span><span class="k">end if</span>
+
+<span class="k">      </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">subcmd_pos</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">      </span><span class="k">do while</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">narg</span><span class="p">)</span>
+<span class="w">         </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_arg</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+
+<span class="w">         </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;--&quot;</span><span class="p">)</span><span class="w"> </span><span class="k">exit</span>
+
+<span class="k">         select case</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="w">          </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="s2">&quot;--profile&quot;</span><span class="p">)</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">narg</span><span class="p">)</span><span class="w"> </span><span class="k">call </span><span class="n">usage_and_stop</span><span class="p">(</span><span class="s2">&quot;--profile requires a value&quot;</span><span class="p">)</span>
+<span class="w">            </span><span class="n">profile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_arg</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+<span class="w">            </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span>
+<span class="w">            </span><span class="k">cycle</span>
+<span class="k">          case</span><span class="w"> </span><span class="p">(</span><span class="s2">&quot;--features&quot;</span><span class="p">)</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">narg</span><span class="p">)</span><span class="w"> </span><span class="k">call </span><span class="n">usage_and_stop</span><span class="p">(</span><span class="s2">&quot;--features requires a value&quot;</span><span class="p">)</span>
+<span class="w">            </span><span class="k">call </span><span class="n">add_features_csv</span><span class="p">(</span><span class="n">features</span><span class="p">,</span><span class="w"> </span><span class="n">get_arg</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+<span class="w">            </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span>
+<span class="w">            </span><span class="k">cycle</span>
+<span class="k">          case</span><span class="w"> </span><span class="p">(</span><span class="s2">&quot;--build-dir&quot;</span><span class="p">)</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">narg</span><span class="p">)</span><span class="w"> </span><span class="k">call </span><span class="n">usage_and_stop</span><span class="p">(</span><span class="s2">&quot;--build-dir requires a value&quot;</span><span class="p">)</span>
+<span class="w">            </span><span class="n">build_dir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_arg</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+<span class="w">            </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span>
+<span class="w">            </span><span class="k">cycle</span>
+<span class="k">          case</span><span class="w"> </span><span class="p">(</span><span class="s2">&quot;--compiler&quot;</span><span class="p">)</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">narg</span><span class="p">)</span><span class="w"> </span><span class="k">call </span><span class="n">usage_and_stop</span><span class="p">(</span><span class="s2">&quot;--compiler requires a value&quot;</span><span class="p">)</span>
+<span class="w">            </span><span class="n">compiler</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_arg</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+<span class="w">            </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span>
+<span class="w">            </span><span class="k">cycle</span>
+<span class="k">          case</span><span class="w"> </span><span class="p">(</span><span class="s2">&quot;--c-compiler&quot;</span><span class="p">)</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">narg</span><span class="p">)</span><span class="w"> </span><span class="k">call </span><span class="n">usage_and_stop</span><span class="p">(</span><span class="s2">&quot;--c-compiler requires a value&quot;</span><span class="p">)</span>
+<span class="w">            </span><span class="n">c_compiler</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_arg</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+<span class="w">            </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span>
+<span class="w">            </span><span class="k">cycle</span>
+<span class="k">          case</span><span class="w"> </span><span class="p">(</span><span class="s2">&quot;--cxx-compiler&quot;</span><span class="p">)</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">narg</span><span class="p">)</span><span class="w"> </span><span class="k">call </span><span class="n">usage_and_stop</span><span class="p">(</span><span class="s2">&quot;--cxx-compiler requires a value&quot;</span><span class="p">)</span>
+<span class="w">            </span><span class="n">cxx_compiler</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_arg</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+<span class="w">            </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span>
+<span class="w">            </span><span class="k">cycle</span>
+<span class="k">          case</span><span class="w"> </span><span class="p">(</span><span class="s2">&quot;--archiver&quot;</span><span class="p">)</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">narg</span><span class="p">)</span><span class="w"> </span><span class="k">call </span><span class="n">usage_and_stop</span><span class="p">(</span><span class="s2">&quot;--archiver requires a value&quot;</span><span class="p">)</span>
+<span class="w">            </span><span class="n">archiver</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_arg</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+<span class="w">            </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span>
+<span class="w">            </span><span class="k">cycle</span>
+<span class="k">          case</span><span class="w"> </span><span class="p">(</span><span class="s2">&quot;--flag&quot;</span><span class="p">)</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">narg</span><span class="p">)</span><span class="w"> </span><span class="k">call </span><span class="n">usage_and_stop</span><span class="p">(</span><span class="s2">&quot;--flag requires a value&quot;</span><span class="p">)</span>
+<span class="w">            </span><span class="n">flag</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_arg</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+<span class="w">            </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span>
+<span class="w">            </span><span class="k">cycle</span>
+<span class="k">          case</span><span class="w"> </span><span class="p">(</span><span class="s2">&quot;--c-flag&quot;</span><span class="p">)</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">narg</span><span class="p">)</span><span class="w"> </span><span class="k">call </span><span class="n">usage_and_stop</span><span class="p">(</span><span class="s2">&quot;--c-flag requires a value&quot;</span><span class="p">)</span>
+<span class="w">            </span><span class="n">cflag</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_arg</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+<span class="w">            </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span>
+<span class="w">            </span><span class="k">cycle</span>
+<span class="k">          case</span><span class="w"> </span><span class="p">(</span><span class="s2">&quot;--cxx-flag&quot;</span><span class="p">)</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">narg</span><span class="p">)</span><span class="w"> </span><span class="k">call </span><span class="n">usage_and_stop</span><span class="p">(</span><span class="s2">&quot;--cxx-flag requires a value&quot;</span><span class="p">)</span>
+<span class="w">            </span><span class="n">cxxflag</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_arg</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+<span class="w">            </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span>
+<span class="w">            </span><span class="k">cycle</span>
+<span class="k">          case</span><span class="w"> </span><span class="p">(</span><span class="s2">&quot;--link-flag&quot;</span><span class="p">)</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">narg</span><span class="p">)</span><span class="w"> </span><span class="k">call </span><span class="n">usage_and_stop</span><span class="p">(</span><span class="s2">&quot;--link-flag requires a value&quot;</span><span class="p">)</span>
+<span class="w">            </span><span class="n">ldflag</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_arg</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+<span class="w">            </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span>
+<span class="w">            </span><span class="k">cycle</span>
+<span class="k">          case</span><span class="w"> </span><span class="p">(</span><span class="s2">&quot;--runner&quot;</span><span class="p">)</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">narg</span><span class="p">)</span><span class="w"> </span><span class="k">call </span><span class="n">usage_and_stop</span><span class="p">(</span><span class="s2">&quot;--runner requires a value&quot;</span><span class="p">)</span>
+<span class="w">            </span><span class="n">runner</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_arg</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+<span class="w">            </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span>
+<span class="w">            </span><span class="k">cycle</span>
+<span class="k">          case</span><span class="w"> </span><span class="p">(</span><span class="s2">&quot;--prune&quot;</span><span class="p">)</span>
+<span class="w">            </span><span class="n">prune</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">true</span><span class="p">.</span>
+<span class="w">            </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">            </span><span class="k">cycle</span>
+<span class="k">          case</span><span class="w"> </span><span class="p">(</span><span class="s2">&quot;--no-prune&quot;</span><span class="p">)</span>
+<span class="w">            </span><span class="n">prune</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.</span>
+<span class="w">            </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">            </span><span class="k">cycle</span>
+<span class="k">          case</span><span class="w"> </span><span class="p">(</span><span class="s2">&quot;--example&quot;</span><span class="p">)</span>
+<span class="w">            </span><span class="n">example</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">true</span><span class="p">.</span>
+<span class="w">            </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">            </span><span class="k">cycle</span>
+<span class="k">          case </span><span class="n">default</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">trim</span><span class="p">(</span><span class="n">subcmd</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;run&quot;</span><span class="w"> </span><span class="p">.</span><span class="nb">or</span><span class="p">.</span><span class="w"> </span><span class="nb">trim</span><span class="p">(</span><span class="n">subcmd</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;test&quot;</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">               if</span><span class="w"> </span><span class="p">(</span><span class="nb">len_trim</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">                  if</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">/=</span><span class="w"> </span><span class="s2">&quot;-&quot;</span><span class="p">)</span><span class="w"> </span><span class="k">call </span><span class="n">push_feature</span><span class="p">(</span><span class="n">names</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="p">)</span>
+<span class="w">               </span><span class="k">end if</span>
+<span class="k">            end if</span>
+<span class="k">            </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">            </span><span class="k">cycle</span>
+<span class="k">         end select</span>
+<span class="k">      end do</span>
+
+<span class="k">      select case</span><span class="w"> </span><span class="p">(</span><span class="nb">trim</span><span class="p">(</span><span class="n">subcmd</span><span class="p">))</span>
+<span class="w">       </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="s2">&quot;build&quot;</span><span class="p">)</span>
+<span class="w">         </span><span class="k">allocate</span><span class="p">(</span><span class="n">fpm_build_settings</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">settings</span><span class="p">)</span>
+<span class="w">         </span><span class="k">call </span><span class="n">init_build_settings</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span><span class="w"> </span><span class="n">build_dir</span><span class="p">,</span><span class="w"> </span><span class="n">prune</span><span class="p">,</span><span class="w"> </span><span class="n">profile</span><span class="p">,</span><span class="w"> </span><span class="n">features</span><span class="p">,</span><span class="w"> </span><span class="n">compiler</span><span class="p">,</span><span class="w"> </span><span class="n">c_compiler</span><span class="p">,</span><span class="w"> </span><span class="n">cxx_compiler</span><span class="p">,</span><span class="w"> </span><span class="n">archiver</span><span class="p">,</span><span class="w"> </span><span class="n">flag</span><span class="p">,</span><span class="w"> </span><span class="n">cflag</span><span class="p">,</span><span class="w"> </span><span class="n">cxxflag</span><span class="p">,</span><span class="w"> </span><span class="n">ldflag</span><span class="p">)</span>
+<span class="w">       </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="s2">&quot;test&quot;</span><span class="p">)</span>
+<span class="w">         </span><span class="k">allocate</span><span class="p">(</span><span class="n">fpm_test_settings</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">settings</span><span class="p">)</span>
+<span class="w">         </span><span class="k">call </span><span class="n">init_build_settings</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span><span class="w"> </span><span class="n">build_dir</span><span class="p">,</span><span class="w"> </span><span class="n">prune</span><span class="p">,</span><span class="w"> </span><span class="n">profile</span><span class="p">,</span><span class="w"> </span><span class="n">features</span><span class="p">,</span><span class="w"> </span><span class="n">compiler</span><span class="p">,</span><span class="w"> </span><span class="n">c_compiler</span><span class="p">,</span><span class="w"> </span><span class="n">cxx_compiler</span><span class="p">,</span><span class="w"> </span><span class="n">archiver</span><span class="p">,</span><span class="w"> </span><span class="n">flag</span><span class="p">,</span><span class="w"> </span><span class="n">cflag</span><span class="p">,</span><span class="w"> </span><span class="n">cxxflag</span><span class="p">,</span><span class="w"> </span><span class="n">ldflag</span><span class="p">)</span>
+<span class="w">         </span><span class="k">select type</span><span class="w"> </span><span class="p">(</span><span class="n">s</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">settings</span><span class="p">)</span>
+<span class="w">          </span><span class="k">type is</span><span class="w"> </span><span class="p">(</span><span class="n">fpm_test_settings</span><span class="p">)</span>
+<span class="w">            </span><span class="n">s</span><span class="p">%</span><span class="n">build_tests</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">true</span><span class="p">.</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">len_trim</span><span class="p">(</span><span class="n">runner</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="n">s</span><span class="p">%</span><span class="n">runner</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">trim</span><span class="p">(</span><span class="n">runner</span><span class="p">)</span>
+<span class="w">            </span><span class="k">call </span><span class="n">set_names</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="n">names</span><span class="p">)</span>
+<span class="w">         </span><span class="k">end select</span>
+<span class="k">       case</span><span class="w"> </span><span class="p">(</span><span class="s2">&quot;run&quot;</span><span class="p">)</span>
+<span class="w">         </span><span class="k">allocate</span><span class="p">(</span><span class="n">fpm_run_settings</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">settings</span><span class="p">)</span>
+<span class="w">         </span><span class="k">call </span><span class="n">init_build_settings</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span><span class="w"> </span><span class="n">build_dir</span><span class="p">,</span><span class="w"> </span><span class="n">prune</span><span class="p">,</span><span class="w"> </span><span class="n">profile</span><span class="p">,</span><span class="w"> </span><span class="n">features</span><span class="p">,</span><span class="w"> </span><span class="n">compiler</span><span class="p">,</span><span class="w"> </span><span class="n">c_compiler</span><span class="p">,</span><span class="w"> </span><span class="n">cxx_compiler</span><span class="p">,</span><span class="w"> </span><span class="n">archiver</span><span class="p">,</span><span class="w"> </span><span class="n">flag</span><span class="p">,</span><span class="w"> </span><span class="n">cflag</span><span class="p">,</span><span class="w"> </span><span class="n">cxxflag</span><span class="p">,</span><span class="w"> </span><span class="n">ldflag</span><span class="p">)</span>
+<span class="w">         </span><span class="k">select type</span><span class="w"> </span><span class="p">(</span><span class="n">s</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">settings</span><span class="p">)</span>
+<span class="w">          </span><span class="k">type is</span><span class="w"> </span><span class="p">(</span><span class="n">fpm_run_settings</span><span class="p">)</span>
+<span class="w">            </span><span class="n">s</span><span class="p">%</span><span class="n">example</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">example</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">len_trim</span><span class="p">(</span><span class="n">runner</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="n">s</span><span class="p">%</span><span class="n">runner</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">trim</span><span class="p">(</span><span class="n">runner</span><span class="p">)</span>
+<span class="w">            </span><span class="k">call </span><span class="n">set_names</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="n">names</span><span class="p">)</span>
+<span class="w">         </span><span class="k">end select</span>
+<span class="k">       case </span><span class="n">default</span>
+<span class="w">         </span><span class="k">call </span><span class="n">usage_and_stop</span><span class="p">(</span><span class="s2">&quot;unsupported subcommand: &quot;</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="nb">trim</span><span class="p">(</span><span class="n">subcmd</span><span class="p">)</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="s2">&quot; (supported: build,test,run)&quot;</span><span class="p">)</span>
+<span class="w">      </span><span class="k">end select</span>
+
+<span class="k">      call </span><span class="n">normalize_watch_opts</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+<span class="w">   </span><span class="k">end subroutine </span><span class="n">parse_cli</span>
+</pre></div>
+
+    </section>
+    <br>
+    
+    </div>
+  </div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              fpm-watch
+ was developed by Seyed Ali Ghasemi<br>              &copy; 2026 <a rel="license" href="https://opensource.org/licenses/MIT">MIT</a>
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+ on 2026-02-24T23:32:32.813097+0000             </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>

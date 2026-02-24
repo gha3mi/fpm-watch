@@ -1,0 +1,1250 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="Documentation for fpm-watch">
+    <meta name="author" content="Seyed Ali Ghasemi" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>watch_config &ndash; fpm-watch</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">fpm-watch </a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/types.html">Derived Types</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <div class="row">
+    <h1>watch_config
+      <small>Module</small>
+      
+    </h1>
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+            <li class="list-inline-item" id="meta-license"><i class="fa fa-legal"></i> <a rel="license" href="https://opensource.org/licenses/MIT">MIT</a></li>
+
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title=" 5.8% of total for modules and submodules.">183 statements</a>
+            </li>
+
+            <li class="list-inline-item" id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/watch_config.f90"> Source File</a>
+            </li>
+        </ul>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+                <li class="breadcrumb-item"><a href='../sourcefile/watch_config.f90.html'>watch_config.f90</a></li>
+            <li class="breadcrumb-item active" aria-current="page">watch_config</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
+  </script>
+
+  </div>
+
+  <div class="row">
+    <div class="col-md-3">
+        <div id="sidebar">
+      <h3>Contents</h3>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#subs-0"
+         aria-expanded="false" aria-controls="subs-0">
+         <h4 class="card-header bg-primary text-white">Subroutines</h4>
+      </a>
+      <div id="subs-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../module/watch_config.html#proc-apply_watch_from_manifest">apply_watch_from_manifest</a>
+            <a class="list-group-item" href="../module/watch_config.html#proc-get_restart_defaults">get_restart_defaults</a>
+            <a class="list-group-item" href="../module/watch_config.html#proc-normalize_watch_opts">normalize_watch_opts</a>
+            <a class="list-group-item" href="../module/watch_config.html#proc-push_feature">push_feature</a>
+            <a class="list-group-item" href="../module/watch_config.html#proc-set_watch_defaults">set_watch_defaults</a>
+            <a class="list-group-item" href="../module/watch_config.html#proc-load_watch_table">load_watch_table</a>
+            <a class="list-group-item" href="../module/watch_config.html#proc-toml_get_int">toml_get_int</a>
+            <a class="list-group-item" href="../module/watch_config.html#proc-toml_get_list_strings">toml_get_list_strings</a>
+            <a class="list-group-item" href="../module/watch_config.html#proc-toml_get_logical">toml_get_logical</a>
+            <a class="list-group-item" href="../module/watch_config.html#proc-toml_get_real">toml_get_real</a>
+            <a class="list-group-item" href="../module/watch_config.html#proc-toml_get_string">toml_get_string</a>
+        </div>
+      </div>
+    </div>
+
+  
+  
+  
+  
+  
+  
+  
+
+
+  </div>
+
+    </div>
+
+    <div class="col-md-9" id='text'>
+      <p>Project configuration and defaults.</p>
+<p>Reads watcher configuration from:
+- Built-in defaults (<code>set_watch_defaults</code>)
+- <code>fpm.toml</code> under <code>[extra.fpm-watch]</code> (<code>apply_watch_from_manifest</code>)</p>
+<p>Also provides helper routines used by the supervisor (<code>watch_restart</code>) for
+auto-restart defaults (delay, max restarts, self path).</p>
+<br>          <div class="card mb-4">
+      <h3 class="card-header card-title bg-light">Uses</h3>
+      <div class="card-body">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <ul class="list-inline">
+                  <li class="list-inline-item">fpm_filesystem</li>
+                  <li class="list-inline-item"><a href='watch_types.html'>watch_types</a></li>
+                  <li class="list-inline-item">fpm_toml</li>
+                  <li class="list-inline-item">fpm_strings</li>
+                  <li class="list-inline-item">fpm_error</li>
+                  <li class="list-inline-item">tomlf</li>
+              </ul>
+            </li>
+            <li class="list-group-item">
+              <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: module~~watch_config~~UsesGraph Pages: 1 -->
+<svg id="modulewatch_configUsesGraph" width="370pt" height="238pt"
+ viewBox="0.00 0.00 370.00 238.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="module~~watch_config~~UsesGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 234.27)">
+<title>module~~watch_config~~UsesGraph</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-234.27 365.56,-234.27 365.56,4 -4,4"/>
+<!-- module~watch_config -->
+<g id="module~~watch_config~~UsesGraph_node1" class="node">
+<title>module~watch_config</title>
+<polygon fill="none" stroke="black" points="361.56,-128.27 280.29,-128.27 280.29,-104 361.56,-104 361.56,-128.27"/>
+<text xml:space="preserve" text-anchor="middle" x="320.92" y="-112.53" font-family="Helvetica,sans-Serif" font-size="10.50">watch_config</text>
+</g>
+<!-- fpm_error -->
+<g id="module~~watch_config~~UsesGraph_node2" class="node">
+<title>fpm_error</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="230.41,-230.27 166.39,-230.27 166.39,-206 230.41,-206 230.41,-230.27"/>
+<text xml:space="preserve" text-anchor="middle" x="198.4" y="-214.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">fpm_error</text>
+</g>
+<!-- module~watch_config&#45;&gt;fpm_error -->
+<g id="module~~watch_config~~UsesGraph_edge1" class="edge">
+<title>module~watch_config&#45;&gt;fpm_error</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M310.85,-128.5C297.74,-145.7 271.99,-177 244.29,-197.13 242.94,-198.12 241.54,-199.07 240.1,-199.99"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="238.49,-196.88 231.55,-204.89 241.97,-202.96 238.49,-196.88"/>
+</g>
+<!-- fpm_filesystem -->
+<g id="module~~watch_config~~UsesGraph_node3" class="node">
+<title>fpm_filesystem</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="244.29,-188.27 152.52,-188.27 152.52,-164 244.29,-164 244.29,-188.27"/>
+<text xml:space="preserve" text-anchor="middle" x="198.4" y="-172.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">fpm_filesystem</text>
+</g>
+<!-- module~watch_config&#45;&gt;fpm_filesystem -->
+<g id="module~~watch_config~~UsesGraph_edge2" class="edge">
+<title>module~watch_config&#45;&gt;fpm_filesystem</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M294.66,-128.71C277.3,-137.35 254.02,-148.94 234.82,-158.5"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="233.38,-155.31 225.99,-162.9 236.5,-161.58 233.38,-155.31"/>
+</g>
+<!-- fpm_strings -->
+<g id="module~~watch_config~~UsesGraph_node4" class="node">
+<title>fpm_strings</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="94.77,-138.27 21.75,-138.27 21.75,-114 94.77,-114 94.77,-138.27"/>
+<text xml:space="preserve" text-anchor="middle" x="58.26" y="-122.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">fpm_strings</text>
+</g>
+<!-- module~watch_config&#45;&gt;fpm_strings -->
+<g id="module~~watch_config~~UsesGraph_edge3" class="edge">
+<title>module~watch_config&#45;&gt;fpm_strings</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M280.05,-117.66C233.31,-119.46 155.95,-122.43 106.31,-124.33"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="106.31,-120.83 96.45,-124.71 106.58,-127.82 106.31,-120.83"/>
+</g>
+<!-- fpm_toml -->
+<g id="module~~watch_config~~UsesGraph_node5" class="node">
+<title>fpm_toml</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="229.29,-108.27 167.52,-108.27 167.52,-84 229.29,-84 229.29,-108.27"/>
+<text xml:space="preserve" text-anchor="middle" x="198.4" y="-92.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">fpm_toml</text>
+</g>
+<!-- module~watch_config&#45;&gt;fpm_toml -->
+<g id="module~~watch_config~~UsesGraph_edge4" class="edge">
+<title>module~watch_config&#45;&gt;fpm_toml</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M279.79,-109.48C267.21,-107.39 253.31,-105.08 240.65,-102.98"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="241.38,-99.55 230.94,-101.37 240.23,-106.46 241.38,-99.55"/>
+</g>
+<!-- module~watch_types -->
+<g id="module~~watch_config~~UsesGraph_node6" class="node">
+<title>module~watch_types</title>
+<g id="a_module~~watch_config~~UsesGraph_node6"><a xlink:href="../module/watch_types.html" xlink:title="watch_types">
+<polygon fill="#337ab7" stroke="#337ab7" points="236.79,-66.27 160.02,-66.27 160.02,-42 236.79,-42 236.79,-66.27"/>
+<text xml:space="preserve" text-anchor="middle" x="198.4" y="-50.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">watch_types</text>
+</a>
+</g>
+</g>
+<!-- module~watch_config&#45;&gt;module~watch_types -->
+<g id="module~~watch_config~~UsesGraph_edge5" class="edge">
+<title>module~watch_config&#45;&gt;module~watch_types</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M297.6,-103.58C282.64,-95.28 262.43,-84.28 244.29,-75.13 242.04,-74 239.72,-72.85 237.38,-71.71"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="238.96,-68.58 228.43,-67.42 235.93,-74.9 238.96,-68.58"/>
+</g>
+<!-- tomlf -->
+<g id="module~~watch_config~~UsesGraph_node7" class="node">
+<title>tomlf</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="225.4,-24.27 171.4,-24.27 171.4,0 225.4,0 225.4,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="198.4" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">tomlf</text>
+</g>
+<!-- module~watch_config&#45;&gt;tomlf -->
+<g id="module~~watch_config~~UsesGraph_edge6" class="edge">
+<title>module~watch_config&#45;&gt;tomlf</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M311.14,-103.74C298.17,-86.16 272.39,-53.83 244.29,-33.13 241.54,-31.11 238.56,-29.21 235.49,-27.44"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="237.38,-24.47 226.89,-22.95 234.14,-30.68 237.38,-24.47"/>
+</g>
+<!-- module~watch_types&#45;&gt;fpm_strings -->
+<g id="module~~watch_config~~UsesGraph_edge8" class="edge">
+<title>module~watch_types&#45;&gt;fpm_strings</title>
+<path fill="none" stroke="#0000ff" stroke-dasharray="5,2" d="M169.72,-66.72C164,-69.42 158.04,-72.32 152.52,-75.13 136.22,-83.46 132.57,-86.33 116.52,-95.13 108.8,-99.37 100.48,-103.89 92.64,-108.14"/>
+<polygon fill="#0000ff" stroke="#0000ff" points="91.15,-104.97 84.02,-112.8 94.49,-111.12 91.15,-104.97"/>
+</g>
+<!-- fpm_command_line -->
+<g id="module~~watch_config~~UsesGraph_node8" class="node">
+<title>fpm_command_line</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="116.52,-86.27 0,-86.27 0,-62 116.52,-62 116.52,-86.27"/>
+<text xml:space="preserve" text-anchor="middle" x="58.26" y="-70.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">fpm_command_line</text>
+</g>
+<!-- module~watch_types&#45;&gt;fpm_command_line -->
+<g id="module~~watch_config~~UsesGraph_edge7" class="edge">
+<title>module~watch_types&#45;&gt;fpm_command_line</title>
+<path fill="none" stroke="#0000ff" stroke-dasharray="5,2" d="M159.66,-59.6C149.87,-61.02 139.03,-62.59 128.18,-64.16"/>
+<polygon fill="#0000ff" stroke="#0000ff" points="127.83,-60.67 118.43,-65.57 128.83,-67.6 127.83,-60.67"/>
+</g>
+<!-- iso_fortran_env -->
+<g id="module~~watch_config~~UsesGraph_node9" class="node">
+<title>iso_fortran_env</title>
+<g id="a_module~~watch_config~~UsesGraph_node9"><a xlink:href="http://fortranwiki.org/fortran/show/iso_fortran_env" xlink:title="iso_fortran_env">
+<polygon fill="#337ab7" stroke="#337ab7" points="104.89,-44.27 11.62,-44.27 11.62,-20 104.89,-20 104.89,-44.27"/>
+<text xml:space="preserve" text-anchor="middle" x="58.26" y="-28.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">iso_fortran_env</text>
+</a>
+</g>
+</g>
+<!-- module~watch_types&#45;&gt;iso_fortran_env -->
+<g id="module~~watch_config~~UsesGraph_edge9" class="edge">
+<title>module~watch_types&#45;&gt;iso_fortran_env</title>
+<path fill="none" stroke="#0000ff" stroke-dasharray="5,2" d="M159.66,-48.12C146.29,-45.99 130.93,-43.55 116.32,-41.22"/>
+<polygon fill="#0000ff" stroke="#0000ff" points="117.25,-37.83 106.83,-39.71 116.15,-44.74 117.25,-37.83"/>
+</g>
+</g>
+</svg>
+</div>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#UsesGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="UsesGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="511pt" height="32pt"
+ viewBox="0.00 0.00 511.00 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 28.27)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-28.27 506.88,-28.27 506.88,4 -4,4"/>
+<!-- Module -->
+<g id="node1" class="node">
+<title>Module</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="54,-24.27 0,-24.27 0,0 54,0 54,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="27" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Module</text>
+</g>
+<!-- Submodule -->
+<g id="node2" class="node">
+<title>Submodule</title>
+<polygon fill="#5bc0de" stroke="#5bc0de" points="144.13,-24.27 71.87,-24.27 71.87,0 144.13,0 144.13,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="108" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Submodule</text>
+</g>
+<!-- Subroutine -->
+<g id="node3" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="231.63,-24.27 162.37,-24.27 162.37,0 231.63,0 231.63,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="197" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node4" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="306.26,-24.27 249.74,-24.27 249.74,0 306.26,0 306.26,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="278" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Program -->
+<g id="node5" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="381.26,-24.27 324.74,-24.27 324.74,0 381.26,0 381.26,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="353" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node6" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="502.88,-24.27 399.12,-24.27 399.12,0 502.88,0 502.88,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="451" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a submodule to the (sub)module which it is
+descended from. Dashed arrows point from a module or program unit to 
+modules which it uses.
+</p>
+ Where possible, edges connecting nodes are
+given different colours to make them easier to distinguish in
+large graphs.</div>
+            </div>
+          </div>
+        </div>
+            </li>
+        </ul>
+      </div>
+    </div>
+
+          <div class="card">
+      <h3 class="card-header card-title bg-light">Used by</h3>
+      <div class="card-body">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: module~~watch_config~~UsedByGraph Pages: 1 -->
+<svg id="modulewatch_configUsedByGraph" width="208pt" height="74pt"
+ viewBox="0.00 0.00 208.00 74.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="module~~watch_config~~UsedByGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 70.27)">
+<title>module~~watch_config~~UsedByGraph</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-70.27 204.04,-70.27 204.04,4 -4,4"/>
+<!-- module~watch_config -->
+<g id="module~~watch_config~~UsedByGraph_node1" class="node">
+<title>module~watch_config</title>
+<polygon fill="none" stroke="black" points="81.27,-45.27 0,-45.27 0,-21 81.27,-21 81.27,-45.27"/>
+<text xml:space="preserve" text-anchor="middle" x="40.63" y="-29.53" font-family="Helvetica,sans-Serif" font-size="10.50">watch_config</text>
+</g>
+<!-- module~watch_cli -->
+<g id="module~~watch_config~~UsedByGraph_node2" class="node">
+<title>module~watch_cli</title>
+<g id="a_module~~watch_config~~UsedByGraph_node2"><a xlink:href="../module/watch_cli.html" xlink:title="watch_cli">
+<polygon fill="#337ab7" stroke="#337ab7" points="188.79,-66.27 128.52,-66.27 128.52,-42 188.79,-42 188.79,-66.27"/>
+<text xml:space="preserve" text-anchor="middle" x="158.65" y="-50.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">watch_cli</text>
+</a>
+</g>
+</g>
+<!-- module~watch_cli&#45;&gt;module~watch_config -->
+<g id="module~~watch_config~~UsedByGraph_edge1" class="edge">
+<title>module~watch_cli&#45;&gt;module~watch_config</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M128.08,-48.78C117.39,-46.85 105,-44.6 92.99,-42.43"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="93.62,-38.99 83.15,-40.65 92.37,-45.88 93.62,-38.99"/>
+</g>
+<!-- module~watch_restart -->
+<g id="module~~watch_config~~UsedByGraph_node3" class="node">
+<title>module~watch_restart</title>
+<g id="a_module~~watch_config~~UsedByGraph_node3"><a xlink:href="../module/watch_restart.html" xlink:title="watch_restart">
+<polygon fill="#337ab7" stroke="#337ab7" points="200.04,-24.27 117.27,-24.27 117.27,0 200.04,0 200.04,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="158.65" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">watch_restart</text>
+</a>
+</g>
+</g>
+<!-- module~watch_restart&#45;&gt;module~watch_config -->
+<g id="module~~watch_config~~UsedByGraph_edge2" class="edge">
+<title>module~watch_restart&#45;&gt;module~watch_config</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M117.08,-19.48C109.26,-20.89 100.98,-22.39 92.87,-23.86"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="92.31,-20.41 83.09,-25.63 93.56,-27.29 92.31,-20.41"/>
+</g>
+</g>
+</svg>
+</div>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#UsedByGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="UsedByGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="511pt" height="32pt"
+ viewBox="0.00 0.00 511.00 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 28.27)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-28.27 506.88,-28.27 506.88,4 -4,4"/>
+<!-- Module -->
+<g id="node1" class="node">
+<title>Module</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="54,-24.27 0,-24.27 0,0 54,0 54,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="27" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Module</text>
+</g>
+<!-- Submodule -->
+<g id="node2" class="node">
+<title>Submodule</title>
+<polygon fill="#5bc0de" stroke="#5bc0de" points="144.13,-24.27 71.87,-24.27 71.87,0 144.13,0 144.13,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="108" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Submodule</text>
+</g>
+<!-- Subroutine -->
+<g id="node3" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="231.63,-24.27 162.37,-24.27 162.37,0 231.63,0 231.63,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="197" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node4" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="306.26,-24.27 249.74,-24.27 249.74,0 306.26,0 306.26,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="278" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Program -->
+<g id="node5" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="381.26,-24.27 324.74,-24.27 324.74,0 381.26,0 381.26,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="353" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node6" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="502.88,-24.27 399.12,-24.27 399.12,0 502.88,0 502.88,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="451" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a submodule to the (sub)module which it is
+descended from. Dashed arrows point from a module or program unit to 
+modules which it uses.
+</p>
+ Where possible, edges connecting nodes are
+given different colours to make them easier to distinguish in
+large graphs.</div>
+            </div>
+          </div>
+        </div>
+            </li>
+        </ul>
+      </div>
+    </div>
+
+      <br>
+
+
+
+
+
+
+
+
+        <section>
+          <h2>Subroutines</h2>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-apply_watch_from_manifest"></span> <h3>public  subroutine <a href='../proc/apply_watch_from_manifest.html'>apply_watch_from_manifest</a>(w)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Apply configuration overrides from <code>fpm.toml</code> <code>[extra.fpm-watch]</code>.</p><a href="../proc/apply_watch_from_manifest.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-w~14"></span>
+              type(<a href='../type/watch_opts_t.html'>watch_opts_t</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>w</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-get_restart_defaults"></span> <h3>public  subroutine <a href='../proc/get_restart_defaults.html'>get_restart_defaults</a>(auto_restart, restart_delay, restart_max, self_exe)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Read supervisor defaults from the manifest (when present).</p><a href="../proc/get_restart_defaults.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-auto_restart~3"></span>
+              logical,
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>auto_restart</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-restart_delay~3"></span>
+              real,
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>restart_delay</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-restart_max~3"></span>
+              integer,
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>restart_max</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-self_exe~3"></span>
+              character(len=:),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>self_exe</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-normalize_watch_opts"></span> <h3>public  subroutine <a href='../proc/normalize_watch_opts.html'>normalize_watch_opts</a>(w)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Normalize watcher options and clamp to safe bounds.</p><a href="../proc/normalize_watch_opts.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-w~13"></span>
+              type(<a href='../type/watch_opts_t.html'>watch_opts_t</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>w</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-push_feature"></span> <h3>public  subroutine <a href='../proc/push_feature.html'>push_feature</a>(features, name)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Append a feature name to a <code>string_t</code> array if not already present.</p><a href="../proc/push_feature.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-features~4"></span>
+              type(string_t),
+            </td>
+<td>intent(inout),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>features</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-name~2"></span>
+              character(len=*),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>name</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-set_watch_defaults"></span> <h3>public  subroutine <a href='../proc/set_watch_defaults.html'>set_watch_defaults</a>(w)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Apply built-in defaults to watcher options.</p><a href="../proc/set_watch_defaults.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-w~12"></span>
+              type(<a href='../type/watch_opts_t.html'>watch_opts_t</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>w</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-load_watch_table"></span> <h3>private  subroutine <a href='../proc/load_watch_table.html'>load_watch_table</a>(root, wt, ok)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Locate and return the <code>[extra.fpm-watch]</code> table from <code>fpm.toml</code>.</p><a href="../proc/load_watch_table.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-root~3"></span>
+              type(toml_table),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>root</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-wt~3"></span>
+              type(toml_table),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              pointer
+            </td>
+            <td>::</td>
+            <td><strong>wt</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ok~14"></span>
+              logical,
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>ok</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-toml_get_int"></span> <h3>private  subroutine <a href='../proc/toml_get_int.html'>toml_get_int</a>(table, key, v)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Read a TOML integer value if present.</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-table~2"></span>
+              type(toml_table),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>table</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-key~3"></span>
+              character(len=*),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>key</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-v~5"></span>
+              integer,
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>v</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-toml_get_list_strings"></span> <h3>private  subroutine <a href='../proc/toml_get_list_strings.html'>toml_get_list_strings</a>(table, key, list)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Read a TOML string list into an allocatable <code>string_t</code> array.</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-table~5"></span>
+              type(toml_table),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>table</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-key~6"></span>
+              character(len=*),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>key</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-list"></span>
+              type(string_t),
+            </td>
+<td>intent(inout),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>list</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-toml_get_logical"></span> <h3>private  subroutine <a href='../proc/toml_get_logical.html'>toml_get_logical</a>(table, key, v)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Read a TOML logical value if present.</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-table~3"></span>
+              type(toml_table),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>table</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-key~4"></span>
+              character(len=*),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>key</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-v~6"></span>
+              logical,
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>v</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-toml_get_real"></span> <h3>private  subroutine <a href='../proc/toml_get_real.html'>toml_get_real</a>(table, key, v)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Read a TOML real value if present.</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-table"></span>
+              type(toml_table),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>table</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-key~2"></span>
+              character(len=*),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>key</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-v~4"></span>
+              real,
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>v</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-toml_get_string"></span> <h3>private  subroutine <a href='../proc/toml_get_string.html'>toml_get_string</a>(table, key, v)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Read a TOML string value if present.</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-table~4"></span>
+              type(toml_table),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>table</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-key~5"></span>
+              character(len=*),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>key</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-v~7"></span>
+              character(len=:),
+            </td>
+<td>intent(inout),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>v</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+        </section>
+        <br>
+
+
+
+    </div>
+  </div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              fpm-watch
+ was developed by Seyed Ali Ghasemi<br>              &copy; 2026 <a rel="license" href="https://opensource.org/licenses/MIT">MIT</a>
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+ on 2026-02-24T23:32:32.813097+0000             </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,1067 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="Documentation for fpm-watch">
+    <meta name="author" content="Seyed Ali Ghasemi" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>watch_feature_api &ndash; fpm-watch</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">fpm-watch </a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/types.html">Derived Types</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <div class="row">
+    <h1>watch_feature_api
+      <small>Module</small>
+      
+    </h1>
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+            <li class="list-inline-item" id="meta-license"><i class="fa fa-legal"></i> <a rel="license" href="https://opensource.org/licenses/MIT">MIT</a></li>
+
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title=" 2.2% of total for modules and submodules.">68 statements</a>
+            </li>
+
+            <li class="list-inline-item" id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/watch_feature_api.f90"> Source File</a>
+            </li>
+        </ul>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+                <li class="breadcrumb-item"><a href='../sourcefile/watch_feature_api.f90.html'>watch_feature_api.f90</a></li>
+            <li class="breadcrumb-item active" aria-current="page">watch_feature_api</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
+  </script>
+
+  </div>
+
+  <div class="row">
+    <div class="col-md-3">
+        <div id="sidebar">
+      <h3>Contents</h3>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#types-0"
+         aria-expanded="false" aria-controls="types-0">
+         <h4 class="card-header bg-primary text-white">Derived Types</h4>
+      </a>
+      <div id="types-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../module/watch_feature_api.html#type-watch_feature_t">watch_feature_t</a>
+        </div>
+      </div>
+    </div>
+
+  
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#subs-0"
+         aria-expanded="false" aria-controls="subs-0">
+         <h4 class="card-header bg-primary text-white">Subroutines</h4>
+      </a>
+      <div id="subs-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../module/watch_feature_api.html#proc-feat_after_noop">feat_after_noop</a>
+            <a class="list-group-item" href="../module/watch_feature_api.html#proc-feat_before_noop">feat_before_noop</a>
+            <a class="list-group-item" href="../module/watch_feature_api.html#proc-feat_change_noop">feat_change_noop</a>
+            <a class="list-group-item" href="../module/watch_feature_api.html#proc-feat_init_noop">feat_init_noop</a>
+            <a class="list-group-item" href="../module/watch_feature_api.html#proc-feat_list_noop">feat_list_noop</a>
+            <a class="list-group-item" href="../module/watch_feature_api.html#proc-feat_manifest_noop">feat_manifest_noop</a>
+            <a class="list-group-item" href="../module/watch_feature_api.html#proc-feat_noop">feat_noop</a>
+        </div>
+      </div>
+    </div>
+
+  
+  
+  
+  
+  
+  
+  
+
+
+  </div>
+
+    </div>
+
+    <div class="col-md-9" id='text'>
+      <p>Feature plugin API.</p>
+<p>Defines the base <code>watch_feature_t</code> type, which acts as a lightweight
+callback interface. Feature implementations can extend this type and
+override any subset of callbacks.</p>
+<h3>Callback order (typical)</h3>
+<ul>
+<li><code>init(cfg)</code> once during watcher init</li>
+<li><code>on_start()</code> once after init</li>
+<li><code>on_watch_list_built(files, roots)</code> after watch list computation (and on rebuild)</li>
+<li><code>on_manifest_changed(old_key, new_key)</code> when the manifest requires rebuild</li>
+<li><code>on_change_detected(changed)</code> when file changes are detected</li>
+<li><code>on_before_run(cmd)</code> just before running the command</li>
+<li><code>on_after_run(exitstat, seconds)</code> after command completion</li>
+</ul>
+<p>Default implementations are no-ops. Dummy references are used where needed
+to avoid compiler warnings about unused dummy arguments.</p>
+<br>          <div class="card mb-4">
+      <h3 class="card-header card-title bg-light">Uses</h3>
+      <div class="card-body">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <ul class="list-inline">
+                  <li class="list-inline-item"><a href='http://fortranwiki.org/fortran/show/iso_fortran_env'>iso_fortran_env</a></li>
+                  <li class="list-inline-item">fpm_strings</li>
+                  <li class="list-inline-item"><a href='watch_types.html'>watch_types</a></li>
+              </ul>
+            </li>
+            <li class="list-group-item">
+              <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: module~~watch_feature_api~~UsesGraph Pages: 1 -->
+<svg id="modulewatch_feature_apiUsesGraph" width="382pt" height="116pt"
+ viewBox="0.00 0.00 382.00 116.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="module~~watch_feature_api~~UsesGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 112.27)">
+<title>module~~watch_feature_api~~UsesGraph</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-112.27 377.56,-112.27 377.56,4 -4,4"/>
+<!-- module~watch_feature_api -->
+<g id="module~~watch_feature_api~~UsesGraph_node1" class="node">
+<title>module~watch_feature_api</title>
+<polygon fill="none" stroke="black" points="373.56,-66.27 265.29,-66.27 265.29,-42 373.56,-42 373.56,-66.27"/>
+<text xml:space="preserve" text-anchor="middle" x="319.42" y="-50.53" font-family="Helvetica,sans-Serif" font-size="10.50">watch_feature_api</text>
+</g>
+<!-- fpm_strings -->
+<g id="module~~watch_feature_api~~UsesGraph_node2" class="node">
+<title>fpm_strings</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="94.77,-108.27 21.75,-108.27 21.75,-84 94.77,-84 94.77,-108.27"/>
+<text xml:space="preserve" text-anchor="middle" x="58.26" y="-92.54" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">fpm_strings</text>
+</g>
+<!-- module~watch_feature_api&#45;&gt;fpm_strings -->
+<g id="module~~watch_feature_api~~UsesGraph_edge1" class="edge">
+<title>module~watch_feature_api&#45;&gt;fpm_strings</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M269.12,-66.76C256.22,-69.78 242.28,-72.81 229.29,-75.14 187.99,-82.53 140.58,-88.15 106.34,-91.71"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="106.35,-88.19 96.76,-92.68 107.06,-95.15 106.35,-88.19"/>
+</g>
+<!-- iso_fortran_env -->
+<g id="module~~watch_feature_api~~UsesGraph_node3" class="node">
+<title>iso_fortran_env</title>
+<g id="a_module~~watch_feature_api~~UsesGraph_node3"><a xlink:href="http://fortranwiki.org/fortran/show/iso_fortran_env" xlink:title="iso_fortran_env">
+<polygon fill="#337ab7" stroke="#337ab7" points="104.89,-24.27 11.62,-24.27 11.62,0 104.89,0 104.89,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="58.26" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">iso_fortran_env</text>
+</a>
+</g>
+</g>
+<!-- module~watch_feature_api&#45;&gt;iso_fortran_env -->
+<g id="module~~watch_feature_api~~UsesGraph_edge2" class="edge">
+<title>module~watch_feature_api&#45;&gt;iso_fortran_env</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M269.12,-41.51C256.22,-38.49 242.28,-35.46 229.29,-33.13 191.97,-26.45 149.66,-21.22 116.58,-17.65"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="117.11,-14.18 106.79,-16.61 116.37,-21.15 117.11,-14.18"/>
+</g>
+<!-- module~watch_types -->
+<g id="module~~watch_feature_api~~UsesGraph_node4" class="node">
+<title>module~watch_types</title>
+<g id="a_module~~watch_feature_api~~UsesGraph_node4"><a xlink:href="../module/watch_types.html" xlink:title="watch_types">
+<polygon fill="#337ab7" stroke="#337ab7" points="229.29,-66.27 152.52,-66.27 152.52,-42 229.29,-42 229.29,-66.27"/>
+<text xml:space="preserve" text-anchor="middle" x="190.9" y="-50.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">watch_types</text>
+</a>
+</g>
+</g>
+<!-- module~watch_feature_api&#45;&gt;module~watch_types -->
+<g id="module~~watch_feature_api~~UsesGraph_edge3" class="edge">
+<title>module~watch_feature_api&#45;&gt;module~watch_types</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M265.14,-54.13C257.15,-54.13 248.95,-54.13 241.05,-54.13"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="241.28,-50.64 231.28,-54.14 241.28,-57.64 241.28,-50.64"/>
+</g>
+<!-- module~watch_types&#45;&gt;fpm_strings -->
+<g id="module~~watch_feature_api~~UsesGraph_edge5" class="edge">
+<title>module~watch_types&#45;&gt;fpm_strings</title>
+<path fill="none" stroke="#0000ff" stroke-dasharray="5,2" d="M152.12,-66.28C137.68,-70.92 121.06,-76.27 105.9,-81.14"/>
+<polygon fill="#0000ff" stroke="#0000ff" points="105.06,-77.74 96.61,-84.13 107.2,-84.4 105.06,-77.74"/>
+</g>
+<!-- module~watch_types&#45;&gt;iso_fortran_env -->
+<g id="module~~watch_feature_api~~UsesGraph_edge6" class="edge">
+<title>module~watch_types&#45;&gt;iso_fortran_env</title>
+<path fill="none" stroke="#0000ff" stroke-dasharray="5,2" d="M152.12,-41.99C138.67,-37.66 123.31,-32.72 109.01,-28.13"/>
+<polygon fill="#0000ff" stroke="#0000ff" points="110.36,-24.89 99.77,-25.16 108.21,-31.55 110.36,-24.89"/>
+</g>
+<!-- fpm_command_line -->
+<g id="module~~watch_feature_api~~UsesGraph_node5" class="node">
+<title>fpm_command_line</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="116.52,-66.27 0,-66.27 0,-42 116.52,-42 116.52,-66.27"/>
+<text xml:space="preserve" text-anchor="middle" x="58.26" y="-50.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">fpm_command_line</text>
+</g>
+<!-- module~watch_types&#45;&gt;fpm_command_line -->
+<g id="module~~watch_feature_api~~UsesGraph_edge4" class="edge">
+<title>module~watch_types&#45;&gt;fpm_command_line</title>
+<path fill="none" stroke="#0000ff" stroke-dasharray="5,2" d="M152.12,-54.13C144.55,-54.13 136.39,-54.13 128.14,-54.13"/>
+<polygon fill="#0000ff" stroke="#0000ff" points="128.42,-50.64 118.42,-54.14 128.42,-57.64 128.42,-50.64"/>
+</g>
+</g>
+</svg>
+</div>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#UsesGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="UsesGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="511pt" height="32pt"
+ viewBox="0.00 0.00 511.00 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 28.27)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-28.27 506.88,-28.27 506.88,4 -4,4"/>
+<!-- Module -->
+<g id="node1" class="node">
+<title>Module</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="54,-24.27 0,-24.27 0,0 54,0 54,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="27" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Module</text>
+</g>
+<!-- Submodule -->
+<g id="node2" class="node">
+<title>Submodule</title>
+<polygon fill="#5bc0de" stroke="#5bc0de" points="144.13,-24.27 71.87,-24.27 71.87,0 144.13,0 144.13,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="108" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Submodule</text>
+</g>
+<!-- Subroutine -->
+<g id="node3" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="231.63,-24.27 162.37,-24.27 162.37,0 231.63,0 231.63,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="197" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node4" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="306.26,-24.27 249.74,-24.27 249.74,0 306.26,0 306.26,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="278" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Program -->
+<g id="node5" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="381.26,-24.27 324.74,-24.27 324.74,0 381.26,0 381.26,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="353" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node6" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="502.88,-24.27 399.12,-24.27 399.12,0 502.88,0 502.88,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="451" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a submodule to the (sub)module which it is
+descended from. Dashed arrows point from a module or program unit to 
+modules which it uses.
+</p>
+ Where possible, edges connecting nodes are
+given different colours to make them easier to distinguish in
+large graphs.</div>
+            </div>
+          </div>
+        </div>
+            </li>
+        </ul>
+      </div>
+    </div>
+
+          <div class="card">
+      <h3 class="card-header card-title bg-light">Used by</h3>
+      <div class="card-body">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: module~~watch_feature_api~~UsedByGraph Pages: 1 -->
+<svg id="modulewatch_feature_apiUsedByGraph" width="579pt" height="88pt"
+ viewBox="0.00 0.00 579.00 88.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="module~~watch_feature_api~~UsedByGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 84.43)">
+<title>module~~watch_feature_api~~UsedByGraph</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-84.43 575.08,-84.43 575.08,4 -4,4"/>
+<!-- module~watch_feature_api -->
+<g id="module~~watch_feature_api~~UsedByGraph_node1" class="node">
+<title>module~watch_feature_api</title>
+<polygon fill="none" stroke="black" points="108.27,-66.27 0,-66.27 0,-42 108.27,-42 108.27,-66.27"/>
+<text xml:space="preserve" text-anchor="middle" x="54.13" y="-50.53" font-family="Helvetica,sans-Serif" font-size="10.50">watch_feature_api</text>
+</g>
+<!-- module~watch_feat_stats -->
+<g id="module~~watch_feature_api~~UsedByGraph_node2" class="node">
+<title>module~watch_feat_stats</title>
+<g id="a_module~~watch_feature_api~~UsedByGraph_node2"><a xlink:href="../module/watch_feat_stats.html" xlink:title="watch_feat_stats">
+<polygon fill="#337ab7" stroke="#337ab7" points="264.17,-66.27 164.9,-66.27 164.9,-42 264.17,-42 264.17,-66.27"/>
+<text xml:space="preserve" text-anchor="middle" x="214.53" y="-50.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">watch_feat_stats</text>
+</a>
+</g>
+</g>
+<!-- module~watch_feat_stats&#45;&gt;module~watch_feature_api -->
+<g id="module~~watch_feature_api~~UsedByGraph_edge1" class="edge">
+<title>module~watch_feat_stats&#45;&gt;module~watch_feature_api</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M164.71,-54.13C150.59,-54.13 134.94,-54.13 120,-54.13"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="120.27,-50.64 110.27,-54.14 120.27,-57.64 120.27,-50.64"/>
+</g>
+<!-- module~watch_feature_factory -->
+<g id="module~~watch_feature_api~~UsedByGraph_node3" class="node">
+<title>module~watch_feature_factory</title>
+<g id="a_module~~watch_feature_api~~UsedByGraph_node3"><a xlink:href="../module/watch_feature_factory.html" xlink:title="watch_feature_factory">
+<polygon fill="#337ab7" stroke="#337ab7" points="450.06,-65.27 320.79,-65.27 320.79,-41 450.06,-41 450.06,-65.27"/>
+<text xml:space="preserve" text-anchor="middle" x="385.43" y="-49.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">watch_feature_factory</text>
+</a>
+</g>
+</g>
+<!-- module~watch_feature_factory&#45;&gt;module~watch_feature_api -->
+<g id="module~~watch_feature_api~~UsedByGraph_edge2" class="edge">
+<title>module~watch_feature_factory&#45;&gt;module~watch_feature_api</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M337.39,-65.72C320.88,-69.55 302.14,-73.24 284.79,-75.14 222.7,-81.91 206.31,-82.34 144.27,-75.14 133.37,-73.87 121.87,-71.76 110.88,-69.35"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="111.67,-65.94 101.14,-67.1 110.09,-72.76 111.67,-65.94"/>
+</g>
+<!-- module~watch_feature_factory&#45;&gt;module~watch_feat_stats -->
+<g id="module~~watch_feature_api~~UsedByGraph_edge4" class="edge">
+<title>module~watch_feature_factory&#45;&gt;module~watch_feat_stats</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M320.57,-53.51C305.9,-53.6 290.35,-53.69 275.84,-53.78"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="275.95,-50.28 265.97,-53.84 276,-57.28 275.95,-50.28"/>
+</g>
+<!-- module~watch_feature_manager -->
+<g id="module~~watch_feature_api~~UsedByGraph_node4" class="node">
+<title>module~watch_feature_manager</title>
+<g id="a_module~~watch_feature_api~~UsedByGraph_node4"><a xlink:href="../module/watch_feature_manager.html" xlink:title="watch_feature_manager">
+<polygon fill="#337ab7" stroke="#337ab7" points="284.79,-24.27 144.27,-24.27 144.27,0 284.79,0 284.79,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="214.53" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">watch_feature_manager</text>
+</a>
+</g>
+</g>
+<!-- module~watch_feature_factory&#45;&gt;module~watch_feature_manager -->
+<g id="module~~watch_feature_api~~UsedByGraph_edge7" class="edge">
+<title>module~watch_feature_factory&#45;&gt;module~watch_feature_manager</title>
+<path fill="none" stroke="#0000ff" stroke-dasharray="5,2" d="M332.83,-40.61C315.64,-36.44 296.3,-31.74 278.35,-27.38"/>
+<polygon fill="#0000ff" stroke="#0000ff" points="279.4,-24.04 268.86,-25.08 277.75,-30.84 279.4,-24.04"/>
+</g>
+<!-- module~watch_feature_manager&#45;&gt;module~watch_feature_api -->
+<g id="module~~watch_feature_api~~UsedByGraph_edge3" class="edge">
+<title>module~watch_feature_manager&#45;&gt;module~watch_feature_api</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M166.01,-24.74C149.56,-29.1 130.93,-34.04 113.71,-38.6"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="112.86,-35.21 104.09,-41.15 114.65,-41.97 112.86,-35.21"/>
+</g>
+<!-- module~watch_engine -->
+<g id="module~~watch_feature_api~~UsedByGraph_node5" class="node">
+<title>module~watch_engine</title>
+<g id="a_module~~watch_feature_api~~UsedByGraph_node5"><a xlink:href="../module/watch_engine.html" xlink:title="watch_engine">
+<polygon fill="#337ab7" stroke="#337ab7" points="571.08,-45.27 486.06,-45.27 486.06,-21 571.08,-21 571.08,-45.27"/>
+<text xml:space="preserve" text-anchor="middle" x="528.57" y="-29.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">watch_engine</text>
+</a>
+</g>
+</g>
+<!-- module~watch_engine&#45;&gt;module~watch_feature_factory -->
+<g id="module~~watch_feature_api~~UsedByGraph_edge5" class="edge">
+<title>module~watch_engine&#45;&gt;module~watch_feature_factory</title>
+<path fill="none" stroke="#00ff00" stroke-dasharray="5,2" d="M485.6,-39.08C478.01,-40.16 469.88,-41.31 461.66,-42.47"/>
+<polygon fill="#00ff00" stroke="#00ff00" points="461.36,-38.98 451.95,-43.85 462.34,-45.91 461.36,-38.98"/>
+</g>
+<!-- module~watch_engine&#45;&gt;module~watch_feature_manager -->
+<g id="module~~watch_feature_api~~UsedByGraph_edge6" class="edge">
+<title>module~watch_engine&#45;&gt;module~watch_feature_manager</title>
+<path fill="none" stroke="#0000ff" stroke-dasharray="5,2" d="M485.81,-30.32C437.6,-27.08 357.17,-21.67 296.56,-17.59"/>
+<polygon fill="#0000ff" stroke="#0000ff" points="296.82,-14.1 286.61,-16.92 296.35,-21.08 296.82,-14.1"/>
+</g>
+</g>
+</svg>
+</div>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#UsedByGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="UsedByGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="511pt" height="32pt"
+ viewBox="0.00 0.00 511.00 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 28.27)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-28.27 506.88,-28.27 506.88,4 -4,4"/>
+<!-- Module -->
+<g id="node1" class="node">
+<title>Module</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="54,-24.27 0,-24.27 0,0 54,0 54,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="27" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Module</text>
+</g>
+<!-- Submodule -->
+<g id="node2" class="node">
+<title>Submodule</title>
+<polygon fill="#5bc0de" stroke="#5bc0de" points="144.13,-24.27 71.87,-24.27 71.87,0 144.13,0 144.13,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="108" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Submodule</text>
+</g>
+<!-- Subroutine -->
+<g id="node3" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="231.63,-24.27 162.37,-24.27 162.37,0 231.63,0 231.63,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="197" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node4" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="306.26,-24.27 249.74,-24.27 249.74,0 306.26,0 306.26,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="278" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Program -->
+<g id="node5" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="381.26,-24.27 324.74,-24.27 324.74,0 381.26,0 381.26,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="353" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node6" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="502.88,-24.27 399.12,-24.27 399.12,0 502.88,0 502.88,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="451" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a submodule to the (sub)module which it is
+descended from. Dashed arrows point from a module or program unit to 
+modules which it uses.
+</p>
+ Where possible, edges connecting nodes are
+given different colours to make them easier to distinguish in
+large graphs.</div>
+            </div>
+          </div>
+        </div>
+            </li>
+        </ul>
+      </div>
+    </div>
+
+      <br>
+
+
+
+
+
+
+        <section>
+          <h2>Derived Types</h2>
+              <div class="card">
+    <div class="card-header codesum">
+      <span class="anchor" id="type-watch_feature_t"></span>
+      <h3>
+        type, public&nbsp;::&nbsp;
+        <a href='../type/watch_feature_t.html'>watch_feature_t</a>
+        
+      </h3>
+    </div>
+    <div class="card-body">
+      <p>Base feature type (override callbacks to implement behavior).</p>
+
+
+
+
+        <h4>Type-Bound Procedures</h4>
+        <table class="table table-striped varlist">
+          <tbody>
+              <tr>
+                <td>  procedure, public ::
+  <strong><a href='../type/watch_feature_t.html#boundprocedure-init'>init</a></strong> => <a href='/home/runner/work/fpm-watch/fpm-watch/doc/proc/feat_init_noop.html'>feat_init_noop</a></td>
+                  <td></td>
+              </tr>
+              <tr>
+                <td>  procedure, public ::
+  <strong><a href='../type/watch_feature_t.html#boundprocedure-on_after_run'>on_after_run</a></strong> => <a href='/home/runner/work/fpm-watch/fpm-watch/doc/proc/feat_after_noop.html'>feat_after_noop</a></td>
+                  <td></td>
+              </tr>
+              <tr>
+                <td>  procedure, public ::
+  <strong><a href='../type/watch_feature_t.html#boundprocedure-on_before_run'>on_before_run</a></strong> => <a href='/home/runner/work/fpm-watch/fpm-watch/doc/proc/feat_before_noop.html'>feat_before_noop</a></td>
+                  <td></td>
+              </tr>
+              <tr>
+                <td>  procedure, public ::
+  <strong><a href='../type/watch_feature_t.html#boundprocedure-on_change_detected'>on_change_detected</a></strong> => <a href='/home/runner/work/fpm-watch/fpm-watch/doc/proc/feat_change_noop.html'>feat_change_noop</a></td>
+                  <td></td>
+              </tr>
+              <tr>
+                <td>  procedure, public ::
+  <strong><a href='../type/watch_feature_t.html#boundprocedure-on_manifest_changed'>on_manifest_changed</a></strong> => <a href='/home/runner/work/fpm-watch/fpm-watch/doc/proc/feat_manifest_noop.html'>feat_manifest_noop</a></td>
+                  <td></td>
+              </tr>
+              <tr>
+                <td>  procedure, public ::
+  <strong><a href='../type/watch_feature_t.html#boundprocedure-on_start'>on_start</a></strong> => <a href='/home/runner/work/fpm-watch/fpm-watch/doc/proc/feat_noop.html'>feat_noop</a></td>
+                  <td></td>
+              </tr>
+              <tr>
+                <td>  procedure, public ::
+  <strong><a href='../type/watch_feature_t.html#boundprocedure-on_watch_list_built'>on_watch_list_built</a></strong> => <a href='/home/runner/work/fpm-watch/fpm-watch/doc/proc/feat_list_noop.html'>feat_list_noop</a></td>
+                  <td></td>
+              </tr>
+          </tbody>
+        </table>
+    </div>
+  </div>
+
+        </section>
+        <br>
+
+
+        <section>
+          <h2>Subroutines</h2>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-feat_after_noop"></span> <h3>private  subroutine <a href='../proc/feat_after_noop.html'>feat_after_noop</a>(self, exitstat, seconds)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>No-op callback invoked after executing the command.</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-self~17"></span>
+              class(<a href='../type/watch_feature_t.html'>watch_feature_t</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>self</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-exitstat~3"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>exitstat</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-seconds~2"></span>
+              real,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>seconds</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-feat_before_noop"></span> <h3>private  subroutine <a href='../proc/feat_before_noop.html'>feat_before_noop</a>(self, cmd)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>No-op callback invoked just before executing the command.</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-self~16"></span>
+              class(<a href='../type/watch_feature_t.html'>watch_feature_t</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>self</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-cmd~7"></span>
+              character(len=:),
+            </td>
+<td>intent(inout),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>cmd</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-feat_change_noop"></span> <h3>private  subroutine <a href='../proc/feat_change_noop.html'>feat_change_noop</a>(self, changed)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>No-op callback for detected file changes.</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-self~15"></span>
+              class(<a href='../type/watch_feature_t.html'>watch_feature_t</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>self</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-changed~2"></span>
+              type(string_t),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>changed</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-feat_init_noop"></span> <h3>private  subroutine <a href='../proc/feat_init_noop.html'>feat_init_noop</a>(self, cfg)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>No-op init callback.</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-self~11"></span>
+              class(<a href='../type/watch_feature_t.html'>watch_feature_t</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>self</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-cfg~3"></span>
+              type(<a href='../type/watch_config_t.html'>watch_config_t</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>cfg</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-feat_list_noop"></span> <h3>private  subroutine <a href='../proc/feat_list_noop.html'>feat_list_noop</a>(self, files, roots)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>No-op callback for watch list rebuild completion.</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-self~13"></span>
+              class(<a href='../type/watch_feature_t.html'>watch_feature_t</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>self</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-files~14"></span>
+              type(string_t),
+            </td>
+<td>intent(inout),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>files</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-roots~5"></span>
+              type(<a href='../type/root_info_t.html'>root_info_t</a>),
+            </td>
+<td>intent(inout),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>roots</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-feat_manifest_noop"></span> <h3>private  subroutine <a href='../proc/feat_manifest_noop.html'>feat_manifest_noop</a>(self, old_key, new_key)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>No-op callback for manifest key change.</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-self~14"></span>
+              class(<a href='../type/watch_feature_t.html'>watch_feature_t</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>self</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-old_key~2"></span>
+              integer(kind=int64),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>old_key</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-new_key~2"></span>
+              integer(kind=int64),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>new_key</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-feat_noop"></span> <h3>private  subroutine <a href='../proc/feat_noop.html'>feat_noop</a>(self)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>No-op start callback.</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-self~12"></span>
+              class(<a href='../type/watch_feature_t.html'>watch_feature_t</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>self</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+        </section>
+        <br>
+
+
+
+    </div>
+  </div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              fpm-watch
+ was developed by Seyed Ali Ghasemi<br>              &copy; 2026 <a rel="license" href="https://opensource.org/licenses/MIT">MIT</a>
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+ on 2026-02-24T23:32:32.813097+0000             </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>

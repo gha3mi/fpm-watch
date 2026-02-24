@@ -1,0 +1,1474 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="Documentation for fpm-watch">
+    <meta name="author" content="Seyed Ali Ghasemi" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>rebuild_watch_list &ndash; fpm-watch</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">fpm-watch </a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/types.html">Derived Types</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <div class="row">
+    <h1>rebuild_watch_list
+      <small>Subroutine</small>
+      
+    </h1>
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+            <li class="list-inline-item" id="meta-license"><i class="fa fa-legal"></i> <a rel="license" href="https://opensource.org/licenses/MIT">MIT</a></li>
+
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title=" 1.4% of total for procedures.">39 statements</a>
+            </li>
+
+            <li class="list-inline-item" id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/watch_engine.f90"> Source File</a>
+            </li>
+        </ul>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+                <li class="breadcrumb-item"><a href='../sourcefile/watch_engine.f90.html'>watch_engine.f90</a></li>
+                <li class="breadcrumb-item"><a href='../module/watch_engine.html'>watch_engine</a></li>
+            <li class="breadcrumb-item active" aria-current="page">rebuild_watch_list</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
+  </script>
+
+  </div>
+  
+  <div class="row">
+    <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
+      <div id="sidebar">
+      <h3>Contents</h3>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    <div class="card card-primary">
+      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
+      <div class="list-group">
+        <a class="list-group-item" href="../proc/rebuild_watch_list.html#src">rebuild_watch_list</a>
+      </div>
+    </div>
+
+
+  </div>
+
+    </div>
+    
+    <div class="col-md-9" id='text'>
+    <h2>private  subroutine rebuild_watch_list(self, print_header)  
+</h2>
+    
+
+    <p>Recompute the watch list, rebuild fingerprints, and print/log the result.</p>
+<p>Called:
+- During initialization,
+- When the manifest changes,
+- Periodically when <code>rescan &gt; 0</code>.</p>
+
+
+    <h3>Arguments</h3>
+        <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-self~22"></span>
+              class(<a href='../type/watcher_t.html'>watcher_t</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>self</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-print_header"></span>
+              logical,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>print_header</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <br>
+    <div class="card">
+      <div class="card-header">
+  <h3 class="card-title">Calls</h3>
+      </div>
+      <div class="card-body">
+  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: proc~~rebuild_watch_list~~CallsGraph Pages: 1 -->
+<svg id="procrebuild_watch_listCallsGraph" width="641pt" height="752pt"
+ viewBox="0.00 0.00 641.00 752.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~rebuild_watch_list~~CallsGraph" class="graph" transform="scale(0.544309 0.544309) rotate(0) translate(4 1376.74)">
+<title>proc~~rebuild_watch_list~~CallsGraph</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-1376.74 1173.64,-1376.74 1173.64,4 -4,4"/>
+<!-- proc~rebuild_watch_list -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_node1" class="node">
+<title>proc~rebuild_watch_list</title>
+<polygon fill="none" stroke="black" points="105.27,-1044.27 0,-1044.27 0,-1020 105.27,-1020 105.27,-1044.27"/>
+<text xml:space="preserve" text-anchor="middle" x="52.63" y="-1028.54" font-family="Helvetica,sans-Serif" font-size="10.50">rebuild_watch_list</text>
+</g>
+<!-- proc~compute_watch_files_from_settings -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_node2" class="node">
+<title>proc~compute_watch_files_from_settings</title>
+<g id="a_proc~~rebuild_watch_list~~CallsGraph_node2"><a xlink:href="../proc/compute_watch_files_from_settings.html" xlink:title="compute_watch_files_from_settings">
+<polygon fill="#d9534f" stroke="#d9534f" points="360.54,-543.27 161.52,-543.27 161.52,-519 360.54,-519 360.54,-543.27"/>
+<text xml:space="preserve" text-anchor="middle" x="261.03" y="-527.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">compute_watch_files_from_settings</text>
+</a>
+</g>
+</g>
+<!-- proc~rebuild_watch_list&#45;&gt;proc~compute_watch_files_from_settings -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge1" class="edge">
+<title>proc~rebuild_watch_list&#45;&gt;proc~compute_watch_files_from_settings</title>
+<path fill="none" stroke="#ff0000" d="M58.84,-1019.5C86.31,-952.83 214.48,-641.69 250.56,-554.12"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="253.78,-555.49 254.36,-544.91 247.31,-552.82 253.78,-555.49"/>
+</g>
+<!-- proc~ftoa -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_node3" class="node">
+<title>proc~ftoa</title>
+<g id="a_proc~~rebuild_watch_list~~CallsGraph_node3"><a xlink:href="../proc/ftoa.html" xlink:title="ftoa">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="533.18,-1086.27 479.18,-1086.27 479.18,-1062 533.18,-1062 533.18,-1086.27"/>
+<text xml:space="preserve" text-anchor="middle" x="506.18" y="-1070.54" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">ftoa</text>
+</a>
+</g>
+</g>
+<!-- proc~rebuild_watch_list&#45;&gt;proc~ftoa -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge2" class="edge">
+<title>proc~rebuild_watch_list&#45;&gt;proc~ftoa</title>
+<path fill="none" stroke="#ff0000" d="M105.44,-1041.13C117.19,-1042.97 129.64,-1044.76 141.27,-1046.13 260.05,-1060.17 401.5,-1068.73 467.62,-1072.26"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="467.39,-1075.75 477.56,-1072.78 467.76,-1068.76 467.39,-1075.75"/>
+</g>
+<!-- proc~init_fingerprints -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_node4" class="node">
+<title>proc~init_fingerprints</title>
+<g id="a_proc~~rebuild_watch_list~~CallsGraph_node4"><a xlink:href="../proc/init_fingerprints.html" xlink:title="init_fingerprints">
+<polygon fill="#d9534f" stroke="#d9534f" points="308.42,-865.27 213.65,-865.27 213.65,-841 308.42,-841 308.42,-865.27"/>
+<text xml:space="preserve" text-anchor="middle" x="261.03" y="-849.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">init_fingerprints</text>
+</a>
+</g>
+</g>
+<!-- proc~rebuild_watch_list&#45;&gt;proc~init_fingerprints -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge3" class="edge">
+<title>proc~rebuild_watch_list&#45;&gt;proc~init_fingerprints</title>
+<path fill="none" stroke="#ff0000" d="M59.98,-1019.61C72.6,-995.76 102.95,-943.35 141.27,-911.13 162.19,-893.54 189.36,-879.76 212.43,-870.06"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="213.69,-873.33 221.64,-866.32 211.06,-866.84 213.69,-873.33"/>
+</g>
+<!-- proc~log_info -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_node5" class="node">
+<title>proc~log_info</title>
+<g id="a_proc~~rebuild_watch_list~~CallsGraph_node5"><a xlink:href="../proc/log_info.html" xlink:title="log_info">
+<polygon fill="#d9534f" stroke="#d9534f" points="533.18,-1044.27 479.18,-1044.27 479.18,-1020 533.18,-1020 533.18,-1044.27"/>
+<text xml:space="preserve" text-anchor="middle" x="506.18" y="-1028.54" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">log_info</text>
+</a>
+</g>
+</g>
+<!-- proc~rebuild_watch_list&#45;&gt;proc~log_info -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge4" class="edge">
+<title>proc~rebuild_watch_list&#45;&gt;proc~log_info</title>
+<path fill="none" stroke="#ff0000" d="M105.43,-1032.13C197.39,-1032.13 387.06,-1032.13 467.64,-1032.13"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="467.2,-1035.64 477.2,-1032.14 467.2,-1028.64 467.2,-1035.64"/>
+</g>
+<!-- proc~manifest_key_from_files -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_node6" class="node">
+<title>proc~manifest_key_from_files</title>
+<g id="a_proc~~rebuild_watch_list~~CallsGraph_node6"><a xlink:href="../proc/manifest_key_from_files.html" xlink:title="manifest_key_from_files">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="330.54,-944.27 191.52,-944.27 191.52,-920 330.54,-920 330.54,-944.27"/>
+<text xml:space="preserve" text-anchor="middle" x="261.03" y="-928.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">manifest_key_from_files</text>
+</a>
+</g>
+</g>
+<!-- proc~rebuild_watch_list&#45;&gt;proc~manifest_key_from_files -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge5" class="edge">
+<title>proc~rebuild_watch_list&#45;&gt;proc~manifest_key_from_files</title>
+<path fill="none" stroke="#ff0000" d="M79.36,-1019.67C115.74,-1002.04 182.4,-969.75 223.79,-949.7"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="225.15,-952.92 232.62,-945.41 222.1,-946.63 225.15,-952.92"/>
+</g>
+<!-- proc~on_watch_list_built_all -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_node7" class="node">
+<title>proc~on_watch_list_built_all</title>
+<g id="a_proc~~rebuild_watch_list~~CallsGraph_node7"><a xlink:href="../proc/on_watch_list_built_all.html" xlink:title="feature_manager_t%on_watch_list_built_all">
+<polygon fill="#d9534f" stroke="#d9534f" points="380.79,-252.27 141.27,-252.27 141.27,-228 380.79,-228 380.79,-252.27"/>
+<text xml:space="preserve" text-anchor="middle" x="261.03" y="-236.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">feature_manager_t%on_watch_list_built_all</text>
+</a>
+</g>
+</g>
+<!-- proc~rebuild_watch_list&#45;&gt;proc~on_watch_list_built_all -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge6" class="edge">
+<title>proc~rebuild_watch_list&#45;&gt;proc~on_watch_list_built_all</title>
+<path fill="none" stroke="#ff0000" d="M54.57,-1019.74C59.24,-961.35 82.08,-708.24 141.27,-510.13 169.85,-414.49 223.76,-307.96 247.86,-262.57"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="250.83,-264.44 252.46,-253.97 244.66,-261.13 250.83,-264.44"/>
+</g>
+<!-- proc~print_banner -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_node8" class="node">
+<title>proc~print_banner</title>
+<g id="a_proc~~rebuild_watch_list~~CallsGraph_node8"><a xlink:href="../proc/print_banner.html" xlink:title="print_banner">
+<polygon fill="#d9534f" stroke="#d9534f" points="300.92,-1188.27 221.15,-1188.27 221.15,-1164 300.92,-1164 300.92,-1188.27"/>
+<text xml:space="preserve" text-anchor="middle" x="261.03" y="-1172.54" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">print_banner</text>
+</a>
+</g>
+</g>
+<!-- proc~rebuild_watch_list&#45;&gt;proc~print_banner -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge7" class="edge">
+<title>proc~rebuild_watch_list&#45;&gt;proc~print_banner</title>
+<path fill="none" stroke="#ff0000" d="M71.59,-1044.66C107.8,-1069.93 189.79,-1127.13 232.69,-1157.06"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="230.52,-1159.82 240.73,-1162.67 234.53,-1154.08 230.52,-1159.82"/>
+</g>
+<!-- proc~print_file_list -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_node9" class="node">
+<title>proc~print_file_list</title>
+<g id="a_proc~~rebuild_watch_list~~CallsGraph_node9"><a xlink:href="../proc/print_file_list.html" xlink:title="print_file_list">
+<polygon fill="#d9534f" stroke="#d9534f" points="300.17,-1330.27 221.9,-1330.27 221.9,-1306 300.17,-1306 300.17,-1330.27"/>
+<text xml:space="preserve" text-anchor="middle" x="261.03" y="-1314.54" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">print_file_list</text>
+</a>
+</g>
+</g>
+<!-- proc~rebuild_watch_list&#45;&gt;proc~print_file_list -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge8" class="edge">
+<title>proc~rebuild_watch_list&#45;&gt;proc~print_file_list</title>
+<path fill="none" stroke="#ff0000" d="M55.17,-1044.75C60.34,-1082.34 80.41,-1195.07 141.27,-1261.13 159.88,-1281.34 187.17,-1295.13 210.9,-1304.08"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="209.48,-1307.29 220.08,-1307.35 211.83,-1300.7 209.48,-1307.29"/>
+</g>
+<!-- str -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_node10" class="node">
+<title>str</title>
+<polygon fill="#777777" stroke="#777777" points="533.18,-1330.27 479.18,-1330.27 479.18,-1306 533.18,-1306 533.18,-1330.27"/>
+<text xml:space="preserve" text-anchor="middle" x="506.18" y="-1314.54" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">str</text>
+</g>
+<!-- proc~rebuild_watch_list&#45;&gt;str -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge9" class="edge">
+<title>proc~rebuild_watch_list&#45;&gt;str</title>
+<path fill="none" stroke="#ff0000" d="M56.83,-1044.42C65.33,-1074.73 91.32,-1153.74 141.27,-1197.13 239.6,-1282.58 291.99,-1259.79 416.79,-1297.13 433.45,-1302.12 452.15,-1306.7 468.05,-1310.31"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="467.06,-1313.68 477.58,-1312.43 468.57,-1306.84 467.06,-1313.68"/>
+</g>
+<!-- proc~compute_watch_files_from_settings&#45;&gt;proc~ftoa -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge21" class="edge">
+<title>proc~compute_watch_files_from_settings&#45;&gt;proc~ftoa</title>
+<path fill="none" stroke="#ff0000" d="M268.13,-543.71C287.62,-584.39 348.96,-716.5 380.79,-832.13 407.2,-928.08 348.99,-980.29 416.79,-1053.13 429.66,-1066.96 449.83,-1072.45 467.66,-1074.37"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="467.2,-1077.85 477.42,-1075.06 467.7,-1070.86 467.2,-1077.85"/>
+</g>
+<!-- proc~compute_watch_files_from_settings&#45;&gt;proc~log_info -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge24" class="edge">
+<title>proc~compute_watch_files_from_settings&#45;&gt;proc~log_info</title>
+<path fill="none" stroke="#ff0000" d="M267.95,-543.76C286.91,-584.59 346.82,-717.11 380.79,-832.13 403.77,-909.96 360.42,-952.76 416.79,-1011.13 429.76,-1024.56 449.63,-1030.06 467.25,-1032.1"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="466.94,-1035.58 477.19,-1032.87 467.49,-1028.6 466.94,-1035.58"/>
+</g>
+<!-- proc~compute_watch_files_from_settings&#45;&gt;str -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge29" class="edge">
+<title>proc~compute_watch_files_from_settings&#45;&gt;str</title>
+<path fill="none" stroke="#ff0000" d="M268.54,-543.6C289.24,-583.97 353.85,-715.26 380.79,-832.13 404.07,-933.13 349.44,-1218.36 416.79,-1297.13 429.15,-1311.59 449.48,-1317.09 467.52,-1318.86"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="467.24,-1322.35 477.43,-1319.45 467.66,-1315.36 467.24,-1322.35"/>
+</g>
+<!-- add -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_node11" class="node">
+<title>add</title>
+<polygon fill="#777777" stroke="#777777" points="533.18,-312.27 479.18,-312.27 479.18,-288 533.18,-288 533.18,-312.27"/>
+<text xml:space="preserve" text-anchor="middle" x="506.18" y="-296.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">add</text>
+</g>
+<!-- proc~compute_watch_files_from_settings&#45;&gt;add -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge10" class="edge">
+<title>proc~compute_watch_files_from_settings&#45;&gt;add</title>
+<path fill="none" stroke="#ff0000" d="M267.42,-518.58C283.89,-481.82 337.28,-373.74 416.79,-321.13 431.86,-311.17 451.14,-305.91 467.85,-303.15"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="468,-306.67 477.42,-301.82 467.03,-299.73 468,-306.67"/>
+</g>
+<!-- basename -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_node12" class="node">
+<title>basename</title>
+<polygon fill="#777777" stroke="#777777" points="730.83,-766.27 663.06,-766.27 663.06,-742 730.83,-742 730.83,-766.27"/>
+<text xml:space="preserve" text-anchor="middle" x="696.95" y="-750.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">basename</text>
+</g>
+<!-- proc~compute_watch_files_from_settings&#45;&gt;basename -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge11" class="edge">
+<title>proc~compute_watch_files_from_settings&#45;&gt;basename</title>
+<path fill="none" stroke="#ff0000" d="M266.88,-543.58C282.19,-580.94 333.48,-692.31 416.79,-737.13 491.19,-777.17 593.43,-770.63 651.28,-762.34"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="651.73,-765.81 661.09,-760.84 650.67,-758.89 651.73,-765.81"/>
+</g>
+<!-- build_model -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_node13" class="node">
+<title>build_model</title>
+<polygon fill="#777777" stroke="#777777" points="544.56,-606.27 467.79,-606.27 467.79,-582 544.56,-582 544.56,-606.27"/>
+<text xml:space="preserve" text-anchor="middle" x="506.18" y="-590.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">build_model</text>
+</g>
+<!-- proc~compute_watch_files_from_settings&#45;&gt;build_model -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge12" class="edge">
+<title>proc~compute_watch_files_from_settings&#45;&gt;build_model</title>
+<path fill="none" stroke="#ff0000" d="M306.96,-543.73C337.8,-552.28 379.69,-563.7 416.79,-573.13 429.68,-576.41 443.66,-579.81 456.62,-582.89"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="455.69,-586.27 466.22,-585.16 457.29,-579.45 455.69,-586.27"/>
+</g>
+<!-- dep -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_node15" class="node">
+<title>dep</title>
+<polygon fill="#777777" stroke="#777777" points="533.18,-564.27 479.18,-564.27 479.18,-540 533.18,-540 533.18,-564.27"/>
+<text xml:space="preserve" text-anchor="middle" x="506.18" y="-548.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">dep</text>
+</g>
+<!-- proc~compute_watch_files_from_settings&#45;&gt;dep -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge13" class="edge">
+<title>proc~compute_watch_files_from_settings&#45;&gt;dep</title>
+<path fill="none" stroke="#ff0000" d="M360.93,-539.68C398.43,-542.92 438.92,-546.41 467.43,-548.87"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="467.09,-552.36 477.36,-549.73 467.7,-545.38 467.09,-552.36"/>
+</g>
+<!-- get_package_data -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_node17" class="node">
+<title>get_package_data</title>
+<polygon fill="#777777" stroke="#777777" points="560.69,-522.27 451.67,-522.27 451.67,-498 560.69,-498 560.69,-522.27"/>
+<text xml:space="preserve" text-anchor="middle" x="506.18" y="-506.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">get_package_data</text>
+</g>
+<!-- proc~compute_watch_files_from_settings&#45;&gt;get_package_data -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge14" class="edge">
+<title>proc~compute_watch_files_from_settings&#45;&gt;get_package_data</title>
+<path fill="none" stroke="#ff0000" d="M360.93,-522.59C387.6,-520.29 415.78,-517.86 440.09,-515.76"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="440.16,-519.26 449.82,-514.92 439.55,-512.29 440.16,-519.26"/>
+</g>
+<!-- is_executable_target -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_node18" class="node">
+<title>is_executable_target</title>
+<polygon fill="#777777" stroke="#777777" points="757.46,-644.27 636.44,-644.27 636.44,-620 757.46,-620 757.46,-644.27"/>
+<text xml:space="preserve" text-anchor="middle" x="696.95" y="-628.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">is_executable_target</text>
+</g>
+<!-- proc~compute_watch_files_from_settings&#45;&gt;is_executable_target -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge15" class="edge">
+<title>proc~compute_watch_files_from_settings&#45;&gt;is_executable_target</title>
+<path fill="none" stroke="#ff0000" d="M279.04,-543.65C306.42,-563.03 362.72,-599.64 416.79,-615.13 485.46,-634.81 567.39,-637.49 624.67,-636.2"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="624.73,-639.7 634.63,-635.93 624.54,-632.71 624.73,-639.7"/>
+</g>
+<!-- join_path -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_node19" class="node">
+<title>join_path</title>
+<polygon fill="#777777" stroke="#777777" points="536.31,-480.27 476.04,-480.27 476.04,-456 536.31,-456 536.31,-480.27"/>
+<text xml:space="preserve" text-anchor="middle" x="506.18" y="-464.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">join_path</text>
+</g>
+<!-- proc~compute_watch_files_from_settings&#45;&gt;join_path -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge16" class="edge">
+<title>proc~compute_watch_files_from_settings&#45;&gt;join_path</title>
+<path fill="none" stroke="#ff0000" d="M306.96,-518.54C337.8,-509.99 379.69,-498.57 416.79,-489.13 432.38,-485.17 449.58,-481.03 464.63,-477.48"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="465.24,-480.93 474.18,-475.25 463.65,-474.12 465.24,-480.93"/>
+</g>
+<!-- new_dependency_tree -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_node20" class="node">
+<title>new_dependency_tree</title>
+<polygon fill="#777777" stroke="#777777" points="571.56,-438.27 440.79,-438.27 440.79,-414 571.56,-414 571.56,-438.27"/>
+<text xml:space="preserve" text-anchor="middle" x="506.18" y="-422.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">new_dependency_tree</text>
+</g>
+<!-- proc~compute_watch_files_from_settings&#45;&gt;new_dependency_tree -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge17" class="edge">
+<title>proc~compute_watch_files_from_settings&#45;&gt;new_dependency_tree</title>
+<path fill="none" stroke="#ff0000" d="M281.26,-518.52C309.76,-500.33 365.39,-466.79 416.79,-447.13 421.78,-445.23 426.99,-443.46 432.28,-441.82"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="433.12,-445.22 441.75,-439.08 431.17,-438.5 433.12,-445.22"/>
+</g>
+<!-- proc~dfs_mark_bool -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_node24" class="node">
+<title>proc~dfs_mark_bool</title>
+<g id="a_proc~~rebuild_watch_list~~CallsGraph_node24"><a xlink:href="../proc/dfs_mark_bool.html" xlink:title="dfs_mark_bool">
+<polygon fill="#d9534f" stroke="#d9534f" points="550.56,-66.27 461.79,-66.27 461.79,-42 550.56,-42 550.56,-66.27"/>
+<text xml:space="preserve" text-anchor="middle" x="506.18" y="-50.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">dfs_mark_bool</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_watch_files_from_settings&#45;&gt;proc~dfs_mark_bool -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge18" class="edge">
+<title>proc~compute_watch_files_from_settings&#45;&gt;proc~dfs_mark_bool</title>
+<path fill="none" stroke="#ff0000" d="M268.67,-518.57C288.42,-480.7 347.55,-363.95 380.79,-261.13 404.28,-188.48 368.59,-152.36 416.79,-93.14 425.73,-82.15 438.39,-74.17 451.33,-68.41"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="452.33,-71.78 460.31,-64.81 449.73,-65.28 452.33,-71.78"/>
+</g>
+<!-- proc~dfs_mark_mask -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_node25" class="node">
+<title>proc~dfs_mark_mask</title>
+<g id="a_proc~~rebuild_watch_list~~CallsGraph_node25"><a xlink:href="../proc/dfs_mark_mask.html" xlink:title="dfs_mark_mask">
+<polygon fill="#d9534f" stroke="#d9534f" points="553.19,-252.27 459.17,-252.27 459.17,-228 553.19,-228 553.19,-252.27"/>
+<text xml:space="preserve" text-anchor="middle" x="506.18" y="-236.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">dfs_mark_mask</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_watch_files_from_settings&#45;&gt;proc~dfs_mark_mask -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge19" class="edge">
+<title>proc~compute_watch_files_from_settings&#45;&gt;proc~dfs_mark_mask</title>
+<path fill="none" stroke="#ff0000" d="M266.58,-518.57C281.73,-478.35 334.22,-351.23 416.79,-279.13 427.15,-270.09 439.95,-262.83 452.56,-257.15"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="453.79,-260.43 461.65,-253.33 451.07,-253.98 453.79,-260.43"/>
+</g>
+<!-- proc~filter_watch_files -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_node28" class="node">
+<title>proc~filter_watch_files</title>
+<g id="a_proc~~rebuild_watch_list~~CallsGraph_node28"><a xlink:href="../proc/filter_watch_files.html" xlink:title="filter_watch_files">
+<polygon fill="#d9534f" stroke="#d9534f" points="556.19,-728.27 456.17,-728.27 456.17,-704 556.19,-704 556.19,-728.27"/>
+<text xml:space="preserve" text-anchor="middle" x="506.18" y="-712.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">filter_watch_files</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_watch_files_from_settings&#45;&gt;proc~filter_watch_files -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge20" class="edge">
+<title>proc~compute_watch_files_from_settings&#45;&gt;proc~filter_watch_files</title>
+<path fill="none" stroke="#ff0000" d="M270.03,-543.74C290.42,-574.77 347.64,-655.19 416.79,-695.13 425.42,-700.12 435.18,-703.93 444.98,-706.83"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="443.98,-710.18 454.55,-709.35 445.77,-703.42 443.98,-710.18"/>
+</g>
+<!-- proc~gather_files_with_mask -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_node31" class="node">
+<title>proc~gather_files_with_mask</title>
+<g id="a_proc~~rebuild_watch_list~~CallsGraph_node31"><a xlink:href="../proc/gather_files_with_mask.html" xlink:title="gather_files_with_mask">
+<polygon fill="#d9534f" stroke="#d9534f" points="573.44,-354.27 438.92,-354.27 438.92,-330 573.44,-330 573.44,-354.27"/>
+<text xml:space="preserve" text-anchor="middle" x="506.18" y="-338.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">gather_files_with_mask</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_watch_files_from_settings&#45;&gt;proc~gather_files_with_mask -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge22" class="edge">
+<title>proc~compute_watch_files_from_settings&#45;&gt;proc~gather_files_with_mask</title>
+<path fill="none" stroke="#ff0000" d="M269.66,-518.68C289.6,-487.24 346.64,-404.22 416.79,-363.13 420.4,-361.02 424.22,-359.11 428.16,-357.4"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="429.32,-360.71 437.39,-353.85 426.8,-354.17 429.32,-360.71"/>
+</g>
+<!-- proc~is_run_or_test -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_node32" class="node">
+<title>proc~is_run_or_test</title>
+<g id="a_proc~~rebuild_watch_list~~CallsGraph_node32"><a xlink:href="../proc/is_run_or_test.html" xlink:title="is_run_or_test">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="548.31,-210.27 464.04,-210.27 464.04,-186 548.31,-186 548.31,-210.27"/>
+<text xml:space="preserve" text-anchor="middle" x="506.18" y="-194.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">is_run_or_test</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_watch_files_from_settings&#45;&gt;proc~is_run_or_test -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge23" class="edge">
+<title>proc~compute_watch_files_from_settings&#45;&gt;proc~is_run_or_test</title>
+<path fill="none" stroke="#ff0000" d="M266.58,-518.66C286.1,-465.78 364.14,-261 416.79,-219.13 427.01,-211.01 439.85,-205.95 452.56,-202.81"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="453.06,-206.28 462.15,-200.83 451.64,-199.43 453.06,-206.28"/>
+</g>
+<!-- proc~normalize_path -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_node33" class="node">
+<title>proc~normalize_path</title>
+<g id="a_proc~~rebuild_watch_list~~CallsGraph_node33"><a xlink:href="../proc/normalize_path.html" xlink:title="normalize_path">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="1046.37,-604.27 952.35,-604.27 952.35,-580 1046.37,-580 1046.37,-604.27"/>
+<text xml:space="preserve" text-anchor="middle" x="999.36" y="-588.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">normalize_path</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_watch_files_from_settings&#45;&gt;proc~normalize_path -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge25" class="edge">
+<title>proc~compute_watch_files_from_settings&#45;&gt;proc~normalize_path</title>
+<path fill="none" stroke="#ff0000" d="M265.7,-543.66C278.46,-584.7 325.26,-715.48 416.79,-767.13 483.68,-804.89 689.28,-798.87 762.33,-775.13 858.18,-744 944.54,-654.66 980.57,-613.44"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="983.2,-615.74 987.07,-605.88 977.89,-611.18 983.2,-615.74"/>
+</g>
+<!-- proc~push_file_with_mask -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_node34" class="node">
+<title>proc~push_file_with_mask</title>
+<g id="a_proc~~rebuild_watch_list~~CallsGraph_node34"><a xlink:href="../proc/push_file_with_mask.html" xlink:title="push_file_with_mask">
+<polygon fill="#d9534f" stroke="#d9534f" points="565.94,-396.27 446.42,-396.27 446.42,-372 565.94,-372 565.94,-396.27"/>
+<text xml:space="preserve" text-anchor="middle" x="506.18" y="-380.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">push_file_with_mask</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_watch_files_from_settings&#45;&gt;proc~push_file_with_mask -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge26" class="edge">
+<title>proc~compute_watch_files_from_settings&#45;&gt;proc~push_file_with_mask</title>
+<path fill="none" stroke="#ff0000" d="M273.51,-518.57C297.53,-493.08 355.89,-435.18 416.79,-405.13 422.68,-402.23 428.99,-399.71 435.43,-397.54"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="436.37,-400.91 444.9,-394.63 434.31,-394.22 436.37,-400.91"/>
+</g>
+<!-- proc~select_names_or_all -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_node35" class="node">
+<title>proc~select_names_or_all</title>
+<g id="a_proc~~rebuild_watch_list~~CallsGraph_node35"><a xlink:href="../proc/select_names_or_all.html" xlink:title="select_names_or_all">
+<polygon fill="#d9534f" stroke="#d9534f" points="565.56,-686.27 446.79,-686.27 446.79,-662 565.56,-662 565.56,-686.27"/>
+<text xml:space="preserve" text-anchor="middle" x="506.18" y="-670.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">select_names_or_all</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_watch_files_from_settings&#45;&gt;proc~select_names_or_all -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge27" class="edge">
+<title>proc~compute_watch_files_from_settings&#45;&gt;proc~select_names_or_all</title>
+<path fill="none" stroke="#ff0000" d="M274.99,-543.59C300.25,-567.24 358.74,-618.88 416.79,-648.13 424.24,-651.89 432.32,-655.19 440.47,-658.07"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="439.14,-661.32 449.73,-661.14 441.34,-654.67 439.14,-661.32"/>
+</g>
+<!-- proc~trim_or_empty -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_node37" class="node">
+<title>proc~trim_or_empty</title>
+<g id="a_proc~~rebuild_watch_list~~CallsGraph_node37"><a xlink:href="../proc/trim_or_empty.html" xlink:title="trim_or_empty">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="550.56,-168.27 461.79,-168.27 461.79,-144 550.56,-144 550.56,-168.27"/>
+<text xml:space="preserve" text-anchor="middle" x="506.18" y="-152.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">trim_or_empty</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_watch_files_from_settings&#45;&gt;proc~trim_or_empty -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge28" class="edge">
+<title>proc~compute_watch_files_from_settings&#45;&gt;proc~trim_or_empty</title>
+<path fill="none" stroke="#ff0000" d="M267.64,-518.5C284.73,-479.96 337.65,-360.48 380.79,-261.13 396.97,-223.88 385.71,-203.29 416.79,-177.13 426.31,-169.13 438.35,-164.06 450.45,-160.88"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="451.02,-164.34 460.04,-158.79 449.52,-157.5 451.02,-164.34"/>
+</g>
+<!-- targets_from_sources -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_node38" class="node">
+<title>targets_from_sources</title>
+<polygon fill="#777777" stroke="#777777" points="568.56,-126.27 443.79,-126.27 443.79,-102 568.56,-102 568.56,-126.27"/>
+<text xml:space="preserve" text-anchor="middle" x="506.18" y="-110.54" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">targets_from_sources</text>
+</g>
+<!-- proc~compute_watch_files_from_settings&#45;&gt;targets_from_sources -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge30" class="edge">
+<title>proc~compute_watch_files_from_settings&#45;&gt;targets_from_sources</title>
+<path fill="none" stroke="#ff0000" d="M268.22,-518.73C286.95,-480.84 344.02,-363.01 380.79,-261.13 400.56,-206.35 374.69,-175.38 416.79,-135.13 421.54,-130.6 427.08,-126.98 433.03,-124.1"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="434,-127.49 441.96,-120.5 431.38,-121 434,-127.49"/>
+</g>
+<!-- proc~file_fingerprint -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_node27" class="node">
+<title>proc~file_fingerprint</title>
+<g id="a_proc~~rebuild_watch_list~~CallsGraph_node27"><a xlink:href="../proc/file_fingerprint.html" xlink:title="file_fingerprint">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="550.94,-846.27 461.42,-846.27 461.42,-822 550.94,-822 550.94,-846.27"/>
+<text xml:space="preserve" text-anchor="middle" x="506.18" y="-830.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">file_fingerprint</text>
+</a>
+</g>
+</g>
+<!-- proc~init_fingerprints&#45;&gt;proc~file_fingerprint -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge31" class="edge">
+<title>proc~init_fingerprints&#45;&gt;proc~file_fingerprint</title>
+<path fill="none" stroke="#aaff00" d="M308.91,-849.47C349.24,-846.32 407.46,-841.77 450.02,-838.45"/>
+<polygon fill="#aaff00" stroke="#aaff00" points="450.1,-841.95 459.79,-837.68 449.55,-834.97 450.1,-841.95"/>
+</g>
+<!-- colorize -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_node14" class="node">
+<title>colorize</title>
+<polygon fill="#777777" stroke="#777777" points="723.95,-1169.27 669.95,-1169.27 669.95,-1145 723.95,-1145 723.95,-1169.27"/>
+<text xml:space="preserve" text-anchor="middle" x="696.95" y="-1153.54" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">colorize</text>
+</g>
+<!-- proc~log_info&#45;&gt;colorize -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge32" class="edge">
+<title>proc~log_info&#45;&gt;colorize</title>
+<path fill="none" stroke="#00ff00" d="M533.53,-1032.33C552.72,-1033.8 578.27,-1038.65 595.56,-1053.13 626.38,-1078.96 601.82,-1109.07 631.56,-1136.13 639.14,-1143.04 649.03,-1147.67 658.77,-1150.78"/>
+<polygon fill="#00ff00" stroke="#00ff00" points="657.55,-1154.08 668.11,-1153.3 659.36,-1147.32 657.55,-1154.08"/>
+</g>
+<!-- proc~manifest_key_from_files&#45;&gt;basename -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge33" class="edge">
+<title>proc~manifest_key_from_files&#45;&gt;basename</title>
+<path fill="none" stroke="#00ffa9" d="M331.04,-920.86C414.9,-906.35 550.77,-880.05 595.56,-855.13 631.29,-835.26 662.75,-798.91 680.54,-775.67"/>
+<polygon fill="#00ffa9" stroke="#00ffa9" points="683.23,-777.92 686.4,-767.81 677.62,-773.74 683.23,-777.92"/>
+</g>
+<!-- features -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_node16" class="node">
+<title>features</title>
+<polygon fill="#777777" stroke="#777777" points="533.69,-1002.27 478.67,-1002.27 478.67,-978 533.69,-978 533.69,-1002.27"/>
+<text xml:space="preserve" text-anchor="middle" x="506.18" y="-986.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">features</text>
+</g>
+<!-- proc~manifest_key_from_files&#45;&gt;features -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge34" class="edge">
+<title>proc~manifest_key_from_files&#45;&gt;features</title>
+<path fill="none" stroke="#00ffa9" d="M314.79,-944.72C360.78,-955.69 426.36,-971.33 467.31,-981.1"/>
+<polygon fill="#00ffa9" stroke="#00ffa9" points="466.41,-984.49 476.95,-983.4 468.03,-977.68 466.41,-984.49"/>
+</g>
+<!-- proc~manifest_key_from_files&#45;&gt;proc~file_fingerprint -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge35" class="edge">
+<title>proc~manifest_key_from_files&#45;&gt;proc~file_fingerprint</title>
+<path fill="none" stroke="#00ffa9" d="M286.2,-919.51C316.25,-904.14 369.38,-878.02 416.79,-860.13 427.45,-856.11 439.03,-852.31 450.18,-848.93"/>
+<polygon fill="#00ffa9" stroke="#00ffa9" points="451.09,-852.31 459.69,-846.12 449.11,-845.6 451.09,-852.31"/>
+</g>
+<!-- proc~fnv1a_mix_i64 -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_node29" class="node">
+<title>proc~fnv1a_mix_i64</title>
+<g id="a_proc~~rebuild_watch_list~~CallsGraph_node29"><a xlink:href="../proc/fnv1a_mix_i64.html" xlink:title="fnv1a_mix_i64">
+<polygon fill="#d9534f" stroke="#d9534f" points="889.73,-922.27 801.71,-922.27 801.71,-898 889.73,-898 889.73,-922.27"/>
+<text xml:space="preserve" text-anchor="middle" x="845.72" y="-906.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">fnv1a_mix_i64</text>
+</a>
+</g>
+</g>
+<!-- proc~manifest_key_from_files&#45;&gt;proc~fnv1a_mix_i64 -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge36" class="edge">
+<title>proc~manifest_key_from_files&#45;&gt;proc~fnv1a_mix_i64</title>
+<path fill="none" stroke="#00ffa9" d="M330.98,-932.68C357.77,-932.86 388.71,-933.04 416.79,-933.13 570.37,-933.63 610.07,-951.16 762.33,-931.13 772.11,-929.85 782.4,-927.8 792.27,-925.48"/>
+<polygon fill="#00ffa9" stroke="#00ffa9" points="792.85,-928.94 801.71,-923.13 791.16,-922.15 792.85,-928.94"/>
+</g>
+<!-- proc~fnv1a_mix_str -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_node30" class="node">
+<title>proc~fnv1a_mix_str</title>
+<g id="a_proc~~rebuild_watch_list~~CallsGraph_node30"><a xlink:href="../proc/fnv1a_mix_str.html" xlink:title="fnv1a_mix_str">
+<polygon fill="#d9534f" stroke="#d9534f" points="739.46,-922.27 654.44,-922.27 654.44,-898 739.46,-898 739.46,-922.27"/>
+<text xml:space="preserve" text-anchor="middle" x="696.95" y="-906.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">fnv1a_mix_str</text>
+</a>
+</g>
+</g>
+<!-- proc~manifest_key_from_files&#45;&gt;proc~fnv1a_mix_str -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge37" class="edge">
+<title>proc~manifest_key_from_files&#45;&gt;proc~fnv1a_mix_str</title>
+<path fill="none" stroke="#00ffa9" d="M330.79,-928.65C417.45,-924.25 564.55,-916.8 642.99,-912.82"/>
+<polygon fill="#00ffa9" stroke="#00ffa9" points="642.73,-916.34 652.54,-912.34 642.37,-909.35 642.73,-916.34"/>
+</g>
+<!-- proc~feat_list_noop -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_node26" class="node">
+<title>proc~feat_list_noop</title>
+<g id="a_proc~~rebuild_watch_list~~CallsGraph_node26"><a xlink:href="../proc/feat_list_noop.html" xlink:title="watch_feature_t%feat_list_noop">
+<polygon fill="#d9534f" stroke="#d9534f" points="595.56,-24.27 416.79,-24.27 416.79,0 595.56,0 595.56,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="506.18" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">watch_feature_t%feat_list_noop</text>
+</a>
+</g>
+</g>
+<!-- proc~on_watch_list_built_all&#45;&gt;proc~feat_list_noop -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge38" class="edge">
+<title>proc~on_watch_list_built_all&#45;&gt;proc~feat_list_noop</title>
+<path fill="none" stroke="#00a9ff" d="M267.48,-227.76C284.09,-191.52 337.84,-84.98 416.79,-33.13 418.67,-31.9 420.61,-30.74 422.61,-29.65"/>
+<polygon fill="#00a9ff" stroke="#00a9ff" points="424.06,-32.83 431.59,-25.38 421.05,-26.51 424.06,-32.83"/>
+</g>
+<!-- proc~print_banner&#45;&gt;proc~ftoa -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge43" class="edge">
+<title>proc~print_banner&#45;&gt;proc~ftoa</title>
+<path fill="none" stroke="#0000ff" d="M281.81,-1163.72C310.54,-1146.17 365.94,-1114.14 416.79,-1095.13 433.08,-1089.05 451.73,-1084.31 467.68,-1080.89"/>
+<polygon fill="#0000ff" stroke="#0000ff" points="468.17,-1084.36 477.27,-1078.93 466.77,-1077.5 468.17,-1084.36"/>
+</g>
+<!-- proc~print_banner&#45;&gt;str -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge45" class="edge">
+<title>proc~print_banner&#45;&gt;str</title>
+<path fill="none" stroke="#0000ff" d="M301.17,-1188.05C326.23,-1197.22 358.18,-1211.95 380.79,-1233.13 404.6,-1255.45 390.73,-1277.49 416.79,-1297.13 431.32,-1308.09 450.71,-1313.43 467.62,-1316"/>
+<polygon fill="#0000ff" stroke="#0000ff" points="466.99,-1319.45 477.34,-1317.19 467.84,-1312.5 466.99,-1319.45"/>
+</g>
+<!-- proc~print_banner&#45;&gt;colorize -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge39" class="edge">
+<title>proc~print_banner&#45;&gt;colorize</title>
+<path fill="none" stroke="#0000ff" d="M301.3,-1174.42C384.23,-1170.78 576.28,-1162.37 658.02,-1158.8"/>
+<polygon fill="#0000ff" stroke="#0000ff" points="658.13,-1162.29 667.96,-1158.36 657.82,-1155.3 658.13,-1162.29"/>
+</g>
+<!-- proc~active_features -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_node21" class="node">
+<title>proc~active_features</title>
+<g id="a_proc~~rebuild_watch_list~~CallsGraph_node21"><a xlink:href="../proc/active_features.html" xlink:title="active_features">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="552.44,-1128.27 459.92,-1128.27 459.92,-1104 552.44,-1104 552.44,-1128.27"/>
+<text xml:space="preserve" text-anchor="middle" x="506.18" y="-1112.54" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">active_features</text>
+</a>
+</g>
+</g>
+<!-- proc~print_banner&#45;&gt;proc~active_features -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge40" class="edge">
+<title>proc~print_banner&#45;&gt;proc~active_features</title>
+<path fill="none" stroke="#0000ff" d="M301.37,-1166.43C341.26,-1156.58 403.41,-1141.25 448.59,-1130.1"/>
+<polygon fill="#0000ff" stroke="#0000ff" points="449.35,-1133.52 458.22,-1127.72 447.67,-1126.72 449.35,-1133.52"/>
+</g>
+<!-- proc~active_profile -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_node22" class="node">
+<title>proc~active_profile</title>
+<g id="a_proc~~rebuild_watch_list~~CallsGraph_node22"><a xlink:href="../proc/active_profile.html" xlink:title="active_profile">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="547.56,-1288.27 464.79,-1288.27 464.79,-1264 547.56,-1264 547.56,-1288.27"/>
+<text xml:space="preserve" text-anchor="middle" x="506.18" y="-1272.54" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">active_profile</text>
+</a>
+</g>
+</g>
+<!-- proc~print_banner&#45;&gt;proc~active_profile -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge41" class="edge">
+<title>proc~print_banner&#45;&gt;proc~active_profile</title>
+<path fill="none" stroke="#0000ff" d="M288.3,-1188.76C331.59,-1209.56 413.52,-1248.88 416.79,-1250.13 428.57,-1254.65 441.48,-1258.85 453.7,-1262.5"/>
+<polygon fill="#0000ff" stroke="#0000ff" points="452.65,-1265.84 463.23,-1265.27 454.61,-1259.12 452.65,-1265.84"/>
+</g>
+<!-- proc~command_mode -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_node23" class="node">
+<title>proc~command_mode</title>
+<g id="a_proc~~rebuild_watch_list~~CallsGraph_node23"><a xlink:href="../proc/command_mode.html" xlink:title="command_mode">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="556.94,-1208.27 455.42,-1208.27 455.42,-1184 556.94,-1184 556.94,-1208.27"/>
+<text xml:space="preserve" text-anchor="middle" x="506.18" y="-1192.54" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">command_mode</text>
+</a>
+</g>
+</g>
+<!-- proc~print_banner&#45;&gt;proc~command_mode -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge42" class="edge">
+<title>proc~print_banner&#45;&gt;proc~command_mode</title>
+<path fill="none" stroke="#0000ff" d="M301.37,-1179.37C339.82,-1182.53 398.93,-1187.4 443.61,-1191.07"/>
+<polygon fill="#0000ff" stroke="#0000ff" points="443.17,-1194.55 453.42,-1191.88 443.74,-1187.57 443.17,-1194.55"/>
+</g>
+<!-- proc~trim_or_default -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_node36" class="node">
+<title>proc~trim_or_default</title>
+<g id="a_proc~~rebuild_watch_list~~CallsGraph_node36"><a xlink:href="../proc/trim_or_default.html" xlink:title="trim_or_default">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="743.21,-1268.27 650.69,-1268.27 650.69,-1244 743.21,-1244 743.21,-1268.27"/>
+<text xml:space="preserve" text-anchor="middle" x="696.95" y="-1252.54" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">trim_or_default</text>
+</a>
+</g>
+</g>
+<!-- proc~print_banner&#45;&gt;proc~trim_or_default -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge44" class="edge">
+<title>proc~print_banner&#45;&gt;proc~trim_or_default</title>
+<path fill="none" stroke="#0000ff" d="M301.16,-1187.9C332.27,-1196.91 377.01,-1209.12 416.79,-1217.13 493.08,-1232.51 582.32,-1243.84 638.98,-1250.21"/>
+<polygon fill="#0000ff" stroke="#0000ff" points="638.38,-1253.66 648.71,-1251.29 639.15,-1246.7 638.38,-1253.66"/>
+</g>
+<!-- proc~print_file_list&#45;&gt;str -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge47" class="edge">
+<title>proc~print_file_list&#45;&gt;str</title>
+<path fill="none" stroke="#aa00ff" d="M300.56,-1318.13C346.28,-1318.13 422.04,-1318.13 467.42,-1318.13"/>
+<polygon fill="#aa00ff" stroke="#aa00ff" points="467.3,-1321.64 477.3,-1318.14 467.3,-1314.64 467.3,-1321.64"/>
+</g>
+<!-- proc~print_file_list&#45;&gt;colorize -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge46" class="edge">
+<title>proc~print_file_list&#45;&gt;colorize</title>
+<path fill="none" stroke="#aa00ff" d="M290.28,-1330.75C352.14,-1356.27 501.51,-1406.11 595.56,-1339.13 635.4,-1310.76 607.61,-1277.78 631.56,-1235.13 643.56,-1213.76 661.62,-1192.5 675.56,-1177.59"/>
+<polygon fill="#aa00ff" stroke="#aa00ff" points="677.78,-1180.33 682.17,-1170.68 672.73,-1175.49 677.78,-1180.33"/>
+</g>
+<!-- proc~join_csv -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_node44" class="node">
+<title>proc~join_csv</title>
+<g id="a_proc~~rebuild_watch_list~~CallsGraph_node44"><a xlink:href="../proc/join_csv.html" xlink:title="join_csv">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="723.95,-1127.27 669.95,-1127.27 669.95,-1103 723.95,-1103 723.95,-1127.27"/>
+<text xml:space="preserve" text-anchor="middle" x="696.95" y="-1111.54" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">join_csv</text>
+</a>
+</g>
+</g>
+<!-- proc~active_features&#45;&gt;proc~join_csv -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge48" class="edge">
+<title>proc~active_features&#45;&gt;proc~join_csv</title>
+<path fill="none" stroke="#00ff24" d="M552.87,-1115.89C585.14,-1115.72 627.87,-1115.5 658.2,-1115.33"/>
+<polygon fill="#00ff24" stroke="#00ff24" points="658.08,-1118.84 668.06,-1115.28 658.04,-1111.84 658.08,-1118.84"/>
+</g>
+<!-- proc~active_profile&#45;&gt;proc~trim_or_default -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge49" class="edge">
+<title>proc~active_profile&#45;&gt;proc~trim_or_default</title>
+<path fill="none" stroke="#00ff5b" d="M547.67,-1271.84C574.26,-1269.03 609.43,-1265.3 638.84,-1262.19"/>
+<polygon fill="#00ff5b" stroke="#00ff5b" points="639.13,-1265.67 648.71,-1261.14 638.4,-1258.71 639.13,-1265.67"/>
+</g>
+<!-- proc~dfs_mark_bool&#45;&gt;proc~dfs_mark_bool -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge51" class="edge">
+<title>proc~dfs_mark_bool&#45;&gt;proc~dfs_mark_bool</title>
+<path fill="none" stroke="#00ffc8" d="M474.26,-66.52C463.86,-75.41 474.5,-84.27 506.18,-84.27 523.49,-84.27 534.53,-81.62 539.27,-77.76"/>
+<polygon fill="#00ffc8" stroke="#00ffc8" points="542.77,-77.61 538.25,-68.02 535.81,-78.33 542.77,-77.61"/>
+</g>
+<!-- dependencies -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_node39" class="node">
+<title>dependencies</title>
+<polygon fill="#777777" stroke="#777777" points="740.21,-102.27 653.69,-102.27 653.69,-78 740.21,-78 740.21,-102.27"/>
+<text xml:space="preserve" text-anchor="middle" x="696.95" y="-86.54" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">dependencies</text>
+</g>
+<!-- proc~dfs_mark_bool&#45;&gt;dependencies -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge50" class="edge">
+<title>proc~dfs_mark_bool&#45;&gt;dependencies</title>
+<path fill="none" stroke="#00ffc8" d="M550.96,-62.48C578.17,-67.67 613.35,-74.38 642.24,-79.89"/>
+<polygon fill="#00ffc8" stroke="#00ffc8" points="641.41,-83.3 651.89,-81.73 642.72,-76.42 641.41,-83.3"/>
+</g>
+<!-- proc~find_ptr_index -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_node42" class="node">
+<title>proc~find_ptr_index</title>
+<g id="a_proc~~rebuild_watch_list~~CallsGraph_node42"><a xlink:href="../proc/find_ptr_index.html" xlink:title="find_ptr_index">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="739.83,-180.27 654.06,-180.27 654.06,-156 739.83,-156 739.83,-180.27"/>
+<text xml:space="preserve" text-anchor="middle" x="696.95" y="-164.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">find_ptr_index</text>
+</a>
+</g>
+</g>
+<!-- proc~dfs_mark_bool&#45;&gt;proc~find_ptr_index -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge52" class="edge">
+<title>proc~dfs_mark_bool&#45;&gt;proc~find_ptr_index</title>
+<path fill="none" stroke="#00ffc8" d="M540.37,-66.69C557.33,-73.63 578.04,-82.9 595.56,-93.14 623.49,-109.45 652.84,-132.11 672.53,-148.24"/>
+<polygon fill="#00ffc8" stroke="#00ffc8" points="670.28,-150.92 680.21,-154.61 674.75,-145.54 670.28,-150.92"/>
+</g>
+<!-- proc~dfs_mark_mask&#45;&gt;proc~dfs_mark_mask -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge54" class="edge">
+<title>proc~dfs_mark_mask&#45;&gt;proc~dfs_mark_mask</title>
+<path fill="none" stroke="#00ffff" d="M474.26,-252.52C463.86,-261.41 474.5,-270.27 506.18,-270.27 523.49,-270.27 534.53,-267.62 539.27,-263.76"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="542.77,-263.61 538.25,-254.02 535.81,-264.33 542.77,-263.61"/>
+</g>
+<!-- proc~dfs_mark_mask&#45;&gt;dependencies -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge53" class="edge">
+<title>proc~dfs_mark_mask&#45;&gt;dependencies</title>
+<path fill="none" stroke="#00ffff" d="M553.23,-236.89C567.98,-233.95 583.57,-228.64 595.56,-219.13 623.6,-196.91 609.77,-175.51 631.56,-147.13 642.39,-133.03 657.08,-119.72 669.69,-109.51"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="671.53,-112.51 677.23,-103.59 667.2,-107.01 671.53,-112.51"/>
+</g>
+<!-- proc~dfs_mark_mask&#45;&gt;proc~find_ptr_index -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge55" class="edge">
+<title>proc~dfs_mark_mask&#45;&gt;proc~find_ptr_index</title>
+<path fill="none" stroke="#00ffff" d="M553.66,-231.26C567.35,-228.07 582.23,-224.02 595.56,-219.13 619.83,-210.23 645.81,-196.92 665.26,-186.13"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="666.76,-189.3 673.75,-181.34 663.32,-183.2 666.76,-189.3"/>
+</g>
+<!-- proc~hash_block -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_node43" class="node">
+<title>proc~hash_block</title>
+<g id="a_proc~~rebuild_watch_list~~CallsGraph_node43"><a xlink:href="../proc/hash_block.html" xlink:title="hash_block">
+<polygon fill="#d9534f" stroke="#d9534f" points="732.33,-863.27 661.56,-863.27 661.56,-839 732.33,-839 732.33,-863.27"/>
+<text xml:space="preserve" text-anchor="middle" x="696.95" y="-847.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">hash_block</text>
+</a>
+</g>
+</g>
+<!-- proc~file_fingerprint&#45;&gt;proc~hash_block -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge56" class="edge">
+<title>proc~file_fingerprint&#45;&gt;proc~hash_block</title>
+<path fill="none" stroke="#0091ff" d="M551.43,-838.12C580.97,-840.78 619.73,-844.27 649.67,-846.97"/>
+<polygon fill="#0091ff" stroke="#0091ff" points="649.3,-850.45 659.58,-847.86 649.93,-843.48 649.3,-850.45"/>
+</g>
+<!-- proc~filter_watch_files&#45;&gt;basename -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge57" class="edge">
+<title>proc~filter_watch_files&#45;&gt;basename</title>
+<path fill="none" stroke="#005bff" d="M556.28,-726.02C585.76,-731.95 622.95,-739.44 651.55,-745.2"/>
+<polygon fill="#005bff" stroke="#005bff" points="650.86,-748.63 661.35,-747.17 652.24,-741.77 650.86,-748.63"/>
+</g>
+<!-- proc~filter_watch_files&#45;&gt;proc~normalize_path -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge59" class="edge">
+<title>proc~filter_watch_files&#45;&gt;proc~normalize_path</title>
+<path fill="none" stroke="#005bff" d="M556.39,-716.84C608.36,-716.49 692.29,-712.78 762.33,-695.13 838.99,-675.82 922.36,-634.05 966.59,-610.06"/>
+<polygon fill="#005bff" stroke="#005bff" points="968.04,-613.25 975.13,-605.38 964.67,-607.12 968.04,-613.25"/>
+</g>
+<!-- glob -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_node40" class="node">
+<title>glob</title>
+<polygon fill="#777777" stroke="#777777" points="723.95,-686.27 669.95,-686.27 669.95,-662 723.95,-662 723.95,-686.27"/>
+<text xml:space="preserve" text-anchor="middle" x="696.95" y="-670.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">glob</text>
+</g>
+<!-- proc~filter_watch_files&#45;&gt;glob -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge58" class="edge">
+<title>proc~filter_watch_files&#45;&gt;glob</title>
+<path fill="none" stroke="#005bff" d="M556.28,-705.21C588.2,-698.11 629.18,-688.99 658.48,-682.47"/>
+<polygon fill="#005bff" stroke="#005bff" points="659,-685.94 668,-680.35 657.48,-679.11 659,-685.94"/>
+</g>
+<!-- proc~fnv1a_mix_str&#45;&gt;proc~fnv1a_mix_i64 -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge60" class="edge">
+<title>proc~fnv1a_mix_str&#45;&gt;proc~fnv1a_mix_i64</title>
+<path fill="none" stroke="#1200ff" d="M739.61,-910.13C755.31,-910.13 773.41,-910.13 790.11,-910.13"/>
+<polygon fill="#1200ff" stroke="#1200ff" points="789.9,-913.64 799.9,-910.14 789.9,-906.64 789.9,-913.64"/>
+</g>
+<!-- include_dependencies -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_node41" class="node">
+<title>include_dependencies</title>
+<polygon fill="#777777" stroke="#777777" points="762.33,-354.27 631.56,-354.27 631.56,-330 762.33,-330 762.33,-354.27"/>
+<text xml:space="preserve" text-anchor="middle" x="696.95" y="-338.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">include_dependencies</text>
+</g>
+<!-- proc~gather_files_with_mask&#45;&gt;include_dependencies -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge61" class="edge">
+<title>proc~gather_files_with_mask&#45;&gt;include_dependencies</title>
+<path fill="none" stroke="#4800ff" d="M573.73,-342.13C588.62,-342.13 604.52,-342.13 619.76,-342.13"/>
+<polygon fill="#4800ff" stroke="#4800ff" points="619.75,-345.64 629.75,-342.14 619.75,-338.64 619.75,-345.64"/>
+</g>
+<!-- proc~vec_push_unique -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_node45" class="node">
+<title>proc~vec_push_unique</title>
+<g id="a_proc~~rebuild_watch_list~~CallsGraph_node45"><a xlink:href="../proc/vec_push_unique.html" xlink:title="vec_push_unique">
+<polygon fill="#d9534f" stroke="#d9534f" points="748.46,-480.27 645.44,-480.27 645.44,-456 748.46,-456 748.46,-480.27"/>
+<text xml:space="preserve" text-anchor="middle" x="696.95" y="-464.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">vec_push_unique</text>
+</a>
+</g>
+</g>
+<!-- proc~gather_files_with_mask&#45;&gt;proc~vec_push_unique -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge62" class="edge">
+<title>proc~gather_files_with_mask&#45;&gt;proc~vec_push_unique</title>
+<path fill="none" stroke="#4800ff" d="M573.93,-353.58C581.48,-356.15 588.86,-359.29 595.56,-363.13 632.1,-384.08 663.68,-422.38 681.23,-446.48"/>
+<polygon fill="#4800ff" stroke="#4800ff" points="678.14,-448.18 686.78,-454.31 683.85,-444.13 678.14,-448.18"/>
+</g>
+<!-- proc~push_file_with_mask&#45;&gt;proc~vec_push_unique -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge63" class="edge">
+<title>proc~push_file_with_mask&#45;&gt;proc~vec_push_unique</title>
+<path fill="none" stroke="#ec00ff" d="M566.04,-395.27C576.07,-397.97 586.25,-401.23 595.56,-405.13 622.83,-416.57 651.12,-435.02 670.69,-449"/>
+<polygon fill="#ec00ff" stroke="#ec00ff" points="668.45,-451.7 678.59,-454.76 672.57,-446.05 668.45,-451.7"/>
+</g>
+<!-- proc~select_names_or_all&#45;&gt;basename -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge64" class="edge">
+<title>proc~select_names_or_all&#45;&gt;basename</title>
+<path fill="none" stroke="#ff00da" d="M565.95,-685.5C575.99,-688.17 586.19,-691.37 595.56,-695.13 621.75,-705.67 649.24,-722.27 668.82,-735.18"/>
+<polygon fill="#ff00da" stroke="#ff00da" points="666.78,-738.03 677.03,-740.7 670.68,-732.22 666.78,-738.03"/>
+</g>
+<!-- proc~select_names_or_all&#45;&gt;is_executable_target -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge66" class="edge">
+<title>proc~select_names_or_all&#45;&gt;is_executable_target</title>
+<path fill="none" stroke="#ff00da" d="M563.81,-661.53C584.06,-657.03 607.09,-651.9 628.19,-647.21"/>
+<polygon fill="#ff00da" stroke="#ff00da" points="628.87,-650.64 637.87,-645.06 627.35,-643.81 628.87,-650.64"/>
+</g>
+<!-- proc~select_names_or_all&#45;&gt;glob -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge65" class="edge">
+<title>proc~select_names_or_all&#45;&gt;glob</title>
+<path fill="none" stroke="#ff00da" d="M565.87,-674.13C596.09,-674.13 632.04,-674.13 658.48,-674.13"/>
+<polygon fill="#ff00da" stroke="#ff00da" points="658.39,-677.64 668.39,-674.14 658.39,-670.64 658.39,-677.64"/>
+</g>
+<!-- proc~hash_block&#45;&gt;proc~fnv1a_mix_i64 -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge67" class="edge">
+<title>proc~hash_block&#45;&gt;proc~fnv1a_mix_i64</title>
+<path fill="none" stroke="#0091ff" d="M729.07,-863.65C750.6,-872.3 779.48,-883.91 803,-893.37"/>
+<polygon fill="#0091ff" stroke="#0091ff" points="801.39,-896.49 811.98,-896.97 804,-890 801.39,-896.49"/>
+</g>
+<!-- proc~vec_push_unique&#45;&gt;proc~normalize_path -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge71" class="edge">
+<title>proc~vec_push_unique&#45;&gt;proc~normalize_path</title>
+<path fill="none" stroke="#ff00da" d="M705.46,-480.58C720.08,-503.51 754.76,-552.02 798.33,-573.13 842.81,-594.69 899.32,-598.21 940.92,-597.05"/>
+<polygon fill="#ff00da" stroke="#ff00da" points="940.87,-600.55 950.73,-596.67 940.6,-593.56 940.87,-600.55"/>
+</g>
+<!-- exists -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_node46" class="node">
+<title>exists</title>
+<polygon fill="#777777" stroke="#777777" points="872.72,-564.27 818.72,-564.27 818.72,-540 872.72,-540 872.72,-564.27"/>
+<text xml:space="preserve" text-anchor="middle" x="845.72" y="-548.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">exists</text>
+</g>
+<!-- proc~vec_push_unique&#45;&gt;exists -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge68" class="edge">
+<title>proc~vec_push_unique&#45;&gt;exists</title>
+<path fill="none" stroke="#ff00da" d="M716.37,-480.76C736.16,-494.07 768.78,-515.27 798.33,-531.13 801.52,-532.85 804.88,-534.55 808.27,-536.21"/>
+<polygon fill="#ff00da" stroke="#ff00da" points="806.5,-539.24 817.04,-540.33 809.48,-532.91 806.5,-539.24"/>
+</g>
+<!-- proc~is_ignored_path -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_node47" class="node">
+<title>proc~is_ignored_path</title>
+<g id="a_proc~~rebuild_watch_list~~CallsGraph_node47"><a xlink:href="../proc/is_ignored_path.html" xlink:title="is_ignored_path">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="893.1,-438.27 798.33,-438.27 798.33,-414 893.1,-414 893.1,-438.27"/>
+<text xml:space="preserve" text-anchor="middle" x="845.72" y="-422.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">is_ignored_path</text>
+</a>
+</g>
+</g>
+<!-- proc~vec_push_unique&#45;&gt;proc~is_ignored_path -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge69" class="edge">
+<title>proc~vec_push_unique&#45;&gt;proc~is_ignored_path</title>
+<path fill="none" stroke="#ff00da" d="M741.98,-455.53C757.07,-451.21 774.15,-446.33 789.99,-441.8"/>
+<polygon fill="#ff00da" stroke="#ff00da" points="790.6,-445.26 799.26,-439.14 788.68,-438.53 790.6,-445.26"/>
+</g>
+<!-- proc~is_in_dep_dirs -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_node48" class="node">
+<title>proc~is_in_dep_dirs</title>
+<g id="a_proc~~rebuild_watch_list~~CallsGraph_node48"><a xlink:href="../proc/is_in_dep_dirs.html" xlink:title="is_in_dep_dirs">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="888.23,-480.27 803.21,-480.27 803.21,-456 888.23,-456 888.23,-480.27"/>
+<text xml:space="preserve" text-anchor="middle" x="845.72" y="-464.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">is_in_dep_dirs</text>
+</a>
+</g>
+</g>
+<!-- proc~vec_push_unique&#45;&gt;proc~is_in_dep_dirs -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge70" class="edge">
+<title>proc~vec_push_unique&#45;&gt;proc~is_in_dep_dirs</title>
+<path fill="none" stroke="#ff00da" d="M748.87,-468.13C762.71,-468.13 777.73,-468.13 791.69,-468.13"/>
+<polygon fill="#ff00da" stroke="#ff00da" points="791.6,-471.64 801.6,-468.14 791.6,-464.64 791.6,-471.64"/>
+</g>
+<!-- proc~vec_grow -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_node49" class="node">
+<title>proc~vec_grow</title>
+<g id="a_proc~~rebuild_watch_list~~CallsGraph_node49"><a xlink:href="../proc/vec_grow.html" xlink:title="vec_grow">
+<polygon fill="#d9534f" stroke="#d9534f" points="876.23,-522.27 815.21,-522.27 815.21,-498 876.23,-498 876.23,-522.27"/>
+<text xml:space="preserve" text-anchor="middle" x="845.72" y="-506.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">vec_grow</text>
+</a>
+</g>
+</g>
+<!-- proc~vec_push_unique&#45;&gt;proc~vec_grow -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge72" class="edge">
+<title>proc~vec_push_unique&#45;&gt;proc~vec_grow</title>
+<path fill="none" stroke="#ff00da" d="M741.98,-480.74C761.74,-486.39 784.91,-493.02 804.23,-498.55"/>
+<polygon fill="#ff00da" stroke="#ff00da" points="803.08,-501.86 813.66,-501.25 805.01,-495.13 803.08,-501.86"/>
+</g>
+<!-- proc~is_ignored_path&#45;&gt;proc~normalize_path -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge74" class="edge">
+<title>proc~is_ignored_path&#45;&gt;proc~normalize_path</title>
+<path fill="none" stroke="#7fff00" d="M879.9,-438.58C884.57,-441.05 889.13,-443.9 893.1,-447.13 904.61,-456.52 957.51,-532.57 983.65,-570.62"/>
+<polygon fill="#7fff00" stroke="#7fff00" points="980.57,-572.32 989.11,-578.58 986.34,-568.36 980.57,-572.32"/>
+</g>
+<!-- proc~contains_path_fragment -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_node50" class="node">
+<title>proc~contains_path_fragment</title>
+<g id="a_proc~~rebuild_watch_list~~CallsGraph_node50"><a xlink:href="../proc/contains_path_fragment.html" xlink:title="contains_path_fragment">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="1069.62,-438.27 929.1,-438.27 929.1,-414 1069.62,-414 1069.62,-438.27"/>
+<text xml:space="preserve" text-anchor="middle" x="999.36" y="-422.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">contains_path_fragment</text>
+</a>
+</g>
+</g>
+<!-- proc~is_ignored_path&#45;&gt;proc~contains_path_fragment -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge73" class="edge">
+<title>proc~is_ignored_path&#45;&gt;proc~contains_path_fragment</title>
+<path fill="none" stroke="#7fff00" d="M893.45,-426.13C901.02,-426.13 909.05,-426.13 917.16,-426.13"/>
+<polygon fill="#7fff00" stroke="#7fff00" points="917.13,-429.64 927.13,-426.14 917.13,-422.64 917.13,-429.64"/>
+</g>
+<!-- proc~starts_with -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_node51" class="node">
+<title>proc~starts_with</title>
+<g id="a_proc~~rebuild_watch_list~~CallsGraph_node51"><a xlink:href="../proc/starts_with.html" xlink:title="starts_with">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="1033.25,-480.27 965.48,-480.27 965.48,-456 1033.25,-456 1033.25,-480.27"/>
+<text xml:space="preserve" text-anchor="middle" x="999.36" y="-464.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">starts_with</text>
+</a>
+</g>
+</g>
+<!-- proc~is_ignored_path&#45;&gt;proc~starts_with -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge75" class="edge">
+<title>proc~is_ignored_path&#45;&gt;proc~starts_with</title>
+<path fill="none" stroke="#7fff00" d="M892.21,-438.74C911.9,-444.19 934.86,-450.55 954.38,-455.95"/>
+<polygon fill="#7fff00" stroke="#7fff00" points="953.39,-459.31 963.96,-458.61 955.26,-452.57 953.39,-459.31"/>
+</g>
+<!-- proc~is_in_dep_dirs&#45;&gt;proc~normalize_path -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge76" class="edge">
+<title>proc~is_in_dep_dirs&#45;&gt;proc~normalize_path</title>
+<path fill="none" stroke="#00ffff" d="M878.46,-480.71C883.52,-483.21 888.58,-486.04 893.1,-489.13 927.79,-512.86 961.32,-548.57 980.89,-571.11"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="978,-573.12 987.16,-578.45 983.33,-568.58 978,-573.12"/>
+</g>
+<!-- proc~is_in_dep_dirs&#45;&gt;proc~starts_with -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge77" class="edge">
+<title>proc~is_in_dep_dirs&#45;&gt;proc~starts_with</title>
+<path fill="none" stroke="#00ffff" d="M888.55,-468.13C908.88,-468.13 933.3,-468.13 953.95,-468.13"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="953.79,-471.64 963.79,-468.14 953.79,-464.64 953.79,-471.64"/>
+</g>
+<!-- proc~ends_with -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_node52" class="node">
+<title>proc~ends_with</title>
+<g id="a_proc~~rebuild_watch_list~~CallsGraph_node52"><a xlink:href="../proc/ends_with.html" xlink:title="ends_with">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="1169.64,-438.27 1105.62,-438.27 1105.62,-414 1169.64,-414 1169.64,-438.27"/>
+<text xml:space="preserve" text-anchor="middle" x="1137.63" y="-422.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">ends_with</text>
+</a>
+</g>
+</g>
+<!-- proc~contains_path_fragment&#45;&gt;proc~ends_with -->
+<g id="proc~~rebuild_watch_list~~CallsGraph_edge78" class="edge">
+<title>proc~contains_path_fragment&#45;&gt;proc~ends_with</title>
+<path fill="none" stroke="#ff0000" d="M1070.09,-426.13C1078.17,-426.13 1086.22,-426.13 1093.78,-426.13"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="1093.69,-429.64 1103.69,-426.14 1093.69,-422.64 1093.69,-429.64"/>
+</g>
+</g>
+</svg>
+</div>                <script>
+                  var panprocrebuild_watch_listCallsGraph = svgPanZoom('#procrebuild_watch_listCallsGraph',
+                    {zoomEnabled: true, controlIconsEnabled: true, fit: true, center: true,}
+                  );
+                </script>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#CallsGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="CallsGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="641pt" height="28pt"
+ viewBox="0.00 0.00 641.00 28.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.873868 0.873868) rotate(0) translate(4 28.27)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-28.27 729.52,-28.27 729.52,4 -4,4"/>
+<!-- Subroutine -->
+<g id="node1" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="69.27,-24.27 0,-24.27 0,0 69.27,0 69.27,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="34.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node2" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="143.89,-24.27 87.38,-24.27 87.38,0 143.89,0 143.89,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="115.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node3" class="node">
+<title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="221.39,-24.27 161.88,-24.27 161.88,0 221.39,0 221.39,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="191.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Type Bound Procedure -->
+<g id="node4" class="node">
+<title>Type Bound Procedure</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="368.27,-24.27 239,-24.27 239,0 368.27,0 368.27,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="303.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type Bound Procedure</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node5" class="node">
+<title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="529.39,-24.27 385.88,-24.27 385.88,0 529.39,0 529.39,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="457.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node6" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="603.89,-24.27 547.38,-24.27 547.38,0 603.89,0 603.89,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="575.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node7" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="725.52,-24.27 621.75,-24.27 621.75,0 725.52,0 725.52,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="673.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.
+</p>
+ Where possible, edges connecting nodes are
+given different colours to make them easier to distinguish in
+large graphs.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+  <h3 class="card-title">Called by</h3>
+      </div>
+      <div class="card-body">
+  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: proc~~rebuild_watch_list~~CalledByGraph Pages: 1 -->
+<svg id="procrebuild_watch_listCalledByGraph" width="469pt" height="94pt"
+ viewBox="0.00 0.00 469.00 94.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~rebuild_watch_list~~CalledByGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 90.27)">
+<title>proc~~rebuild_watch_list~~CalledByGraph</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-90.27 465.31,-90.27 465.31,4 -4,4"/>
+<!-- proc~rebuild_watch_list -->
+<g id="proc~~rebuild_watch_list~~CalledByGraph_node1" class="node">
+<title>proc~rebuild_watch_list</title>
+<polygon fill="none" stroke="black" points="461.31,-66.27 356.04,-66.27 356.04,-42 461.31,-42 461.31,-66.27"/>
+<text xml:space="preserve" text-anchor="middle" x="408.67" y="-50.53" font-family="Helvetica,sans-Serif" font-size="10.50">rebuild_watch_list</text>
+</g>
+<!-- proc~handle_manifest_change -->
+<g id="proc~~rebuild_watch_list~~CalledByGraph_node2" class="node">
+<title>proc~handle_manifest_change</title>
+<g id="a_proc~~rebuild_watch_list~~CalledByGraph_node2"><a xlink:href="../proc/handle_manifest_change.html" xlink:title="handle_manifest_change">
+<polygon fill="#d9534f" stroke="#d9534f" points="320.04,-66.27 175.02,-66.27 175.02,-42 320.04,-42 320.04,-66.27"/>
+<text xml:space="preserve" text-anchor="middle" x="247.53" y="-50.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">handle_manifest_change</text>
+</a>
+</g>
+</g>
+<!-- proc~handle_manifest_change&#45;&gt;proc~rebuild_watch_list -->
+<g id="proc~~rebuild_watch_list~~CalledByGraph_edge1" class="edge">
+<title>proc~handle_manifest_change&#45;&gt;proc~rebuild_watch_list</title>
+<path fill="none" stroke="#ff0000" d="M320.19,-54.13C328.28,-54.13 336.48,-54.13 344.46,-54.13"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="344.42,-57.64 354.42,-54.14 344.42,-50.64 344.42,-57.64"/>
+</g>
+<!-- proc~watcher_init -->
+<g id="proc~~rebuild_watch_list~~CalledByGraph_node3" class="node">
+<title>proc~watcher_init</title>
+<g id="a_proc~~rebuild_watch_list~~CalledByGraph_node3"><a xlink:href="../proc/watcher_init.html" xlink:title="watcher_t%watcher_init">
+<polygon fill="#d9534f" stroke="#d9534f" points="316.29,-24.27 178.77,-24.27 178.77,0 316.29,0 316.29,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="247.53" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">watcher_t%watcher_init</text>
+</a>
+</g>
+</g>
+<!-- proc~watcher_init&#45;&gt;proc~rebuild_watch_list -->
+<g id="proc~~rebuild_watch_list~~CalledByGraph_edge2" class="edge">
+<title>proc~watcher_init&#45;&gt;proc~rebuild_watch_list</title>
+<path fill="none" stroke="#ff0000" d="M296.28,-24.74C312.96,-29.14 331.87,-34.13 349.32,-38.73"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="347.93,-41.99 358.5,-41.16 349.72,-35.22 347.93,-41.99"/>
+</g>
+<!-- proc~watcher_run -->
+<g id="proc~~rebuild_watch_list~~CalledByGraph_node4" class="node">
+<title>proc~watcher_run</title>
+<g id="a_proc~~rebuild_watch_list~~CalledByGraph_node4"><a xlink:href="../proc/watcher_run.html" xlink:title="watcher_t%watcher_run">
+<polygon fill="#d9534f" stroke="#d9534f" points="139.02,-86.27 0,-86.27 0,-62 139.02,-62 139.02,-86.27"/>
+<text xml:space="preserve" text-anchor="middle" x="69.51" y="-70.54" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">watcher_t%watcher_run</text>
+</a>
+</g>
+</g>
+<!-- proc~watcher_run&#45;&gt;proc~rebuild_watch_list -->
+<g id="proc~~rebuild_watch_list~~CalledByGraph_edge3" class="edge">
+<title>proc~watcher_run&#45;&gt;proc~rebuild_watch_list</title>
+<path fill="none" stroke="#ff0000" d="M139.34,-78.89C189.6,-81.27 259.27,-82.31 320.04,-75.14 330.76,-73.87 342.08,-71.76 352.88,-69.35"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="353.5,-72.8 362.43,-67.1 351.9,-65.99 353.5,-72.8"/>
+</g>
+<!-- proc~watcher_run&#45;&gt;proc~handle_manifest_change -->
+<g id="proc~~rebuild_watch_list~~CalledByGraph_edge4" class="edge">
+<title>proc~watcher_run&#45;&gt;proc~handle_manifest_change</title>
+<path fill="none" stroke="#ff0000" d="M139.32,-66.32C147.18,-65.42 155.26,-64.5 163.29,-63.59"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="163.53,-67.09 173.07,-62.48 162.74,-60.13 163.53,-67.09"/>
+</g>
+</g>
+</svg>
+</div>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#CalledByGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="CalledByGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="641pt" height="28pt"
+ viewBox="0.00 0.00 641.00 28.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.873868 0.873868) rotate(0) translate(4 28.27)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-28.27 729.52,-28.27 729.52,4 -4,4"/>
+<!-- Subroutine -->
+<g id="node1" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="69.27,-24.27 0,-24.27 0,0 69.27,0 69.27,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="34.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node2" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="143.89,-24.27 87.38,-24.27 87.38,0 143.89,0 143.89,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="115.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node3" class="node">
+<title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="221.39,-24.27 161.88,-24.27 161.88,0 221.39,0 221.39,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="191.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Type Bound Procedure -->
+<g id="node4" class="node">
+<title>Type Bound Procedure</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="368.27,-24.27 239,-24.27 239,0 368.27,0 368.27,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="303.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type Bound Procedure</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node5" class="node">
+<title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="529.39,-24.27 385.88,-24.27 385.88,0 529.39,0 529.39,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="457.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node6" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="603.89,-24.27 547.38,-24.27 547.38,0 603.89,0 603.89,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="575.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node7" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="725.52,-24.27 621.75,-24.27 621.75,0 725.52,0 725.52,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="673.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.
+</p>
+ Where possible, edges connecting nodes are
+given different colours to make them easier to distinguish in
+large graphs.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+
+
+    
+    
+
+    
+    
+
+
+
+    
+    <section>
+    <h2><span class="anchor" id="src"></span>Source Code</h2>
+    <div class="hl codehilite"><pre><span></span><span class="w">   </span><span class="k">subroutine </span><span class="n">rebuild_watch_list</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="n">print_header</span><span class="p">)</span>
+<span class="w">      </span><span class="k">class</span><span class="p">(</span><span class="n">watcher_t</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">self</span>
+<span class="w">      </span><span class="kt">logical</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">print_header</span>
+
+<span class="w">      </span><span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">rate</span><span class="p">,</span><span class="w"> </span><span class="n">t0</span><span class="p">,</span><span class="w"> </span><span class="n">t1</span>
+<span class="w">      </span><span class="kt">real</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">build_secs_total</span>
+<span class="w">      </span><span class="kt">real</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">secs_model</span><span class="p">,</span><span class="w"> </span><span class="n">secs_targets</span><span class="p">,</span><span class="w"> </span><span class="n">secs_watch</span>
+<span class="w">      </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">nfiles</span><span class="p">,</span><span class="w"> </span><span class="n">nroots</span>
+<span class="w">      </span><span class="kt">real</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">dummy_build</span>
+
+<span class="w">      </span><span class="k">type</span><span class="p">(</span><span class="n">string_t</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">new_files</span><span class="p">(:)</span>
+<span class="w">      </span><span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">new_mask</span><span class="p">(:)</span>
+<span class="w">      </span><span class="k">type</span><span class="p">(</span><span class="n">root_info_t</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">new_roots</span><span class="p">(:)</span>
+
+<span class="w">      </span><span class="k">call </span><span class="nb">system_clock</span><span class="p">(</span><span class="n">count_rate</span><span class="o">=</span><span class="n">rate</span><span class="p">)</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">rate</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">0_int64</span><span class="p">)</span><span class="w"> </span><span class="n">rate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1000_int64</span>
+<span class="w">      </span><span class="k">call </span><span class="nb">system_clock</span><span class="p">(</span><span class="n">t0</span><span class="p">)</span>
+
+<span class="w">      </span><span class="k">call </span><span class="n">compute_watch_files_from_settings</span><span class="p">(</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="w">         </span><span class="n">settings</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="n">self</span><span class="p">%</span><span class="n">cfg</span><span class="p">%</span><span class="n">settings</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="w">         </span><span class="n">w</span><span class="w">            </span><span class="o">=</span><span class="w"> </span><span class="n">self</span><span class="p">%</span><span class="n">cfg</span><span class="p">%</span><span class="n">w</span><span class="p">,</span><span class="w">        </span><span class="p">&amp;</span>
+<span class="w">         </span><span class="n">files</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="n">new_files</span><span class="p">,</span><span class="w">         </span><span class="p">&amp;</span>
+<span class="w">         </span><span class="n">file_mask</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="n">new_mask</span><span class="p">,</span><span class="w">          </span><span class="p">&amp;</span>
+<span class="w">         </span><span class="n">roots</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="n">new_roots</span><span class="p">,</span><span class="w">         </span><span class="p">&amp;</span>
+<span class="w">         </span><span class="n">manifest_key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">self</span><span class="p">%</span><span class="n">man_prev</span><span class="p">,</span><span class="w">     </span><span class="p">&amp;</span>
+<span class="w">         </span><span class="n">build_secs</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="n">dummy_build</span><span class="p">,</span><span class="w">       </span><span class="p">&amp;</span>
+<span class="w">         </span><span class="n">secs_model</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="n">secs_model</span><span class="p">,</span><span class="w">        </span><span class="p">&amp;</span>
+<span class="w">         </span><span class="n">secs_targets</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">secs_targets</span><span class="p">,</span><span class="w">      </span><span class="p">&amp;</span>
+<span class="w">         </span><span class="n">secs_watch</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="n">secs_watch</span><span class="w"> </span><span class="p">)</span>
+
+<span class="w">      </span><span class="k">call </span><span class="nb">move_alloc</span><span class="p">(</span><span class="n">new_files</span><span class="p">,</span><span class="w"> </span><span class="n">self</span><span class="p">%</span><span class="n">files</span><span class="p">)</span>
+<span class="w">      </span><span class="k">call </span><span class="nb">move_alloc</span><span class="p">(</span><span class="n">new_mask</span><span class="p">,</span><span class="w">  </span><span class="n">self</span><span class="p">%</span><span class="n">file_mask</span><span class="p">)</span>
+<span class="w">      </span><span class="k">call </span><span class="nb">move_alloc</span><span class="p">(</span><span class="n">new_roots</span><span class="p">,</span><span class="w"> </span><span class="n">self</span><span class="p">%</span><span class="n">roots</span><span class="p">)</span>
+
+<span class="w">      </span><span class="k">call </span><span class="n">self</span><span class="p">%</span><span class="n">fm</span><span class="p">%</span><span class="n">on_watch_list_built_all</span><span class="p">(</span><span class="n">self</span><span class="p">%</span><span class="n">files</span><span class="p">,</span><span class="w"> </span><span class="n">self</span><span class="p">%</span><span class="n">roots</span><span class="p">)</span>
+
+<span class="w">      </span><span class="n">self</span><span class="p">%</span><span class="n">man_prev</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">manifest_key_from_files</span><span class="p">(</span><span class="n">self</span><span class="p">%</span><span class="n">cfg</span><span class="p">%</span><span class="n">settings</span><span class="p">,</span><span class="w"> </span><span class="n">self</span><span class="p">%</span><span class="n">files</span><span class="p">)</span>
+
+<span class="w">      </span><span class="k">call </span><span class="n">init_fingerprints</span><span class="p">(</span><span class="n">self</span><span class="p">%</span><span class="n">files</span><span class="p">,</span><span class="w"> </span><span class="n">self</span><span class="p">%</span><span class="n">fp_prev</span><span class="p">,</span><span class="w"> </span><span class="n">self</span><span class="p">%</span><span class="n">fp_now</span><span class="p">,</span><span class="w"> </span><span class="n">self</span><span class="p">%</span><span class="n">changed_idx</span><span class="p">)</span>
+
+<span class="w">      </span><span class="k">call </span><span class="nb">system_clock</span><span class="p">(</span><span class="n">t1</span><span class="p">)</span>
+<span class="w">      </span><span class="n">build_secs_total</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">real</span><span class="p">(</span><span class="n">t1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">t0</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="kt">real</span><span class="p">(</span><span class="n">rate</span><span class="p">)</span>
+
+<span class="w">      </span><span class="n">nfiles</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">allocated</span><span class="p">(</span><span class="n">self</span><span class="p">%</span><span class="n">files</span><span class="p">))</span><span class="w"> </span><span class="n">nfiles</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">size</span><span class="p">(</span><span class="n">self</span><span class="p">%</span><span class="n">files</span><span class="p">)</span>
+
+<span class="w">      </span><span class="n">nroots</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">allocated</span><span class="p">(</span><span class="n">self</span><span class="p">%</span><span class="n">roots</span><span class="p">))</span><span class="w"> </span><span class="n">nroots</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">size</span><span class="p">(</span><span class="n">self</span><span class="p">%</span><span class="n">roots</span><span class="p">)</span>
+
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">self</span><span class="p">%</span><span class="n">cfg</span><span class="p">%</span><span class="n">w</span><span class="p">%</span><span class="n">debug</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">         call </span><span class="n">log_info</span><span class="p">(</span><span class="n">self</span><span class="p">%</span><span class="n">cfg</span><span class="p">%</span><span class="n">w</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;debug: manifest_key=&quot;</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="n">str</span><span class="p">(</span><span class="n">self</span><span class="p">%</span><span class="n">man_prev</span><span class="p">))</span>
+<span class="w">         </span><span class="k">call </span><span class="n">log_info</span><span class="p">(</span><span class="n">self</span><span class="p">%</span><span class="n">cfg</span><span class="p">%</span><span class="n">w</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;debug: roots=&quot;</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="n">str</span><span class="p">(</span><span class="n">nroots</span><span class="p">)</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="s2">&quot; files=&quot;</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="n">str</span><span class="p">(</span><span class="n">nfiles</span><span class="p">))</span>
+<span class="w">      </span><span class="k">end if</span>
+
+<span class="k">      if</span><span class="w"> </span><span class="p">(</span><span class="n">print_header</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">         call </span><span class="n">print_banner</span><span class="p">(</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="w">            </span><span class="n">full_cmdline</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">self</span><span class="p">%</span><span class="n">cfg</span><span class="p">%</span><span class="n">fpm_cmdline</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="w">            </span><span class="n">settings</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="n">self</span><span class="p">%</span><span class="n">cfg</span><span class="p">%</span><span class="n">settings</span><span class="p">,</span><span class="w">    </span><span class="p">&amp;</span>
+<span class="w">            </span><span class="n">w</span><span class="w">            </span><span class="o">=</span><span class="w"> </span><span class="n">self</span><span class="p">%</span><span class="n">cfg</span><span class="p">%</span><span class="n">w</span><span class="p">,</span><span class="w">           </span><span class="p">&amp;</span>
+<span class="w">            </span><span class="n">files</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="n">self</span><span class="p">%</span><span class="n">files</span><span class="p">,</span><span class="w">           </span><span class="p">&amp;</span>
+<span class="w">            </span><span class="n">build_secs</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="n">build_secs_total</span><span class="p">,</span><span class="w">     </span><span class="p">&amp;</span>
+<span class="w">            </span><span class="n">roots_count</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">nroots</span><span class="p">,</span><span class="w">               </span><span class="p">&amp;</span>
+<span class="w">            </span><span class="n">secs_model</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="n">secs_model</span><span class="p">,</span><span class="w">           </span><span class="p">&amp;</span>
+<span class="w">            </span><span class="n">secs_targets</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">secs_targets</span><span class="p">,</span><span class="w">         </span><span class="p">&amp;</span>
+<span class="w">            </span><span class="n">secs_watch</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="n">secs_watch</span><span class="w"> </span><span class="p">)</span>
+<span class="w">         </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">self</span><span class="p">%</span><span class="n">cfg</span><span class="p">%</span><span class="n">w</span><span class="p">%</span><span class="n">print_files_once</span><span class="p">)</span><span class="w"> </span><span class="k">call </span><span class="n">print_file_list</span><span class="p">(</span><span class="n">self</span><span class="p">%</span><span class="n">files</span><span class="p">,</span><span class="w"> </span><span class="n">self</span><span class="p">%</span><span class="n">cfg</span><span class="p">%</span><span class="n">w</span><span class="p">)</span>
+<span class="w">      </span><span class="k">else</span>
+<span class="k">         call </span><span class="n">log_info</span><span class="p">(</span><span class="n">self</span><span class="p">%</span><span class="n">cfg</span><span class="p">%</span><span class="n">w</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;watch list updated in &quot;</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="n">ftoa</span><span class="p">(</span><span class="n">build_secs_total</span><span class="p">)</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="s2">&quot;s; files=&quot;</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="n">str</span><span class="p">(</span><span class="n">nfiles</span><span class="p">))</span>
+<span class="w">         </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">self</span><span class="p">%</span><span class="n">cfg</span><span class="p">%</span><span class="n">w</span><span class="p">%</span><span class="n">verbosity</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="k">call </span><span class="n">print_file_list</span><span class="p">(</span><span class="n">self</span><span class="p">%</span><span class="n">files</span><span class="p">,</span><span class="w"> </span><span class="n">self</span><span class="p">%</span><span class="n">cfg</span><span class="p">%</span><span class="n">w</span><span class="p">)</span>
+<span class="w">      </span><span class="k">end if</span>
+<span class="k">   end subroutine </span><span class="n">rebuild_watch_list</span>
+</pre></div>
+
+    </section>
+    <br>
+    
+    </div>
+  </div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              fpm-watch
+ was developed by Seyed Ali Ghasemi<br>              &copy; 2026 <a rel="license" href="https://opensource.org/licenses/MIT">MIT</a>
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+ on 2026-02-24T23:32:32.813097+0000             </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>

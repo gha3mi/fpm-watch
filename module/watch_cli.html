@@ -1,0 +1,1253 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="Documentation for fpm-watch">
+    <meta name="author" content="Seyed Ali Ghasemi" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>watch_cli &ndash; fpm-watch</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">fpm-watch </a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/types.html">Derived Types</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <div class="row">
+    <h1>watch_cli
+      <small>Module</small>
+      
+    </h1>
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+            <li class="list-inline-item" id="meta-license"><i class="fa fa-legal"></i> <a rel="license" href="https://opensource.org/licenses/MIT">MIT</a></li>
+
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title="19.6% of total for modules and submodules.">617 statements</a>
+            </li>
+
+            <li class="list-inline-item" id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/watch_cli.f90"> Source File</a>
+            </li>
+        </ul>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+                <li class="breadcrumb-item"><a href='../sourcefile/watch_cli.f90.html'>watch_cli.f90</a></li>
+            <li class="breadcrumb-item active" aria-current="page">watch_cli</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
+  </script>
+
+  </div>
+
+  <div class="row">
+    <div class="col-md-3">
+        <div id="sidebar">
+      <h3>Contents</h3>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#funcs-0"
+         aria-expanded="false" aria-controls="funcs-0">
+         <h4 class="card-header bg-primary text-white">Functions</h4>
+      </a>
+      <div id="funcs-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../module/watch_cli.html#proc-default_build_dir">default_build_dir</a>
+            <a class="list-group-item" href="../module/watch_cli.html#proc-is_supported_subcmd">is_supported_subcmd</a>
+            <a class="list-group-item" href="../module/watch_cli.html#proc-is_watch_flag">is_watch_flag</a>
+        </div>
+      </div>
+    </div>
+
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#subs-0"
+         aria-expanded="false" aria-controls="subs-0">
+         <h4 class="card-header bg-primary text-white">Subroutines</h4>
+      </a>
+      <div id="subs-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../module/watch_cli.html#proc-parse_cli_config">parse_cli_config</a>
+            <a class="list-group-item" href="../module/watch_cli.html#proc-add_features_csv">add_features_csv</a>
+            <a class="list-group-item" href="../module/watch_cli.html#proc-apply_watch_flag">apply_watch_flag</a>
+            <a class="list-group-item" href="../module/watch_cli.html#proc-init_build_settings">init_build_settings</a>
+            <a class="list-group-item" href="../module/watch_cli.html#proc-parse_cli">parse_cli</a>
+            <a class="list-group-item" href="../module/watch_cli.html#proc-set_names">set_names</a>
+            <a class="list-group-item" href="../module/watch_cli.html#proc-usage_and_stop">usage_and_stop</a>
+            <a class="list-group-item" href="../module/watch_cli.html#proc-usage_and_stop_ok">usage_and_stop_ok</a>
+            <a class="list-group-item" href="../module/watch_cli.html#proc-usage_print_only">usage_print_only</a>
+        </div>
+      </div>
+    </div>
+
+  
+  
+  
+  
+  
+  
+  
+
+
+  </div>
+
+    </div>
+
+    <div class="col-md-9" id='text'>
+      <p>Command-line parsing and configuration assembly.</p>
+<p>This module:
+- Applies built-in defaults (<code>set_watch_defaults</code>),
+- Applies project-level overrides from <code>fpm.toml</code> (<code>apply_watch_from_manifest</code>),
+- Parses <code>--watch-*</code> options and <code>fpm</code> subcommand arguments,
+- Produces a <code>watch_config_t</code> that drives the watcher engine.</p>
+<p>Parsing is deliberately simple and "argv-token based": it does not implement
+a full shell parser. The <code>fpm_cmdline</code> string is built for display and for
+execution via <code>execute_command_line</code> / <code>fpm_filesystem:run</code>.</p>
+<br>          <div class="card mb-4">
+      <h3 class="card-header card-title bg-light">Uses</h3>
+      <div class="card-body">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <ul class="list-inline">
+                  <li class="list-inline-item"><a href='watch_cmdline.html'>watch_cmdline</a></li>
+                  <li class="list-inline-item">fpm_command_line</li>
+                  <li class="list-inline-item"><a href='watch_types.html'>watch_types</a></li>
+                  <li class="list-inline-item"><a href='http://fortranwiki.org/fortran/show/iso_fortran_env'>iso_fortran_env</a></li>
+                  <li class="list-inline-item"><a href='watch_config.html'>watch_config</a></li>
+                  <li class="list-inline-item">fpm_strings</li>
+                  <li class="list-inline-item">face</li>
+              </ul>
+            </li>
+            <li class="list-group-item">
+              <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: module~~watch_cli~~UsesGraph Pages: 1 -->
+<svg id="modulewatch_cliUsesGraph" width="489pt" height="398pt"
+ viewBox="0.00 0.00 489.00 398.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="module~~watch_cli~~UsesGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 394.27)">
+<title>module~~watch_cli~~UsesGraph</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-394.27 485.08,-394.27 485.08,4 -4,4"/>
+<!-- module~watch_cli -->
+<g id="module~~watch_cli~~UsesGraph_node1" class="node">
+<title>module~watch_cli</title>
+<polygon fill="none" stroke="black" points="481.08,-209.27 420.81,-209.27 420.81,-185 481.08,-185 481.08,-209.27"/>
+<text xml:space="preserve" text-anchor="middle" x="450.94" y="-193.53" font-family="Helvetica,sans-Serif" font-size="10.50">watch_cli</text>
+</g>
+<!-- face -->
+<g id="module~~watch_cli~~UsesGraph_node2" class="node">
+<title>face</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="366.3,-390.27 312.3,-390.27 312.3,-366 366.3,-366 366.3,-390.27"/>
+<text xml:space="preserve" text-anchor="middle" x="339.3" y="-374.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">face</text>
+</g>
+<!-- module~watch_cli&#45;&gt;face -->
+<g id="module~~watch_cli~~UsesGraph_edge1" class="edge">
+<title>module~watch_cli&#45;&gt;face</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M447.57,-209.42C441.59,-237.63 423.49,-308.03 384.81,-352.13 382.19,-355.12 379.15,-357.85 375.9,-360.32"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="374.06,-357.34 367.66,-365.78 377.93,-363.18 374.06,-357.34"/>
+</g>
+<!-- fpm_command_line -->
+<g id="module~~watch_cli~~UsesGraph_node3" class="node">
+<title>fpm_command_line</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="116.52,-350.27 0,-350.27 0,-326 116.52,-326 116.52,-350.27"/>
+<text xml:space="preserve" text-anchor="middle" x="58.26" y="-334.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">fpm_command_line</text>
+</g>
+<!-- module~watch_cli&#45;&gt;fpm_command_line -->
+<g id="module~~watch_cli~~UsesGraph_edge2" class="edge">
+<title>module~watch_cli&#45;&gt;fpm_command_line</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M204.15,-338.13C179.35,-336.37 152.1,-335.97 127.99,-336.14"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="128.27,-332.64 118.31,-336.25 128.34,-339.64 128.27,-332.64"/>
+</g>
+<!-- fpm_strings -->
+<g id="module~~watch_cli~~UsesGraph_node4" class="node">
+<title>fpm_strings</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="94.77,-308.27 21.75,-308.27 21.75,-284 94.77,-284 94.77,-308.27"/>
+<text xml:space="preserve" text-anchor="middle" x="58.26" y="-292.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">fpm_strings</text>
+</g>
+<!-- module~watch_cli&#45;&gt;fpm_strings -->
+<g id="module~~watch_cli~~UsesGraph_edge3" class="edge">
+<title>module~watch_cli&#45;&gt;fpm_strings</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M338.3,-338.13C283.68,-359.73 264.74,-342.3 206.15,-338.13"/>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M204.15,-338.13C185.06,-336.78 140.53,-323.28 105.83,-311.94"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="106.99,-308.64 96.4,-308.83 104.8,-315.29 106.99,-308.64"/>
+</g>
+<!-- iso_fortran_env -->
+<g id="module~~watch_cli~~UsesGraph_node5" class="node">
+<title>iso_fortran_env</title>
+<g id="a_module~~watch_cli~~UsesGraph_node5"><a xlink:href="http://fortranwiki.org/fortran/show/iso_fortran_env" xlink:title="iso_fortran_env">
+<polygon fill="#337ab7" stroke="#337ab7" points="104.89,-165.27 11.62,-165.27 11.62,-141 104.89,-141 104.89,-165.27"/>
+<text xml:space="preserve" text-anchor="middle" x="58.26" y="-149.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">iso_fortran_env</text>
+</a>
+</g>
+</g>
+<!-- module~watch_cli&#45;&gt;iso_fortran_env -->
+<g id="module~~watch_cli~~UsesGraph_edge4" class="edge">
+<title>module~watch_cli&#45;&gt;iso_fortran_env</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M436.92,-184.56C407.78,-157.39 333.86,-93.85 257.79,-71.14 212.96,-57.75 196.3,-54.63 152.52,-71.14 120.48,-83.22 92.29,-111.88 75.52,-131.89"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="72.95,-129.49 69.38,-139.47 78.39,-133.9 72.95,-129.49"/>
+</g>
+<!-- module~watch_cmdline -->
+<g id="module~~watch_cli~~UsesGraph_node6" class="node">
+<title>module~watch_cmdline</title>
+<g id="a_module~~watch_cli~~UsesGraph_node6"><a xlink:href="../module/watch_cmdline.html" xlink:title="watch_cmdline">
+<polygon fill="#337ab7" stroke="#337ab7" points="384.81,-24.27 293.79,-24.27 293.79,0 384.81,0 384.81,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="339.3" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">watch_cmdline</text>
+</a>
+</g>
+</g>
+<!-- module~watch_cli&#45;&gt;module~watch_cmdline -->
+<g id="module~~watch_cli~~UsesGraph_edge5" class="edge">
+<title>module~watch_cli&#45;&gt;module~watch_cmdline</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M447.66,-184.54C441.86,-155.6 424.14,-83.39 384.81,-38.13 382.66,-35.67 380.22,-33.37 377.61,-31.25"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="379.73,-28.46 369.53,-25.59 375.71,-34.19 379.73,-28.46"/>
+</g>
+<!-- module~watch_config -->
+<g id="module~~watch_cli~~UsesGraph_node7" class="node">
+<title>module~watch_config</title>
+<g id="a_module~~watch_cli~~UsesGraph_node7"><a xlink:href="../module/watch_config.html" xlink:title="watch_config">
+<polygon fill="#337ab7" stroke="#337ab7" points="379.93,-209.27 298.66,-209.27 298.66,-185 379.93,-185 379.93,-209.27"/>
+<text xml:space="preserve" text-anchor="middle" x="339.3" y="-193.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">watch_config</text>
+</a>
+</g>
+</g>
+<!-- module~watch_cli&#45;&gt;module~watch_config -->
+<g id="module~~watch_cli~~UsesGraph_edge6" class="edge">
+<title>module~watch_cli&#45;&gt;module~watch_config</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M420.56,-197.13C411.53,-197.13 401.31,-197.13 391.27,-197.13"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="391.59,-193.64 381.59,-197.14 391.59,-200.64 391.59,-193.64"/>
+</g>
+<!-- module~watch_types -->
+<g id="module~~watch_cli~~UsesGraph_node8" class="node">
+<title>module~watch_types</title>
+<g id="a_module~~watch_cli~~UsesGraph_node8"><a xlink:href="../module/watch_types.html" xlink:title="watch_types">
+<polygon fill="#337ab7" stroke="#337ab7" points="243.54,-310.27 166.77,-310.27 166.77,-286 243.54,-286 243.54,-310.27"/>
+<text xml:space="preserve" text-anchor="middle" x="205.15" y="-294.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">watch_types</text>
+</a>
+</g>
+</g>
+<!-- module~watch_cli&#45;&gt;module~watch_types -->
+<g id="module~~watch_cli~~UsesGraph_edge7" class="edge">
+<title>module~watch_cli&#45;&gt;module~watch_types</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M445.49,-209.35C433.82,-239.15 399.13,-314.87 340.3,-338.13"/>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M338.3,-338.13C321.08,-344.94 276.5,-328.96 243.86,-315.22"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="245.27,-312.01 234.7,-311.27 242.5,-318.44 245.27,-312.01"/>
+</g>
+<!-- fpm_environment -->
+<g id="module~~watch_cli~~UsesGraph_node9" class="node">
+<title>fpm_environment</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="257.79,-24.27 152.52,-24.27 152.52,0 257.79,0 257.79,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="205.15" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">fpm_environment</text>
+</g>
+<!-- module~watch_cmdline&#45;&gt;fpm_environment -->
+<g id="module~~watch_cli~~UsesGraph_edge8" class="edge">
+<title>module~watch_cmdline&#45;&gt;fpm_environment</title>
+<path fill="none" stroke="#0091ff" stroke-dasharray="5,2" d="M293.56,-12.13C285.83,-12.13 277.65,-12.13 269.54,-12.13"/>
+<polygon fill="#0091ff" stroke="#0091ff" points="269.66,-8.64 259.66,-12.14 269.66,-15.64 269.66,-8.64"/>
+</g>
+<!-- module~watch_config&#45;&gt;fpm_strings -->
+<g id="module~~watch_cli~~UsesGraph_edge11" class="edge">
+<title>module~watch_config&#45;&gt;fpm_strings</title>
+<path fill="none" stroke="#4800ff" stroke-dasharray="5,2" d="M316.99,-209.76C301.08,-218.81 278.58,-230.83 257.79,-239.13 207.26,-259.33 146.89,-275.61 106.09,-285.52"/>
+<polygon fill="#4800ff" stroke="#4800ff" points="105.51,-282.06 96.6,-287.79 107.14,-288.87 105.51,-282.06"/>
+</g>
+<!-- module~watch_config&#45;&gt;module~watch_types -->
+<g id="module~~watch_cli~~UsesGraph_edge13" class="edge">
+<title>module~watch_config&#45;&gt;module~watch_types</title>
+<path fill="none" stroke="#4800ff" stroke-dasharray="5,2" d="M326.95,-209.72C312.14,-225.64 284.91,-253.25 257.79,-272.13 253.65,-275.02 249.14,-277.77 244.57,-280.34"/>
+<polygon fill="#4800ff" stroke="#4800ff" points="243.12,-277.15 235.92,-284.92 246.4,-283.33 243.12,-277.15"/>
+</g>
+<!-- fpm_error -->
+<g id="module~~watch_cli~~UsesGraph_node10" class="node">
+<title>fpm_error</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="237.16,-230.27 173.14,-230.27 173.14,-206 237.16,-206 237.16,-230.27"/>
+<text xml:space="preserve" text-anchor="middle" x="205.15" y="-214.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">fpm_error</text>
+</g>
+<!-- module~watch_config&#45;&gt;fpm_error -->
+<g id="module~~watch_cli~~UsesGraph_edge9" class="edge">
+<title>module~watch_config&#45;&gt;fpm_error</title>
+<path fill="none" stroke="#4800ff" stroke-dasharray="5,2" d="M298.29,-203.49C282.64,-205.98 264.67,-208.84 248.78,-211.36"/>
+<polygon fill="#4800ff" stroke="#4800ff" points="248.46,-207.87 239.13,-212.89 249.56,-214.78 248.46,-207.87"/>
+</g>
+<!-- fpm_filesystem -->
+<g id="module~~watch_cli~~UsesGraph_node11" class="node">
+<title>fpm_filesystem</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="251.04,-188.27 159.27,-188.27 159.27,-164 251.04,-164 251.04,-188.27"/>
+<text xml:space="preserve" text-anchor="middle" x="205.15" y="-172.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">fpm_filesystem</text>
+</g>
+<!-- module~watch_config&#45;&gt;fpm_filesystem -->
+<g id="module~~watch_cli~~UsesGraph_edge10" class="edge">
+<title>module~watch_config&#45;&gt;fpm_filesystem</title>
+<path fill="none" stroke="#4800ff" stroke-dasharray="5,2" d="M298.29,-190.78C287.01,-188.98 274.52,-187 262.47,-185.08"/>
+<polygon fill="#4800ff" stroke="#4800ff" points="263.03,-181.63 252.6,-183.52 261.93,-188.54 263.03,-181.63"/>
+</g>
+<!-- fpm_toml -->
+<g id="module~~watch_cli~~UsesGraph_node12" class="node">
+<title>fpm_toml</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="236.04,-146.27 174.27,-146.27 174.27,-122 236.04,-122 236.04,-146.27"/>
+<text xml:space="preserve" text-anchor="middle" x="205.15" y="-130.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">fpm_toml</text>
+</g>
+<!-- module~watch_config&#45;&gt;fpm_toml -->
+<g id="module~~watch_cli~~UsesGraph_edge12" class="edge">
+<title>module~watch_config&#45;&gt;fpm_toml</title>
+<path fill="none" stroke="#4800ff" stroke-dasharray="5,2" d="M315.68,-184.6C299.7,-175.93 277.68,-164.34 257.79,-155.13 254.26,-153.5 250.56,-151.86 246.84,-150.26"/>
+<polygon fill="#4800ff" stroke="#4800ff" points="248.37,-147.1 237.79,-146.46 245.66,-153.56 248.37,-147.1"/>
+</g>
+<!-- tomlf -->
+<g id="module~~watch_cli~~UsesGraph_node13" class="node">
+<title>tomlf</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="232.15,-104.27 178.15,-104.27 178.15,-80 232.15,-80 232.15,-104.27"/>
+<text xml:space="preserve" text-anchor="middle" x="205.15" y="-88.54" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">tomlf</text>
+</g>
+<!-- module~watch_config&#45;&gt;tomlf -->
+<g id="module~~watch_cli~~UsesGraph_edge14" class="edge">
+<title>module~watch_config&#45;&gt;tomlf</title>
+<path fill="none" stroke="#4800ff" stroke-dasharray="5,2" d="M329.18,-184.72C315.45,-166.79 287.87,-133.56 257.79,-113.14 253.23,-110.04 248.13,-107.28 242.98,-104.86"/>
+<polygon fill="#4800ff" stroke="#4800ff" points="244.41,-101.66 233.84,-100.97 241.67,-108.11 244.41,-101.66"/>
+</g>
+<!-- module~watch_types&#45;&gt;fpm_command_line -->
+<g id="module~~watch_cli~~UsesGraph_edge15" class="edge">
+<title>module~watch_types&#45;&gt;fpm_command_line</title>
+<path fill="none" stroke="#ff00da" stroke-dasharray="5,2" d="M166.46,-308.54C150.99,-312.81 132.74,-317.85 115.73,-322.55"/>
+<polygon fill="#ff00da" stroke="#ff00da" points="114.93,-319.13 106.23,-325.17 116.8,-325.88 114.93,-319.13"/>
+</g>
+<!-- module~watch_types&#45;&gt;fpm_strings -->
+<g id="module~~watch_cli~~UsesGraph_edge16" class="edge">
+<title>module~watch_types&#45;&gt;fpm_strings</title>
+<path fill="none" stroke="#ff00da" stroke-dasharray="5,2" d="M166.46,-297.61C148.18,-297.36 126.04,-297.06 106.63,-296.79"/>
+<polygon fill="#ff00da" stroke="#ff00da" points="106.83,-293.29 96.78,-296.65 106.73,-300.29 106.83,-293.29"/>
+</g>
+<!-- module~watch_types&#45;&gt;iso_fortran_env -->
+<g id="module~~watch_cli~~UsesGraph_edge17" class="edge">
+<title>module~watch_types&#45;&gt;iso_fortran_env</title>
+<path fill="none" stroke="#ff00da" stroke-dasharray="5,2" d="M191.55,-285.52C166.38,-260.33 109.69,-203.61 79.34,-173.23"/>
+<polygon fill="#ff00da" stroke="#ff00da" points="82.14,-171.08 72.6,-166.48 77.19,-176.03 82.14,-171.08"/>
+</g>
+</g>
+</svg>
+</div>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#UsesGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="UsesGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="511pt" height="32pt"
+ viewBox="0.00 0.00 511.00 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 28.27)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-28.27 506.88,-28.27 506.88,4 -4,4"/>
+<!-- Module -->
+<g id="node1" class="node">
+<title>Module</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="54,-24.27 0,-24.27 0,0 54,0 54,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="27" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Module</text>
+</g>
+<!-- Submodule -->
+<g id="node2" class="node">
+<title>Submodule</title>
+<polygon fill="#5bc0de" stroke="#5bc0de" points="144.13,-24.27 71.87,-24.27 71.87,0 144.13,0 144.13,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="108" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Submodule</text>
+</g>
+<!-- Subroutine -->
+<g id="node3" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="231.63,-24.27 162.37,-24.27 162.37,0 231.63,0 231.63,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="197" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node4" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="306.26,-24.27 249.74,-24.27 249.74,0 306.26,0 306.26,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="278" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Program -->
+<g id="node5" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="381.26,-24.27 324.74,-24.27 324.74,0 381.26,0 381.26,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="353" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node6" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="502.88,-24.27 399.12,-24.27 399.12,0 502.88,0 502.88,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="451" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a submodule to the (sub)module which it is
+descended from. Dashed arrows point from a module or program unit to 
+modules which it uses.
+</p>
+ Where possible, edges connecting nodes are
+given different colours to make them easier to distinguish in
+large graphs.</div>
+            </div>
+          </div>
+        </div>
+            </li>
+        </ul>
+      </div>
+    </div>
+
+      
+      <br>
+
+
+
+
+
+
+
+        <section>
+          <h2>Functions</h2>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-default_build_dir"></span> <h3>private pure function <a href='../proc/default_build_dir.html'>default_build_dir</a>() result(dir)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Return the default build directory used by <code>fpm-watch</code>.</p>
+
+  <h4>Arguments</h4>
+    <em>None</em>
+    <h4>
+    Return Value
+    <small>character(len=:), allocatable</small>
+    </h4>
+    
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-is_supported_subcmd"></span> <h3>private pure function <a href='../proc/is_supported_subcmd.html'>is_supported_subcmd</a>(s) result(ok)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Return whether a given subcommand token is supported by <code>fpm-watch</code>.</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-s~17"></span>
+              character(len=*),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>s</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <h4>
+    Return Value
+    <small>logical</small>
+    </h4>
+    
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-is_watch_flag"></span> <h3>private pure function <a href='../proc/is_watch_flag.html'>is_watch_flag</a>(a) result(ok)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Detect whether an argv token is a watcher-specific flag.</p><a href="../proc/is_watch_flag.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-a~7"></span>
+              character(len=*),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>a</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <h4>
+    Return Value
+    <small>logical</small>
+    </h4>
+    
+
+    </div>
+  </div>
+
+        </section>
+        <br>
+
+        <section>
+          <h2>Subroutines</h2>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-parse_cli_config"></span> <h3>public  subroutine <a href='../proc/parse_cli_config.html'>parse_cli_config</a>(cfg)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Parse CLI arguments and build the full watcher configuration.</p><a href="../proc/parse_cli_config.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-cfg~2"></span>
+              type(<a href='../type/watch_config_t.html'>watch_config_t</a>),
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>cfg</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-add_features_csv"></span> <h3>private  subroutine <a href='../proc/add_features_csv.html'>add_features_csv</a>(features, csv)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Parse a comma-separated <code>--features</code> value into the features array.</p><a href="../proc/add_features_csv.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-features~3"></span>
+              type(string_t),
+            </td>
+<td>intent(inout),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>features</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-csv"></span>
+              character(len=*),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>csv</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-apply_watch_flag"></span> <h3>private  subroutine <a href='../proc/apply_watch_flag.html'>apply_watch_flag</a>(a, i, narg, w)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Apply a single <code>--watch-*</code> flag to the watcher options.</p><a href="../proc/apply_watch_flag.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-a~8"></span>
+              character(len=*),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>a</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-i~35"></span>
+              integer,
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>i</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-narg~4"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>narg</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-w~11"></span>
+              type(<a href='../type/watch_opts_t.html'>watch_opts_t</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>w</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-init_build_settings"></span> <h3>private  subroutine <a href='../proc/init_build_settings.html'>init_build_settings</a>(settings, build_dir, prune, profile, features, compiler_in, c_compiler_in, cxx_compiler_in, archiver_in, flag_in, cflag_in, cxxflag_in, ldflag_in)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Populate <code>settings</code> with parsed values and environment fallbacks.</p><a href="../proc/init_build_settings.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-settings~10"></span>
+              class(fpm_build_settings),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>settings</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-build_dir~6"></span>
+              character(len=*),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>build_dir</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-prune~3"></span>
+              logical,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>prune</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-profile~2"></span>
+              character(len=*),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>profile</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-features~2"></span>
+              type(string_t),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>features</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-compiler_in"></span>
+              character(len=*),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>compiler_in</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-c_compiler_in"></span>
+              character(len=*),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>c_compiler_in</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-cxx_compiler_in"></span>
+              character(len=*),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>cxx_compiler_in</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-archiver_in"></span>
+              character(len=*),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>archiver_in</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-flag_in"></span>
+              character(len=*),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>flag_in</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-cflag_in"></span>
+              character(len=*),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>cflag_in</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-cxxflag_in"></span>
+              character(len=*),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>cxxflag_in</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ldflag_in"></span>
+              character(len=*),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>ldflag_in</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-parse_cli"></span> <h3>private  subroutine <a href='../proc/parse_cli.html'>parse_cli</a>(w, settings, fpm_cmdline, subcmd)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Parse the complete CLI and produce watcher options + typed <code>fpm</code> settings.</p><a href="../proc/parse_cli.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-w~10"></span>
+              type(<a href='../type/watch_opts_t.html'>watch_opts_t</a>),
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>w</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-settings~9"></span>
+              class(fpm_build_settings),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>settings</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-fpm_cmdline~2"></span>
+              character(len=:),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>fpm_cmdline</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-subcmd~2"></span>
+              character(len=:),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>subcmd</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-set_names"></span> <h3>private pure subroutine <a href='../proc/set_names.html'>set_names</a>(s, names)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Transfer collected name patterns into a run/test settings object.</p><a href="../proc/set_names.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-s~23"></span>
+              class(fpm_run_settings),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>s</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-names~4"></span>
+              type(string_t),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>names</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-usage_and_stop"></span> <h3>private  subroutine <a href='../proc/usage_and_stop.html'>usage_and_stop</a>(msg)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Print a usage message and terminate with a non-zero exit status.</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-msg~5"></span>
+              character(len=*),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>msg</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-usage_and_stop_ok"></span> <h3>private  subroutine <a href='../proc/usage_and_stop_ok.html'>usage_and_stop_ok</a>()  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Print a usage message and terminate successfully.</p>
+
+  <h4>Arguments</h4>
+    <em>None</em>
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-usage_print_only"></span> <h3>private  subroutine <a href='../proc/usage_print_only.html'>usage_print_only</a>()  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Print the <code>fpm-watch</code> help text.</p><a href="../proc/usage_print_only.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+    <em>None</em>
+
+    </div>
+  </div>
+
+        </section>
+        <br>
+
+
+
+    </div>
+  </div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              fpm-watch
+ was developed by Seyed Ali Ghasemi<br>              &copy; 2026 <a rel="license" href="https://opensource.org/licenses/MIT">MIT</a>
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+ on 2026-02-24T23:32:32.813097+0000             </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>

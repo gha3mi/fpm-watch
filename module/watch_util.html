@@ -1,0 +1,980 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="Documentation for fpm-watch">
+    <meta name="author" content="Seyed Ali Ghasemi" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>watch_util &ndash; fpm-watch</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">fpm-watch </a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/types.html">Derived Types</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <div class="row">
+    <h1>watch_util
+      <small>Module</small>
+      
+    </h1>
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+            <li class="list-inline-item" id="meta-license"><i class="fa fa-legal"></i> <a rel="license" href="https://opensource.org/licenses/MIT">MIT</a></li>
+
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title=" 4.7% of total for modules and submodules.">147 statements</a>
+            </li>
+
+            <li class="list-inline-item" id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/watch_util.f90"> Source File</a>
+            </li>
+        </ul>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+                <li class="breadcrumb-item"><a href='../sourcefile/watch_util.f90.html'>watch_util.f90</a></li>
+            <li class="breadcrumb-item active" aria-current="page">watch_util</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
+  </script>
+
+  </div>
+
+  <div class="row">
+    <div class="col-md-3">
+        <div id="sidebar">
+      <h3>Contents</h3>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#types-0"
+         aria-expanded="false" aria-controls="types-0">
+         <h4 class="card-header bg-primary text-white">Derived Types</h4>
+      </a>
+      <div id="types-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../module/watch_util.html#type-string_accum_t">string_accum_t</a>
+        </div>
+      </div>
+    </div>
+
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#funcs-0"
+         aria-expanded="false" aria-controls="funcs-0">
+         <h4 class="card-header bg-primary text-white">Functions</h4>
+      </a>
+      <div id="funcs-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../module/watch_util.html#proc-ftoa">ftoa</a>
+            <a class="list-group-item" href="../module/watch_util.html#proc-join_csv">join_csv</a>
+            <a class="list-group-item" href="../module/watch_util.html#proc-trim_or_default">trim_or_default</a>
+            <a class="list-group-item" href="../module/watch_util.html#proc-trim_or_empty">trim_or_empty</a>
+        </div>
+      </div>
+    </div>
+
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#subs-0"
+         aria-expanded="false" aria-controls="subs-0">
+         <h4 class="card-header bg-primary text-white">Subroutines</h4>
+      </a>
+      <div id="subs-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../module/watch_util.html#proc-sort_unique_strings">sort_unique_strings</a>
+            <a class="list-group-item" href="../module/watch_util.html#proc-accum_push">accum_push</a>
+            <a class="list-group-item" href="../module/watch_util.html#proc-accum_to_array">accum_to_array</a>
+        </div>
+      </div>
+    </div>
+
+  
+  
+  
+  
+  
+  
+  
+
+
+  </div>
+
+    </div>
+
+    <div class="col-md-9" id='text'>
+      <p>Miscellaneous string utilities.</p>
+<p>Provides small helpers for formatting and manipulating allocatable strings
+and string arrays.</p>
+<br>          <div class="card mb-4">
+      <h3 class="card-header card-title bg-light">Uses</h3>
+      <div class="card-body">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <ul class="list-inline">
+                  <li class="list-inline-item">fpm_strings</li>
+              </ul>
+            </li>
+            <li class="list-group-item">
+              <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: module~~watch_util~~UsesGraph Pages: 1 -->
+<svg id="modulewatch_utilUsesGraph" width="182pt" height="32pt"
+ viewBox="0.00 0.00 182.00 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="module~~watch_util~~UsesGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 28.27)">
+<title>module~~watch_util~~UsesGraph</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-28.27 177.79,-28.27 177.79,4 -4,4"/>
+<!-- module~watch_util -->
+<g id="module~~watch_util~~UsesGraph_node1" class="node">
+<title>module~watch_util</title>
+<polygon fill="none" stroke="black" points="173.79,-24.27 109.02,-24.27 109.02,0 173.79,0 173.79,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="141.41" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50">watch_util</text>
+</g>
+<!-- fpm_strings -->
+<g id="module~~watch_util~~UsesGraph_node2" class="node">
+<title>fpm_strings</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="73.02,-24.27 0,-24.27 0,0 73.02,0 73.02,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="36.51" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">fpm_strings</text>
+</g>
+<!-- module~watch_util&#45;&gt;fpm_strings -->
+<g id="module~~watch_util~~UsesGraph_edge1" class="edge">
+<title>module~watch_util&#45;&gt;fpm_strings</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M108.69,-12.13C101.07,-12.13 92.76,-12.13 84.6,-12.13"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="84.76,-8.64 74.76,-12.14 84.76,-15.64 84.76,-8.64"/>
+</g>
+</g>
+</svg>
+</div>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#UsesGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="UsesGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="511pt" height="32pt"
+ viewBox="0.00 0.00 511.00 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 28.27)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-28.27 506.88,-28.27 506.88,4 -4,4"/>
+<!-- Module -->
+<g id="node1" class="node">
+<title>Module</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="54,-24.27 0,-24.27 0,0 54,0 54,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="27" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Module</text>
+</g>
+<!-- Submodule -->
+<g id="node2" class="node">
+<title>Submodule</title>
+<polygon fill="#5bc0de" stroke="#5bc0de" points="144.13,-24.27 71.87,-24.27 71.87,0 144.13,0 144.13,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="108" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Submodule</text>
+</g>
+<!-- Subroutine -->
+<g id="node3" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="231.63,-24.27 162.37,-24.27 162.37,0 231.63,0 231.63,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="197" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node4" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="306.26,-24.27 249.74,-24.27 249.74,0 306.26,0 306.26,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="278" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Program -->
+<g id="node5" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="381.26,-24.27 324.74,-24.27 324.74,0 381.26,0 381.26,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="353" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node6" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="502.88,-24.27 399.12,-24.27 399.12,0 502.88,0 502.88,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="451" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a submodule to the (sub)module which it is
+descended from. Dashed arrows point from a module or program unit to 
+modules which it uses.
+</p>
+ Where possible, edges connecting nodes are
+given different colours to make them easier to distinguish in
+large graphs.</div>
+            </div>
+          </div>
+        </div>
+            </li>
+        </ul>
+      </div>
+    </div>
+
+          <div class="card">
+      <h3 class="card-header card-title bg-light">Used by</h3>
+      <div class="card-body">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: module~~watch_util~~UsedByGraph Pages: 1 -->
+<svg id="modulewatch_utilUsedByGraph" width="336pt" height="134pt"
+ viewBox="0.00 0.00 336.00 134.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="module~~watch_util~~UsedByGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 130.42)">
+<title>module~~watch_util~~UsedByGraph</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-130.42 331.81,-130.42 331.81,4 -4,4"/>
+<!-- module~watch_util -->
+<g id="module~~watch_util~~UsedByGraph_node1" class="node">
+<title>module~watch_util</title>
+<polygon fill="none" stroke="black" points="64.77,-87.27 0,-87.27 0,-63 64.77,-63 64.77,-87.27"/>
+<text xml:space="preserve" text-anchor="middle" x="32.38" y="-71.54" font-family="Helvetica,sans-Serif" font-size="10.50">watch_util</text>
+</g>
+<!-- module~watch_banner -->
+<g id="module~~watch_util~~UsedByGraph_node2" class="node">
+<title>module~watch_banner</title>
+<g id="a_module~~watch_util~~UsedByGraph_node2"><a xlink:href="../module/watch_banner.html" xlink:title="watch_banner">
+<polygon fill="#337ab7" stroke="#337ab7" points="197.04,-108.27 110.52,-108.27 110.52,-84 197.04,-84 197.04,-108.27"/>
+<text xml:space="preserve" text-anchor="middle" x="153.78" y="-92.54" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">watch_banner</text>
+</a>
+</g>
+</g>
+<!-- module~watch_banner&#45;&gt;module~watch_util -->
+<g id="module~~watch_util~~UsedByGraph_edge1" class="edge">
+<title>module~watch_banner&#45;&gt;module~watch_util</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M110.35,-88.67C99.31,-86.73 87.4,-84.64 76.33,-82.69"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="77.11,-79.27 66.66,-80.99 75.9,-86.17 77.11,-79.27"/>
+</g>
+<!-- module~watch_engine -->
+<g id="module~~watch_util~~UsedByGraph_node3" class="node">
+<title>module~watch_engine</title>
+<g id="a_module~~watch_util~~UsedByGraph_node3"><a xlink:href="../module/watch_engine.html" xlink:title="watch_engine">
+<polygon fill="#337ab7" stroke="#337ab7" points="327.81,-87.27 242.79,-87.27 242.79,-63 327.81,-63 327.81,-87.27"/>
+<text xml:space="preserve" text-anchor="middle" x="285.3" y="-71.54" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">watch_engine</text>
+</a>
+</g>
+</g>
+<!-- module~watch_engine&#45;&gt;module~watch_util -->
+<g id="module~~watch_util~~UsedByGraph_edge2" class="edge">
+<title>module~watch_engine&#45;&gt;module~watch_util</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M267.18,-87.67C252.13,-97.86 229.19,-111.46 206.79,-117.14 161.11,-128.71 146.07,-130.1 100.77,-117.14 84.98,-112.62 69.29,-103.21 57.03,-94.44"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="59.3,-91.77 49.2,-88.56 55.1,-97.36 59.3,-91.77"/>
+</g>
+<!-- module~watch_engine&#45;&gt;module~watch_banner -->
+<g id="module~~watch_util~~UsedByGraph_edge5" class="edge">
+<title>module~watch_engine&#45;&gt;module~watch_banner</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M242.61,-81.9C231.74,-83.66 219.87,-85.58 208.47,-87.43"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="208.09,-83.95 198.78,-89 209.21,-90.86 208.09,-83.95"/>
+</g>
+<!-- module~watch_exec -->
+<g id="module~~watch_util~~UsedByGraph_node4" class="node">
+<title>module~watch_exec</title>
+<g id="a_module~~watch_util~~UsedByGraph_node4"><a xlink:href="../module/watch_exec.html" xlink:title="watch_exec">
+<polygon fill="#337ab7" stroke="#337ab7" points="190.29,-66.27 117.27,-66.27 117.27,-42 190.29,-42 190.29,-66.27"/>
+<text xml:space="preserve" text-anchor="middle" x="153.78" y="-50.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">watch_exec</text>
+</a>
+</g>
+</g>
+<!-- module~watch_engine&#45;&gt;module~watch_exec -->
+<g id="module~~watch_util~~UsedByGraph_edge6" class="edge">
+<title>module~watch_engine&#45;&gt;module~watch_exec</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M242.61,-68.37C229.68,-66.28 215.34,-63.95 202.07,-61.8"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="202.66,-58.35 192.23,-60.21 201.54,-65.26 202.66,-58.35"/>
+</g>
+<!-- module~watch_fpm_graph -->
+<g id="module~~watch_util~~UsedByGraph_node5" class="node">
+<title>module~watch_fpm_graph</title>
+<g id="a_module~~watch_util~~UsedByGraph_node5"><a xlink:href="../module/watch_fpm_graph.html" xlink:title="watch_fpm_graph">
+<polygon fill="#337ab7" stroke="#337ab7" points="206.79,-24.27 100.77,-24.27 100.77,0 206.79,0 206.79,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="153.78" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">watch_fpm_graph</text>
+</a>
+</g>
+</g>
+<!-- module~watch_engine&#45;&gt;module~watch_fpm_graph -->
+<g id="module~~watch_util~~UsedByGraph_edge7" class="edge">
+<title>module~watch_engine&#45;&gt;module~watch_fpm_graph</title>
+<path fill="none" stroke="#7f00ff" stroke-dasharray="5,2" d="M262.59,-62.52C247.23,-53.8 226.04,-42.2 206.79,-33.13 203.9,-31.77 200.9,-30.42 197.85,-29.08"/>
+<polygon fill="#7f00ff" stroke="#7f00ff" points="199.45,-25.96 188.88,-25.27 196.72,-32.4 199.45,-25.96"/>
+</g>
+<!-- module~watch_exec&#45;&gt;module~watch_util -->
+<g id="module~~watch_util~~UsedByGraph_edge3" class="edge">
+<title>module~watch_exec&#45;&gt;module~watch_util</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M116.96,-60.44C104.21,-62.68 89.72,-65.23 76.42,-67.56"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="75.86,-64.11 66.62,-69.29 77.07,-71 75.86,-64.11"/>
+</g>
+<!-- module~watch_fpm_graph&#45;&gt;module~watch_util -->
+<g id="module~~watch_util~~UsedByGraph_edge4" class="edge">
+<title>module~watch_fpm_graph&#45;&gt;module~watch_util</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M119.1,-24.74C112.92,-27.33 106.59,-30.18 100.77,-33.13 87.24,-40.02 72.87,-48.76 60.9,-56.48"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="59.18,-53.42 52.74,-61.83 63.02,-59.27 59.18,-53.42"/>
+</g>
+</g>
+</svg>
+</div>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#UsedByGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="UsedByGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="511pt" height="32pt"
+ viewBox="0.00 0.00 511.00 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 28.27)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-28.27 506.88,-28.27 506.88,4 -4,4"/>
+<!-- Module -->
+<g id="node1" class="node">
+<title>Module</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="54,-24.27 0,-24.27 0,0 54,0 54,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="27" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Module</text>
+</g>
+<!-- Submodule -->
+<g id="node2" class="node">
+<title>Submodule</title>
+<polygon fill="#5bc0de" stroke="#5bc0de" points="144.13,-24.27 71.87,-24.27 71.87,0 144.13,0 144.13,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="108" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Submodule</text>
+</g>
+<!-- Subroutine -->
+<g id="node3" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="231.63,-24.27 162.37,-24.27 162.37,0 231.63,0 231.63,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="197" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node4" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="306.26,-24.27 249.74,-24.27 249.74,0 306.26,0 306.26,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="278" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Program -->
+<g id="node5" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="381.26,-24.27 324.74,-24.27 324.74,0 381.26,0 381.26,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="353" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node6" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="502.88,-24.27 399.12,-24.27 399.12,0 502.88,0 502.88,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="451" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a submodule to the (sub)module which it is
+descended from. Dashed arrows point from a module or program unit to 
+modules which it uses.
+</p>
+ Where possible, edges connecting nodes are
+given different colours to make them easier to distinguish in
+large graphs.</div>
+            </div>
+          </div>
+        </div>
+            </li>
+        </ul>
+      </div>
+    </div>
+
+      <br>
+
+
+
+
+
+
+        <section>
+          <h2>Derived Types</h2>
+              <div class="card">
+    <div class="card-header codesum">
+      <span class="anchor" id="type-string_accum_t"></span>
+      <h3>
+        type, public&nbsp;::&nbsp;
+        <a href='../type/string_accum_t.html'>string_accum_t</a>
+        
+      </h3>
+    </div>
+    <div class="card-body">
+      <p>Simple amortized string accumulator.</p><a href="../type/string_accum_t.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+        <h4>Components</h4>
+          <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Visibility</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+<th></th><th scope="col">Initial</th>        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-a~3"></span>
+              type(string_t),
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>a</strong>(:)</td>
+                <td></td>
+                <td></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n~11"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n</strong></td>
+<td> =</td>
+                <td>0</td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+
+        <h4>Type-Bound Procedures</h4>
+        <table class="table table-striped varlist">
+          <tbody>
+              <tr>
+                <td>  procedure, public ::
+  <strong><a href='../type/string_accum_t.html#boundprocedure-push'>push</a></strong> => <a href='/home/runner/work/fpm-watch/fpm-watch/doc/proc/accum_push.html'>accum_push</a></td>
+                  <td></td>
+              </tr>
+              <tr>
+                <td>  procedure, public ::
+  <strong><a href='../type/string_accum_t.html#boundprocedure-to_array'>to_array</a></strong> => <a href='/home/runner/work/fpm-watch/fpm-watch/doc/proc/accum_to_array.html'>accum_to_array</a></td>
+                  <td></td>
+              </tr>
+          </tbody>
+        </table>
+    </div>
+  </div>
+
+        </section>
+        <br>
+
+        <section>
+          <h2>Functions</h2>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-ftoa"></span> <h3>public pure function <a href='../proc/ftoa.html'>ftoa</a>(x) result(s)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Format a real number with two decimal places.</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-x"></span>
+              real,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>x</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <h4>
+    Return Value
+    <small>character(len=:), allocatable</small>
+    </h4>
+    
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-join_csv"></span> <h3>public pure function <a href='../proc/join_csv.html'>join_csv</a>(a, empty) result(s)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Join a list of strings into a comma-separated value string.</p><a href="../proc/join_csv.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-a~4"></span>
+              type(string_t),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>a</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-empty"></span>
+              character(len=*),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>empty</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <h4>
+    Return Value
+    <small>character(len=:), allocatable</small>
+    </h4>
+    
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-trim_or_default"></span> <h3>public pure function <a href='../proc/trim_or_default.html'>trim_or_default</a>(s, default) result(r)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Trim an allocatable string or return a default if empty/unallocated.</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-s~10"></span>
+              character(len=:),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>s</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-default~2"></span>
+              character(len=*),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>default</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <h4>
+    Return Value
+    <small>character(len=:), allocatable</small>
+    </h4>
+    
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-trim_or_empty"></span> <h3>public pure function <a href='../proc/trim_or_empty.html'>trim_or_empty</a>(s) result(r)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Trim an allocatable string or return an empty string if unallocated.</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-s~11"></span>
+              character(len=:),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>s</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <h4>
+    Return Value
+    <small>character(len=:), allocatable</small>
+    </h4>
+    
+
+    </div>
+  </div>
+
+        </section>
+        <br>
+
+        <section>
+          <h2>Subroutines</h2>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-sort_unique_strings"></span> <h3>public  subroutine <a href='../proc/sort_unique_strings.html'>sort_unique_strings</a>(a)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Sort an array of strings and remove duplicates.</p><a href="../proc/sort_unique_strings.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-a~5"></span>
+              type(string_t),
+            </td>
+<td>intent(inout),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>a</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-accum_push"></span> <h3>private  subroutine <a href='../proc/accum_push.html'>accum_push</a>(self, s)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Append a string to the accumulator (grows capacity as needed).</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-self~9"></span>
+              class(<a href='../type/string_accum_t.html'>string_accum_t</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>self</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-s~13"></span>
+              character(len=*),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>s</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-accum_to_array"></span> <h3>private  subroutine <a href='../proc/accum_to_array.html'>accum_to_array</a>(self, out)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Materialize the accumulator into a right-sized array.</p><a href="../proc/accum_to_array.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-self~10"></span>
+              class(<a href='../type/string_accum_t.html'>string_accum_t</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>self</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-out~3"></span>
+              type(string_t),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>out</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+        </section>
+        <br>
+
+
+
+    </div>
+  </div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              fpm-watch
+ was developed by Seyed Ali Ghasemi<br>              &copy; 2026 <a rel="license" href="https://opensource.org/licenses/MIT">MIT</a>
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+ on 2026-02-24T23:32:32.813097+0000             </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>
