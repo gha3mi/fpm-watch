@@ -1,0 +1,40 @@
+name        = "fpm-watch"
+description = "fpm plugin for watching source files and automatically rebuilding, testing or running the project on changes"
+version     = "0.1.0"
+author      = "Seyed Ali Ghasemi"
+copyright   = "Copyright 2026, Seyed Ali Ghasemi"
+homepage    = "https://github.com/gha3mi/fpm-watch"
+license     = "MIT"
+
+[fortran]
+source-form = "free"
+
+[library]
+
+[preprocess]
+[preprocess.cpp]
+
+[dependencies]
+fpm  = { git = "https://github.com/fortran-lang/fpm", tag = "v0.13.0" }
+FACE = { git = "https://github.com/szaghi/FACE" }
+
+[extra.ford]
+project             = "fpm-watch"
+year                = "2026"
+author              = "Seyed Ali Ghasemi"
+email               = "info@gha3mi.com"
+github              = "https://github.com/gha3mi"
+license             = "MIT"
+src_dir             = ["src"]
+output_dir          = "doc"
+source              = true
+incl_src            = true
+graph               = true
+coloured_edges      = true
+search              = true
+print_creation_date = true
+sort                = "permission-alpha"
+display             = ["public", "private", "protected"]
+
+[extra.fortitude.check]
+ignore = ["S001", "C003"]

@@ -1,0 +1,75 @@
+name: Setup Fortran Conda CI/CD
+
+on:
+  push:
+    branches: [main, dev]
+    paths-ignore: ['README.md','CHANGELOG.md','VERSION','LICENSE']
+  pull_request:
+    branches: [main]
+    paths-ignore: ['README.md','CHANGELOG.md','VERSION','LICENSE']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  test_fpm:
+    if: ${{ !contains(github.event.head_commit.message, '[skip ci]') }}
+    name: ${{ matrix.os }}_${{ matrix.compiler }}_fpm
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+        - {os: ubuntu-latest,  compiler: gfortran,  compiler-version: "", extra-packages: ""}
+        - {os: ubuntu-latest,  compiler: ifx,       compiler-version: "", extra-packages: ""}
+        - {os: macos-latest,   compiler: gfortran,  compiler-version: "", extra-packages: ""}
+        - {os: windows-latest, compiler: gfortran,  compiler-version: "", extra-packages: ""}
+
+    steps:
+      - name: Setup Fortran
+        uses: gha3mi/setup-fortran-conda@latest
+        with:
+          platform: ${{ matrix.os }}
+          compiler: ${{ matrix.compiler }}
+          compiler-version: ${{ matrix.compiler-version }}
+          extra-packages: ${{ matrix.extra-packages }}
+
+      - name: fpm build (debug)
+        run: fpm build --compiler ${{ matrix.compiler }} --profile debug --verbose
+      - name: fpm build (release)
+        run: fpm build --compiler ${{ matrix.compiler }} --profile release --verbose
+
+      - name: install fpm-watch
+        run: fpm install --compiler ${{ matrix.compiler }}
+
+      - name: fpm-watch test
+        run: fpm-watch --watch-low-cpu --watch-once test
+
+  doc_ford:
+    if: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && !contains(github.event.head_commit.message, '[skip ci]') }}
+    name: Generate FORD Documentation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup and Generate FORD Documentation
+        uses: gha3mi/setup-fortran-conda@latest
+        with:
+          compiler: gfortran
+          generate-doc-ford: true
+          ford-working-directory: .
+          ford-config: README.md
+          ford-output-directory: doc
+          ford-branch: gh-pages-ford
+          ford-target-folder: .
+
+  linter_fortitude:
+    if: ${{ !contains(github.event.head_commit.message, '[skip ci]') }}
+    name: Run Fortitude Linter
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run Fortitude Linter
+        uses: gha3mi/setup-fortran-conda@latest
+        with:
+          fortitude-check: true
+          fortitude-settings: "--output-format github"
