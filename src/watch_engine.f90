@@ -102,6 +102,7 @@ contains
 
       integer(int64) :: rate, t_last_rescan, t_now
       real :: dt
+      if (self%cfg%w%once) return
 
       call system_clock(count_rate=rate)
       if (rate <= 0_int64) rate = 1000_int64

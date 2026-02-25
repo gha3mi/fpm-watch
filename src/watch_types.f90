@@ -48,6 +48,8 @@ module watch_types
       type(string_t), allocatable :: include(:)
       !! Names of optional feature plugins to enable.
       type(string_t), allocatable :: enabled_features(:)
+      !! Run once (init + optional run-on-start) and exit (CI-friendly).
+      logical :: once = .false.
    end type watch_opts_t
 
    !> Root target metadata used for change → target mapping.

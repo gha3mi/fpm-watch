@@ -414,6 +414,12 @@ contains
             i = i + 1
          end if
          w%debounce = parse_real(val, w%debounce)
+       case ("--watch-once")
+         if (len_trim(val) > 0) then
+            w%once = parse_bool(val, .true.)
+         else
+            w%once = .true.
+         end if
        case ("--watch-help")
          call usage_and_stop_ok()
        case default
@@ -560,6 +566,10 @@ contains
       write(error_unit,'(a)') "      Explicit path to fpm-watch executable (advanced)."
       write(error_unit,'(a)') ""
 
+      write(error_unit,'(a)') "  --watch-once"
+      write(error_unit,'(a)') "      Initialize (and optionally run once) then exit. Good for CI."
+      write(error_unit,'(a)') ""
+
       write(error_unit,'(a)') sec("CONFIGURATION (fpm.toml)")
       write(error_unit,'(a)') "  " // arg("[extra.fpm-watch]") // "  (same names as flags, without the --watch- prefix)"
       write(error_unit,'(a)') "  poll         = 0.5"
@@ -579,6 +589,7 @@ contains
       write(error_unit,'(a)') "  ignore       = []"
       write(error_unit,'(a)') "  include      = []"
       write(error_unit,'(a)') "  features     = []"
+      write(error_unit,'(a)') "  once         = false"
       write(error_unit,'(a)') ""
 
       write(error_unit,'(a)') sec("EXAMPLES")

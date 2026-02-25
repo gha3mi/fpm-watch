@@ -36,6 +36,7 @@ contains
       w%silent_fpm = .false.
       w%watch_deps = .false.
       w%low_cpu = .false.
+      w%once = .false.
       if (.not. allocated(w%ignore)) allocate(w%ignore(0))
       if (.not. allocated(w%include)) allocate(w%include(0))
       if (.not. allocated(w%enabled_features)) allocate(w%enabled_features(0))
@@ -79,6 +80,7 @@ contains
 
       call toml_get_logical(wt, "deps",         w%watch_deps)
       call toml_get_logical(wt, "low-cpu",      w%low_cpu)
+      call toml_get_logical(wt, "once",         w%once)
 
       call toml_get_int(wt,     "verbosity", w%verbosity)
 
