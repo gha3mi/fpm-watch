@@ -16,7 +16,7 @@ module watch_time
    !> Global mode switch that selects OS sleep vs spin sleep.
    logical, save :: low_cpu_mode = .false.
 
-#if defined(_WIN32) || defined(WIN32) || defined(__CYGWIN__) || defined(__MINGW32__) || defined(__MINGW64__)
+#if defined(_WIN32) || defined(WIN32) || defined(__MINGW32__) || defined(__MINGW64__)
    interface
       subroutine c_sleep_ms(ms) bind(C, name="Sleep")
          import c_int
@@ -90,49 +90,50 @@ contains
    !! This is intended to minimize CPU usage while waiting.
    subroutine sleep_os(s)
       real, intent(in) :: s
+#if defined(_WIN32) || defined(WIN32) || defined(__MINGW32__) || defined(__MINGW64__)
+      call sleep_os_win(s)
+#else
+      call sleep_os_posix(s)
+#endif
+   end subroutine sleep_os
 
-#if defined(_WIN32) || defined(WIN32) || defined(__CYGWIN__) || defined(__MINGW32__) || defined(__MINGW64__)
+#if defined(_WIN32) || defined(WIN32) || defined(__MINGW32__) || defined(__MINGW64__)
+   subroutine sleep_os_win(s)
+      real, intent(in) :: s
       integer(c_int) :: ms
       real :: ss
-
       ss = s
       if (ss <= 0.0) return
-
       ms = int(ss * 1000.0 + 0.5, kind=c_int)
-      if (ms <= 0_c_int) ms = 1_c_int
+      if (ms < 0_c_int) ms = 0_c_int
       call c_sleep_ms(ms)
+   end subroutine sleep_os_win
 #else
+   subroutine sleep_os_posix(s)
+      real, intent(in) :: s
       type(timespec) :: req, rem
       integer(c_int) :: rc
       real :: ss, frac
-      integer(c_long) :: sec
-      integer(c_long) :: nsec
-
+      integer(c_long) :: sec, nsec
       ss = s
       if (ss <= 0.0) return
-
-      sec = int(ss, kind=c_long)
+      sec  = int(ss, kind=c_long)
       frac = ss - real(sec)
       if (frac < 0.0) frac = 0.0
-
       nsec = int(frac * 1000000000.0, kind=c_long)
       if (nsec < 0_c_long) nsec = 0_c_long
-
       if (nsec >= 1000000000_c_long) then
          sec = sec + 1_c_long
          nsec = nsec - 1000000000_c_long
       end if
-
-      req%tv_sec = sec
+      req%tv_sec  = sec
       req%tv_nsec = nsec
-
       do
          rc = c_nanosleep(req, rem)
          if (rc == 0_c_int) exit
          req = rem
       end do
+   end subroutine sleep_os_posix
 #endif
-
-   end subroutine sleep_os
 
 end module watch_time
