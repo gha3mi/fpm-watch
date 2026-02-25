@@ -91,7 +91,7 @@ contains
    subroutine sleep_os(s)
       real, intent(in) :: s
 
-#if defined(_WIN32) || defined(WIN32) || defined(__CYGWIN__)
+#if defined(_WIN32) || defined(WIN32) || defined(__CYGWIN__) || defined(__MINGW32__) || defined(__MINGW64__)
       integer(c_int) :: ms
       real :: ss
 
