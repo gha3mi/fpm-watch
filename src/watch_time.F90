@@ -16,7 +16,7 @@ module watch_time
    !> Global mode switch that selects OS sleep vs spin sleep.
    logical, save :: low_cpu_mode = .false.
 
-#if defined(_WIN32) || defined(WIN32) || defined(__CYGWIN__)
+#if defined(_WIN32) || defined(WIN32) || defined(__CYGWIN__) || defined(__MINGW32__) || defined(__MINGW64__)
    interface
       subroutine c_sleep_ms(ms) bind(C, name="Sleep")
          import c_int

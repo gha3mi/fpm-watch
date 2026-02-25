@@ -196,20 +196,20 @@ configured command (build/test/run), and produces:
         <ul class="list-group list-group-flush">
             <li class="list-group-item">
               <ul class="list-inline">
-                  <li class="list-inline-item">fpm_model</li>
-                  <li class="list-inline-item"><a href='watch_util.html'>watch_util</a></li>
-                  <li class="list-inline-item">fpm_filesystem</li>
+                  <li class="list-inline-item"><a href='watch_filter.html'>watch_filter</a></li>
                   <li class="list-inline-item">fpm_manifest</li>
-                  <li class="list-inline-item">fpm_command_line</li>
-                  <li class="list-inline-item">fpm_targets</li>
-                  <li class="list-inline-item">fpm_error</li>
+                  <li class="list-inline-item">fpm_filesystem</li>
                   <li class="list-inline-item"><a href='http://fortranwiki.org/fortran/show/iso_fortran_env'>iso_fortran_env</a></li>
-                  <li class="list-inline-item">fpm_dependency</li>
+                  <li class="list-inline-item">fpm_model</li>
                   <li class="list-inline-item">fpm_strings</li>
+                  <li class="list-inline-item">fpm_error</li>
                   <li class="list-inline-item"><a href='watch_log.html'>watch_log</a></li>
                   <li class="list-inline-item"><a href='watch_types.html'>watch_types</a></li>
-                  <li class="list-inline-item"><a href='watch_filter.html'>watch_filter</a></li>
+                  <li class="list-inline-item">fpm_dependency</li>
+                  <li class="list-inline-item">fpm_targets</li>
                   <li class="list-inline-item">fpm</li>
+                  <li class="list-inline-item">fpm_command_line</li>
+                  <li class="list-inline-item"><a href='watch_util.html'>watch_util</a></li>
               </ul>
             </li>
             <li class="list-group-item">
@@ -708,7 +708,7 @@ large graphs.</div>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-p~11"></span>
+              <span class="anchor" id="variable-p~5"></span>
               type(build_target_t),
             </td>
 <td>intent(in),</td>
@@ -768,7 +768,7 @@ large graphs.</div>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-p~10"></span>
+              <span class="anchor" id="variable-p~4"></span>
               character(len=*),
             </td>
 <td>intent(in)</td>
@@ -828,7 +828,7 @@ large graphs.</div>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-settings~12"></span>
+              <span class="anchor" id="variable-settings~2"></span>
               class(fpm_build_settings),
             </td>
 <td>intent(in)</td>
@@ -878,7 +878,7 @@ large graphs.</div>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-settings~11"></span>
+              <span class="anchor" id="variable-settings"></span>
               class(fpm_build_settings),
             </td>
 <td>intent(inout)</td>
@@ -893,7 +893,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-w~15"></span>
+              <span class="anchor" id="variable-w"></span>
               type(<a href='../type/watch_opts_t.html'>watch_opts_t</a>),
             </td>
 <td>intent(in)</td>
@@ -908,7 +908,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-files~11"></span>
+              <span class="anchor" id="variable-files~5"></span>
               type(string_t),
             </td>
 <td>intent(out),</td>
@@ -923,7 +923,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-file_mask~3"></span>
+              <span class="anchor" id="variable-file_mask~2"></span>
               integer(kind=int64),
             </td>
 <td>intent(out),</td>
@@ -938,7 +938,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-roots~5"></span>
+              <span class="anchor" id="variable-roots~4"></span>
               type(<a href='../type/root_info_t.html'>root_info_t</a>),
             </td>
 <td>intent(out),</td>
@@ -968,7 +968,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-build_secs~2"></span>
+              <span class="anchor" id="variable-build_secs"></span>
               real,
             </td>
 <td>intent(out)</td>
@@ -983,7 +983,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-secs_model~3"></span>
+              <span class="anchor" id="variable-secs_model~2"></span>
               real,
             </td>
 <td>intent(out)</td>
@@ -998,7 +998,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-secs_targets~3"></span>
+              <span class="anchor" id="variable-secs_targets~2"></span>
               real,
             </td>
 <td>intent(out)</td>
@@ -1013,7 +1013,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-secs_watch~3"></span>
+              <span class="anchor" id="variable-secs_watch~2"></span>
               real,
             </td>
 <td>intent(out)</td>
@@ -1168,7 +1168,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-mask~5"></span>
+              <span class="anchor" id="variable-mask~3"></span>
               integer(kind=int64),
             </td>
 <td>intent(in)</td>
@@ -1253,7 +1253,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-files~12"></span>
+              <span class="anchor" id="variable-files~6"></span>
               type(string_t),
             </td>
 <td>intent(out),</td>
@@ -1268,7 +1268,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-file_mask~4"></span>
+              <span class="anchor" id="variable-file_mask~3"></span>
               integer(kind=int64),
             </td>
 <td>intent(out),</td>
@@ -1283,7 +1283,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-build_dir~4"></span>
+              <span class="anchor" id="variable-build_dir"></span>
               character(len=*),
             </td>
 <td>intent(in)</td>
@@ -1338,7 +1338,7 @@ large graphs.</div>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-files~14"></span>
+              <span class="anchor" id="variable-files~8"></span>
               type(string_t),
             </td>
 <td>intent(inout),</td>
@@ -1353,7 +1353,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-file_mask~6"></span>
+              <span class="anchor" id="variable-file_mask~5"></span>
               integer(kind=int64),
             </td>
 <td>intent(inout),</td>
@@ -1368,7 +1368,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-path~7"></span>
+              <span class="anchor" id="variable-path"></span>
               character(len=*),
             </td>
 <td>intent(in)</td>
@@ -1383,7 +1383,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-build_dir~5"></span>
+              <span class="anchor" id="variable-build_dir~2"></span>
               character(len=*),
             </td>
 <td>intent(in)</td>
@@ -1398,7 +1398,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-mask~3"></span>
+              <span class="anchor" id="variable-mask"></span>
               integer(kind=int64),
             </td>
 <td>intent(in)</td>
@@ -1483,7 +1483,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-names~4"></span>
+              <span class="anchor" id="variable-names"></span>
               character(len=*),
             </td>
 <td>intent(in),</td>
@@ -1498,7 +1498,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-keep~3"></span>
+              <span class="anchor" id="variable-keep~2"></span>
               logical,
             </td>
 <td>intent(inout)</td>
@@ -1538,7 +1538,7 @@ large graphs.</div>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-buf~9"></span>
+              <span class="anchor" id="variable-buf~7"></span>
               type(string_t),
             </td>
 <td>intent(inout),</td>
@@ -1568,7 +1568,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-cap~7"></span>
+              <span class="anchor" id="variable-cap~5"></span>
               integer,
             </td>
 <td>intent(inout)</td>
@@ -1608,7 +1608,7 @@ large graphs.</div>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-buf~8"></span>
+              <span class="anchor" id="variable-buf~6"></span>
               type(string_t),
             </td>
 <td>intent(inout),</td>
@@ -1638,7 +1638,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-n~26"></span>
+              <span class="anchor" id="variable-n~9"></span>
               integer,
             </td>
 <td>intent(inout)</td>
@@ -1653,7 +1653,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-cap~6"></span>
+              <span class="anchor" id="variable-cap~4"></span>
               integer,
             </td>
 <td>intent(inout)</td>
@@ -1668,7 +1668,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-path~8"></span>
+              <span class="anchor" id="variable-path~2"></span>
               character(len=*),
             </td>
 <td>intent(in)</td>
@@ -1683,7 +1683,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-build_dir~6"></span>
+              <span class="anchor" id="variable-build_dir~3"></span>
               character(len=*),
             </td>
 <td>intent(in)</td>
@@ -1698,7 +1698,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-mask~4"></span>
+              <span class="anchor" id="variable-mask~2"></span>
               integer(kind=int64),
             </td>
 <td>intent(in)</td>
@@ -1756,7 +1756,7 @@ large graphs.</div>
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2026-02-25T19:31:10.148255+0000             </p>
+ on 2026-02-25T19:46:11.296223+0000             </p>
           </div>
         </div>
         <br>
