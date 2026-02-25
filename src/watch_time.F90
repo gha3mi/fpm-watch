@@ -19,8 +19,8 @@ module watch_time
 #if defined(_WIN32) || defined(WIN32) || defined(__CYGWIN__)
    interface
       subroutine c_sleep_ms(ms) bind(C, name="Sleep")
-         implicit none
          import c_int
+         implicit none
          integer(c_int), value :: ms
       end subroutine c_sleep_ms
    end interface
@@ -33,6 +33,7 @@ module watch_time
    interface
       integer(c_int) function c_nanosleep(req, rem) bind(C, name="nanosleep")
          import c_int, timespec
+         implicit none
          type(timespec), intent(in)  :: req
          type(timespec), intent(out) :: rem
       end function c_nanosleep
