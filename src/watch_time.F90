@@ -16,15 +16,8 @@ module watch_time
    !> Global mode switch that selects OS sleep vs spin sleep.
    logical, save :: low_cpu_mode = .false.
 
-#if defined(_WIN32) || defined(_WIN64) || defined(WIN32) || defined(WIN64) || defined(__WIN32__) || defined(__WIN64__) || defined(__MINGW32__) || defined(__MINGW64__)
-   interface
-      subroutine c_sleep_ms(ms) bind(C, name="Sleep")
-         import c_int
-         implicit none
-         integer(c_int), value :: ms
-      end subroutine c_sleep_ms
-   end interface
-#else
+! POSIX detection is reliable on Linux/macOS. Default to Windows otherwise.
+#if defined(__unix__) || defined(__unix) || defined(__linux__) || defined(__APPLE__)
    type, bind(C) :: timespec
       integer(c_long) :: tv_sec
       integer(c_long) :: tv_nsec
@@ -37,6 +30,14 @@ module watch_time
          type(timespec), intent(in)  :: req
          type(timespec), intent(out) :: rem
       end function c_nanosleep
+   end interface
+#else
+   interface
+      subroutine c_sleep_ms(ms) bind(C, name="Sleep")
+         import c_int
+         implicit none
+         integer(c_int), value :: ms
+      end subroutine c_sleep_ms
    end interface
 #endif
 
@@ -90,25 +91,14 @@ contains
    !! This is intended to minimize CPU usage while waiting.
    subroutine sleep_os(s)
       real, intent(in) :: s
-#if defined(_WIN32) || defined(_WIN64) || defined(WIN32) || defined(WIN64) || defined(__WIN32__) || defined(__WIN64__) || defined(__MINGW32__) || defined(__MINGW64__)
-      call sleep_os_win(s)
-#else
+#if defined(__unix__) || defined(__unix) || defined(__linux__) || defined(__APPLE__)
       call sleep_os_posix(s)
+#else
+      call sleep_os_win(s)
 #endif
    end subroutine sleep_os
 
-#if defined(_WIN32) || defined(_WIN64) || defined(WIN32) || defined(WIN64) || defined(__WIN32__) || defined(__WIN64__) || defined(__MINGW32__) || defined(__MINGW64__)
-   subroutine sleep_os_win(s)
-      real, intent(in) :: s
-      integer(c_int) :: ms
-      real :: ss
-      ss = s
-      if (ss <= 0.0) return
-      ms = int(ss * 1000.0 + 0.5, kind=c_int)
-      if (ms < 0_c_int) ms = 0_c_int
-      call c_sleep_ms(ms)
-   end subroutine sleep_os_win
-#else
+#if defined(__unix__) || defined(__unix) || defined(__linux__) || defined(__APPLE__)
    subroutine sleep_os_posix(s)
       real, intent(in) :: s
       type(timespec) :: req, rem
@@ -134,6 +124,17 @@ contains
          req = rem
       end do
    end subroutine sleep_os_posix
+#else
+   subroutine sleep_os_win(s)
+      real, intent(in) :: s
+      integer(c_int) :: ms
+      real :: ss
+      ss = s
+      if (ss <= 0.0) return
+      ms = int(ss * 1000.0 + 0.5, kind=c_int)
+      if (ms < 0_c_int) ms = 0_c_int
+      call c_sleep_ms(ms)
+   end subroutine sleep_os_win
 #endif
 
 end module watch_time

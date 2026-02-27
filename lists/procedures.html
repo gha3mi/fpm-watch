@@ -156,7 +156,7 @@
                  <td><p>Construct the effective command to run based on changes and target masks.</p><a href="../proc/build_run_command.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 			   <tr>
-                 <td><a href='../interface/c_nanosleep.html'>c_nanosleep</a></td>
+                 <td><a href='../interface/c_sleep_ms.html'>c_sleep_ms</a></td>
                  <td><a href='../module/watch_time.html'>watch_time</a></td>
                  <td>Interface</td>
                  <td></td>
@@ -660,7 +660,7 @@
                  <td><p>OS-backed sleep for approximately <code>s</code> seconds.</p><a href="../proc/sleep_os.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 			   <tr>
-                 <td><a href='../proc/sleep_os_posix.html'>sleep_os_posix</a></td>
+                 <td><a href='../proc/sleep_os_win.html'>sleep_os_win</a></td>
                  <td><a href='../module/watch_time.html'>watch_time</a></td>
                  <td>Subroutine</td>
                  <td></td>
@@ -821,12 +821,12 @@
 <g id="call~~graph~~CallGraph" class="graph" transform="scale(0.420158 0.420158) rotate(0) translate(4 2980.52)">
 <title>call~~graph~~CallGraph</title>
 <polygon fill="white" stroke="none" points="-4,4 -4,-2980.52 2030.95,-2980.52 2030.95,4 -4,4"/>
-<!-- interface~c_nanosleep -->
+<!-- interface~c_sleep_ms -->
 <g id="call~~graph~~CallGraph_node1" class="node">
-<title>interface~c_nanosleep</title>
-<g id="a_call~~graph~~CallGraph_node1"><a xlink:href="../interface/c_nanosleep.html" xlink:title="c_nanosleep">
-<polygon fill="#a7506f" stroke="#a7506f" points="1392.87,-189.27 1314.6,-189.27 1314.6,-165 1392.87,-165 1392.87,-189.27"/>
-<text xml:space="preserve" text-anchor="middle" x="1353.74" y="-173.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">c_nanosleep</text>
+<title>interface~c_sleep_ms</title>
+<g id="a_call~~graph~~CallGraph_node1"><a xlink:href="../interface/c_sleep_ms.html" xlink:title="c_sleep_ms">
+<polygon fill="#a7506f" stroke="#a7506f" points="1389.87,-189.27 1317.6,-189.27 1317.6,-165 1389.87,-165 1389.87,-189.27"/>
+<text xml:space="preserve" text-anchor="middle" x="1353.74" y="-173.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">c_sleep_ms</text>
 </a>
 </g>
 </g>
@@ -2927,26 +2927,26 @@
 </a>
 </g>
 </g>
-<!-- proc~sleep_os_posix -->
+<!-- proc~sleep_os_win -->
 <g id="call~~graph~~CallGraph_node97" class="node">
-<title>proc~sleep_os_posix</title>
-<g id="a_call~~graph~~CallGraph_node97"><a xlink:href="../proc/sleep_os_posix.html" xlink:title="sleep_os_posix">
-<polygon fill="#d9534f" stroke="#d9534f" points="1143.98,-189.27 1053.71,-189.27 1053.71,-165 1143.98,-165 1143.98,-189.27"/>
-<text xml:space="preserve" text-anchor="middle" x="1098.84" y="-173.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sleep_os_posix</text>
+<title>proc~sleep_os_win</title>
+<g id="a_call~~graph~~CallGraph_node97"><a xlink:href="../proc/sleep_os_win.html" xlink:title="sleep_os_win">
+<polygon fill="#d9534f" stroke="#d9534f" points="1139.1,-189.27 1058.58,-189.27 1058.58,-165 1139.1,-165 1139.1,-189.27"/>
+<text xml:space="preserve" text-anchor="middle" x="1098.84" y="-173.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sleep_os_win</text>
 </a>
 </g>
 </g>
-<!-- proc~sleep_os&#45;&gt;proc~sleep_os_posix -->
+<!-- proc~sleep_os&#45;&gt;proc~sleep_os_win -->
 <g id="call~~graph~~CallGraph_edge166" class="edge">
-<title>proc~sleep_os&#45;&gt;proc~sleep_os_posix</title>
-<path fill="none" stroke="#b500ff" d="M843.44,-177.13C889.5,-177.13 981.87,-177.13 1041.72,-177.13"/>
-<polygon fill="#b500ff" stroke="#b500ff" points="1041.72,-180.64 1051.72,-177.14 1041.72,-173.64 1041.72,-180.64"/>
+<title>proc~sleep_os&#45;&gt;proc~sleep_os_win</title>
+<path fill="none" stroke="#b500ff" d="M843.44,-177.13C890.81,-177.13 987.15,-177.13 1046.74,-177.13"/>
+<polygon fill="#b500ff" stroke="#b500ff" points="1046.62,-180.64 1056.62,-177.14 1046.62,-173.64 1046.62,-180.64"/>
 </g>
-<!-- proc~sleep_os_posix&#45;&gt;interface~c_nanosleep -->
+<!-- proc~sleep_os_win&#45;&gt;interface~c_sleep_ms -->
 <g id="call~~graph~~CallGraph_edge167" class="edge">
-<title>proc~sleep_os_posix&#45;&gt;interface~c_nanosleep</title>
-<path fill="none" stroke="#c100ff" d="M1144.47,-177.13C1188.92,-177.13 1256.99,-177.13 1303.11,-177.13"/>
-<polygon fill="#c100ff" stroke="#c100ff" points="1302.83,-180.64 1312.83,-177.14 1302.83,-173.64 1302.83,-180.64"/>
+<title>proc~sleep_os_win&#45;&gt;interface~c_sleep_ms</title>
+<path fill="none" stroke="#c100ff" d="M1139.35,-177.13C1184.4,-177.13 1257.98,-177.13 1305.88,-177.13"/>
+<polygon fill="#c100ff" stroke="#c100ff" points="1305.66,-180.64 1315.66,-177.14 1305.66,-173.64 1305.66,-180.64"/>
 </g>
 <!-- proc~sleep_seconds -->
 <g id="call~~graph~~CallGraph_node98" class="node">
@@ -3380,7 +3380,7 @@ large graphs.</div>
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2026-02-27T17:41:13.794910+0000             </p>
+ on 2026-02-27T17:58:26.203003+0000             </p>
           </div>
         </div>
         <br>
