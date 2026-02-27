@@ -1,4 +1,15 @@
+[![GitHub](https://img.shields.io/badge/GitHub-fpm_watch-blue.svg?style=social&logo=github)](https://github.com/gha3mi/fpm-watch)
+[![Version](https://img.shields.io/github/v/tag/gha3mi/fpm-watch?label=version&sort=semver)](https://github.com/gha3mi/fpm-watch/releases)
+[![Documentation](https://img.shields.io/badge/ford-Documentation%20-blueviolet.svg)](https://gha3mi.github.io/fpm-watch/)
+[![Setup Fortran Conda CI/CD](https://github.com/gha3mi/fpm-watch/actions/workflows/CI-CD.yml/badge.svg?branch=main)](https://github.com/gha3mi/fpm-watch/actions/workflows/CI-CD.yml)
+[![License](https://img.shields.io/github/license/gha3mi/fpm-watch?color=green)](https://github.com/gha3mi/fpm-watch/blob/main/LICENSE)
+
 fpm-watch is a plugin for the [Fortran Package Manager (fpm)](https://fpm.fortran-lang.org) that automatically rebuilds, tests or runs your project whenever relevant source files change. It supports dependency awareness, low CPU idle mode and automatic restart capability.
+
+## CI Status
+
+<!-- STATUS:setup-fortran-conda:START -->
+<!-- STATUS:setup-fortran-conda:END -->
 
 ## Requirements
 

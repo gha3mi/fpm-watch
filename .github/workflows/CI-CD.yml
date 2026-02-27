@@ -22,10 +22,10 @@ jobs:
       fail-fast: false
       matrix:
         include:
-        - {os: ubuntu-latest,  compiler: gfortran,  compiler-version: "", extra-packages: ""}
-        - {os: ubuntu-latest,  compiler: ifx,       compiler-version: "", extra-packages: ""}
-        - {os: macos-latest,   compiler: gfortran,  compiler-version: "", extra-packages: ""}
-        - {os: windows-latest, compiler: gfortran,  compiler-version: "", extra-packages: ""}
+        - {os: ubuntu-latest,  compiler: gfortran}
+        - {os: ubuntu-latest,  compiler: ifx     }
+        - {os: macos-latest,   compiler: gfortran}
+        - {os: windows-latest, compiler: gfortran}
 
     steps:
       - name: Setup Fortran
@@ -33,8 +33,6 @@ jobs:
         with:
           platform: ${{ matrix.os }}
           compiler: ${{ matrix.compiler }}
-          compiler-version: ${{ matrix.compiler-version }}
-          extra-packages: ${{ matrix.extra-packages }}
 
       - name: fpm build (debug)
         run: fpm build --compiler ${{ matrix.compiler }} --profile debug --verbose
@@ -42,10 +40,16 @@ jobs:
         run: fpm build --compiler ${{ matrix.compiler }} --profile release --verbose
 
       - name: install fpm-watch
-        run: fpm install --compiler ${{ matrix.compiler }}
+        run: fpm install --compiler ${{ matrix.compiler }} --prefix .
 
       - name: fpm-watch test
-        run: fpm-watch --watch-low-cpu --watch-once test
+        if: runner.os != 'Windows'
+        shell: bash
+        run: ./bin/fpm-watch --watch-low-cpu --watch-once test
+
+      - name: fpm-watch test
+        if: runner.os == 'Windows'
+        run: .\bin\fpm-watch.exe --watch-low-cpu --watch-once test
 
   doc_ford:
     if: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && !contains(github.event.head_commit.message, '[skip ci]') }}
@@ -73,3 +77,17 @@ jobs:
         with:
           fortitude-check: true
           fortitude-settings: "--output-format github"
+
+  update_readme_table:
+    if: ${{ always() && (github.event_name == 'push' || github.event_name == 'workflow_dispatch' || github.event_name == 'schedule') && github.ref == 'refs/heads/main' && !contains(github.event.head_commit.message, '[skip ci]') }}
+    name: Update README.md status table
+    needs: [test_fpm]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Update README status
+        uses: gha3mi/setup-fortran-conda@latest
+        with:
+          update-readme-table: true
+          update-readme-token: ${{ secrets.GH_PAT_FPM_WATHCH }}   # Update with your GitHub personal access token
+          update-readme-user-name: "Seyed Ali Ghasemi" # Update with your name
+          update-readme-user-email: "info@gha3mi.com"  # Update with your email
