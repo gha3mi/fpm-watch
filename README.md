@@ -9,6 +9,14 @@ fpm-watch is a plugin for the [Fortran Package Manager (fpm)](https://fpm.fortra
 ## CI Status
 
 <!-- STATUS:setup-fortran-conda:START -->
+
+| OS | Compiler | Version | fpm |
+| --- | --- | ---: | :---: |
+| ubuntu 24.04 | `gfortran` | 15.2.0 | 0.13.0 ✅ |
+| ubuntu 24.04 | `ifx` | 2025.3.2 | 0.13.0 ✅ |
+| macos 15 | `gfortran` | 15.2.0 | 0.13.0 ✅ |
+| windows 2025 | `gfortran` | 15.2.0 | 0.13.0 ✅ |
+
 <!-- STATUS:setup-fortran-conda:END -->
 
 ## Requirements
