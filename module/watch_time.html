@@ -89,7 +89,7 @@
 
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
-                 title=" 1.8% of total for modules and submodules.">57 statements</a>
+                 title=" 2.4% of total for modules and submodules.">77 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -148,13 +148,24 @@
       </a>
       <div id="inters-0" class="collapse">
         <div class="list-group list-group-flush">
-            <a class="list-group-item" href="../module/watch_time.html#interface-c_sleep_ms">c_sleep_ms</a>
+            <a class="list-group-item" href="../module/watch_time.html#interface-c_nanosleep">c_nanosleep</a>
         </div>
       </div>
     </div>
 
   
-  
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#types-0"
+         aria-expanded="false" aria-controls="types-0">
+         <h4 class="card-header bg-primary text-white">Derived Types</h4>
+      </a>
+      <div id="types-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../module/watch_time.html#type-timespec">timespec</a>
+        </div>
+      </div>
+    </div>
+
   
       <div class="card mb-4">
       <a data-bs-toggle="collapse" href="#subs-0"
@@ -166,7 +177,7 @@
             <a class="list-group-item" href="../module/watch_time.html#proc-set_low_cpu">set_low_cpu</a>
             <a class="list-group-item" href="../module/watch_time.html#proc-sleep_seconds">sleep_seconds</a>
             <a class="list-group-item" href="../module/watch_time.html#proc-sleep_os">sleep_os</a>
-            <a class="list-group-item" href="../module/watch_time.html#proc-sleep_os_win">sleep_os_win</a>
+            <a class="list-group-item" href="../module/watch_time.html#proc-sleep_os_posix">sleep_os_posix</a>
             <a class="list-group-item" href="../module/watch_time.html#proc-sleep_spin">sleep_spin</a>
         </div>
       </div>
@@ -186,20 +197,15 @@
     </div>
 
     <div class="col-md-9" id='text'>
-      <p>Sleep utilities and low-CPU waiting.</p>
-<p><code>fpm-watch</code> is primarily poll-based. To avoid burning CPU while idle, this
-module provides:
-- a default spin-wait implementation (<code>sleep_spin</code>) for portability, and
-- an OS sleep implementation (<code>sleep_os</code>) for near-zero CPU usage.</p>
-<p><code>set_low_cpu(.true.)</code> selects OS sleep for <code>sleep_seconds</code>.</p>
+      
 <br>          <div class="card mb-4">
       <h3 class="card-header card-title bg-light">Uses</h3>
       <div class="card-body">
         <ul class="list-group list-group-flush">
             <li class="list-group-item">
               <ul class="list-inline">
-                  <li class="list-inline-item"><a href='http://fortranwiki.org/fortran/show/iso_c_binding'>iso_c_binding</a></li>
                   <li class="list-inline-item"><a href='http://fortranwiki.org/fortran/show/iso_fortran_env'>iso_fortran_env</a></li>
+                  <li class="list-inline-item"><a href='http://fortranwiki.org/fortran/show/iso_c_binding'>iso_c_binding</a></li>
               </ul>
             </li>
             <li class="list-group-item">
@@ -489,7 +495,7 @@ large graphs.</div>
 <td> =</td>
                 <td>.false.</td>
             <td>
-                <p>Global mode switch that selects OS sleep vs spin sleep.</p>
+                
             </td>
         </tr>
     </tbody>
@@ -503,14 +509,14 @@ large graphs.</div>
           <h2>Interfaces</h2>
               <div class="card">
     <div class="card-header bg-light codesum">
-      <span class="anchor" id="interface-c_sleep_ms"></span>
+      <span class="anchor" id="interface-c_nanosleep"></span>
       <h3>        interface
       </h3>
     </div>
     <ul class="list-group">
         <li class="list-group-item">
               <h3>
-    private  subroutine c_sleep_ms(ms) bind(C, name="Sleep")  
+    private  function c_nanosleep(req, rem) bind(C, name="nanosleep")  
 
     </h3>
   
@@ -528,15 +534,30 @@ large graphs.</div>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-ms"></span>
-              integer(kind=c_int),
+              <span class="anchor" id="variable-req"></span>
+              type(<a href='../type/timespec.html'>timespec</a>),
             </td>
-<td></td>
+<td>intent(in)</td>
               <td></td>            <td>
-              value
+              
             </td>
             <td>::</td>
-            <td><strong>ms</strong></td>
+            <td><strong>req</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-rem"></span>
+              type(<a href='../type/timespec.html'>timespec</a>),
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>rem</strong></td>
             <td>
                 
             </td>
@@ -544,6 +565,11 @@ large graphs.</div>
     </tbody>
   </table>
 
+    <h4>
+    Return Value
+    <small>integer(kind=c_int)</small>
+    </h4>
+    
 
         </li>
     </ul>
@@ -553,6 +579,76 @@ large graphs.</div>
         <br>
 
 
+        <section>
+          <h2>Derived Types</h2>
+              <div class="card">
+    <div class="card-header codesum">
+      <span class="anchor" id="type-timespec"></span>
+      <h3>
+        type, private, bind(C)&nbsp;::&nbsp;
+        <a href='../type/timespec.html'>timespec</a>
+        
+      </h3>
+    </div>
+    <div class="card-body">
+      
+
+        <h4>Components</h4>
+          <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Visibility</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+<th></th><th scope="col">Initial</th>        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-tv_nsec"></span>
+              integer(kind=c_long),
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>tv_nsec</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-tv_sec"></span>
+              integer(kind=c_long),
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>tv_sec</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+
+    </div>
+  </div>
+
+        </section>
+        <br>
 
 
         <section>
@@ -562,7 +658,7 @@ large graphs.</div>
 </h3></div>
     <div class="card-body">
           
-  <p>Enable or disable low-CPU mode.</p><a href="../proc/set_low_cpu.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+  
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -577,7 +673,7 @@ large graphs.</div>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-flag"></span>
+              <span class="anchor" id="variable-flag~2"></span>
               logical,
             </td>
 <td>intent(in)</td>
@@ -602,7 +698,7 @@ large graphs.</div>
 </h3></div>
     <div class="card-body">
           
-  <p>Sleep for a number of seconds.</p><a href="../proc/sleep_seconds.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+  
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -617,7 +713,7 @@ large graphs.</div>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-s~14"></span>
+              <span class="anchor" id="variable-s~22"></span>
               real,
             </td>
 <td>intent(in)</td>
@@ -642,7 +738,7 @@ large graphs.</div>
 </h3></div>
     <div class="card-body">
           
-  <p>OS-backed sleep for approximately <code>s</code> seconds.</p><a href="../proc/sleep_os.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+  
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -657,7 +753,7 @@ large graphs.</div>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-s~16"></span>
+              <span class="anchor" id="variable-s~24"></span>
               real,
             </td>
 <td>intent(in)</td>
@@ -678,7 +774,7 @@ large graphs.</div>
   </div>
 
               <div class="card">
-    <div class="card-header codesum"><span class="anchor" id="proc-sleep_os_win"></span> <h3>private  subroutine <a href='../proc/sleep_os_win.html'>sleep_os_win</a>(s)  
+    <div class="card-header codesum"><span class="anchor" id="proc-sleep_os_posix"></span> <h3>private  subroutine <a href='../proc/sleep_os_posix.html'>sleep_os_posix</a>(s)  
 </h3></div>
     <div class="card-body">
           
@@ -697,7 +793,7 @@ large graphs.</div>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-s~17"></span>
+              <span class="anchor" id="variable-s~25"></span>
               real,
             </td>
 <td>intent(in)</td>
@@ -722,7 +818,7 @@ large graphs.</div>
 </h3></div>
     <div class="card-body">
           
-  <p>Busy-wait for approximately <code>s</code> seconds.</p><a href="../proc/sleep_spin.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+  
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -737,7 +833,7 @@ large graphs.</div>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-s~15"></span>
+              <span class="anchor" id="variable-s~23"></span>
               real,
             </td>
 <td>intent(in)</td>
@@ -780,7 +876,7 @@ large graphs.</div>
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2026-02-27T17:58:26.203003+0000             </p>
+ on 2026-02-27T18:18:49.880216+0000             </p>
           </div>
         </div>
         <br>

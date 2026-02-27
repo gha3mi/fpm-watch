@@ -10,7 +10,7 @@
     <meta name="author" content="Seyed Ali Ghasemi" >
     <link rel="icon" href="../favicon.png">
 
-    <title>clock_init &ndash; fpm-watch</title>
+    <title>timespec &ndash; fpm-watch </title>
 
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -77,8 +77,8 @@
 
     <div class="container">
   <div class="row">
-    <h1>clock_init
-      <small>Subroutine</small>
+    <h1>timespec
+      <small>Derived Type</small>
       
     </h1>
       <div class="container p-2 mb-4 bg-light border rounded-3">
@@ -89,21 +89,21 @@
 
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
-                 title=" 0.2% of total for procedures.">6 statements</a>
+                 title="<p> 4.8% of total for derived types.</p>Including implementation: 4 statements,  1.1% of total for derived types.">4 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
               <i class="fa fa-code"></i>
-              <a href="../src/watch_clock.f90"> Source File</a>
+              <a href="../src/watch_time.F90"> Source File</a>
             </li>
         </ul>
       </div>
       <div class="col">
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb justify-content-end mb-0">
-                <li class="breadcrumb-item"><a href='../sourcefile/watch_clock.f90.html'>watch_clock.f90</a></li>
-                <li class="breadcrumb-item"><a href='../module/watch_clock.html'>watch_clock</a></li>
-            <li class="breadcrumb-item active" aria-current="page">clock_init</li>
+                <li class="breadcrumb-item"><a href='../sourcefile/watch_time.f90.html'>watch_time.F90</a></li>
+                <li class="breadcrumb-item"><a href='../module/watch_time.html'>watch_time</a></li>
+            <li class="breadcrumb-item active" aria-current="page">timespec</li>
           </ol>
         </nav>
       </div>
@@ -124,7 +124,19 @@
       <div id="sidebar">
       <h3>Contents</h3>
   
-  
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#vars-0"
+         aria-expanded="false" aria-controls="vars-0">
+         <h4 class="card-header bg-primary text-white">Variables</h4>
+      </a>
+      <div id="vars-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../type/timespec.html#variable-tv_nsec">tv_nsec</a>
+            <a class="list-group-item" href="../type/timespec.html#variable-tv_sec">tv_sec</a>
+        </div>
+      </div>
+    </div>
+
   
   
   
@@ -146,7 +158,7 @@
     <div class="card card-primary">
       <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
       <div class="list-group">
-        <a class="list-group-item" href="../proc/clock_init.html#src">clock_init</a>
+        <a class="list-group-item" href="../type/timespec.html#src">timespec</a>
       </div>
     </div>
 
@@ -156,92 +168,75 @@
     </div>
     
     <div class="col-md-9" id='text'>
-    <h2>public pure subroutine clock_init(rate, max)  
-</h2>
+      <h2 id="type-def-statement">
+        type, private, bind(C) :: timespec</h2>
     
+    <br>
 
-    <p>Initialize <code>system_clock</code> parameters.</p>
-
-
-    <h3>Arguments</h3>
-        <table class="table table-striped varlist">
+    <section>
+    <h2>Components</h2>
+      <table class="table table-striped varlist">
     <thead>
       <tr>
         <th scope="col">Type</th>
-<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+<th scope="col">Visibility</th>        <th scope="col">Attributes</th>
         <th scope="col"></th>
         <th scope="col">Name</th>
-        <th scope="col"></th>
+<th></th><th scope="col">Initial</th>        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-rate~4"></span>
-              integer(kind=int64),
+              <span class="anchor" id="variable-tv_nsec"></span>
+              integer(kind=c_long),
             </td>
-<td>intent(out)</td>
-              <td></td>            <td>
+              <td>public</td>
+            <td>
               
             </td>
             <td>::</td>
-            <td><strong>rate</strong></td>
+            <td><strong>tv_nsec</strong></td>
+                <td></td>
+                <td></td>
             <td>
-                <p>Clock tick rate and maximum tick count as reported by <code>system_clock</code>.</p>
-<p>If the platform reports non-positive values, fallbacks are applied:
-- <code>rate</code> defaults to <code>1000</code> ticks/sec.
-- <code>max</code> defaults to <code>huge(1_int64)</code>.</p>
+                
             </td>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-max"></span>
-              integer(kind=int64),
+              <span class="anchor" id="variable-tv_sec"></span>
+              integer(kind=c_long),
             </td>
-<td>intent(out)</td>
-              <td></td>            <td>
+              <td>public</td>
+            <td>
               
             </td>
             <td>::</td>
-            <td><strong>max</strong></td>
+            <td><strong>tv_sec</strong></td>
+                <td></td>
+                <td></td>
             <td>
-                <p>Clock tick rate and maximum tick count as reported by <code>system_clock</code>.</p>
-<p>If the platform reports non-positive values, fallbacks are applied:
-- <code>rate</code> defaults to <code>1000</code> ticks/sec.
-- <code>max</code> defaults to <code>huge(1_int64)</code>.</p>
+                
             </td>
         </tr>
     </tbody>
   </table>
 
+    </section>
     <br>
-
-
-    
-    
-
-    
     
 
 
 
-    
     <section>
-    <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="hl codehilite"><pre><span></span><span class="w">   </span><span class="k">pure subroutine </span><span class="n">clock_init</span><span class="p">(</span><span class="n">rate</span><span class="p">,</span><span class="w"> </span><span class="nb">max</span><span class="p">)</span>
-<span class="w">      </span><span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">rate</span><span class="p">,</span><span class="w"> </span><span class="nb">max</span>
-<span class="w">      </span><span class="c">!! Clock tick rate and maximum tick count as reported by `system_clock`.</span>
-<span class="w">      </span><span class="c">!!</span>
-<span class="w">      </span><span class="c">!! If the platform reports non-positive values, fallbacks are applied:</span>
-<span class="w">      </span><span class="c">!! - `rate` defaults to `1000` ticks/sec.</span>
-<span class="w">      </span><span class="c">!! - `max` defaults to `huge(1_int64)`.</span>
-<span class="w">      </span><span class="k">call </span><span class="nb">system_clock</span><span class="p">(</span><span class="n">count_rate</span><span class="o">=</span><span class="n">rate</span><span class="p">,</span><span class="w"> </span><span class="n">count_max</span><span class="o">=</span><span class="nb">max</span><span class="p">)</span>
-<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">rate</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">0_int64</span><span class="p">)</span><span class="w"> </span><span class="n">rate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1000_int64</span>
-<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">max</span><span class="w">  </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">0_int64</span><span class="p">)</span><span class="w"> </span><span class="nb">max</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="nb">huge</span><span class="p">(</span><span class="mi">1_int64</span><span class="p">)</span>
-<span class="w">   </span><span class="k">end subroutine </span><span class="n">clock_init</span>
+    <h3><span class="anchor" id="src"></span>Source Code</h3>
+    <div class="hl codehilite"><pre><span></span><span class="w">   </span><span class="k">type</span><span class="p">,</span><span class="w"> </span><span class="k">bind</span><span class="p">(</span><span class="n">C</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">timespec</span>
+<span class="w">      </span><span class="kt">integer</span><span class="p">(</span><span class="kt">c_long</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">tv_sec</span>
+<span class="w">      </span><span class="kt">integer</span><span class="p">(</span><span class="kt">c_long</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">tv_nsec</span>
+<span class="w">   </span><span class="k">end type </span><span class="n">timespec</span>
 </pre></div>
 
     </section>
-    <br>
     
     </div>
   </div>
