@@ -11,6 +11,7 @@ module watch_time
    interface
       subroutine fpm_watch_sleep_seconds(sec) bind(C, name="fpm_watch_sleep_seconds")
          import c_double
+         implicit none
          real(c_double), value :: sec
       end subroutine fpm_watch_sleep_seconds
    end interface
@@ -49,10 +50,6 @@ contains
 
    subroutine sleep_os(s)
       real, intent(in) :: s
-      ! We *can* still use fpm_environment here, but the important part is:
-      ! the linker only sees ONE portable symbol: fpm_watch_sleep_seconds.
-      !
-      ! (Keeping this branch is harmless and can help future debugging.)
       if (get_os_type() == OS_WINDOWS) then
          call fpm_watch_sleep_seconds(real(s, c_double))
       else
