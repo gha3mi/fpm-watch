@@ -1,6 +1,6 @@
 module watch_time
    use, intrinsic :: iso_fortran_env, only: int64
-   use, intrinsic :: iso_c_binding,  only: c_int, c_long
+   use, intrinsic :: iso_c_binding,  only: c_double
    use fpm_environment, only: get_os_type, OS_WINDOWS
    implicit none
    private
@@ -9,25 +9,10 @@ module watch_time
    logical, save :: low_cpu_mode = .false.
 
    interface
-      subroutine c_sleep_ms(ms) bind(C, name="Sleep")
-         import c_int
-         implicit none
-         integer(c_int), value :: ms
-      end subroutine c_sleep_ms
-   end interface
-
-   type, bind(C) :: timespec
-      integer(c_long) :: tv_sec
-      integer(c_long) :: tv_nsec
-   end type timespec
-
-   interface
-      integer(c_int) function c_nanosleep(req, rem) bind(C, name="nanosleep")
-         import c_int, timespec
-         implicit none
-         type(timespec), intent(in)  :: req
-         type(timespec), intent(out) :: rem
-      end function c_nanosleep
+      subroutine fpm_watch_sleep_seconds(sec) bind(C, name="fpm_watch_sleep_seconds")
+         import c_double
+         real(c_double), value :: sec
+      end subroutine fpm_watch_sleep_seconds
    end interface
 
 contains
@@ -64,56 +49,15 @@ contains
 
    subroutine sleep_os(s)
       real, intent(in) :: s
+      ! We *can* still use fpm_environment here, but the important part is:
+      ! the linker only sees ONE portable symbol: fpm_watch_sleep_seconds.
+      !
+      ! (Keeping this branch is harmless and can help future debugging.)
       if (get_os_type() == OS_WINDOWS) then
-         call sleep_os_win(s)
+         call fpm_watch_sleep_seconds(real(s, c_double))
       else
-         call sleep_os_posix(s)
+         call fpm_watch_sleep_seconds(real(s, c_double))
       end if
    end subroutine sleep_os
-
-   subroutine sleep_os_win(s)
-      real, intent(in) :: s
-      integer(c_int) :: ms
-      real :: ss
-      ss = s
-      if (ss <= 0.0) return
-
-      ms = int(ss * 1000.0 + 0.5, kind=c_int)
-      if (ms < 0_c_int) ms = 0_c_int
-
-      call c_sleep_ms(ms)
-   end subroutine sleep_os_win
-
-   subroutine sleep_os_posix(s)
-      real, intent(in) :: s
-      type(timespec) :: req, rem
-      integer(c_int) :: rc
-      real :: ss, frac
-      integer(c_long) :: sec, nsec
-
-      ss = s
-      if (ss <= 0.0) return
-
-      sec  = int(ss, kind=c_long)
-      frac = ss - real(sec)
-      if (frac < 0.0) frac = 0.0
-
-      nsec = int(frac * 1000000000.0, kind=c_long)
-      if (nsec < 0_c_long) nsec = 0_c_long
-
-      if (nsec >= 1000000000_c_long) then
-         sec  = sec + 1_c_long
-         nsec = nsec - 1000000000_c_long
-      end if
-
-      req%tv_sec  = sec
-      req%tv_nsec = nsec
-
-      do
-         rc = c_nanosleep(req, rem)
-         if (rc == 0_c_int) exit
-         req = rem
-      end do
-   end subroutine sleep_os_posix
 
 end module watch_time

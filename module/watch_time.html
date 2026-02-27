@@ -89,7 +89,7 @@
 
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
-                 title=" 3.1% of total for modules and submodules.">99 statements</a>
+                 title=" 1.6% of total for modules and submodules.">51 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -148,25 +148,13 @@
       </a>
       <div id="inters-0" class="collapse">
         <div class="list-group list-group-flush">
-            <a class="list-group-item" href="../module/watch_time.html#interface-c_nanosleep">c_nanosleep</a>
-            <a class="list-group-item" href="../module/watch_time.html#interface-c_sleep_ms">c_sleep_ms</a>
+            <a class="list-group-item" href="../module/watch_time.html#interface-fpm_watch_sleep_seconds">fpm_watch_sleep_seconds</a>
         </div>
       </div>
     </div>
 
   
-      <div class="card mb-4">
-      <a data-bs-toggle="collapse" href="#types-0"
-         aria-expanded="false" aria-controls="types-0">
-         <h4 class="card-header bg-primary text-white">Derived Types</h4>
-      </a>
-      <div id="types-0" class="collapse">
-        <div class="list-group list-group-flush">
-            <a class="list-group-item" href="../module/watch_time.html#type-timespec">timespec</a>
-        </div>
-      </div>
-    </div>
-
+  
   
       <div class="card mb-4">
       <a data-bs-toggle="collapse" href="#subs-0"
@@ -178,8 +166,6 @@
             <a class="list-group-item" href="../module/watch_time.html#proc-set_low_cpu">set_low_cpu</a>
             <a class="list-group-item" href="../module/watch_time.html#proc-sleep_seconds">sleep_seconds</a>
             <a class="list-group-item" href="../module/watch_time.html#proc-sleep_os">sleep_os</a>
-            <a class="list-group-item" href="../module/watch_time.html#proc-sleep_os_posix">sleep_os_posix</a>
-            <a class="list-group-item" href="../module/watch_time.html#proc-sleep_os_win">sleep_os_win</a>
             <a class="list-group-item" href="../module/watch_time.html#proc-sleep_spin">sleep_spin</a>
         </div>
       </div>
@@ -207,8 +193,8 @@
             <li class="list-group-item">
               <ul class="list-inline">
                   <li class="list-inline-item">fpm_environment</li>
-                  <li class="list-inline-item"><a href='http://fortranwiki.org/fortran/show/iso_c_binding'>iso_c_binding</a></li>
                   <li class="list-inline-item"><a href='http://fortranwiki.org/fortran/show/iso_fortran_env'>iso_fortran_env</a></li>
+                  <li class="list-inline-item"><a href='http://fortranwiki.org/fortran/show/iso_c_binding'>iso_c_binding</a></li>
               </ul>
             </li>
             <li class="list-group-item">
@@ -524,14 +510,14 @@ large graphs.</div>
           <h2>Interfaces</h2>
               <div class="card">
     <div class="card-header bg-light codesum">
-      <span class="anchor" id="interface-c_nanosleep"></span>
+      <span class="anchor" id="interface-fpm_watch_sleep_seconds"></span>
       <h3>        interface
       </h3>
     </div>
     <ul class="list-group">
         <li class="list-group-item">
               <h3>
-    private  function c_nanosleep(req, rem) bind(C, name="nanosleep")  
+    private  subroutine fpm_watch_sleep_seconds(sec) bind(C, name="fpm_watch_sleep_seconds")  
 
     </h3>
   
@@ -549,83 +535,15 @@ large graphs.</div>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-req"></span>
-              type(<a href='../type/timespec.html'>timespec</a>),
-            </td>
-<td>intent(in)</td>
-              <td></td>            <td>
-              
-            </td>
-            <td>::</td>
-            <td><strong>req</strong></td>
-            <td>
-                
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-rem"></span>
-              type(<a href='../type/timespec.html'>timespec</a>),
-            </td>
-<td>intent(out)</td>
-              <td></td>            <td>
-              
-            </td>
-            <td>::</td>
-            <td><strong>rem</strong></td>
-            <td>
-                
-            </td>
-        </tr>
-    </tbody>
-  </table>
-
-    <h4>
-    Return Value
-    <small>integer(kind=c_int)</small>
-    </h4>
-    
-
-        </li>
-    </ul>
-  </div>
-
-              <div class="card">
-    <div class="card-header bg-light codesum">
-      <span class="anchor" id="interface-c_sleep_ms"></span>
-      <h3>        interface
-      </h3>
-    </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-              <h3>
-    private  subroutine c_sleep_ms(ms) bind(C, name="Sleep")  
-
-    </h3>
-  
-
-  <h4>Arguments</h4>
-      <table class="table table-striped varlist">
-    <thead>
-      <tr>
-        <th scope="col">Type</th>
-<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
-        <th scope="col"></th>
-        <th scope="col">Name</th>
-        <th scope="col"></th>
-    </thead>
-    <tbody>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-ms"></span>
-              integer(kind=c_int),
+              <span class="anchor" id="variable-sec"></span>
+              real(kind=c_double),
             </td>
 <td></td>
               <td></td>            <td>
               value
             </td>
             <td>::</td>
-            <td><strong>ms</strong></td>
+            <td><strong>sec</strong></td>
             <td>
                 
             </td>
@@ -642,76 +560,6 @@ large graphs.</div>
         <br>
 
 
-        <section>
-          <h2>Derived Types</h2>
-              <div class="card">
-    <div class="card-header codesum">
-      <span class="anchor" id="type-timespec"></span>
-      <h3>
-        type, private, bind(C)&nbsp;::&nbsp;
-        <a href='../type/timespec.html'>timespec</a>
-        
-      </h3>
-    </div>
-    <div class="card-body">
-      
-
-        <h4>Components</h4>
-          <table class="table table-striped varlist">
-    <thead>
-      <tr>
-        <th scope="col">Type</th>
-<th scope="col">Visibility</th>        <th scope="col">Attributes</th>
-        <th scope="col"></th>
-        <th scope="col">Name</th>
-<th></th><th scope="col">Initial</th>        <th scope="col"></th>
-    </thead>
-    <tbody>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-tv_nsec"></span>
-              integer(kind=c_long),
-            </td>
-              <td>public</td>
-            <td>
-              
-            </td>
-            <td>::</td>
-            <td><strong>tv_nsec</strong></td>
-                <td></td>
-                <td></td>
-            <td>
-
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-tv_sec"></span>
-              integer(kind=c_long),
-            </td>
-              <td>public</td>
-            <td>
-              
-            </td>
-            <td>::</td>
-            <td><strong>tv_sec</strong></td>
-                <td></td>
-                <td></td>
-            <td>
-
-            </td>
-        </tr>
-    </tbody>
-  </table>
-
-
-
-
-    </div>
-  </div>
-
-        </section>
-        <br>
 
 
         <section>
@@ -837,86 +685,6 @@ large graphs.</div>
   </div>
 
               <div class="card">
-    <div class="card-header codesum"><span class="anchor" id="proc-sleep_os_posix"></span> <h3>private  subroutine <a href='../proc/sleep_os_posix.html'>sleep_os_posix</a>(s)  
-</h3></div>
-    <div class="card-body">
-          
-  
-
-  <h4>Arguments</h4>
-      <table class="table table-striped varlist">
-    <thead>
-      <tr>
-        <th scope="col">Type</th>
-<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
-        <th scope="col"></th>
-        <th scope="col">Name</th>
-        <th scope="col"></th>
-    </thead>
-    <tbody>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-s~5"></span>
-              real,
-            </td>
-<td>intent(in)</td>
-              <td></td>            <td>
-              
-            </td>
-            <td>::</td>
-            <td><strong>s</strong></td>
-            <td>
-
-            </td>
-        </tr>
-    </tbody>
-  </table>
-
-
-    </div>
-  </div>
-
-              <div class="card">
-    <div class="card-header codesum"><span class="anchor" id="proc-sleep_os_win"></span> <h3>private  subroutine <a href='../proc/sleep_os_win.html'>sleep_os_win</a>(s)  
-</h3></div>
-    <div class="card-body">
-          
-  
-
-  <h4>Arguments</h4>
-      <table class="table table-striped varlist">
-    <thead>
-      <tr>
-        <th scope="col">Type</th>
-<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
-        <th scope="col"></th>
-        <th scope="col">Name</th>
-        <th scope="col"></th>
-    </thead>
-    <tbody>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-s~4"></span>
-              real,
-            </td>
-<td>intent(in)</td>
-              <td></td>            <td>
-              
-            </td>
-            <td>::</td>
-            <td><strong>s</strong></td>
-            <td>
-
-            </td>
-        </tr>
-    </tbody>
-  </table>
-
-
-    </div>
-  </div>
-
-              <div class="card">
     <div class="card-header codesum"><span class="anchor" id="proc-sleep_spin"></span> <h3>private  subroutine <a href='../proc/sleep_spin.html'>sleep_spin</a>(s)  
 </h3></div>
     <div class="card-body">
@@ -979,7 +747,7 @@ large graphs.</div>
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2026-02-27T18:31:18.690432+0000             </p>
+ on 2026-02-27T18:57:37.144064+0000             </p>
           </div>
         </div>
         <br>
