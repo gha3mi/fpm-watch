@@ -94,14 +94,14 @@
 
             <li class="list-inline-item" id="source-file">
               <i class="fa fa-code"></i>
-              <a href="../src/watch_time.F90"> Source File</a>
+              <a href="../src/watch_time.f90"> Source File</a>
             </li>
         </ul>
       </div>
       <div class="col">
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb justify-content-end mb-0">
-                <li class="breadcrumb-item"><a href='../sourcefile/watch_time.f90.html'>watch_time.F90</a></li>
+                <li class="breadcrumb-item"><a href='../sourcefile/watch_time.f90.html'>watch_time.f90</a></li>
                 <li class="breadcrumb-item"><a href='../module/watch_time.html'>watch_time</a></li>
             <li class="breadcrumb-item active" aria-current="page">sleep_os_posix</li>
           </ol>
@@ -175,7 +175,7 @@
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-s~25"></span>
+              <span class="anchor" id="variable-s~5"></span>
               real,
             </td>
 <td>intent(in)</td>
@@ -512,19 +512,25 @@ large graphs.</div>
 <span class="w">      </span><span class="kt">integer</span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">rc</span>
 <span class="w">      </span><span class="kt">real</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">ss</span><span class="p">,</span><span class="w"> </span><span class="n">frac</span>
 <span class="w">      </span><span class="kt">integer</span><span class="p">(</span><span class="kt">c_long</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">sec</span><span class="p">,</span><span class="w"> </span><span class="n">nsec</span>
+
 <span class="w">      </span><span class="n">ss</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s</span>
 <span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ss</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">)</span><span class="w"> </span><span class="k">return</span>
+
 <span class="k">      </span><span class="n">sec</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="nb">int</span><span class="p">(</span><span class="n">ss</span><span class="p">,</span><span class="w"> </span><span class="nb">kind</span><span class="o">=</span><span class="kt">c_long</span><span class="p">)</span>
 <span class="w">      </span><span class="n">frac</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ss</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="kt">real</span><span class="p">(</span><span class="n">sec</span><span class="p">)</span>
 <span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">frac</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mf">0.0</span><span class="p">)</span><span class="w"> </span><span class="n">frac</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span>
+
 <span class="w">      </span><span class="n">nsec</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">int</span><span class="p">(</span><span class="n">frac</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">100000000</span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="nb">kind</span><span class="o">=</span><span class="kt">c_long</span><span class="p">)</span>
 <span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">nsec</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0_c_long</span><span class="p">)</span><span class="w"> </span><span class="n">nsec</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0_c_long</span>
+
 <span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">nsec</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">1000000000_c_long</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">         </span><span class="n">sec</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sec</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1_c_long</span>
+<span class="k">         </span><span class="n">sec</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">sec</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1_c_long</span>
 <span class="w">         </span><span class="n">nsec</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nsec</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1000000000_c_long</span>
 <span class="w">      </span><span class="k">end if</span>
+
 <span class="k">      </span><span class="n">req</span><span class="p">%</span><span class="n">tv_sec</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">sec</span>
 <span class="w">      </span><span class="n">req</span><span class="p">%</span><span class="n">tv_nsec</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nsec</span>
+
 <span class="w">      </span><span class="k">do</span>
 <span class="k">         </span><span class="n">rc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">c_nanosleep</span><span class="p">(</span><span class="n">req</span><span class="p">,</span><span class="w"> </span><span class="n">rem</span><span class="p">)</span>
 <span class="w">         </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">rc</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0_c_int</span><span class="p">)</span><span class="w"> </span><span class="k">exit</span>
@@ -554,7 +560,7 @@ large graphs.</div>
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2026-02-27T18:18:49.880216+0000             </p>
+ on 2026-02-27T18:31:18.690432+0000             </p>
           </div>
         </div>
         <br>
