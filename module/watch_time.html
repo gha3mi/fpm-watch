@@ -185,16 +185,55 @@
     </div>
 
     <div class="col-md-9" id='text'>
-      
+      <p>Sleep utilities and low-CPU waiting.</p>
+<p><code>fpm-watch</code> is primarily poll-based. This module provides two waiting
+strategies:</p>
+<ul>
+<li>
+<p><strong>Spin wait</strong> (<code>sleep_spin</code>): uses <code>system_clock</code> in a tight loop.
+  This is portable and offers good timing resolution, but it can consume CPU.</p>
+</li>
+<li>
+<p><strong>OS sleep</strong> (<code>sleep_os</code>): delegates to a small C shim
+  (<code>fpm_watch_sleep_seconds</code>) which performs an efficient, platform-native
+  sleep:</p>
+<ul>
+<li>Windows: <code>Sleep(milliseconds)</code></li>
+<li>POSIX: <code>nanosleep(timespec)</code> (with EINTR retry)</li>
+</ul>
+</li>
+</ul>
+<p>The public entry point <code>sleep_seconds</code> dispatches between these strategies
+depending on the global low-CPU mode flag set by <code>set_low_cpu</code>.</p>
+<h2>Design notes</h2>
+<ul>
+<li>The OS sleep is implemented in C to avoid link-time issues where referencing
+  platform-specific symbols (e.g. <code>Sleep</code> or <code>nanosleep</code>) from Fortran can
+  break linking on the “other” platform even if the routine is never called.</li>
+<li><code>sleep_seconds</code> is intentionally lightweight and safe to call frequently.</li>
+</ul>
+<h2>Usage</h2>
+<div class="codehilite"><pre><span></span><code><span class="k">use </span><span class="n">watch_time</span><span class="p">,</span><span class="w"> </span><span class="k">only</span><span class="p">:</span><span class="w"> </span><span class="n">set_low_cpu</span><span class="p">,</span><span class="w"> </span><span class="n">sleep_seconds</span>
+
+<span class="k">call </span><span class="n">set_low_cpu</span><span class="p">(.</span><span class="n">true</span><span class="p">.)</span><span class="w">   </span><span class="c">! prefer OS sleep (near-zero idle CPU)</span>
+<span class="k">call </span><span class="n">sleep_seconds</span><span class="p">(</span><span class="mf">0.25</span><span class="p">)</span><span class="w">   </span><span class="c">! sleep for ~250 ms</span>
+</code></pre></div>
+
+<h2>Threading/Signals</h2>
+<ul>
+<li>Spin sleep does not yield; it runs until time has elapsed.</li>
+<li>OS sleep yields to the OS scheduler; on POSIX the C shim typically retries
+  on interrupt (EINTR) to honor the requested duration.</li>
+</ul>
 <br>          <div class="card mb-4">
       <h3 class="card-header card-title bg-light">Uses</h3>
       <div class="card-body">
         <ul class="list-group list-group-flush">
             <li class="list-group-item">
               <ul class="list-inline">
+                  <li class="list-inline-item"><a href='http://fortranwiki.org/fortran/show/iso_fortran_env'>iso_fortran_env</a></li>
                   <li class="list-inline-item">fpm_environment</li>
                   <li class="list-inline-item"><a href='http://fortranwiki.org/fortran/show/iso_c_binding'>iso_c_binding</a></li>
-                  <li class="list-inline-item"><a href='http://fortranwiki.org/fortran/show/iso_fortran_env'>iso_fortran_env</a></li>
               </ul>
             </li>
             <li class="list-group-item">
@@ -496,7 +535,11 @@ large graphs.</div>
 <td> =</td>
                 <td>.false.</td>
             <td>
-                
+                <p>Global mode switch that selects OS sleep vs spin sleep.</p>
+<ul>
+<li><code>.false.</code> (default): <code>sleep_seconds</code> uses <code>sleep_spin</code> (busy wait).</li>
+<li><code>.true.</code>           : <code>sleep_seconds</code> uses <code>sleep_os</code> (OS-backed sleep).</li>
+</ul>
             </td>
         </tr>
     </tbody>
@@ -514,6 +557,16 @@ large graphs.</div>
       <h3>        interface
       </h3>
     </div>
+      <div class="card-body">
+        <p>C shim providing a portable OS sleep implementation.</p>
+<p>The actual platform-specific sleep is implemented in C to prevent
+link-time failures that can occur if Fortran directly references
+<code>Sleep</code> (Windows) or <code>nanosleep</code> (POSIX) symbols in the same object.</p>
+<h3>Arguments</h3>
+<ul>
+<li><code>sec</code>: requested sleep duration in seconds.</li>
+</ul>
+      </div>
     <ul class="list-group">
         <li class="list-group-item">
               <h3>
@@ -569,7 +622,7 @@ large graphs.</div>
 </h3></div>
     <div class="card-body">
           
-  
+  <p>Enable or disable low-CPU mode.</p><a href="../proc/set_low_cpu.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -609,7 +662,7 @@ large graphs.</div>
 </h3></div>
     <div class="card-body">
           
-  
+  <p>Sleep for approximately <code>s</code> seconds.</p><a href="../proc/sleep_seconds.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -624,7 +677,7 @@ large graphs.</div>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-s~13"></span>
+              <span class="anchor" id="variable-s"></span>
               real,
             </td>
 <td>intent(in)</td>
@@ -649,7 +702,7 @@ large graphs.</div>
 </h3></div>
     <div class="card-body">
           
-  
+  <p>OS-backed sleep for approximately <code>s</code> seconds.</p><a href="../proc/sleep_os.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -664,7 +717,7 @@ large graphs.</div>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-s~15"></span>
+              <span class="anchor" id="variable-s~3"></span>
               real,
             </td>
 <td>intent(in)</td>
@@ -689,7 +742,7 @@ large graphs.</div>
 </h3></div>
     <div class="card-body">
           
-  
+  <p>Busy-wait for approximately <code>s</code> seconds.</p><a href="../proc/sleep_spin.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -704,7 +757,7 @@ large graphs.</div>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-s~14"></span>
+              <span class="anchor" id="variable-s~2"></span>
               real,
             </td>
 <td>intent(in)</td>
@@ -747,7 +800,7 @@ large graphs.</div>
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2026-02-27T19:15:09.913929+0000             </p>
+ on 2026-02-27T19:39:22.241416+0000             </p>
           </div>
         </div>
         <br>
