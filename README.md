@@ -52,6 +52,9 @@ fpm-watch --watch-low-cpu --watch-auto-restart run --example my_example
 ## Watch Options
 
 ```
+--help | -h
+    Show general help and exit.
+
 --watch-help
     Show help and exit.
 
@@ -108,6 +111,9 @@ fpm-watch --watch-low-cpu --watch-auto-restart run --example my_example
 
 --watch-no-run-on-start
     Wait for first change before running.
+
+--watch-once
+    Run once and exit (no continuous watching).
 ```
 
 ### Output Control
@@ -172,6 +178,7 @@ verbosity     = 0
 ignore        = []
 include       = []
 features      = []
+onece         = false
 ```
 
 ## Stopping
@@ -186,4 +193,20 @@ Or create:
 
 ```
 touch .fpm-watch.stop
+```
+
+## Bash Completion
+
+Enable bash tab-completion for `fpm-watch` by installing the provided script:
+
+```bash
+mkdir -p ~/.local/share/bash-completion/completions
+cp completion.bash ~/.local/share/bash-completion/completions/fpm-watch
+source ~/.local/share/bash-completion/completions/fpm-watch
+```
+
+Then use:
+
+```bash
+fpm-watch --<TAB>
 ```
