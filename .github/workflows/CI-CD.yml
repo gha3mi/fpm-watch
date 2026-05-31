@@ -35,12 +35,12 @@ jobs:
           compiler: ${{ matrix.compiler }}
 
       - name: fpm build (debug)
-        run: fpm build --compiler ${{ matrix.compiler }} --profile debug --verbose
+        run: fpm build --compiler ${{ env.FPM_FC }} --profile debug --verbose
       - name: fpm build (release)
-        run: fpm build --compiler ${{ matrix.compiler }} --profile release --verbose
+        run: fpm build --compiler ${{ env.FPM_FC }} --profile release --verbose
 
       - name: install fpm-watch
-        run: fpm install --compiler ${{ matrix.compiler }} --prefix .
+        run: fpm install --compiler ${{ env.FPM_FC }} --prefix .
 
       - name: fpm-watch test
         if: runner.os != 'Windows'
