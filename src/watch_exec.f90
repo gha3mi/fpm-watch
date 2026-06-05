@@ -30,10 +30,10 @@ contains
       if (w%verbosity < 0) return
 
       cap = 8
-      write(output_unit,"(a)") &
-         colorize("change     |", color_fg="yellow_intense", style="bold_on") // "  " // &
-         colorize(str(changed_count), color_fg="yellow_intense", style="bold_on") // &
-         " files (debounced " // colorize(ftoa(w%debounce), color_fg="yellow") // "s)"
+      write(output_unit,'(a)') &
+         colorize("change     |", color_fg='yellow_intense', style='bold_on') // "  " // &
+         colorize(str(changed_count), color_fg='yellow_intense', style='bold_on') // &
+         " files (debounced " // colorize(ftoa(w%debounce), color_fg='yellow') // "s)"
 
       if (changed_count == 0) return
       if (.not. allocated(files)) return
@@ -41,11 +41,11 @@ contains
       do i = 1, min(changed_count, cap)
          idx = changed_idx(i)
          if (idx < 1 .or. idx > size(files)) cycle
-         write(output_unit,"(a)") "           |  " // colorize(trim(files(idx)%s), color_fg="yellow")
+         write(output_unit,'(a)') "           |  " // colorize(trim(files(idx)%s), color_fg='yellow')
       end do
       if (changed_count > cap) then
-         write(output_unit,"(a)") &
-            "           |  ... +" // colorize(str(changed_count-cap), color_fg="yellow") // " more"
+         write(output_unit,'(a)') &
+            "           |  ... +" // colorize(str(changed_count-cap), color_fg='yellow') // " more"
       end if
    end subroutine report_changes
 
@@ -77,14 +77,14 @@ contains
 
       if (w%verbosity >= 0) then
          if (w%silent_fpm) then
-            write(output_unit,"(a)") &
-               colorize("run        |", color_fg="cyan_intense", style="bold_on") // "  " // &
-               colorize(trim(cmd), color_fg="white_intense") // "  " // &
-               colorize("(fpm output silenced)", color_fg="magenta_intense", style="italics_on")
+            write(output_unit,'(a)') &
+               colorize("run        |", color_fg='cyan_intense', style='bold_on') // "  " // &
+               colorize(trim(cmd), color_fg='white_intense') // "  " // &
+               colorize("(fpm output silenced)", color_fg='magenta_intense', style='italics_on')
          else
-            write(output_unit,"(a)") &
-               colorize("run        |", color_fg="cyan_intense", style="bold_on") // "  " // &
-               colorize(trim(cmd), color_fg="white_intense")
+            write(output_unit,'(a)') &
+               colorize("run        |", color_fg='cyan_intense', style='bold_on') // "  " // &
+               colorize(trim(cmd), color_fg='white_intense')
          end if
       end if
 
@@ -105,22 +105,22 @@ contains
       end if
 
       if (w%verbosity >= 0) then
-         write(output_unit,"(a)") ""
-         write(output_unit,"(a)") &
-            colorize("done       |", color_fg=status_color, style="bold_on") // &
-            "  " // colorize(status_word, color_fg=status_color, style="bold_on") // &
-            "  exit=" // colorize(str(exitstat), color_fg=status_color, style="bold_on") // &
-            "  time=" // colorize(ftoa(secs), color_fg="yellow_intense") // "s"
+         write(output_unit,'(a)') ""
+         write(output_unit,'(a)') &
+            colorize("done       |", color_fg=status_color, style='bold_on') // &
+            "  " // colorize(status_word, color_fg=status_color, style='bold_on') // &
+            "  exit=" // colorize(str(exitstat), color_fg=status_color, style='bold_on') // &
+            "  time=" // colorize(ftoa(secs), color_fg='yellow_intense') // "s"
 
-         write(output_unit,"(a)") &
-            colorize("command    |", color_fg="cyan_intense", style="bold_on") // "  " // &
-            colorize(trim(cmd), color_fg="white_intense")
+         write(output_unit,'(a)') &
+            colorize("command    |", color_fg='cyan_intense', style='bold_on') // "  " // &
+            colorize(trim(cmd), color_fg='white_intense')
 
-         write(output_unit,"(a)") &
-            colorize("watch      |", color_fg="cyan_intense", style="bold_on") // &
-            "  waiting (poll=" // colorize(ftoa(w%poll), color_fg="yellow") // "s" // &
-            ", debounce=" // colorize(ftoa(w%debounce), color_fg="yellow") // "s)  " // &
-            colorize("Ctrl+C", color_fg="red_intense", style="bold_on") // " to stop"
+         write(output_unit,'(a)') &
+            colorize("watch      |", color_fg='cyan_intense', style='bold_on') // &
+            "  waiting (poll=" // colorize(ftoa(w%poll), color_fg='yellow') // "s" // &
+            ", debounce=" // colorize(ftoa(w%debounce), color_fg='yellow') // "s)  " // &
+            colorize("Ctrl+C", color_fg='red_intense', style='bold_on') // " to stop"
       end if
    end subroutine run_command_and_report
 
@@ -175,12 +175,7 @@ contains
          return
       end if
 
-      if (.not. allocated(roots)) then
-         cmd = trim(full_cmdline)
-         return
-      end if
-
-      if (size(roots) == 0) then
+      if (.not. allocated(roots) .or. size(roots) == 0) then
          cmd = trim(full_cmdline)
          return
       end if

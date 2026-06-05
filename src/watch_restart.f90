@@ -70,11 +70,11 @@ contains
 
          attempt = attempt + 1
          if (max0 > 0 .and. attempt >= max0) then
-            write(error_unit,"(a)") "fpm-watch: child exited with nonzero status; restart limit reached"
+            write(error_unit,'(a)') "fpm-watch: child exited with nonzero status; restart limit reached"
             stop code
          end if
 
-         write(error_unit,"(a,i0,a,i0,a,f0.2,a)") "fpm-watch: child crashed/aborted (exit=", code, "), restart #", attempt, " in ", delay, "s"
+         write(error_unit,'(a,i0,a,i0,a,f0.2,a)') "fpm-watch: child crashed/aborted (exit=", code, "), restart #", attempt, " in ", delay, "s"
          call sleep_seconds(delay)
       end do
 
@@ -295,10 +295,10 @@ contains
          character(len=*), intent(in) :: s
          character(len=len(s)) :: r
          integer :: k, c, da
-         da = iachar("a") - iachar("A")
+         da = iachar('a') - iachar('A')
          do k = 1, len(s)
             c = iachar(s(k:k))
-            if (c >= iachar("A") .and. c <= iachar("Z")) then
+            if (c >= iachar('A') .and. c <= iachar('Z')) then
                r(k:k) = achar(c + da)
             else
                r(k:k) = s(k:k)

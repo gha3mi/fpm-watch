@@ -88,7 +88,7 @@ contains
 
       call get_package_data(package, "fpm.toml", err, apply_defaults=.true.)
       if (allocated(err)) then
-         write(error_unit,"(a)") "fpm-watch: manifest error: " // err%message
+         write(error_unit,'(a)') "fpm-watch: manifest error: " // err%message
          stop 1
       end if
 
@@ -96,7 +96,7 @@ contains
 
       call tree%add(package, err)
       if (allocated(err)) then
-         write(error_unit,"(a)") "fpm-watch: dependency error: " // err%message
+         write(error_unit,'(a)') "fpm-watch: dependency error: " // err%message
          stop 1
       end if
 
@@ -116,7 +116,7 @@ contains
       secs_model = real(t1 - t0) / real(rate)
 
       if (allocated(err)) then
-         write(error_unit,"(a)") "fpm-watch: model error: " // err%message
+         write(error_unit,'(a)') "fpm-watch: model error: " // err%message
          stop 1
       end if
 
@@ -126,7 +126,7 @@ contains
       secs_targets = real(t1 - t0) / real(rate)
 
       if (allocated(err)) then
-         write(error_unit,"(a)") "fpm-watch: targets error: " // err%message
+         write(error_unit,'(a)') "fpm-watch: targets error: " // err%message
          stop 1
       end if
 

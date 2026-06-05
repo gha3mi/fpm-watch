@@ -26,7 +26,7 @@ contains
       real, intent(in) :: x
       character(len=:), allocatable :: s
       character(len=64) :: buf
-      write(buf,"(f0.2)") x
+      write(buf,'(f0.2)') x
       s = trim(buf)
    end function ftoa
 

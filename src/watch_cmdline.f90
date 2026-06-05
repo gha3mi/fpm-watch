@@ -75,7 +75,7 @@ contains
    !! A conservative check: any whitespace or quotes trigger quoting.
    pure logical function needs_quotes(a) result(q)
       character(len=*), intent(in) :: a
-      q = (index(a, " ") /= 0) .or. (index(a, char(9)) /= 0) .or. (index(a, '"') /= 0) .or. (index(a, "'") /= 0)
+      q = (index(a, ' ') /= 0) .or. (index(a, char(9)) /= 0) .or. (index(a, '"') /= 0) .or. (index(a, "'") /= 0)
    end function needs_quotes
 
    !> Quote an argument for the host shell, escaping embedded quotes as needed.

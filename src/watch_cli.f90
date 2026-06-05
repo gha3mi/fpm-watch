@@ -449,10 +449,10 @@ contains
          character(len=*), intent(in) :: s
          character(len=len(s)) :: r
          integer :: k, c, da
-         da = iachar("a") - iachar("A")
+         da = iachar('a') - iachar('A')
          do k = 1, len(s)
             c = iachar(s(k:k))
-            if (c >= iachar("A") .and. c <= iachar("Z")) then
+            if (c >= iachar('A') .and. c <= iachar('Z')) then
                r(k:k) = achar(c + da)
             else
                r(k:k) = s(k:k)
@@ -465,9 +465,9 @@ contains
    !> Print a usage message and terminate with a non-zero exit status.
    subroutine usage_and_stop(msg)
       character(len=*), intent(in) :: msg
-      write(error_unit,"(a)") &
-         colorize("fpm-watch: error:", color_fg="red_intense", style="bold_on") // " " // trim(msg)
-      write(error_unit,"(a)") ""
+      write(error_unit,'(a)') &
+         colorize("fpm-watch: error:", color_fg='red_intense', style='bold_on') // " " // trim(msg)
+      write(error_unit,'(a)') ""
       call usage_print_only()
       stop 2
    end subroutine usage_and_stop
@@ -489,141 +489,141 @@ contains
 
       title = colorize( &
          colorize("fpm-watch — Smart file watcher plugin for fpm projects", &
-         color_fg="cyan_intense", style="bold_on"), &
-         style="underline_on")
+         color_fg='cyan_intense', style='bold_on'), &
+         style='underline_on')
 
-      write(error_unit,"(a)") title
-      write(error_unit,"(a)") ""
-      write(error_unit,"(a)") sec("USAGE")
-      write(error_unit,"(a)") "  " // cmd("fpm-watch") // " " // arg("[watch options]") // " " // arg("<build|test|run>") // " " // arg("[fpm options]")
-      write(error_unit,"(a)") ""
-      write(error_unit,"(a)") "  Everything after " // arg("<build|test|run>") // " is passed to " // cmd("fpm") // " unchanged."
-      write(error_unit,"(a)") ""
+      write(error_unit,'(a)') title
+      write(error_unit,'(a)') ""
+      write(error_unit,'(a)') sec("USAGE")
+      write(error_unit,'(a)') "  " // cmd("fpm-watch") // " " // arg("[watch options]") // " " // arg("<build|test|run>") // " " // arg("[fpm options]")
+      write(error_unit,'(a)') ""
+      write(error_unit,'(a)') "  Everything after " // arg("<build|test|run>") // " is passed to " // cmd("fpm") // " unchanged."
+      write(error_unit,'(a)') ""
 
-      write(error_unit,"(a)") sec("WATCH OPTIONS")
-      write(error_unit,"(a)") "  --watch-help"
-      write(error_unit,"(a)") "      Show this help and exit."
-      write(error_unit,"(a)") ""
-      write(error_unit,"(a)") "  --watch-quiet | -q"
-      write(error_unit,"(a)") "      Quiet mode (errors only)."
-      write(error_unit,"(a)") "  --watch-verbose[=N] | -v"
-      write(error_unit,"(a)") "      Increase verbosity. N: 0..2 (default: 1)."
-      write(error_unit,"(a)") "  --watch-very-verbose | -vv"
-      write(error_unit,"(a)") "      Same as verbosity=2 (prints watch list, more details)."
-      write(error_unit,"(a)") "  --watch-debug"
-      write(error_unit,"(a)") "      Extra debug logs (watch list rebuilds, counts, keys)."
-      write(error_unit,"(a)") ""
+      write(error_unit,'(a)') sec("WATCH OPTIONS")
+      write(error_unit,'(a)') "  --watch-help"
+      write(error_unit,'(a)') "      Show this help and exit."
+      write(error_unit,'(a)') ""
+      write(error_unit,'(a)') "  --watch-quiet | -q"
+      write(error_unit,'(a)') "      Quiet mode (errors only)."
+      write(error_unit,'(a)') "  --watch-verbose[=N] | -v"
+      write(error_unit,'(a)') "      Increase verbosity. N: 0..2 (default: 1)."
+      write(error_unit,'(a)') "  --watch-very-verbose | -vv"
+      write(error_unit,'(a)') "      Same as verbosity=2 (prints watch list, more details)."
+      write(error_unit,'(a)') "  --watch-debug"
+      write(error_unit,'(a)') "      Extra debug logs (watch list rebuilds, counts, keys)."
+      write(error_unit,'(a)') ""
 
-      write(error_unit,"(a)") "  --watch-deps"
-      write(error_unit,"(a)") "      Also watch dependency source trees (including deps under build/)."
-      write(error_unit,"(a)") "  --watch-no-deps"
-      write(error_unit,"(a)") "      Disable dependency watching (default)."
-      write(error_unit,"(a)") ""
+      write(error_unit,'(a)') "  --watch-deps"
+      write(error_unit,'(a)') "      Also watch dependency source trees (including deps under build/)."
+      write(error_unit,'(a)') "  --watch-no-deps"
+      write(error_unit,'(a)') "      Disable dependency watching (default)."
+      write(error_unit,'(a)') ""
 
-      write(error_unit,"(a)") "  --watch-low-cpu"
-      write(error_unit,"(a)") "      Use OS sleep instead of busy-waiting (near 0% idle CPU)."
-      write(error_unit,"(a)") "  --watch-no-low-cpu"
-      write(error_unit,"(a)") "      Disable low CPU mode (default)."
-      write(error_unit,"(a)") ""
+      write(error_unit,'(a)') "  --watch-low-cpu"
+      write(error_unit,'(a)') "      Use OS sleep instead of busy-waiting (near 0% idle CPU)."
+      write(error_unit,'(a)') "  --watch-no-low-cpu"
+      write(error_unit,'(a)') "      Disable low CPU mode (default)."
+      write(error_unit,'(a)') ""
 
-      write(error_unit,"(a)") "  --watch-poll <sec>"
-      write(error_unit,"(a)") "      Poll interval for file checks. Default: 0.5"
-      write(error_unit,"(a)") "  --watch-debounce <sec>"
-      write(error_unit,"(a)") "      Wait after first change to coalesce edits. Default: 0.2"
-      write(error_unit,"(a)") "  --watch-rescan <sec>"
-      write(error_unit,"(a)") "      Rebuild the fpm model periodically (slow on big projects). Default: 0 (off)."
-      write(error_unit,"(a)") "  --watch-no-rescan"
-      write(error_unit,"(a)") "      Disable periodic rebuild (recommended)."
-      write(error_unit,"(a)") ""
+      write(error_unit,'(a)') "  --watch-poll <sec>"
+      write(error_unit,'(a)') "      Poll interval for file checks. Default: 0.5"
+      write(error_unit,'(a)') "  --watch-debounce <sec>"
+      write(error_unit,'(a)') "      Wait after first change to coalesce edits. Default: 0.2"
+      write(error_unit,'(a)') "  --watch-rescan <sec>"
+      write(error_unit,'(a)') "      Rebuild the fpm model periodically (slow on big projects). Default: 0 (off)."
+      write(error_unit,'(a)') "  --watch-no-rescan"
+      write(error_unit,'(a)') "      Disable periodic rebuild (recommended)."
+      write(error_unit,'(a)') ""
 
-      write(error_unit,"(a)") "  --watch-run-on-start"
-      write(error_unit,"(a)") "      Run the command once immediately on startup. Default: on."
-      write(error_unit,"(a)") "  --watch-no-run-on-start"
-      write(error_unit,"(a)") "      Only run after a change is detected."
-      write(error_unit,"(a)") ""
+      write(error_unit,'(a)') "  --watch-run-on-start"
+      write(error_unit,'(a)') "      Run the command once immediately on startup. Default: on."
+      write(error_unit,'(a)') "  --watch-no-run-on-start"
+      write(error_unit,'(a)') "      Only run after a change is detected."
+      write(error_unit,'(a)') ""
 
-      write(error_unit,"(a)") "  --watch-silent-fpm"
-      write(error_unit,"(a)") "      Suppress fpm output; keep only fpm-watch status lines."
-      write(error_unit,"(a)") "  --watch-print-files"
-      write(error_unit,"(a)") "      Print the watched file list (limited) at startup."
-      write(error_unit,"(a)") ""
+      write(error_unit,'(a)') "  --watch-silent-fpm"
+      write(error_unit,'(a)') "      Suppress fpm output; keep only fpm-watch status lines."
+      write(error_unit,'(a)') "  --watch-print-files"
+      write(error_unit,'(a)') "      Print the watched file list (limited) at startup."
+      write(error_unit,'(a)') ""
 
-      write(error_unit,"(a)") "  --watch-ignore <glob>"
-      write(error_unit,"(a)") "      Ignore files matching glob (repeatable)."
-      write(error_unit,"(a)") "  --watch-include <glob>"
-      write(error_unit,"(a)") "      Only watch files matching glob (repeatable). Empty means include all."
-      write(error_unit,"(a)") "  --watch-feature <name>"
-      write(error_unit,"(a)") "      Enable optional feature plugin (repeatable)."
-      write(error_unit,"(a)") ""
+      write(error_unit,'(a)') "  --watch-ignore <glob>"
+      write(error_unit,'(a)') "      Ignore files matching glob (repeatable)."
+      write(error_unit,'(a)') "  --watch-include <glob>"
+      write(error_unit,'(a)') "      Only watch files matching glob (repeatable). Empty means include all."
+      write(error_unit,'(a)') "  --watch-feature <name>"
+      write(error_unit,'(a)') "      Enable optional feature plugin (repeatable)."
+      write(error_unit,'(a)') ""
 
-      write(error_unit,"(a)") "  --watch-auto-restart"
-      write(error_unit,"(a)") "      Restart fpm-watch automatically if it crashes."
-      write(error_unit,"(a)") "  --watch-restart-delay <sec>"
-      write(error_unit,"(a)") "      Delay before restart. Default: 1.0"
-      write(error_unit,"(a)") "  --watch-restart-max <N>"
-      write(error_unit,"(a)") "      Maximum restart attempts (0 = unlimited). Default: 0"
-      write(error_unit,"(a)") "  --watch-self <path>"
-      write(error_unit,"(a)") "      Explicit path to fpm-watch executable (advanced)."
-      write(error_unit,"(a)") ""
+      write(error_unit,'(a)') "  --watch-auto-restart"
+      write(error_unit,'(a)') "      Restart fpm-watch automatically if it crashes."
+      write(error_unit,'(a)') "  --watch-restart-delay <sec>"
+      write(error_unit,'(a)') "      Delay before restart. Default: 1.0"
+      write(error_unit,'(a)') "  --watch-restart-max <N>"
+      write(error_unit,'(a)') "      Maximum restart attempts (0 = unlimited). Default: 0"
+      write(error_unit,'(a)') "  --watch-self <path>"
+      write(error_unit,'(a)') "      Explicit path to fpm-watch executable (advanced)."
+      write(error_unit,'(a)') ""
 
-      write(error_unit,"(a)") "  --watch-once"
-      write(error_unit,"(a)") "      Initialize (and optionally run once) then exit. Good for CI."
-      write(error_unit,"(a)") ""
+      write(error_unit,'(a)') "  --watch-once"
+      write(error_unit,'(a)') "      Initialize (and optionally run once) then exit. Good for CI."
+      write(error_unit,'(a)') ""
 
-      write(error_unit,"(a)") sec("CONFIGURATION (fpm.toml)")
-      write(error_unit,"(a)") "  " // arg("[extra.fpm-watch]") // "  (same names as flags, without the --watch- prefix)"
-      write(error_unit,"(a)") "  poll         = 0.5"
-      write(error_unit,"(a)") "  debounce     = 0.2"
-      write(error_unit,"(a)") "  rescan       = 0.0"
-      write(error_unit,"(a)") "  run-on-start = true"
-      write(error_unit,"(a)") "  silent-fpm   = false"
-      write(error_unit,"(a)") "  print-files  = false"
-      write(error_unit,"(a)") "  deps         = false"
-      write(error_unit,"(a)") "  low-cpu      = false"
-      write(error_unit,"(a)") "  auto-restart = false"
-      write(error_unit,"(a)") "  restart-delay= 1.0"
-      write(error_unit,"(a)") "  restart-max  = 0"
-      write(error_unit,"(a)") "  self         = """""
-      write(error_unit,"(a)") "  debug        = false"
-      write(error_unit,"(a)") "  verbosity    = 0"
-      write(error_unit,"(a)") "  ignore       = []"
-      write(error_unit,"(a)") "  include      = []"
-      write(error_unit,"(a)") "  features     = []"
-      write(error_unit,"(a)") "  once         = false"
-      write(error_unit,"(a)") ""
+      write(error_unit,'(a)') sec("CONFIGURATION (fpm.toml)")
+      write(error_unit,'(a)') "  " // arg("[extra.fpm-watch]") // "  (same names as flags, without the --watch- prefix)"
+      write(error_unit,'(a)') "  poll         = 0.5"
+      write(error_unit,'(a)') "  debounce     = 0.2"
+      write(error_unit,'(a)') "  rescan       = 0.0"
+      write(error_unit,'(a)') "  run-on-start = true"
+      write(error_unit,'(a)') "  silent-fpm   = false"
+      write(error_unit,'(a)') "  print-files  = false"
+      write(error_unit,'(a)') "  deps         = false"
+      write(error_unit,'(a)') "  low-cpu      = false"
+      write(error_unit,'(a)') "  auto-restart = false"
+      write(error_unit,'(a)') "  restart-delay= 1.0"
+      write(error_unit,'(a)') "  restart-max  = 0"
+      write(error_unit,'(a)') "  self         = """""
+      write(error_unit,'(a)') "  debug        = false"
+      write(error_unit,'(a)') "  verbosity    = 0"
+      write(error_unit,'(a)') "  ignore       = []"
+      write(error_unit,'(a)') "  include      = []"
+      write(error_unit,'(a)') "  features     = []"
+      write(error_unit,'(a)') "  once         = false"
+      write(error_unit,'(a)') ""
 
-      write(error_unit,"(a)") sec("EXAMPLES")
-      write(error_unit,"(a)") "  " // cmd("fpm-watch build")
-      write(error_unit,"(a)") "  " // cmd("fpm-watch --watch-low-cpu test")
-      write(error_unit,"(a)") "  " // cmd("fpm-watch --watch-deps test") // " " // arg("--") // " " // arg("--list")
-      write(error_unit,"(a)") "  " // cmd("fpm-watch --watch-auto-restart test")
-      write(error_unit,"(a)") ""
+      write(error_unit,'(a)') sec("EXAMPLES")
+      write(error_unit,'(a)') "  " // cmd("fpm-watch build")
+      write(error_unit,'(a)') "  " // cmd("fpm-watch --watch-low-cpu test")
+      write(error_unit,'(a)') "  " // cmd("fpm-watch --watch-deps test") // " " // arg("--") // " " // arg("--list")
+      write(error_unit,'(a)') "  " // cmd("fpm-watch --watch-auto-restart test")
+      write(error_unit,'(a)') ""
 
-      write(error_unit,"(a)") sec("NOTES")
-      write(error_unit,"(a)") "  fpm-watch ignores " // arg("build/") // " to avoid infinite rebuild loops."
-      write(error_unit,"(a)") "  Enable " // arg("deps") // " only if you want dependency source changes to trigger runs."
-      write(error_unit,"(a)") "  Enable " // arg("low-cpu") // " to avoid busy-waiting and reduce idle CPU usage."
-      write(error_unit,"(a)") "  To quit, press Ctrl+C (or create an empty file named " // arg(".fpm-watch.stop") // ")."
-      write(error_unit,"(a)") ""
+      write(error_unit,'(a)') sec("NOTES")
+      write(error_unit,'(a)') "  fpm-watch ignores " // arg("build/") // " to avoid infinite rebuild loops."
+      write(error_unit,'(a)') "  Enable " // arg("deps") // " only if you want dependency source changes to trigger runs."
+      write(error_unit,'(a)') "  Enable " // arg("low-cpu") // " to avoid busy-waiting and reduce idle CPU usage."
+      write(error_unit,'(a)') "  To quit, press Ctrl+C (or create an empty file named " // arg(".fpm-watch.stop") // ")."
+      write(error_unit,'(a)') ""
 
    contains
 
       function sec(s) result(r)
          character(len=*), intent(in) :: s
          character(len=:), allocatable :: r
-         r = colorize(s, color_fg="blue_intense", style="bold_on")
+         r = colorize(s, color_fg='blue_intense', style='bold_on')
       end function sec
 
       function cmd(s) result(r)
          character(len=*), intent(in) :: s
          character(len=:), allocatable :: r
-         r = colorize(s, color_fg="cyan_intense", style="bold_on")
+         r = colorize(s, color_fg='cyan_intense', style='bold_on')
       end function cmd
 
       function arg(s) result(r)
          character(len=*), intent(in) :: s
          character(len=:), allocatable :: r
-         r = colorize(s, color_fg="yellow_intense")
+         r = colorize(s, color_fg='yellow_intense')
       end function arg
 
    end subroutine usage_print_only
