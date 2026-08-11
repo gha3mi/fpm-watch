@@ -92,63 +92,63 @@ contains
 
       bdir = trim_or_default(settings%build_dir, "build")
 
-      write(output_unit,'(a)') &
-         colorize("fpm-watch", color_fg='cyan_intense', style='bold_on') // &
-         "  |  watching: " // colorize(mode, color_fg='yellow_intense', style='bold_on') // &
-         "  |  " // colorize("Ctrl+C", color_fg='red_intense', style='bold_on') // " to stop"
+      write(output_unit,"(a)") &
+         colorize("fpm-watch", color_fg="cyan_intense", style="bold_on") // &
+         "  |  watching: " // colorize(mode, color_fg="yellow_intense", style="bold_on") // &
+         "  |  " // colorize("Ctrl+C", color_fg="red_intense", style="bold_on") // " to stop"
 
-      write(output_unit,'(a)') &
-         colorize("command    |", color_fg='cyan_intense', style='bold_on') // "  " // &
-         colorize(trim(full_cmdline), color_fg='white_intense')
+      write(output_unit,"(a)") &
+         colorize("command    |", color_fg="cyan_intense", style="bold_on") // "  " // &
+         colorize(trim(full_cmdline), color_fg="white_intense")
 
-      write(output_unit,'(a)') &
-         colorize("build-dir  |", color_fg='cyan_intense', style='bold_on') // "  " // &
-         colorize(trim(bdir), color_fg='yellow_intense')
+      write(output_unit,"(a)") &
+         colorize("build-dir  |", color_fg="cyan_intense", style="bold_on") // "  " // &
+         colorize(trim(bdir), color_fg="yellow_intense")
 
-      write(output_unit,'(a)') &
-         colorize("options    |", color_fg='cyan_intense', style='bold_on') // &
-         "  prune="       // colorize(prune,  color_fg='yellow') // &
-         "   deps="       // colorize(deps,   color_fg='yellow') // &
-         "   low-cpu="    // colorize(lowcpu, color_fg='yellow') // &
-         "   silent-fpm=" // colorize(silent, color_fg='yellow') // &
-         "   verbosity="  // colorize(str(w%verbosity), color_fg='yellow')
+      write(output_unit,"(a)") &
+         colorize("options    |", color_fg="cyan_intense", style="bold_on") // &
+         "  prune="       // colorize(prune,  color_fg="yellow") // &
+         "   deps="       // colorize(deps,   color_fg="yellow") // &
+         "   low-cpu="    // colorize(lowcpu, color_fg="yellow") // &
+         "   silent-fpm=" // colorize(silent, color_fg="yellow") // &
+         "   verbosity="  // colorize(str(w%verbosity), color_fg="yellow")
 
-      write(output_unit,'(a)') &
-         colorize("compiler   |", color_fg='cyan_intense', style='bold_on') // "  " // &
-         colorize(trim_or_default(settings%compiler, "(auto)"), color_fg='green_intense')
+      write(output_unit,"(a)") &
+         colorize("compiler   |", color_fg="cyan_intense", style="bold_on") // "  " // &
+         colorize(trim_or_default(settings%compiler, "(auto)"), color_fg="green_intense")
 
-      write(output_unit,'(a)') &
-         colorize("profile    |", color_fg='cyan_intense', style='bold_on') // "  " // &
-         colorize(active_profile(settings), color_fg='magenta_intense')
+      write(output_unit,"(a)") &
+         colorize("profile    |", color_fg="cyan_intense", style="bold_on") // "  " // &
+         colorize(active_profile(settings), color_fg="magenta_intense")
 
-      write(output_unit,'(a)') &
-         colorize("features   |", color_fg='cyan_intense', style='bold_on') // "  " // &
-         colorize(active_features(settings), color_fg='blue_intense')
+      write(output_unit,"(a)") &
+         colorize("features   |", color_fg="cyan_intense", style="bold_on") // "  " // &
+         colorize(active_features(settings), color_fg="blue_intense")
 
-      write(output_unit,'(a)') &
-         colorize("watch      |", color_fg='cyan_intense', style='bold_on') // &
-         "  files=" // colorize(str(nfiles), color_fg='yellow_intense', style='bold_on') // &
-         "  roots=" // colorize(str(roots_count), color_fg='yellow_intense', style='bold_on') // &
-         "  poll=" // colorize(ftoa(w%poll), color_fg='yellow') // "s" // &
-         "  debounce=" // colorize(ftoa(w%debounce), color_fg='yellow') // "s" // &
-         "  rescan=" // colorize(ftoa(w%rescan), color_fg='yellow') // "s" // &
-         "  init-run=" // colorize(initrun, color_fg='yellow')
+      write(output_unit,"(a)") &
+         colorize("watch      |", color_fg="cyan_intense", style="bold_on") // &
+         "  files=" // colorize(str(nfiles), color_fg="yellow_intense", style="bold_on") // &
+         "  roots=" // colorize(str(roots_count), color_fg="yellow_intense", style="bold_on") // &
+         "  poll=" // colorize(ftoa(w%poll), color_fg="yellow") // "s" // &
+         "  debounce=" // colorize(ftoa(w%debounce), color_fg="yellow") // "s" // &
+         "  rescan=" // colorize(ftoa(w%rescan), color_fg="yellow") // "s" // &
+         "  init-run=" // colorize(initrun, color_fg="yellow")
 
-      write(output_unit,'(a)') &
-         colorize("init       |", color_fg='cyan_intense', style='bold_on') // &
-         "  model=" // colorize(ftoa(secs_model), color_fg='yellow') // "s" // &
-         "  targets=" // colorize(ftoa(secs_targets), color_fg='yellow') // "s" // &
-         "  watchlist=" // colorize(ftoa(secs_watch), color_fg='yellow') // "s" // &
-         "  total=" // colorize(ftoa(build_secs), color_fg='yellow_intense', style='bold_on') // "s"
+      write(output_unit,"(a)") &
+         colorize("init       |", color_fg="cyan_intense", style="bold_on") // &
+         "  model=" // colorize(ftoa(secs_model), color_fg="yellow") // "s" // &
+         "  targets=" // colorize(ftoa(secs_targets), color_fg="yellow") // "s" // &
+         "  watchlist=" // colorize(ftoa(secs_watch), color_fg="yellow") // "s" // &
+         "  total=" // colorize(ftoa(build_secs), color_fg="yellow_intense", style="bold_on") // "s"
 
-      write(output_unit,'(a)') &
-         colorize("stop       |", color_fg='cyan_intense', style='bold_on') // &
-         "  Ctrl+C or touch " // colorize(".fpm-watch.stop", color_fg='yellow_intense')
+      write(output_unit,"(a)") &
+         colorize("stop       |", color_fg="cyan_intense", style="bold_on") // &
+         "  Ctrl+C or touch " // colorize(".fpm-watch.stop", color_fg="yellow_intense")
 
       if (w%debug) then
-         write(output_unit,'(a)') &
-            colorize("debug      |", color_fg='magenta_intense', style='bold_on') // &
-            "  debug=on  verbosity=" // colorize(str(w%verbosity), color_fg='magenta_intense')
+         write(output_unit,"(a)") &
+            colorize("debug      |", color_fg="magenta_intense", style="bold_on") // &
+            "  debug=on  verbosity=" // colorize(str(w%verbosity), color_fg="magenta_intense")
       end if
    end subroutine print_banner
 
@@ -173,19 +173,19 @@ contains
       if (.not. allocated(files)) return
 
       cap = 200
-      pfx = colorize("fpm-watch info:", color_fg='blue_intense', style='bold_on')
+      pfx = colorize("fpm-watch info:", color_fg="blue_intense", style="bold_on")
 
-      write(output_unit,'(a)') &
+      write(output_unit,"(a)") &
          pfx // " watched files list (cap=200), n=" // &
-         colorize(str(size(files)), color_fg='yellow_intense', style='bold_on')
+         colorize(str(size(files)), color_fg="yellow_intense", style="bold_on")
 
       do i = 1, min(size(files), cap)
-         write(output_unit,'(a)') pfx // "   " // colorize(trim(files(i)%s), color_fg='white_intense')
+         write(output_unit,"(a)") pfx // "   " // colorize(trim(files(i)%s), color_fg="white_intense")
       end do
 
       if (size(files) > cap) then
-         write(output_unit,'(a)') &
-            pfx // "   ... (" // colorize(str(size(files)-cap), color_fg='yellow') // " more)"
+         write(output_unit,"(a)") &
+            pfx // "   ... (" // colorize(str(size(files)-cap), color_fg="yellow") // " more)"
       end if
    end subroutine print_file_list
 
