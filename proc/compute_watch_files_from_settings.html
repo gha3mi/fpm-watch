@@ -195,7 +195,7 @@
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-settings~2"></span>
+              <span class="anchor" id="variable-settings"></span>
               class(fpm_build_settings),
             </td>
 <td>intent(inout)</td>
@@ -210,7 +210,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-w~7"></span>
+              <span class="anchor" id="variable-w"></span>
               type(<a href='../type/watch_opts_t.html'>watch_opts_t</a>),
             </td>
 <td>intent(in)</td>
@@ -225,7 +225,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-files~6"></span>
+              <span class="anchor" id="variable-files~4"></span>
               type(string_t),
             </td>
 <td>intent(out),</td>
@@ -240,7 +240,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-file_mask~3"></span>
+              <span class="anchor" id="variable-file_mask~2"></span>
               integer(kind=int64),
             </td>
 <td>intent(out),</td>
@@ -255,7 +255,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-roots~5"></span>
+              <span class="anchor" id="variable-roots~2"></span>
               type(<a href='../type/root_info_t.html'>root_info_t</a>),
             </td>
 <td>intent(out),</td>
@@ -1230,9 +1230,9 @@ large graphs.</div>
 
 <span class="w">      </span><span class="k">allocate</span><span class="p">(</span><span class="n">package</span><span class="p">,</span><span class="w"> </span><span class="n">model</span><span class="p">)</span>
 
-<span class="w">      </span><span class="k">call </span><span class="n">get_package_data</span><span class="p">(</span><span class="n">package</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;fpm.toml&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">err</span><span class="p">,</span><span class="w"> </span><span class="n">apply_defaults</span><span class="o">=</span><span class="p">.</span><span class="n">true</span><span class="p">.)</span>
+<span class="w">      </span><span class="k">call </span><span class="n">get_package_data</span><span class="p">(</span><span class="n">package</span><span class="p">,</span><span class="w"> </span><span class="s2">"fpm.toml"</span><span class="p">,</span><span class="w"> </span><span class="n">err</span><span class="p">,</span><span class="w"> </span><span class="n">apply_defaults</span><span class="o">=</span><span class="p">.</span><span class="n">true</span><span class="p">.)</span>
 <span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">allocated</span><span class="p">(</span><span class="n">err</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
-<span class="k">         write</span><span class="p">(</span><span class="n">error_unit</span><span class="p">,</span><span class="s2">&quot;(a)&quot;</span><span class="p">)</span><span class="w"> </span><span class="s2">&quot;fpm-watch: manifest error: &quot;</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="n">err</span><span class="p">%</span><span class="n">message</span>
+<span class="k">         write</span><span class="p">(</span><span class="n">error_unit</span><span class="p">,</span><span class="s2">"(a)"</span><span class="p">)</span><span class="w"> </span><span class="s2">"fpm-watch: manifest error: "</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="n">err</span><span class="p">%</span><span class="n">message</span>
 <span class="w">         </span><span class="k">stop </span><span class="mi">1</span>
 <span class="w">      </span><span class="k">end if</span>
 
@@ -1240,14 +1240,14 @@ large graphs.</div>
 
 <span class="w">      </span><span class="k">call </span><span class="n">tree</span><span class="p">%</span><span class="n">add</span><span class="p">(</span><span class="n">package</span><span class="p">,</span><span class="w"> </span><span class="n">err</span><span class="p">)</span>
 <span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">allocated</span><span class="p">(</span><span class="n">err</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
-<span class="k">         write</span><span class="p">(</span><span class="n">error_unit</span><span class="p">,</span><span class="s2">&quot;(a)&quot;</span><span class="p">)</span><span class="w"> </span><span class="s2">&quot;fpm-watch: dependency error: &quot;</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="n">err</span><span class="p">%</span><span class="n">message</span>
+<span class="k">         write</span><span class="p">(</span><span class="n">error_unit</span><span class="p">,</span><span class="s2">"(a)"</span><span class="p">)</span><span class="w"> </span><span class="s2">"fpm-watch: dependency error: "</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="n">err</span><span class="p">%</span><span class="n">message</span>
 <span class="w">         </span><span class="k">stop </span><span class="mi">1</span>
 <span class="w">      </span><span class="k">end if</span>
 
 <span class="k">      if</span><span class="w"> </span><span class="p">(</span><span class="n">w</span><span class="p">%</span><span class="n">watch_deps</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
 <span class="k">         call </span><span class="n">collect_dep_dirs</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span><span class="w"> </span><span class="n">dep_dirs</span><span class="p">)</span>
 <span class="w">         </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">w</span><span class="p">%</span><span class="n">verbosity</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">            call </span><span class="n">log_info</span><span class="p">(</span><span class="n">w</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;deps: watching dependency sources (deps=&quot;</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="n">str</span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">dep_dirs</span><span class="p">))</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="s2">&quot;)&quot;</span><span class="p">)</span>
+<span class="k">            call </span><span class="n">log_info</span><span class="p">(</span><span class="n">w</span><span class="p">,</span><span class="w"> </span><span class="s2">"deps: watching dependency sources (deps="</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="n">str</span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">dep_dirs</span><span class="p">))</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="s2">")"</span><span class="p">)</span>
 <span class="w">         </span><span class="k">end if</span>
 <span class="k">      else</span>
 <span class="k">         if</span><span class="w"> </span><span class="p">(</span><span class="nb">allocated</span><span class="p">(</span><span class="n">dep_dirs</span><span class="p">))</span><span class="w"> </span><span class="k">deallocate</span><span class="p">(</span><span class="n">dep_dirs</span><span class="p">)</span>
@@ -1260,7 +1260,7 @@ large graphs.</div>
 <span class="w">      </span><span class="n">secs_model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">real</span><span class="p">(</span><span class="n">t1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">t0</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="kt">real</span><span class="p">(</span><span class="n">rate</span><span class="p">)</span>
 
 <span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">allocated</span><span class="p">(</span><span class="n">err</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
-<span class="k">         write</span><span class="p">(</span><span class="n">error_unit</span><span class="p">,</span><span class="s2">&quot;(a)&quot;</span><span class="p">)</span><span class="w"> </span><span class="s2">&quot;fpm-watch: model error: &quot;</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="n">err</span><span class="p">%</span><span class="n">message</span>
+<span class="k">         write</span><span class="p">(</span><span class="n">error_unit</span><span class="p">,</span><span class="s2">"(a)"</span><span class="p">)</span><span class="w"> </span><span class="s2">"fpm-watch: model error: "</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="n">err</span><span class="p">%</span><span class="n">message</span>
 <span class="w">         </span><span class="k">stop </span><span class="mi">1</span>
 <span class="w">      </span><span class="k">end if</span>
 
@@ -1270,7 +1270,7 @@ large graphs.</div>
 <span class="w">      </span><span class="n">secs_targets</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">real</span><span class="p">(</span><span class="n">t1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">t0</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="kt">real</span><span class="p">(</span><span class="n">rate</span><span class="p">)</span>
 
 <span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">allocated</span><span class="p">(</span><span class="n">err</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
-<span class="k">         write</span><span class="p">(</span><span class="n">error_unit</span><span class="p">,</span><span class="s2">&quot;(a)&quot;</span><span class="p">)</span><span class="w"> </span><span class="s2">&quot;fpm-watch: targets error: &quot;</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="n">err</span><span class="p">%</span><span class="n">message</span>
+<span class="k">         write</span><span class="p">(</span><span class="n">error_unit</span><span class="p">,</span><span class="s2">"(a)"</span><span class="p">)</span><span class="w"> </span><span class="s2">"fpm-watch: targets error: "</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="n">err</span><span class="p">%</span><span class="n">message</span>
 <span class="w">         </span><span class="k">stop </span><span class="mi">1</span>
 <span class="w">      </span><span class="k">end if</span>
 
@@ -1334,9 +1334,9 @@ large graphs.</div>
 <span class="w">      </span><span class="k">end if</span>
 
 <span class="k">      if</span><span class="w"> </span><span class="p">(</span><span class="n">w</span><span class="p">%</span><span class="n">watch_deps</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">         call </span><span class="n">push_file_with_mask</span><span class="p">(</span><span class="n">files</span><span class="p">,</span><span class="w"> </span><span class="n">file_mask</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;fpm.toml&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">trim_or_empty</span><span class="p">(</span><span class="n">settings</span><span class="p">%</span><span class="n">build_dir</span><span class="p">),</span><span class="w"> </span><span class="mi">0_int64</span><span class="p">,</span><span class="w"> </span><span class="n">dep_dirs</span><span class="p">)</span>
+<span class="k">         call </span><span class="n">push_file_with_mask</span><span class="p">(</span><span class="n">files</span><span class="p">,</span><span class="w"> </span><span class="n">file_mask</span><span class="p">,</span><span class="w"> </span><span class="s2">"fpm.toml"</span><span class="p">,</span><span class="w"> </span><span class="n">trim_or_empty</span><span class="p">(</span><span class="n">settings</span><span class="p">%</span><span class="n">build_dir</span><span class="p">),</span><span class="w"> </span><span class="mi">0_int64</span><span class="p">,</span><span class="w"> </span><span class="n">dep_dirs</span><span class="p">)</span>
 <span class="w">      </span><span class="k">else</span>
-<span class="k">         call </span><span class="n">push_file_with_mask</span><span class="p">(</span><span class="n">files</span><span class="p">,</span><span class="w"> </span><span class="n">file_mask</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;fpm.toml&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">trim_or_empty</span><span class="p">(</span><span class="n">settings</span><span class="p">%</span><span class="n">build_dir</span><span class="p">),</span><span class="w"> </span><span class="mi">0_int64</span><span class="p">)</span>
+<span class="k">         call </span><span class="n">push_file_with_mask</span><span class="p">(</span><span class="n">files</span><span class="p">,</span><span class="w"> </span><span class="n">file_mask</span><span class="p">,</span><span class="w"> </span><span class="s2">"fpm.toml"</span><span class="p">,</span><span class="w"> </span><span class="n">trim_or_empty</span><span class="p">(</span><span class="n">settings</span><span class="p">%</span><span class="n">build_dir</span><span class="p">),</span><span class="w"> </span><span class="mi">0_int64</span><span class="p">)</span>
 <span class="w">      </span><span class="k">end if</span>
 
 <span class="k">      do </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">tree</span><span class="p">%</span><span class="n">ndep</span>
@@ -1344,9 +1344,9 @@ large graphs.</div>
 <span class="k">         if</span><span class="w"> </span><span class="p">(</span><span class="nb">len_trim</span><span class="p">(</span><span class="n">tree</span><span class="p">%</span><span class="n">dep</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">proj_dir</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">cycle</span>
 
 <span class="k">         if</span><span class="w"> </span><span class="p">(</span><span class="n">w</span><span class="p">%</span><span class="n">watch_deps</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">            call </span><span class="n">push_file_with_mask</span><span class="p">(</span><span class="n">files</span><span class="p">,</span><span class="w"> </span><span class="n">file_mask</span><span class="p">,</span><span class="w"> </span><span class="n">join_path</span><span class="p">(</span><span class="n">tree</span><span class="p">%</span><span class="n">dep</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">proj_dir</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;fpm.toml&quot;</span><span class="p">),</span><span class="w"> </span><span class="n">trim_or_empty</span><span class="p">(</span><span class="n">settings</span><span class="p">%</span><span class="n">build_dir</span><span class="p">),</span><span class="w"> </span><span class="mi">0_int64</span><span class="p">,</span><span class="w"> </span><span class="n">dep_dirs</span><span class="p">)</span>
+<span class="k">            call </span><span class="n">push_file_with_mask</span><span class="p">(</span><span class="n">files</span><span class="p">,</span><span class="w"> </span><span class="n">file_mask</span><span class="p">,</span><span class="w"> </span><span class="n">join_path</span><span class="p">(</span><span class="n">tree</span><span class="p">%</span><span class="n">dep</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">proj_dir</span><span class="p">,</span><span class="w"> </span><span class="s2">"fpm.toml"</span><span class="p">),</span><span class="w"> </span><span class="n">trim_or_empty</span><span class="p">(</span><span class="n">settings</span><span class="p">%</span><span class="n">build_dir</span><span class="p">),</span><span class="w"> </span><span class="mi">0_int64</span><span class="p">,</span><span class="w"> </span><span class="n">dep_dirs</span><span class="p">)</span>
 <span class="w">         </span><span class="k">else</span>
-<span class="k">            call </span><span class="n">push_file_with_mask</span><span class="p">(</span><span class="n">files</span><span class="p">,</span><span class="w"> </span><span class="n">file_mask</span><span class="p">,</span><span class="w"> </span><span class="n">join_path</span><span class="p">(</span><span class="n">tree</span><span class="p">%</span><span class="n">dep</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">proj_dir</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;fpm.toml&quot;</span><span class="p">),</span><span class="w"> </span><span class="n">trim_or_empty</span><span class="p">(</span><span class="n">settings</span><span class="p">%</span><span class="n">build_dir</span><span class="p">),</span><span class="w"> </span><span class="mi">0_int64</span><span class="p">)</span>
+<span class="k">            call </span><span class="n">push_file_with_mask</span><span class="p">(</span><span class="n">files</span><span class="p">,</span><span class="w"> </span><span class="n">file_mask</span><span class="p">,</span><span class="w"> </span><span class="n">join_path</span><span class="p">(</span><span class="n">tree</span><span class="p">%</span><span class="n">dep</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">proj_dir</span><span class="p">,</span><span class="w"> </span><span class="s2">"fpm.toml"</span><span class="p">),</span><span class="w"> </span><span class="n">trim_or_empty</span><span class="p">(</span><span class="n">settings</span><span class="p">%</span><span class="n">build_dir</span><span class="p">),</span><span class="w"> </span><span class="mi">0_int64</span><span class="p">)</span>
 <span class="w">         </span><span class="k">end if</span>
 <span class="k">      end do</span>
 
@@ -1359,7 +1359,7 @@ large graphs.</div>
 <span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">allocated</span><span class="p">(</span><span class="n">files</span><span class="p">))</span><span class="w"> </span><span class="n">n_after</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">size</span><span class="p">(</span><span class="n">files</span><span class="p">)</span>
 
 <span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">w</span><span class="p">%</span><span class="n">debug</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">         call </span><span class="n">log_info</span><span class="p">(</span><span class="n">w</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;debug: watch files filtered: &quot;</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="n">str</span><span class="p">(</span><span class="n">n_before</span><span class="p">)</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="s2">&quot; -&gt; &quot;</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="n">str</span><span class="p">(</span><span class="n">n_after</span><span class="p">))</span>
+<span class="k">         call </span><span class="n">log_info</span><span class="p">(</span><span class="n">w</span><span class="p">,</span><span class="w"> </span><span class="s2">"debug: watch files filtered: "</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="n">str</span><span class="p">(</span><span class="n">n_before</span><span class="p">)</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="s2">" -&gt; "</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="n">str</span><span class="p">(</span><span class="n">n_after</span><span class="p">))</span>
 <span class="w">      </span><span class="k">end if</span>
 
 <span class="k">      call </span><span class="nb">system_clock</span><span class="p">(</span><span class="n">tw1</span><span class="p">)</span>
@@ -1369,8 +1369,8 @@ large graphs.</div>
 <span class="w">      </span><span class="n">manifest_key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0_int64</span>
 
 <span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">w</span><span class="p">%</span><span class="n">verbosity</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">         call </span><span class="n">log_info</span><span class="p">(</span><span class="n">w</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;timings: model=&quot;</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="n">ftoa</span><span class="p">(</span><span class="n">secs_model</span><span class="p">)</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="s2">&quot;s targets=&quot;</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="n">ftoa</span><span class="p">(</span><span class="n">secs_targets</span><span class="p">)</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="s2">&quot;s watchlist=&quot;</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="n">ftoa</span><span class="p">(</span><span class="n">secs_watch</span><span class="p">)</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="s2">&quot;s&quot;</span><span class="p">)</span>
-<span class="w">         </span><span class="k">call </span><span class="n">log_info</span><span class="p">(</span><span class="n">w</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;targets: total=&quot;</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="n">str</span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">targets</span><span class="p">))</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="s2">&quot; closure=&quot;</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="n">str</span><span class="p">(</span><span class="nb">count</span><span class="p">(</span><span class="n">visited</span><span class="p">)))</span>
+<span class="k">         call </span><span class="n">log_info</span><span class="p">(</span><span class="n">w</span><span class="p">,</span><span class="w"> </span><span class="s2">"timings: model="</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="n">ftoa</span><span class="p">(</span><span class="n">secs_model</span><span class="p">)</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="s2">"s targets="</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="n">ftoa</span><span class="p">(</span><span class="n">secs_targets</span><span class="p">)</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="s2">"s watchlist="</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="n">ftoa</span><span class="p">(</span><span class="n">secs_watch</span><span class="p">)</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="s2">"s"</span><span class="p">)</span>
+<span class="w">         </span><span class="k">call </span><span class="n">log_info</span><span class="p">(</span><span class="n">w</span><span class="p">,</span><span class="w"> </span><span class="s2">"targets: total="</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="n">str</span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">targets</span><span class="p">))</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="s2">" closure="</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="n">str</span><span class="p">(</span><span class="nb">count</span><span class="p">(</span><span class="n">visited</span><span class="p">)))</span>
 <span class="w">      </span><span class="k">end if</span>
 
 <span class="k">      deallocate</span><span class="p">(</span><span class="n">package</span><span class="p">,</span><span class="w"> </span><span class="n">model</span><span class="p">)</span>
@@ -1397,7 +1397,7 @@ large graphs.</div>
 <span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">allocated</span><span class="p">(</span><span class="n">tree</span><span class="p">%</span><span class="n">dep</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">proj_dir</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
 <span class="k">               </span><span class="n">dep_dirs</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">normalize_path</span><span class="p">(</span><span class="nb">trim</span><span class="p">(</span><span class="n">tree</span><span class="p">%</span><span class="n">dep</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">proj_dir</span><span class="p">))</span>
 <span class="w">            </span><span class="k">else</span>
-<span class="k">               </span><span class="n">dep_dirs</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
+<span class="k">               </span><span class="n">dep_dirs</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">""</span>
 <span class="w">            </span><span class="k">end if</span>
 <span class="k">         end do</span>
 <span class="k">      end subroutine </span><span class="n">collect_dep_dirs</span>
@@ -1426,7 +1426,7 @@ large graphs.</div>
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2026-08-11T11:09:14.175318+0000             </p>
+ on 2026-10-07T15:43:29.178131+0000             </p>
           </div>
         </div>
         <br>

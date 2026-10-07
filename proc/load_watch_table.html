@@ -211,7 +211,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-ok~9"></span>
+              <span class="anchor" id="variable-ok~13"></span>
               logical,
             </td>
 <td>intent(out)</td>
@@ -591,16 +591,16 @@ large graphs.</div>
 <span class="w">      </span><span class="n">wt</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="nb">null</span><span class="p">()</span>
 <span class="w">      </span><span class="n">extra</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="nb">null</span><span class="p">()</span>
 
-<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="n">exists</span><span class="p">(</span><span class="s2">&quot;fpm.toml&quot;</span><span class="p">))</span><span class="w"> </span><span class="k">return</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="n">exists</span><span class="p">(</span><span class="s2">"fpm.toml"</span><span class="p">))</span><span class="w"> </span><span class="k">return</span>
 
-<span class="k">      call </span><span class="n">read_package_file</span><span class="p">(</span><span class="n">root</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;fpm.toml&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">err</span><span class="p">)</span>
+<span class="k">      call </span><span class="n">read_package_file</span><span class="p">(</span><span class="n">root</span><span class="p">,</span><span class="w"> </span><span class="s2">"fpm.toml"</span><span class="p">,</span><span class="w"> </span><span class="n">err</span><span class="p">)</span>
 <span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">allocated</span><span class="p">(</span><span class="n">err</span><span class="p">))</span><span class="w"> </span><span class="k">return</span>
 
-<span class="k">      call </span><span class="n">get_value</span><span class="p">(</span><span class="n">root</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;extra&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">extra</span><span class="p">,</span><span class="w"> </span><span class="n">requested</span><span class="o">=</span><span class="p">.</span><span class="n">false</span><span class="p">.,</span><span class="w"> </span><span class="nb">stat</span><span class="o">=</span><span class="nb">stat</span><span class="p">)</span>
+<span class="k">      call </span><span class="n">get_value</span><span class="p">(</span><span class="n">root</span><span class="p">,</span><span class="w"> </span><span class="s2">"extra"</span><span class="p">,</span><span class="w"> </span><span class="n">extra</span><span class="p">,</span><span class="w"> </span><span class="n">requested</span><span class="o">=</span><span class="p">.</span><span class="n">false</span><span class="p">.,</span><span class="w"> </span><span class="nb">stat</span><span class="o">=</span><span class="nb">stat</span><span class="p">)</span>
 <span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">stat</span><span class="w"> </span><span class="o">/=</span><span class="w"> </span><span class="n">toml_stat</span><span class="p">%</span><span class="n">success</span><span class="p">)</span><span class="w"> </span><span class="k">return</span>
 <span class="k">      if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="nb">associated</span><span class="p">(</span><span class="n">extra</span><span class="p">))</span><span class="w"> </span><span class="k">return</span>
 
-<span class="k">      call </span><span class="n">get_value</span><span class="p">(</span><span class="n">extra</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;fpm-watch&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">wt</span><span class="p">,</span><span class="w"> </span><span class="n">requested</span><span class="o">=</span><span class="p">.</span><span class="n">false</span><span class="p">.,</span><span class="w"> </span><span class="nb">stat</span><span class="o">=</span><span class="nb">stat</span><span class="p">)</span>
+<span class="k">      call </span><span class="n">get_value</span><span class="p">(</span><span class="n">extra</span><span class="p">,</span><span class="w"> </span><span class="s2">"fpm-watch"</span><span class="p">,</span><span class="w"> </span><span class="n">wt</span><span class="p">,</span><span class="w"> </span><span class="n">requested</span><span class="o">=</span><span class="p">.</span><span class="n">false</span><span class="p">.,</span><span class="w"> </span><span class="nb">stat</span><span class="o">=</span><span class="nb">stat</span><span class="p">)</span>
 <span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">stat</span><span class="w"> </span><span class="o">/=</span><span class="w"> </span><span class="n">toml_stat</span><span class="p">%</span><span class="n">success</span><span class="p">)</span><span class="w"> </span><span class="k">return</span>
 <span class="k">      if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="nb">associated</span><span class="p">(</span><span class="n">wt</span><span class="p">))</span><span class="w"> </span><span class="k">return</span>
 
@@ -629,7 +629,7 @@ large graphs.</div>
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2026-08-11T11:09:14.175318+0000             </p>
+ on 2026-10-07T15:43:29.178131+0000             </p>
           </div>
         </div>
         <br>

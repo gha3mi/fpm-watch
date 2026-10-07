@@ -181,7 +181,7 @@ It includes:
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-settings~8"></span>
+              <span class="anchor" id="variable-settings~6"></span>
               class(fpm_build_settings),
             </td>
 <td>intent(in)</td>
@@ -196,7 +196,7 @@ It includes:
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-files~13"></span>
+              <span class="anchor" id="variable-files~12"></span>
               type(string_t),
             </td>
 <td>intent(in),</td>
@@ -214,7 +214,7 @@ It includes:
 
       <h3>Return Value
         <small>
-          <span class="anchor" id="variable-k~9"></span>
+          <span class="anchor" id="variable-k~6"></span>
           integer(kind=int64)
         </small>
       </h3>
@@ -637,15 +637,15 @@ large graphs.</div>
 <span class="w">      </span><span class="k">call </span><span class="n">mix_alloc</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="w"> </span><span class="n">settings</span><span class="p">%</span><span class="n">ldflag</span><span class="p">)</span>
 
 <span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">settings</span><span class="p">%</span><span class="n">prune</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">         call </span><span class="n">fnv1a_mix_str</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;prune=1&quot;</span><span class="p">)</span>
+<span class="k">         call </span><span class="n">fnv1a_mix_str</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="w"> </span><span class="s2">"prune=1"</span><span class="p">)</span>
 <span class="w">      </span><span class="k">else</span>
-<span class="k">         call </span><span class="n">fnv1a_mix_str</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;prune=0&quot;</span><span class="p">)</span>
+<span class="k">         call </span><span class="n">fnv1a_mix_str</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="w"> </span><span class="s2">"prune=0"</span><span class="p">)</span>
 <span class="w">      </span><span class="k">end if</span>
 
 <span class="k">      if</span><span class="w"> </span><span class="p">(</span><span class="n">settings</span><span class="p">%</span><span class="n">build_tests</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">         call </span><span class="n">fnv1a_mix_str</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;build_tests=1&quot;</span><span class="p">)</span>
+<span class="k">         call </span><span class="n">fnv1a_mix_str</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="w"> </span><span class="s2">"build_tests=1"</span><span class="p">)</span>
 <span class="w">      </span><span class="k">else</span>
-<span class="k">         call </span><span class="n">fnv1a_mix_str</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;build_tests=0&quot;</span><span class="p">)</span>
+<span class="k">         call </span><span class="n">fnv1a_mix_str</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="w"> </span><span class="s2">"build_tests=0"</span><span class="p">)</span>
 <span class="w">      </span><span class="k">end if</span>
 
 <span class="k">      if</span><span class="w"> </span><span class="p">(</span><span class="nb">allocated</span><span class="p">(</span><span class="n">settings</span><span class="p">%</span><span class="n">features</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
@@ -657,7 +657,7 @@ large graphs.</div>
 <span class="k">      if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="nb">allocated</span><span class="p">(</span><span class="n">files</span><span class="p">))</span><span class="w"> </span><span class="k">return</span>
 <span class="k">      do </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="p">(</span><span class="n">files</span><span class="p">)</span>
 <span class="w">         </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">basename</span><span class="p">(</span><span class="n">files</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">s</span><span class="p">)</span>
-<span class="w">         </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">b</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;fpm.toml&quot;</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="w">         </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">b</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">"fpm.toml"</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
 <span class="k">            call </span><span class="n">fnv1a_mix_str</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="w"> </span><span class="n">files</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">s</span><span class="p">)</span>
 <span class="w">            </span><span class="k">call </span><span class="n">fnv1a_mix_i64</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="w"> </span><span class="n">file_fingerprint</span><span class="p">(</span><span class="n">files</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">s</span><span class="p">))</span>
 <span class="w">         </span><span class="k">end if</span>
@@ -697,7 +697,7 @@ large graphs.</div>
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2026-08-11T11:09:14.175318+0000             </p>
+ on 2026-10-07T15:43:29.178131+0000             </p>
           </div>
         </div>
         <br>
