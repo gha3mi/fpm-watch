@@ -50,16 +50,21 @@ contains
    end function structured_logging
 
    !> Emit an event with stable identity and optional typed attributes.
-   !! Errors bypass quiet mode. Debug events require debug mode and are
-   !! suppressed by quiet mode. Verbosity controls additional detail.
-   subroutine log_event(level, event, message, fields, verbosity)
+   !! Errors and forced protocol records bypass verbosity and debug filtering.
+   !! Other debug events require debug mode and are suppressed by quiet mode.
+   !! Verbosity controls additional detail.
+   subroutine log_event(level, event, message, fields, verbosity, force)
       character(len=*), intent(in) :: level, event, message
       type(log_field_t), intent(in), optional :: fields(:)
       integer, intent(in), optional :: verbosity
+      logical, intent(in), optional :: force
       integer :: unit, detail
+      logical :: required
       character(len=:), allocatable :: line, timestamp
       if (.not. allocated(active_format)) active_format = "text"
-      if (level /= "error") then
+      required = .false.
+      if (present(force)) required = force
+      if (level /= "error" .and. .not. required) then
          if (active_verbosity < 0) return
          detail = 0
          if (present(verbosity)) detail = verbosity

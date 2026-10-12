@@ -174,7 +174,7 @@ contains
          do j = 1, size(pats)
             if (len_trim(pats(j)%s) == 0) cycle
             pat = normalize_path(trim(pats(j)%s))
-            if (glob(pat, trim(path))) then
+            if (glob(trim(path), pat)) then
                ok = .true.
                return
             end if

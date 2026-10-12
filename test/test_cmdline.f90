@@ -5,7 +5,7 @@ program test_cmdline
    use fpm_command_line, only: fpm_run_settings
    use watch_types, only: watch_config_t
    use watch_cli, only: parse_cli_config
-   use watch_cmdline, only: get_arg, join_argv, quote_arg, needs_quotes, is_windows_os, watch_option_takes_value
+   use watch_cmdline, only: get_arg, join_argv, quote_arg, needs_quotes, is_windows_os, watch_option_takes_value, parse_bool
    use watch_platform, only: execute_command
    use watch_cmdsplice, only: split_cmd_after_subcmd, inject_names_into_cmd
    implicit none
@@ -38,6 +38,12 @@ program test_cmdline
             expected = expected // quote_arg(values(i)%s)
          end do
          call require(join_argv(2, command_argument_count()) == expected, "joined argv preserves all tokens")
+      else if (mode == "--watch-fpm" .or. mode == "--watch-fpm=custom fpm") then
+         call parse_cli_config(cfg)
+         call require(cfg%w%fpm_executable == "custom fpm", "custom executable preserved")
+         call require(.not. cfg%w%silent_fpm, "CLI overrides silent manifest default")
+         call require(cfg%cmd_prefix == quote_arg("custom fpm") // " run", "quoted executable prefix")
+         call require(cfg%fpm_cmdline == cfg%cmd_prefix // " " // cfg%cmd_rest, "custom command rebuilt")
       else if (mode == "run") then
          call parse_cli_config(cfg)
          select type (s => cfg%settings)
@@ -74,6 +80,9 @@ program test_cmdline
    end if
    call require(watch_option_takes_value("--watch-ignore"), "watch option consumes value")
    call require(.not. watch_option_takes_value("--watch-ignore=run"), "equals-style watch option arity")
+   call require(parse_bool(" YES ", .false.), "case-insensitive true value")
+   call require(.not. parse_bool("OFF", .true.), "case-insensitive false value")
+   call require(parse_bool("invalid", .true.), "invalid boolean uses fallback")
 
    cmd = quote_arg(get_arg(0)) // " --check-argv"
    do i = 1, size(values)
@@ -87,6 +96,13 @@ program test_cmdline
    cmd = quote_arg(get_arg(0)) // " run --target=" // quote_arg("one,two:three four") // &
       " --profile=release --runner-args=120"
    call run_child(cmd, "equals-style target value")
+
+   cmd = quote_arg(get_arg(0)) // " --watch-fpm " // quote_arg("custom fpm") // &
+      " --watch-silent-fpm --watch-silent-fpm=false run --profile=release"
+   call run_child(cmd, "custom executable and output override")
+   cmd = quote_arg(get_arg(0)) // " " // quote_arg("--watch-fpm=custom fpm") // &
+      " --watch-silent-fpm --watch-silent-fpm=false run --profile=release"
+   call run_child(cmd, "equals-style custom executable")
 
    runner = quote_arg("echo -- marker")
    rest = quote_arg("--runner") // " " // runner

@@ -79,13 +79,14 @@ def run_regressions(watcher):
             "--watch-restart-max", "1", "--watch-restart-delay", "0",
             "--watch-self", str(executable), *forwarded,
         ]
-        expected = ["--watch-child", "--watch-log-format", "text", "--watch-ignore", "run", *forwarded]
+        expected = [[f"--watch-child={attempt}", "--watch-log-format", "text", "--watch-ignore", "run", *forwarded]
+                    for attempt in range(2)]
         for code in (2, 130):
             env["WATCH_TEST_EXIT"] = str(code)
             log.unlink(missing_ok=True)
             result = subprocess.run(command, cwd=directory, env=env, capture_output=True, text=True, timeout=10)
             assert result.returncode == code, result.stderr
-            assert invocations(log) == [expected, expected], (invocations(log), result.stderr)
+            assert invocations(log) == expected, (invocations(log), result.stderr)
             assert result.stdout.count("WATCH_PLATFORM_CHILD_OUTPUT") == 2, result.stdout
             assert result.stderr.count("WATCH_PLATFORM_CHILD_ERROR") == 2, result.stderr
 

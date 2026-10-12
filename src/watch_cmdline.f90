@@ -13,9 +13,42 @@ module watch_cmdline
    implicit none
    private
    public get_arg, join_argv, parse_int, parse_real, needs_quotes, quote_arg, is_windows_os, starts_with
-   public watch_option_takes_value
+   public watch_option_takes_value, parse_bool
 
 contains
+
+   !> Parse a boolean spelling, falling back when the value is unrecognized.
+   pure logical function parse_bool(s, default) result(v)
+      character(len=*), intent(in) :: s
+      logical, intent(in) :: default
+      character(len=:), allocatable :: t
+      t = trim(adjustl(lower_ascii(s)))
+      select case (t)
+       case ("1","true","on","yes","y","t")
+         v = .true.
+       case ("0","false","off","no","n","f")
+         v = .false.
+       case default
+         v = default
+      end select
+   end function parse_bool
+
+   !> Normalize ASCII letters for case-insensitive option values.
+   pure function lower_ascii(s) result(r)
+      character(len=*), intent(in) :: s
+      character(len=len(s)) :: r
+      integer :: k, c, da
+      da = iachar("a") - iachar("A")
+      do k = 1, len(s)
+         c = iachar(s(k:k))
+         if (c >= iachar("A") .and. c <= iachar("Z")) then
+            r(k:k) = achar(c + da)
+         else
+            r(k:k) = s(k:k)
+         end if
+      end do
+   end function lower_ascii
+
 
    !> Return whether a bare watcher option consumes the following argv token.
    pure logical function watch_option_takes_value(a) result(takes_value)
@@ -23,7 +56,7 @@ contains
       select case (a)
        case ("--watch-restart-delay", "--watch-restart-max", "--watch-self", &
              "--watch-rescan", "--watch-ignore", "--watch-include", "--watch-feature", &
-             "--watch-poll", "--watch-debounce", "--watch-log-format")
+             "--watch-poll", "--watch-debounce", "--watch-log-format", "--watch-fpm")
          takes_value = .true.
        case default
          takes_value = .false.

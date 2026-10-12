@@ -50,6 +50,23 @@ program graph_check
    include_index = find_file("include/shared.inc")
    if (masks(include_index) /= roots(1)%mask) error stop "include lost its target mask"
 
+   settings%name = [character(len=7) :: "graph*?"]
+   call compute_graph()
+   call expect_file("app/main.f90", .true.)
+   if (size(roots) /= 1) error stop "wildcard target did not select the runnable root"
+   deallocate(settings%name)
+   allocate(settings%name(0))
+
+   options%include = [string_t("app/*.f90"), string_t("include/*.inc")]
+   options%ignore = [string_t("*/shared.inc")]
+   call compute_graph()
+   call expect_file("app/main.f90", .true.)
+   call expect_file("app/helper.c", .false.)
+   call expect_file("app/local.inc", .false.)
+   call expect_file("include/shared.inc", .false.)
+   call expect_file("fpm.toml", .true.)
+   deallocate(options%include, options%ignore)
+
    options%watch_deps = .true.
    call compute_graph()
    call expect_file("deps/local/src/local_dep.f90", .true.)

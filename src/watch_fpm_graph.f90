@@ -616,7 +616,7 @@ contains
          outbase_stem = basename(targets(i)%ptr%output_file, suffix=.false.)
          do j = 1, size(names)
             if (len_trim(names(j)) == 0) cycle
-            if (glob(trim(names(j)), outbase_full) .or. glob(trim(names(j)), outbase_stem)) then
+            if (glob(outbase_full, trim(names(j))) .or. glob(outbase_stem, trim(names(j)))) then
                keep(i) = .true.
                exit
             end if

@@ -20,7 +20,7 @@ module watch_engine
    use watch_platform, only: termination_requested
    use watch_time, only: sleep_seconds, set_low_cpu
    use watch_exec, only: report_changes, build_run_command, run_command_and_report
-   use watch_banner, only: print_banner, print_file_list
+   use watch_banner, only: print_banner, print_file_list, print_configuration
    use fpm_strings, only: string_t, str
    use fpm_filesystem, only: basename, exists
    implicit none
@@ -377,6 +377,7 @@ contains
             secs_watch   = secs_watch )
          if (self%cfg%w%print_files_once) call print_file_list(self%files, self%cfg%w)
       else
+         call print_configuration(self%cfg%settings, self%cfg%w)
          call log_event("info", "watch.refreshed", "Watch list updated; " // str(nfiles) // " files", &
                        [log_int("file_count", nfiles), log_real("duration_ms", build_secs_total * 1000.0)], verbosity=1)
          if (self%cfg%w%verbosity >= 2) call print_file_list(self%files, self%cfg%w)
