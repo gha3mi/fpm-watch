@@ -14,10 +14,13 @@
 !!
 !! Low CPU mode is also applied here so the supervisor delay sleeps are idle.
 module watch_restart
-   use, intrinsic :: iso_fortran_env, only: error_unit
    use watch_time, only: sleep_seconds, set_low_cpu
-   use watch_cmdline, only: get_arg, parse_int, parse_real, quote_arg, starts_with
+   use watch_cmdline, only: get_arg, parse_int, parse_real, quote_arg, starts_with, watch_option_takes_value
    use watch_config, only: get_restart_defaults
+   use watch_platform, only: execute_command
+   use watch_log, only: log_event, log_int, log_real, log_string
+   use fpm_strings, only: str
+   use watch_util, only: ftoa
    implicit none
    private
    public maybe_supervise
@@ -29,7 +32,8 @@ contains
    !! If auto-restart is enabled and the current process is not marked as a
    !! child (`--watch-child`), this routine runs a supervisor loop and does not
    !! return.
-   subroutine maybe_supervise()
+   subroutine maybe_supervise(log_format)
+      character(len=*), intent(in) :: log_format
       logical :: auto_restart, is_child
       real    :: restart_delay
       integer :: restart_max
@@ -38,7 +42,7 @@ contains
       call parse_restart_flags(auto_restart, restart_delay, restart_max, is_child, self_exe)
 
       if (auto_restart .and. (.not. is_child)) then
-         call supervisor_loop(max(0.0, restart_delay), restart_max, self_exe)
+         call supervisor_loop(max(0.0, restart_delay), restart_max, self_exe, log_format)
          stop 0
       end if
    end subroutine maybe_supervise
@@ -49,32 +53,42 @@ contains
    !! - Execute the child command.
    !! - Exit if the child returns `0`.
    !! - Otherwise wait `delay0` seconds and restart, until `max0` is reached.
-   subroutine supervisor_loop(delay0, max0, exe0)
+   subroutine supervisor_loop(delay0, max0, exe0, log_format)
       real, intent(in) :: delay0
       integer, intent(in) :: max0
       character(len=*), intent(in) :: exe0
+      character(len=*), intent(in) :: log_format
 
       character(len=:), allocatable :: child_cmd
       integer :: code, attempt
       real :: delay
+      logical :: interrupted
 
-      child_cmd = build_child_command(exe0)
+      child_cmd = build_child_command(exe0, log_format)
       attempt = 0
       delay = max(0.0, delay0)
 
       do
          code = 0
-         call execute_command_line(child_cmd, exitstat=code)
+         call execute_command(child_cmd, code, interrupted)
 
-         if (code == 0) exit
-
-         attempt = attempt + 1
-         if (max0 > 0 .and. attempt >= max0) then
-            write(error_unit,"(a)") "fpm-watch: child exited with nonzero status; restart limit reached"
+         if (interrupted) then
+            call log_event("info", "supervisor.stopped", "Supervisor interrupted", [log_string("reason", "interrupt")])
             stop code
          end if
 
-         write(error_unit,"(a,i0,a,i0,a,f0.2,a)") "fpm-watch: child crashed/aborted (exit=", code, "), restart #", attempt, " in ", delay, "s"
+         if (code == 0) exit
+
+         if (max0 > 0 .and. attempt >= max0) then
+            call log_event("error", "supervisor.limit_reached", "Child failed; restart limit reached", &
+                           [log_int("exit_code", code), log_int("restart_count", attempt)])
+            stop code
+         end if
+
+         attempt = attempt + 1
+         call log_event("warn", "supervisor.restart", &
+                        "Child failed (exit " // str(code) // "); restart #" // str(attempt) // " in " // ftoa(delay) // "s", &
+                        [log_int("exit_code", code), log_int("restart_count", attempt), log_real("delay_ms", delay * 1000.0)])
          call sleep_seconds(delay)
       end do
 
@@ -85,47 +99,65 @@ contains
    !!
    !! The child receives `--watch-child` and inherits most argv tokens, with
    !! supervisor-only flags removed to avoid recursion.
-   function build_child_command(exe0) result(cmd)
+   !! The parent's selected format is retained across child restarts.
+   function build_child_command(exe0, log_format) result(cmd)
       character(len=*), intent(in) :: exe0
+      character(len=*), intent(in) :: log_format
       character(len=:), allocatable :: cmd
       character(len=:), allocatable :: exe, a
       integer :: narg, i
-      logical :: skip_next
+      logical :: skip_next, copy_next, in_prefix
 
       exe = choose_self_exe(exe0)
-      cmd = quote_arg(exe) // " --watch-child"
+      cmd = quote_arg(exe) // " --watch-child --watch-log-format " // log_format
 
       narg = command_argument_count()
       skip_next = .false.
+      copy_next = .false.
+      in_prefix = .true.
 
       do i = 1, narg
          a = get_arg(i)
+
+         if (.not. in_prefix) then
+            cmd = cmd // " " // quote_arg(a)
+            cycle
+         end if
 
          if (skip_next) then
             skip_next = .false.
             cycle
          end if
 
+         if (copy_next) then
+            copy_next = .false.
+            cmd = cmd // " " // quote_arg(a)
+            cycle
+         end if
+
+         if (.not. starts_with(a, "--watch-") .and. a /= "-q" .and. a /= "-v" .and. a /= "-vv") then
+            in_prefix = .false.
+            cmd = cmd // " " // quote_arg(a)
+            cycle
+         end if
+
          if (a == "--watch-auto-restart") cycle
          if (a == "--watch-child") cycle
 
-         if (a == "--watch-restart-delay") then
+         select case (a)
+          case ("--watch-restart-delay", "--watch-restart-max", "--watch-self", "--watch-log-format")
             skip_next = .true.
             cycle
-         end if
-         if (a == "--watch-restart-max") then
-            skip_next = .true.
-            cycle
-         end if
-         if (a == "--watch-self") then
-            skip_next = .true.
-            cycle
-         end if
+          case default
+            continue
+         end select
 
          if (starts_with(a, "--watch-restart-delay=")) cycle
          if (starts_with(a, "--watch-restart-max=")) cycle
          if (starts_with(a, "--watch-self=")) cycle
+         if (starts_with(a, "--watch-log-format=")) cycle
 
+         copy_next = watch_option_takes_value(a)
          cmd = cmd // " " // quote_arg(a)
       end do
    end function build_child_command
@@ -187,6 +219,8 @@ contains
       i = 1
       do while (i <= narg)
          a = get_arg(i)
+
+         if (.not. starts_with(a, "--watch-") .and. a /= "-q" .and. a /= "-v" .and. a /= "-vv") exit
 
          if (a == "--watch-low-cpu") then
             call set_low_cpu(.true.)
@@ -271,7 +305,11 @@ contains
             cycle
          end if
 
-         i = i + 1
+         if (watch_option_takes_value(a)) then
+            i = i + 2
+         else
+            i = i + 1
+         end if
       end do
 
    contains

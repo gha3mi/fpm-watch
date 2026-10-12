@@ -42,6 +42,7 @@ fpm-watch run
 ```
 
 Everything after `<build|test|run>` is passed directly to `fpm`.
+Target lists such as `run --target first,second` use the same selection as `fpm`.
 
 Example:
 
@@ -61,6 +62,9 @@ fpm-watch --watch-low-cpu --watch-auto-restart run --example my_example
 --watch-quiet | -q
     Quiet mode (errors only).
 
+--watch-log-format <text|json|logfmt>
+    Log format (default: text). Also accepts --watch-log-format=json.
+
 --watch-verbose[=N] | -v
     Increase verbosity (0–2).
 
@@ -75,7 +79,7 @@ fpm-watch --watch-low-cpu --watch-auto-restart run --example my_example
 
 ```
 --watch-deps
-    Also watch dependency source trees.
+    Also watch dependency source trees and manifests, including feature/profile dependencies.
 
 --watch-no-deps
     Disable dependency watching (default).
@@ -101,7 +105,7 @@ fpm-watch --watch-low-cpu --watch-auto-restart run --example my_example
     Debounce delay before running (default: 0.2).
 
 --watch-rescan <sec>
-    Periodically rebuild fpm model (default: 0 = disabled).
+    Periodically rebuild the fpm model and run on added/removed sources (default: 0 = disabled).
 
 --watch-no-rescan
     Disable periodic rescan.
@@ -113,7 +117,7 @@ fpm-watch --watch-low-cpu --watch-auto-restart run --example my_example
     Wait for first change before running.
 
 --watch-once
-    Run once and exit (no continuous watching).
+    Initialize, run once if run-on-start is enabled, and exit with fpm's status.
 ```
 
 ### Output Control
@@ -149,11 +153,75 @@ fpm-watch --watch-low-cpu --watch-auto-restart run --example my_example
     Delay before restart (default: 1.0).
 
 --watch-restart-max <N>
-    Maximum restart attempts (0 = unlimited).
+    Maximum restart attempts after the initial launch (0 = unlimited).
 
 --watch-self <path>
     Explicit path to fpm-watch executable (advanced).
 ```
+
+## Logging
+
+Help and watcher logs are plain text without ANSI color codes; no color library
+is required. The default `text` format uses short, timestamped status lines.
+Configuration and timing details require `--watch-verbose`;
+individual watched files require `--watch-very-verbose` or `--watch-print-files`.
+`--watch-debug` emits additional records at the `debug` level. Quiet mode
+suppresses all watcher records except errors. Raw fpm output is controlled
+separately by `--watch-silent-fpm`.
+
+```text
+14:32:10 INFO  Watching 24 files (build); Ctrl+C or touch .fpm-watch.stop to stop
+14:32:15 INFO  Changed src/math.f90
+14:32:15 INFO  Running fpm build
+14:32:16 INFO  Build succeeded in 0.84s
+```
+
+Use `json` for [JSON Lines](https://jsonlines.org/), with one UTF-8 JSON object
+per line, or `logfmt` for [key/value records](https://brandur.org/logfmt):
+
+```bash
+fpm-watch --watch-log-format json build > watch.jsonl 2> fpm.log
+fpm-watch --watch-log-format logfmt test > watch.log 2> fpm.log
+```
+
+In both structured formats, **all watcher records, including errors, use
+stdout**. Raw fpm/model output and compiler/runtime diagnostics use stderr,
+so stdout can be parsed directly. Avoid merging the streams with `2>&1` when
+collecting structured records. Text mode keeps the usual fpm streams and sends
+watcher errors to stderr.
+
+```json
+{"timestamp":"2026-10-12T14:32:16.842+02:00","level":"info","event":"command.finished","message":"Build succeeded in 0.84s","command":"fpm build","exit_code":0,"duration_ms":842,"interrupted":false}
+```
+
+```text
+timestamp=2026-10-12T14:32:16.842+02:00 level=info event=command.finished msg="Build succeeded in 0.84s" command="fpm build" exit_code=0 duration_ms=842 interrupted=false
+```
+
+Every structured record has `timestamp` (RFC 3339 with milliseconds and an
+explicit UTC offset), `level`, `event`, and a human message (`message` in JSON,
+`msg` in logfmt). Event attributes use JSON numbers, booleans, strings, and
+arrays; logfmt uses scalar key/value fields, with arrays stored as quoted JSON.
+Quotes, backslashes, and control characters are escaped to keep each record on
+one physical line. Invalid UTF-8 bytes become Unicode replacement characters.
+Records are flushed immediately.
+
+Use `event` and its attributes for automation rather than parsing the message:
+
+| Event | Useful attributes |
+|---|---|
+| `watch.ready` | `file_count`, `root_count`, `mode`, `command`, `once` |
+| `watch.changed` | `file_count`, `paths`, `debounce_ms` |
+| `watch.manifest_changed` | Manifest refresh is starting |
+| `watch.refresh_failed`, `watch.init_failed` | Error details in the message |
+| `command.started` | `command`, `silent_fpm` |
+| `command.finished` | `command`, `exit_code`, `duration_ms`, `interrupted` |
+| `watch.stopped` | `reason` (`stop_file` or `interrupt`) |
+| `supervisor.restart`, `supervisor.limit_reached` | `exit_code`, `restart_count` |
+
+The selected format stays fixed for the process lifetime and supervisor
+restarts. Changing the manifest's `log-format` requires restarting the watcher. CLI options override
+the manifest setting.
 
 ## Configuration via `fpm.toml`
 
@@ -175,10 +243,11 @@ restart-max   = 0
 self          = ""
 debug         = false
 verbosity     = 0
+log-format    = "text"
 ignore        = []
 include       = []
 features      = []
-onece         = false
+once          = false
 ```
 
 ## Stopping
@@ -189,11 +258,43 @@ Press:
 Ctrl+C
 ```
 
+This stops the watcher and an active command, including in supervisor mode.
+User interrupts do not trigger automatic restarts.
+
 Or create:
 
 ```
 touch .fpm-watch.stop
 ```
+
+Changes to a watched manifest rebuild the watch list and run the command.
+An invalid manifest during watching reports an error and keeps the previous
+watch list until it can be refreshed successfully. Enable `--watch-rescan`
+to discover new source files without restarting the watcher. Fortran includes
+and quoted C headers are resolved through source and fpm include directories.
+
+## Development Checks
+
+macOS CI uses `fpm build --profile ci-release`, which selects GNU `-O1`
+to reduce compilation time for the fpm dependency. Other CI jobs use the
+standard release profile. CI installation reuses that build, and tests use
+the debug profile.
+
+```bash
+fpm build --profile debug --verbose
+fpm build --profile release --verbose
+fpm test
+fpm install --prefix .
+./bin/fpm-watch --watch-low-cpu --watch-once test
+python test/integration.py --watcher ./bin/fpm-watch
+python test/platform_regression.py ./bin/fpm-watch
+```
+
+On Windows, use `./bin/fpm-watch.exe`. The Python checks use only the standard
+library and temporary projects; `fpm test` covers command-line helpers,
+dependency graphs, command exit statuses, watch-list snapshots, and log encoding.
+The integration checks parse both structured formats and verify output-stream
+separation, configuration overrides, failures, and supervisor events.
 
 ## Bash Completion
 

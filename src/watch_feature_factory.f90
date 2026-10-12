@@ -8,7 +8,7 @@
 module watch_feature_factory
    use watch_feature_manager, only: feature_manager_t
    use watch_types, only: watch_opts_t
-   use watch_log, only: log_warn
+   use watch_log, only: log_event
    use watch_feat_stats, only: new_stats_feature
    use watch_feature_api, only: watch_feature_t
    implicit none
@@ -36,7 +36,7 @@ contains
           case ("stats")
             call add_stats(fm)
           case default
-            call log_warn(w, "unknown feature '" // name // "' (ignored)")
+            call log_event("warn", "feature.unknown", "Unknown feature '" // name // "' (ignored)")
          end select
       end do
    end subroutine enable_features

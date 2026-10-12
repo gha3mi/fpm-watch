@@ -8,6 +8,7 @@
 !! - Leading `./` segments are removed for consistent matching.
 !! - Build directory filtering is handled elsewhere (but helper exists here).
 module watch_filter
+   use watch_util, only: starts_with
    use, intrinsic :: iso_fortran_env, only: int64
    use fpm_strings, only: string_t, glob
    use fpm_filesystem, only: basename
@@ -39,19 +40,6 @@ contains
       end do
    end function normalize_path
 
-   !> Check whether a string begins with a given prefix.
-   pure logical function starts_with(s, prefix) result(ok)
-      character(len=*), intent(in) :: s, prefix
-      integer :: n
-      n = len_trim(prefix)
-      if (n <= 0) then
-         ok = .true.
-      else if (len_trim(s) < n) then
-         ok = .false.
-      else
-         ok = (s(1:n) == prefix(1:n))
-      end if
-   end function starts_with
 
    pure logical function ends_with(s, suffix) result(ok)
       character(len=*), intent(in) :: s, suffix

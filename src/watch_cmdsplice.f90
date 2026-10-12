@@ -4,9 +4,10 @@
 !! remainder, and to inject target names into the correct position while
 !! preserving a `--` delimiter for arguments passed to the executed program.
 !!
-!! These utilities operate on *plain strings* and assume a space-delimited
-!! token structure. They do not implement general shell parsing.
+!! These utilities operate on command strings serialized by `quote_arg()`.
+!! Delimiter detection respects quoted argv tokens and their escaped quotes.
 module watch_cmdsplice
+   use watch_cmdline, only: is_windows_os
    implicit none
    private
    public split_cmd_after_subcmd, inject_names_into_cmd
@@ -105,17 +106,20 @@ contains
    !! - after the `prefix` and any existing `fpm` options,
    !! - before a `--` delimiter (if present), so that program arguments remain
    !!   attached to the executed program.
-   function inject_names_into_cmd(prefix, rest, names) result(out)
+   function inject_names_into_cmd(prefix, rest, names, windows) result(out)
       character(len=*), intent(in) :: prefix
       !! Prefix up to and including the subcommand.
       character(len=*), intent(in) :: rest
       !! Remaining arguments after the subcommand.
       character(len=*), intent(in) :: names
       !! Space-separated names to inject.
+      logical, intent(in), optional :: windows
+      !! Explicit platform selection supports portable serialization checks.
       character(len=:), allocatable :: out
 
       character(len=:), allocatable :: p, r, n, before, after
       integer :: dd
+      logical :: use_windows
 
       p = trim(prefix)
       r = adjustl(trim(rest))
@@ -135,7 +139,12 @@ contains
          return
       end if
 
-      dd = find_double_dash_delim(r)
+      if (present(windows)) then
+         use_windows = windows
+      else
+         use_windows = is_windows_os()
+      end if
+      dd = find_double_dash_delim(r, use_windows)
       if (dd > 0) then
          if (dd > 1) then
             before = trim(r(1:dd-1))
@@ -155,35 +164,61 @@ contains
 
    contains
 
-      pure integer function find_double_dash_delim(str) result(pos)
+      !> Locate a complete `--` argv token, including its serialized quotes.
+      pure integer function find_double_dash_delim(str, windows) result(pos)
          character(len=*), intent(in) :: str
-         integer :: i, n
+         logical, intent(in) :: windows
+         integer :: i, n, first
+         character :: quote, ch
          pos = 0
          n = len_trim(str)
-         if (n < 2) return
-         do i = 1, n-1
-            if (str(i:i+1) == "--") then
-               if (is_boundary(str, i-1) .and. is_boundary(str, i+2)) then
-                  pos = i
-                  return
-               end if
+         i = 1
+         do while (i <= n)
+            if (is_space(str(i:i))) then
+               i = i + 1
+               cycle
             end if
+            first = i
+            quote = achar(0)
+            do while (i <= n)
+               ch = str(i:i)
+               if (windows .and. ch == achar(92) .and. i < n) then
+                  if (str(i+1:i+1) == achar(92) .or. str(i+1:i+1) == '"') then
+                     i = i + 2
+                     cycle
+                  end if
+               end if
+               if (quote == achar(0)) then
+                  if (is_space(ch)) exit
+                  if (ch == '"' .or. (ch == "'" .and. .not. windows)) quote = ch
+               else if (ch == quote) then
+                  if (windows .and. quote == '"' .and. i < n) then
+                     if (str(i+1:i+1) == '"') then
+                        i = i + 2
+                        cycle
+                     end if
+                  end if
+                  quote = achar(0)
+               end if
+               if (.not. windows .and. ch == achar(92) .and. quote /= "'") then
+                  i = i + 1
+               end if
+               i = i + 1
+            end do
+            select case (str(first:min(i-1, n)))
+             case ("--", "'--'", '"--"')
+               pos = first
+               return
+             case default
+               continue
+            end select
          end do
       end function find_double_dash_delim
 
-      pure logical function is_boundary(str, j) result(ok)
-         character(len=*), intent(in) :: str
-         integer, intent(in) :: j
-         integer :: n
-         n = len_trim(str)
-         if (j < 1) then
-            ok = .true.
-         else if (j > n) then
-            ok = .true.
-         else
-            ok = (str(j:j) == " " .or. str(j:j) == char(9))
-         end if
-      end function is_boundary
+      pure logical function is_space(ch) result(ok)
+         character, intent(in) :: ch
+         ok = ch == " " .or. ch == char(9)
+      end function is_space
 
    end function inject_names_into_cmd
 

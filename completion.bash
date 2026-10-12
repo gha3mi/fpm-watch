@@ -3,11 +3,13 @@
 _fpm_watch() {
   local cur="${COMP_WORDS[COMP_CWORD]}"
   local i cmd_index=-1
+  local prefix="" values
+  COMPREPLY=()
 
   i=1
   while (( i < ${#COMP_WORDS[@]} )); do
     case "${COMP_WORDS[i]}" in
-      --watch-poll|--watch-debounce|--watch-rescan|--watch-ignore|--watch-include|--watch-feature|--watch-restart-delay|--watch-restart-max|--watch-self)
+      --watch-poll|--watch-debounce|--watch-rescan|--watch-ignore|--watch-include|--watch-feature|--watch-restart-delay|--watch-restart-max|--watch-self|--watch-log-format)
         ((i+=2)); continue ;;
       --watch-verbose)
         if (( i+1 < ${#COMP_WORDS[@]} )) && [[ "${COMP_WORDS[i+1]}" =~ ^[0-2]$ ]]; then
@@ -31,10 +33,22 @@ _fpm_watch() {
     return 0
   fi
 
+  if [[ "$cur" == --watch-log-format=* ]]; then
+    prefix="--watch-log-format="
+    cur="${cur#*=}"
+  fi
+  if [[ -n "$prefix" || ( "$COMP_CWORD" -gt 0 && "${COMP_WORDS[COMP_CWORD-1]}" == --watch-log-format ) ]]; then
+    for values in $(compgen -W 'text json logfmt' -- "$cur"); do
+      COMPREPLY+=("$prefix$values")
+    done
+    return 0
+  fi
+
   local cmds="build test run"
   local opts="--help -h
 --watch-help
 --watch-quiet -q
+--watch-log-format
 --watch-verbose -v
 --watch-very-verbose -vv
 --watch-debug

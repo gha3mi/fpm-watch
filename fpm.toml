@@ -16,7 +16,14 @@ source-form = "free"
 
 [dependencies]
 fpm  = { git = "https://github.com/fortran-lang/fpm", tag = "v0.13.0" }
-FACE = { git = "https://github.com/szaghi/FACE" }
+
+[profiles]
+ci-release = ["ci-release"]
+
+[features.ci-release]
+description = "Optimized GNU CI build with bounded dependency compilation time"
+[features.ci-release.gfortran]
+flags = "-O1 -Wimplicit-interface -fPIC -fmax-errors=1 -fcoarray=single"
 
 [extra.ford]
 project             = "fpm-watch"

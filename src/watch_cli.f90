@@ -8,15 +8,15 @@
 !!
 !! Parsing is deliberately simple and "argv-token based": it does not implement
 !! a full shell parser. The `fpm_cmdline` string is built for display and for
-!! execution via `execute_command_line` / `fpm_filesystem:run`.
+!! execution via `watch_platform:execute_command`.
 module watch_cli
    use, intrinsic :: iso_fortran_env, only: error_unit
    use watch_types,  only: watch_config_t, watch_opts_t
    use watch_config, only: set_watch_defaults, apply_watch_from_manifest, normalize_watch_opts, push_feature
-   use watch_cmdline, only: get_arg, join_argv, parse_int, parse_real
-   use fpm_strings,  only: string_t
-   use fpm_command_line, only: fpm_build_settings, fpm_run_settings, fpm_test_settings
-   use face, only: colorize
+   use watch_cmdline, only: get_arg, join_argv, parse_int, parse_real, starts_with, watch_option_takes_value
+   use fpm_strings,  only: string_t, split
+   use fpm_command_line, only: fpm_build_settings, fpm_run_settings, fpm_test_settings, get_fpm_env
+   use watch_log, only: configure_logging, valid_log_format, log_event, structured_logging
    implicit none
    private
    public parse_cli_config
@@ -31,15 +31,17 @@ contains
    !! - `cfg%fpm_cmdline` is the effective command string
    !! - `cfg%cmd_prefix` and `cfg%cmd_rest` are helper fields used to inject
    !!   target names into `run`/`test` commands.
-   subroutine parse_cli_config(cfg)
+   !! The optional format retains the startup selection during manifest refresh.
+   subroutine parse_cli_config(cfg, log_format)
       use watch_cmdsplice, only: split_cmd_after_subcmd
       type(watch_config_t), intent(out) :: cfg
+      character(len=*), intent(in), optional :: log_format
 
       character(len=:), allocatable :: fpm_cmdline
       class(fpm_build_settings), allocatable :: settings
       character(len=:), allocatable :: subcmd
 
-      call parse_cli(cfg%w, settings, fpm_cmdline, subcmd)
+      call parse_cli(cfg%w, settings, fpm_cmdline, subcmd, log_format)
 
       cfg%fpm_cmdline = fpm_cmdline
       cfg%subcmd      = subcmd
@@ -58,39 +60,45 @@ contains
    !!    compilers, build-dir, features, and run/test names).
    !!
    !! All arguments after the subcommand are also preserved in `fpm_cmdline`.
-   subroutine parse_cli(w, settings, fpm_cmdline, subcmd)
+   subroutine parse_cli(w, settings, fpm_cmdline, subcmd, log_format)
       type(watch_opts_t), intent(out) :: w
       class(fpm_build_settings), allocatable, intent(out) :: settings
       character(len=:), allocatable, intent(out) :: fpm_cmdline
       character(len=:), allocatable, intent(out) :: subcmd
+      character(len=*), intent(in), optional :: log_format
 
-      integer :: narg, i, subcmd_pos
+      integer :: narg, i, subcmd_pos, eq
       character(len=:), allocatable :: a
       character(len=:), allocatable :: profile, build_dir
       character(len=:), allocatable :: compiler, c_compiler, cxx_compiler, archiver
       character(len=:), allocatable :: flag, cflag, cxxflag, ldflag
-      character(len=:), allocatable :: runner
+      character(len=:), allocatable :: runner, runner_args, config_file
       type(string_t), allocatable :: features(:)
       type(string_t), allocatable :: names(:)
-      logical :: prune, example
+      logical :: prune, example, build_tests
 
       call set_watch_defaults(w)
       call apply_watch_from_manifest(w)
+      if (present(log_format)) w%log_format = log_format
+      if (valid_log_format(w%log_format)) call configure_logging(w)
 
       prune   = .true.
       example = .false.
+      build_tests = .false.
 
       profile = ""
-      build_dir = default_build_dir()
-      compiler = ""
-      c_compiler = ""
-      cxx_compiler = ""
-      archiver = ""
-      flag = ""
-      cflag = ""
-      cxxflag = ""
-      ldflag = ""
+      build_dir = get_fpm_env("BUILD_DIR", default_build_dir())
+      compiler = get_fpm_env("FC", "gfortran")
+      c_compiler = get_fpm_env("CC", " ")
+      cxx_compiler = get_fpm_env("CXX", " ")
+      archiver = get_fpm_env("AR", " ")
+      flag = get_fpm_env("FFLAGS", " ")
+      cflag = get_fpm_env("CFLAGS", " ")
+      cxxflag = get_fpm_env("CXXFLAGS", " ")
+      ldflag = get_fpm_env("LDFLAGS", " ")
       runner = ""
+      runner_args = ""
+      config_file = ""
 
       allocate(features(0))
       allocate(names(0))
@@ -134,6 +142,11 @@ contains
          exit
       end do
 
+      if (present(log_format)) w%log_format = log_format
+      if (.not. valid_log_format(w%log_format)) then
+         call usage_and_stop("invalid log-format: " // w%log_format // "; use text, json, or logfmt")
+      end if
+      call configure_logging(w)
       if (i > narg) call usage_and_stop("missing fpm subcommand (build/test/run)")
 
       a = get_arg(i)
@@ -157,91 +170,62 @@ contains
       i = subcmd_pos + 1
       do while (i <= narg)
          a = get_arg(i)
-
          if (a == "--") exit
+
+         if (starts_with(a, "--")) then
+            eq = index(a, "=")
+            if (eq > 0) a = a(:eq-1)
+         end if
 
          select case (a)
           case ("--profile")
-            if (i+1 > narg) call usage_and_stop("--profile requires a value")
-            profile = get_arg(i+1)
-            i = i + 2
-            cycle
+            profile = fpm_option_value(i, narg)
           case ("--features")
-            if (i+1 > narg) call usage_and_stop("--features requires a value")
-            call add_features_csv(features, get_arg(i+1))
-            i = i + 2
-            cycle
+            call add_features_csv(features, fpm_option_value(i, narg))
           case ("--build-dir")
-            if (i+1 > narg) call usage_and_stop("--build-dir requires a value")
-            build_dir = get_arg(i+1)
-            i = i + 2
-            cycle
+            build_dir = fpm_option_value(i, narg)
           case ("--compiler")
-            if (i+1 > narg) call usage_and_stop("--compiler requires a value")
-            compiler = get_arg(i+1)
-            i = i + 2
-            cycle
+            compiler = fpm_option_value(i, narg)
           case ("--c-compiler")
-            if (i+1 > narg) call usage_and_stop("--c-compiler requires a value")
-            c_compiler = get_arg(i+1)
-            i = i + 2
-            cycle
+            c_compiler = fpm_option_value(i, narg)
           case ("--cxx-compiler")
-            if (i+1 > narg) call usage_and_stop("--cxx-compiler requires a value")
-            cxx_compiler = get_arg(i+1)
-            i = i + 2
-            cycle
+            cxx_compiler = fpm_option_value(i, narg)
           case ("--archiver")
-            if (i+1 > narg) call usage_and_stop("--archiver requires a value")
-            archiver = get_arg(i+1)
-            i = i + 2
-            cycle
+            archiver = fpm_option_value(i, narg)
           case ("--flag")
-            if (i+1 > narg) call usage_and_stop("--flag requires a value")
-            flag = get_arg(i+1)
-            i = i + 2
-            cycle
+            flag = fpm_option_value(i, narg)
           case ("--c-flag")
-            if (i+1 > narg) call usage_and_stop("--c-flag requires a value")
-            cflag = get_arg(i+1)
-            i = i + 2
-            cycle
+            cflag = fpm_option_value(i, narg)
           case ("--cxx-flag")
-            if (i+1 > narg) call usage_and_stop("--cxx-flag requires a value")
-            cxxflag = get_arg(i+1)
-            i = i + 2
-            cycle
+            cxxflag = fpm_option_value(i, narg)
           case ("--link-flag")
-            if (i+1 > narg) call usage_and_stop("--link-flag requires a value")
-            ldflag = get_arg(i+1)
-            i = i + 2
-            cycle
+            ldflag = fpm_option_value(i, narg)
           case ("--runner")
-            if (i+1 > narg) call usage_and_stop("--runner requires a value")
-            runner = get_arg(i+1)
-            i = i + 2
-            cycle
+            runner = fpm_option_value(i, narg)
+          case ("--runner-args")
+            runner_args = fpm_option_value(i, narg)
+          case ("--config-file")
+            config_file = fpm_option_value(i, narg)
+          case ("--target")
+            call add_target_names(names, fpm_option_value(i, narg))
+          case ("--all")
+            call push_feature(names, "*")
+          case ("--tests")
+            build_tests = .true.
           case ("--prune")
             prune = .true.
-            i = i + 1
-            cycle
           case ("--no-prune")
             prune = .false.
-            i = i + 1
-            cycle
           case ("--example")
             example = .true.
-            i = i + 1
-            cycle
           case default
             if (trim(subcmd) == "run" .or. trim(subcmd) == "test") then
-               if (len_trim(a) > 0) then
-                  if (a(1:1) /= "-") call push_feature(names, a)
+               if (len(a) > 0) then
+                  if (a(1:1) /= "-") call push_feature(names, target_pattern(a))
                end if
             end if
-            i = i + 1
-            cycle
          end select
+         i = i + 1
       end do
 
       select case (trim(subcmd))
@@ -254,7 +238,8 @@ contains
          select type (s => settings)
           type is (fpm_test_settings)
             s%build_tests = .true.
-            if (len_trim(runner) > 0) s%runner = trim(runner)
+            if (len(runner) > 0) s%runner = runner
+            if (len(runner_args) > 0) s%runner_args = runner_args
             call set_names(s, names)
          end select
        case ("run")
@@ -263,15 +248,58 @@ contains
          select type (s => settings)
           type is (fpm_run_settings)
             s%example = example
-            if (len_trim(runner) > 0) s%runner = trim(runner)
+            if (len(runner) > 0) s%runner = runner
+            if (len(runner_args) > 0) s%runner_args = runner_args
             call set_names(s, names)
          end select
        case default
          call usage_and_stop("unsupported subcommand: " // trim(subcmd) // " (supported: build,test,run)")
       end select
 
+      settings%path_to_config = config_file
+      if (trim(subcmd) == "build") settings%build_tests = build_tests
+
       call normalize_watch_opts(w)
    end subroutine parse_cli
+
+   !> Read an fpm option value from `--key=value` or the following argv token.
+   function fpm_option_value(i, narg) result(value)
+      integer, intent(inout) :: i
+      integer, intent(in) :: narg
+      character(len=:), allocatable :: value, option
+      integer :: eq
+
+      option = get_arg(i)
+      eq = index(option, "=")
+      if (eq > 0) then
+         value = option(eq+1:)
+      else
+         if (i >= narg) call usage_and_stop(option // " requires a value")
+         i = i + 1
+         value = get_arg(i)
+      end if
+   end function fpm_option_value
+
+   !> Expand fpm's target-list delimiters using the dependency's string utility.
+   subroutine add_target_names(names, value)
+      type(string_t), allocatable, intent(inout) :: names(:)
+      character(len=*), intent(in) :: value
+      character(len=:), allocatable :: targets(:)
+      integer :: j
+
+      call split(value, targets, delimiters=" ,:")
+      do j = 1, size(targets)
+         call push_feature(names, target_pattern(trim(targets(j))))
+      end do
+   end subroutine add_target_names
+
+   !> Match fpm's portable `..` spelling of the wildcard target pattern.
+   pure function target_pattern(value) result(pattern)
+      character(len=*), intent(in) :: value
+      character(len=:), allocatable :: pattern
+      pattern = value
+      if (value == "..") pattern = "*"
+   end function target_pattern
 
    !> Return whether a given subcommand token is supported by `fpm-watch`.
    pure logical function is_supported_subcmd(s) result(ok)
@@ -285,7 +313,7 @@ contains
    !! itself rather than forwarded to `fpm`.
    pure logical function is_watch_flag(a) result(ok)
       character(len=*), intent(in) :: a
-      ok = (len_trim(a) >= 8 .and. a(1:8) == "--watch-")
+      ok = starts_with(a, "--watch-")
    end function is_watch_flag
 
    !> Apply a single `--watch-*` flag to the watcher options.
@@ -311,6 +339,10 @@ contains
       if (eq > 0) then
          val = key(eq+1:)
          key = key(1:eq-1)
+      else if (watch_option_takes_value(a)) then
+         if (i >= narg) call usage_and_stop(key // " requires a value")
+         i = i + 1
+         val = get_arg(i)
       end if
 
       select case (key)
@@ -319,17 +351,11 @@ contains
        case ("--watch-auto-restart")
          continue
        case ("--watch-restart-delay")
-         if (len_trim(val) == 0) then
-            if (i+1 <= narg) i = i + 1
-         end if
+         continue
        case ("--watch-restart-max")
-         if (len_trim(val) == 0) then
-            if (i+1 <= narg) i = i + 1
-         end if
+         continue
        case ("--watch-self")
-         if (len_trim(val) == 0) then
-            if (i+1 <= narg) i = i + 1
-         end if
+         continue
 
        case ("--watch-deps")
          if (len_trim(val) > 0) then
@@ -351,6 +377,10 @@ contains
 
        case ("--watch-quiet")
          w%verbosity = -1
+       case ("--watch-log-format")
+         if (.not. valid_log_format(val)) call usage_and_stop("--watch-log-format requires text, json, or logfmt")
+         w%log_format = val
+         call configure_logging(w)
        case ("--watch-verbose")
          if (len_trim(val) > 0) then
             w%verbosity = max(w%verbosity, parse_int(val, 1))
@@ -371,48 +401,18 @@ contains
        case ("--watch-no-run-on-start")
          w%run_on_start = .false.
        case ("--watch-rescan")
-         if (len_trim(val) == 0) then
-            if (i+1 > narg) call usage_and_stop("--watch-rescan requires a value")
-            val = get_arg(i+1)
-            i = i + 1
-         end if
          w%rescan = parse_real(val, w%rescan)
        case ("--watch-no-rescan")
          w%rescan = 0.0
        case ("--watch-ignore")
-         if (len_trim(val) == 0) then
-            if (i+1 > narg) call usage_and_stop("--watch-ignore requires a value")
-            val = get_arg(i+1)
-            i = i + 1
-         end if
          call push_feature(w%ignore, trim(val))
        case ("--watch-include")
-         if (len_trim(val) == 0) then
-            if (i+1 > narg) call usage_and_stop("--watch-include requires a value")
-            val = get_arg(i+1)
-            i = i + 1
-         end if
          call push_feature(w%include, trim(val))
        case ("--watch-feature")
-         if (len_trim(val) == 0) then
-            if (i+1 > narg) call usage_and_stop("--watch-feature requires a value")
-            val = get_arg(i+1)
-            i = i + 1
-         end if
          call push_feature(w%enabled_features, trim(val))
        case ("--watch-poll")
-         if (len_trim(val) == 0) then
-            if (i+1 > narg) call usage_and_stop("--watch-poll requires a value")
-            val = get_arg(i+1)
-            i = i + 1
-         end if
          w%poll = parse_real(val, w%poll)
        case ("--watch-debounce")
-         if (len_trim(val) == 0) then
-            if (i+1 > narg) call usage_and_stop("--watch-debounce requires a value")
-            val = get_arg(i+1)
-            i = i + 1
-         end if
          w%debounce = parse_real(val, w%debounce)
        case ("--watch-once")
          if (len_trim(val) > 0) then
@@ -465,10 +465,8 @@ contains
    !> Print a usage message and terminate with a non-zero exit status.
    subroutine usage_and_stop(msg)
       character(len=*), intent(in) :: msg
-      write(error_unit,"(a)") &
-         colorize("fpm-watch: error:", color_fg="red_intense", style="bold_on") // " " // trim(msg)
-      write(error_unit,"(a)") ""
-      call usage_print_only()
+      call log_event("error", "cli.error", msg)
+      if (.not. structured_logging()) write(error_unit,"(a)") "Use fpm-watch --watch-help for usage."
       stop 2
    end subroutine usage_and_stop
 
@@ -485,27 +483,22 @@ contains
    !! - Project configuration (`[extra.fpm-watch]`),
    !! - Examples and behavioral notes.
    subroutine usage_print_only()
-      character(len=:), allocatable :: title
-
-      title = colorize( &
-         colorize("fpm-watch — Smart file watcher plugin for fpm projects", &
-         color_fg="cyan_intense", style="bold_on"), &
-         style="underline_on")
-
-      write(error_unit,"(a)") title
+      write(error_unit,"(a)") "fpm-watch — Smart file watcher plugin for fpm projects"
       write(error_unit,"(a)") ""
-      write(error_unit,"(a)") sec("USAGE")
-      write(error_unit,"(a)") "  " // cmd("fpm-watch") // " " // arg("[watch options]") // " " // arg("<build|test|run>") // " " // arg("[fpm options]")
+      write(error_unit,"(a)") "USAGE"
+      write(error_unit,"(a)") "  fpm-watch [watch options] <build|test|run> [fpm options]"
       write(error_unit,"(a)") ""
-      write(error_unit,"(a)") "  Everything after " // arg("<build|test|run>") // " is passed to " // cmd("fpm") // " unchanged."
+      write(error_unit,"(a)") "  Everything after <build|test|run> is passed to fpm unchanged."
       write(error_unit,"(a)") ""
 
-      write(error_unit,"(a)") sec("WATCH OPTIONS")
+      write(error_unit,"(a)") "WATCH OPTIONS"
       write(error_unit,"(a)") "  --watch-help"
       write(error_unit,"(a)") "      Show this help and exit."
       write(error_unit,"(a)") ""
       write(error_unit,"(a)") "  --watch-quiet | -q"
       write(error_unit,"(a)") "      Quiet mode (errors only)."
+      write(error_unit,"(a)") "  --watch-log-format <text|json|logfmt>"
+      write(error_unit,"(a)") "      Log format (default: text). Structured logs use stdout; fpm output uses stderr."
       write(error_unit,"(a)") "  --watch-verbose[=N] | -v"
       write(error_unit,"(a)") "      Increase verbosity. N: 0..2 (default: 1)."
       write(error_unit,"(a)") "  --watch-very-verbose | -vv"
@@ -570,8 +563,8 @@ contains
       write(error_unit,"(a)") "      Initialize (and optionally run once) then exit. Good for CI."
       write(error_unit,"(a)") ""
 
-      write(error_unit,"(a)") sec("CONFIGURATION (fpm.toml)")
-      write(error_unit,"(a)") "  " // arg("[extra.fpm-watch]") // "  (same names as flags, without the --watch- prefix)"
+      write(error_unit,"(a)") "CONFIGURATION (fpm.toml)"
+      write(error_unit,"(a)") "  [extra.fpm-watch]  (same names as flags, without the --watch- prefix)"
       write(error_unit,"(a)") "  poll         = 0.5"
       write(error_unit,"(a)") "  debounce     = 0.2"
       write(error_unit,"(a)") "  rescan       = 0.0"
@@ -586,57 +579,38 @@ contains
       write(error_unit,"(a)") "  self         = """""
       write(error_unit,"(a)") "  debug        = false"
       write(error_unit,"(a)") "  verbosity    = 0"
+      write(error_unit,"(a)") '  log-format   = "text"'
       write(error_unit,"(a)") "  ignore       = []"
       write(error_unit,"(a)") "  include      = []"
       write(error_unit,"(a)") "  features     = []"
       write(error_unit,"(a)") "  once         = false"
       write(error_unit,"(a)") ""
 
-      write(error_unit,"(a)") sec("EXAMPLES")
-      write(error_unit,"(a)") "  " // cmd("fpm-watch build")
-      write(error_unit,"(a)") "  " // cmd("fpm-watch --watch-low-cpu test")
-      write(error_unit,"(a)") "  " // cmd("fpm-watch --watch-deps test") // " " // arg("--") // " " // arg("--list")
-      write(error_unit,"(a)") "  " // cmd("fpm-watch --watch-auto-restart test")
+      write(error_unit,"(a)") "EXAMPLES"
+      write(error_unit,"(a)") "  fpm-watch build"
+      write(error_unit,"(a)") "  fpm-watch --watch-low-cpu test"
+      write(error_unit,"(a)") "  fpm-watch --watch-deps test -- --list"
+      write(error_unit,"(a)") "  fpm-watch --watch-auto-restart test"
       write(error_unit,"(a)") ""
 
-      write(error_unit,"(a)") sec("NOTES")
-      write(error_unit,"(a)") "  fpm-watch ignores " // arg("build/") // " to avoid infinite rebuild loops."
-      write(error_unit,"(a)") "  Enable " // arg("deps") // " only if you want dependency source changes to trigger runs."
-      write(error_unit,"(a)") "  Enable " // arg("low-cpu") // " to avoid busy-waiting and reduce idle CPU usage."
-      write(error_unit,"(a)") "  To quit, press Ctrl+C (or create an empty file named " // arg(".fpm-watch.stop") // ")."
+      write(error_unit,"(a)") "NOTES"
+      write(error_unit,"(a)") "  fpm-watch ignores build/ to avoid infinite rebuild loops."
+      write(error_unit,"(a)") "  Enable deps only if you want dependency source changes to trigger runs."
+      write(error_unit,"(a)") "  Enable low-cpu to avoid busy-waiting and reduce idle CPU usage."
+      write(error_unit,"(a)") "  To quit, press Ctrl+C (or create an empty file named .fpm-watch.stop)."
       write(error_unit,"(a)") ""
-
-   contains
-
-      function sec(s) result(r)
-         character(len=*), intent(in) :: s
-         character(len=:), allocatable :: r
-         r = colorize(s, color_fg="blue_intense", style="bold_on")
-      end function sec
-
-      function cmd(s) result(r)
-         character(len=*), intent(in) :: s
-         character(len=:), allocatable :: r
-         r = colorize(s, color_fg="cyan_intense", style="bold_on")
-      end function cmd
-
-      function arg(s) result(r)
-         character(len=*), intent(in) :: s
-         character(len=:), allocatable :: r
-         r = colorize(s, color_fg="yellow_intense")
-      end function arg
 
    end subroutine usage_print_only
 
-   !> Populate `settings` with parsed values and environment fallbacks.
+   !> Populate `settings` with argv overrides of fpm environment defaults.
    !!
    !! This routine centralizes:
    !! - `build_dir`, `profile`, `features`,
-   !! - Fortran/C/C++ toolchain selection (`FC`, `CC`, `CXX`, `AR`),
+   !! - Fortran/C/C++ toolchain selection (`FPM_FC`, `FPM_CC`, `FPM_CXX`, `FPM_AR`),
    !! - Common compile and link flags (`--flag`, `--c-flag`, `--cxx-flag`, `--link-flag`).
    !!
-   !! Environment variables are consulted only when the corresponding CLI option
-   !! is empty.
+   !! Defaults are read with `fpm_command_line:get_fpm_env` before argv parsing,
+   !! so explicit option values always override the environment.
    subroutine init_build_settings(settings, build_dir, prune, profile, features, compiler_in, c_compiler_in, cxx_compiler_in, archiver_in, flag_in, cflag_in, cxxflag_in, ldflag_in)
       class(fpm_build_settings), intent(inout) :: settings
       character(len=*), intent(in) :: build_dir
@@ -646,17 +620,9 @@ contains
       character(len=*), intent(in) :: compiler_in, c_compiler_in, cxx_compiler_in, archiver_in
       character(len=*), intent(in) :: flag_in, cflag_in, cxxflag_in, ldflag_in
 
-      character(len=:), allocatable :: v
-      character(len=2048) :: buf
-      integer :: n, stat
-
       settings%verbose = .false.
       settings%prune = prune
-
-      if (len_trim(build_dir) > 0) then
-         settings%build_dir = trim(build_dir)
-      end if
-
+      settings%build_dir = build_dir
       if (len_trim(profile) > 0) settings%profile = trim(profile)
 
       if (allocated(settings%features)) deallocate(settings%features)
@@ -667,58 +633,14 @@ contains
          end if
       end if
 
-      v = trim(compiler_in)
-      if (len_trim(v) == 0) then
-         buf = ""
-         n = 0
-         stat = 0
-         call get_environment_variable("FC", buf, length=n, status=stat)
-         if (stat == 0 .and. n > 0) v = trim(buf(1:n))
-      end if
-      if (len_trim(v) == 0) v = "gfortran"
-      settings%compiler = trim(v)
-
-      v = trim(c_compiler_in)
-      if (len_trim(v) == 0) then
-         buf = ""
-         n = 0
-         stat = 0
-         call get_environment_variable("CC", buf, length=n, status=stat)
-         if (stat == 0 .and. n > 0) v = trim(buf(1:n))
-      end if
-      if (len_trim(v) > 0) settings%c_compiler = trim(v)
-
-      v = trim(cxx_compiler_in)
-      if (len_trim(v) == 0) then
-         buf = ""
-         n = 0
-         stat = 0
-         call get_environment_variable("CXX", buf, length=n, status=stat)
-         if (stat == 0 .and. n > 0) v = trim(buf(1:n))
-      end if
-      if (len_trim(v) > 0) settings%cxx_compiler = trim(v)
-
-      v = trim(archiver_in)
-      if (len_trim(v) == 0) then
-         buf = ""
-         n = 0
-         stat = 0
-         call get_environment_variable("AR", buf, length=n, status=stat)
-         if (stat == 0 .and. n > 0) v = trim(buf(1:n))
-      end if
-      if (len_trim(v) > 0) settings%archiver = trim(v)
-
-      v = trim(flag_in)
-      if (len_trim(v) > 0) settings%flag = trim(v)
-
-      v = trim(cflag_in)
-      if (len_trim(v) > 0) settings%cflag = trim(v)
-
-      v = trim(cxxflag_in)
-      if (len_trim(v) > 0) settings%cxxflag = trim(v)
-
-      v = trim(ldflag_in)
-      if (len_trim(v) > 0) settings%ldflag = trim(v)
+      settings%compiler = compiler_in
+      settings%c_compiler = c_compiler_in
+      settings%cxx_compiler = cxx_compiler_in
+      settings%archiver = archiver_in
+      settings%flag = flag_in
+      settings%cflag = cflag_in
+      settings%cxxflag = cxxflag_in
+      settings%ldflag = ldflag_in
    end subroutine init_build_settings
 
    !> Return the default build directory used by `fpm-watch`.
@@ -760,27 +682,12 @@ contains
       type(string_t), allocatable, intent(inout) :: features(:)
       character(len=*), intent(in) :: csv
 
-      integer :: n, p, q
-      character(len=:), allocatable :: s, tok
+      character(len=:), allocatable :: tokens(:)
+      integer :: j
 
-      s = trim(csv)
-      if (len_trim(s) == 0) return
-
-      p = 1
-      n = len_trim(s)
-
-      do
-         if (p > n) exit
-         q = index(s(p:), ",")
-         if (q == 0) then
-            tok = adjustl(s(p:n))
-            call push_feature(features, trim(tok))
-            exit
-         else
-            tok = adjustl(s(p:p+q-2))
-            call push_feature(features, trim(tok))
-            p = p + q
-         end if
+      call split(csv, tokens, delimiters=",")
+      do j = 1, size(tokens)
+         call push_feature(features, trim(adjustl(tokens(j))))
       end do
    end subroutine add_features_csv
 
