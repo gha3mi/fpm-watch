@@ -89,7 +89,7 @@
 
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
-                 title=" 3.4% of total for procedures.">106 statements</a>
+                 title=" 3.7% of total for procedures.">114 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -412,7 +412,7 @@ large graphs.</div>
 <span class="w">      </span><span class="k">write</span><span class="p">(</span><span class="n">error_unit</span><span class="p">,</span><span class="s2">"(a)"</span><span class="p">)</span><span class="w"> </span><span class="s2">"  --watch-very-verbose | -vv"</span>
 <span class="w">      </span><span class="k">write</span><span class="p">(</span><span class="n">error_unit</span><span class="p">,</span><span class="s2">"(a)"</span><span class="p">)</span><span class="w"> </span><span class="s2">"      Same as verbosity=2 (prints watch list, more details)."</span>
 <span class="w">      </span><span class="k">write</span><span class="p">(</span><span class="n">error_unit</span><span class="p">,</span><span class="s2">"(a)"</span><span class="p">)</span><span class="w"> </span><span class="s2">"  --watch-debug"</span>
-<span class="w">      </span><span class="k">write</span><span class="p">(</span><span class="n">error_unit</span><span class="p">,</span><span class="s2">"(a)"</span><span class="p">)</span><span class="w"> </span><span class="s2">"      Extra debug logs (watch list rebuilds, counts, keys)."</span>
+<span class="w">      </span><span class="k">write</span><span class="p">(</span><span class="n">error_unit</span><span class="p">,</span><span class="s2">"(a)"</span><span class="p">)</span><span class="w"> </span><span class="s2">"      Extra debug logs. Use --watch-debug=false to disable a manifest setting."</span>
 <span class="w">      </span><span class="k">write</span><span class="p">(</span><span class="n">error_unit</span><span class="p">,</span><span class="s2">"(a)"</span><span class="p">)</span><span class="w"> </span><span class="s2">""</span>
 
 <span class="w">      </span><span class="k">write</span><span class="p">(</span><span class="n">error_unit</span><span class="p">,</span><span class="s2">"(a)"</span><span class="p">)</span><span class="w"> </span><span class="s2">"  --watch-deps"</span>
@@ -445,8 +445,14 @@ large graphs.</div>
 
 <span class="w">      </span><span class="k">write</span><span class="p">(</span><span class="n">error_unit</span><span class="p">,</span><span class="s2">"(a)"</span><span class="p">)</span><span class="w"> </span><span class="s2">"  --watch-silent-fpm"</span>
 <span class="w">      </span><span class="k">write</span><span class="p">(</span><span class="n">error_unit</span><span class="p">,</span><span class="s2">"(a)"</span><span class="p">)</span><span class="w"> </span><span class="s2">"      Suppress fpm output; keep only fpm-watch status lines."</span>
+<span class="w">      </span><span class="k">write</span><span class="p">(</span><span class="n">error_unit</span><span class="p">,</span><span class="s2">"(a)"</span><span class="p">)</span><span class="w"> </span><span class="s2">"      Use --watch-silent-fpm=false to override manifest suppression."</span>
+<span class="w">      </span><span class="k">write</span><span class="p">(</span><span class="n">error_unit</span><span class="p">,</span><span class="s2">"(a)"</span><span class="p">)</span><span class="w"> </span><span class="s2">"  --watch-fpm &lt;path&gt;"</span>
+<span class="w">      </span><span class="k">write</span><span class="p">(</span><span class="n">error_unit</span><span class="p">,</span><span class="s2">"(a)"</span><span class="p">)</span><span class="w"> </span><span class="s2">"      fpm executable to invoke (default: fpm on PATH)."</span>
+<span class="w">      </span><span class="k">write</span><span class="p">(</span><span class="n">error_unit</span><span class="p">,</span><span class="s2">"(a)"</span><span class="p">)</span><span class="w"> </span><span class="s2">"  --watch-output-markers"</span>
+<span class="w">      </span><span class="k">write</span><span class="p">(</span><span class="n">error_unit</span><span class="p">,</span><span class="s2">"(a)"</span><span class="p">)</span><span class="w"> </span><span class="s2">"      Frame raw stderr with cycle markers in structured logging mode (GUI integrations)."</span>
+<span class="w">      </span><span class="k">write</span><span class="p">(</span><span class="n">error_unit</span><span class="p">,</span><span class="s2">"(a)"</span><span class="p">)</span><span class="w"> </span><span class="s2">"      Keep matching command events visible even in quiet mode."</span>
 <span class="w">      </span><span class="k">write</span><span class="p">(</span><span class="n">error_unit</span><span class="p">,</span><span class="s2">"(a)"</span><span class="p">)</span><span class="w"> </span><span class="s2">"  --watch-print-files"</span>
-<span class="w">      </span><span class="k">write</span><span class="p">(</span><span class="n">error_unit</span><span class="p">,</span><span class="s2">"(a)"</span><span class="p">)</span><span class="w"> </span><span class="s2">"      Print the watched file list (limited) at startup."</span>
+<span class="w">      </span><span class="k">write</span><span class="p">(</span><span class="n">error_unit</span><span class="p">,</span><span class="s2">"(a)"</span><span class="p">)</span><span class="w"> </span><span class="s2">"      Print the watched file list at startup; --watch-print-files=false disables it."</span>
 <span class="w">      </span><span class="k">write</span><span class="p">(</span><span class="n">error_unit</span><span class="p">,</span><span class="s2">"(a)"</span><span class="p">)</span><span class="w"> </span><span class="s2">""</span>
 
 <span class="w">      </span><span class="k">write</span><span class="p">(</span><span class="n">error_unit</span><span class="p">,</span><span class="s2">"(a)"</span><span class="p">)</span><span class="w"> </span><span class="s2">"  --watch-ignore &lt;glob&gt;"</span>
@@ -458,7 +464,7 @@ large graphs.</div>
 <span class="w">      </span><span class="k">write</span><span class="p">(</span><span class="n">error_unit</span><span class="p">,</span><span class="s2">"(a)"</span><span class="p">)</span><span class="w"> </span><span class="s2">""</span>
 
 <span class="w">      </span><span class="k">write</span><span class="p">(</span><span class="n">error_unit</span><span class="p">,</span><span class="s2">"(a)"</span><span class="p">)</span><span class="w"> </span><span class="s2">"  --watch-auto-restart"</span>
-<span class="w">      </span><span class="k">write</span><span class="p">(</span><span class="n">error_unit</span><span class="p">,</span><span class="s2">"(a)"</span><span class="p">)</span><span class="w"> </span><span class="s2">"      Restart fpm-watch automatically if it crashes."</span>
+<span class="w">      </span><span class="k">write</span><span class="p">(</span><span class="n">error_unit</span><span class="p">,</span><span class="s2">"(a)"</span><span class="p">)</span><span class="w"> </span><span class="s2">"      Restart on crashes; --watch-auto-restart=false disables a manifest setting."</span>
 <span class="w">      </span><span class="k">write</span><span class="p">(</span><span class="n">error_unit</span><span class="p">,</span><span class="s2">"(a)"</span><span class="p">)</span><span class="w"> </span><span class="s2">"  --watch-restart-delay &lt;sec&gt;"</span>
 <span class="w">      </span><span class="k">write</span><span class="p">(</span><span class="n">error_unit</span><span class="p">,</span><span class="s2">"(a)"</span><span class="p">)</span><span class="w"> </span><span class="s2">"      Delay before restart. Default: 1.0"</span>
 <span class="w">      </span><span class="k">write</span><span class="p">(</span><span class="n">error_unit</span><span class="p">,</span><span class="s2">"(a)"</span><span class="p">)</span><span class="w"> </span><span class="s2">"  --watch-restart-max &lt;N&gt;"</span>
@@ -488,6 +494,8 @@ large graphs.</div>
 <span class="w">      </span><span class="k">write</span><span class="p">(</span><span class="n">error_unit</span><span class="p">,</span><span class="s2">"(a)"</span><span class="p">)</span><span class="w"> </span><span class="s2">"  debug        = false"</span>
 <span class="w">      </span><span class="k">write</span><span class="p">(</span><span class="n">error_unit</span><span class="p">,</span><span class="s2">"(a)"</span><span class="p">)</span><span class="w"> </span><span class="s2">"  verbosity    = 0"</span>
 <span class="w">      </span><span class="k">write</span><span class="p">(</span><span class="n">error_unit</span><span class="p">,</span><span class="s2">"(a)"</span><span class="p">)</span><span class="w"> </span><span class="s1">'  log-format   = "text"'</span>
+<span class="w">      </span><span class="k">write</span><span class="p">(</span><span class="n">error_unit</span><span class="p">,</span><span class="s2">"(a)"</span><span class="p">)</span><span class="w"> </span><span class="s1">'  fpm-executable = "fpm"'</span>
+<span class="w">      </span><span class="k">write</span><span class="p">(</span><span class="n">error_unit</span><span class="p">,</span><span class="s2">"(a)"</span><span class="p">)</span><span class="w"> </span><span class="s2">"  output-markers = false"</span>
 <span class="w">      </span><span class="k">write</span><span class="p">(</span><span class="n">error_unit</span><span class="p">,</span><span class="s2">"(a)"</span><span class="p">)</span><span class="w"> </span><span class="s2">"  ignore       = []"</span>
 <span class="w">      </span><span class="k">write</span><span class="p">(</span><span class="n">error_unit</span><span class="p">,</span><span class="s2">"(a)"</span><span class="p">)</span><span class="w"> </span><span class="s2">"  include      = []"</span>
 <span class="w">      </span><span class="k">write</span><span class="p">(</span><span class="n">error_unit</span><span class="p">,</span><span class="s2">"(a)"</span><span class="p">)</span><span class="w"> </span><span class="s2">"  features     = []"</span>
@@ -532,7 +540,7 @@ large graphs.</div>
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2026-10-12T11:58:15.281459+0000             </p>
+ on 2026-10-12T13:55:54.369963+0000             </p>
           </div>
         </div>
         <br>

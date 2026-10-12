@@ -13,7 +13,8 @@ module watch_cli
    use, intrinsic :: iso_fortran_env, only: error_unit
    use watch_types,  only: watch_config_t, watch_opts_t
    use watch_config, only: set_watch_defaults, apply_watch_from_manifest, normalize_watch_opts, push_feature
-   use watch_cmdline, only: get_arg, join_argv, parse_int, parse_real, starts_with, watch_option_takes_value
+   use watch_cmdline, only: get_arg, join_argv, quote_arg, parse_int, parse_real, parse_bool, starts_with, &
+                            watch_option_takes_value
    use fpm_strings,  only: string_t, split
    use fpm_command_line, only: fpm_build_settings, fpm_run_settings, fpm_test_settings, get_fpm_env
    use watch_log, only: configure_logging, valid_log_format, log_event, structured_logging
@@ -48,6 +49,11 @@ contains
       call move_alloc(settings, cfg%settings)
 
       call split_cmd_after_subcmd(cfg%fpm_cmdline, cfg%cmd_prefix, cfg%cmd_rest)
+      if (cfg%w%fpm_executable /= "fpm") then
+         cfg%cmd_prefix = quote_arg(cfg%w%fpm_executable) // " " // cfg%subcmd
+         cfg%fpm_cmdline = cfg%cmd_prefix
+         if (len_trim(cfg%cmd_rest) > 0) cfg%fpm_cmdline = cfg%fpm_cmdline // " " // cfg%cmd_rest
+      end if
    end subroutine parse_cli_config
 
    !> Parse the complete CLI and produce watcher options + typed `fpm` settings.
@@ -347,7 +353,7 @@ contains
 
       select case (key)
        case ("--watch-child")
-         continue
+         w%restart_count = max(0, parse_int(val, 0))
        case ("--watch-auto-restart")
          continue
        case ("--watch-restart-delay")
@@ -356,6 +362,9 @@ contains
          continue
        case ("--watch-self")
          continue
+       case ("--watch-fpm")
+         if (len_trim(val) == 0) call usage_and_stop("--watch-fpm requires an executable path or name")
+         w%fpm_executable = val
 
        case ("--watch-deps")
          if (len_trim(val) > 0) then
@@ -390,12 +399,14 @@ contains
        case ("--watch-very-verbose")
          w%verbosity = max(w%verbosity, 2)
        case ("--watch-debug")
-         w%debug = .true.
+         w%debug = parse_bool(val, .true.)
        case ("--watch-print-files")
-         w%print_files_once = .true.
-         w%verbosity = max(w%verbosity, 2)
+         w%print_files_once = parse_bool(val, .true.)
+         if (w%print_files_once) w%verbosity = max(w%verbosity, 2)
        case ("--watch-silent-fpm")
-         w%silent_fpm = .true.
+         w%silent_fpm = parse_bool(val, .true.)
+       case ("--watch-output-markers")
+         w%output_markers = parse_bool(val, .true.)
        case ("--watch-run-on-start")
          w%run_on_start = .true.
        case ("--watch-no-run-on-start")
@@ -427,38 +438,6 @@ contains
       end select
 
       call normalize_watch_opts(w)
-
-   contains
-
-      pure logical function parse_bool(s, default) result(v)
-         character(len=*), intent(in) :: s
-         logical, intent(in) :: default
-         character(len=:), allocatable :: t
-         t = trim(adjustl(lower_ascii(s)))
-         select case (t)
-          case ("1","true","on","yes","y","t")
-            v = .true.
-          case ("0","false","off","no","n","f")
-            v = .false.
-          case default
-            v = default
-         end select
-      end function parse_bool
-
-      pure function lower_ascii(s) result(r)
-         character(len=*), intent(in) :: s
-         character(len=len(s)) :: r
-         integer :: k, c, da
-         da = iachar("a") - iachar("A")
-         do k = 1, len(s)
-            c = iachar(s(k:k))
-            if (c >= iachar("A") .and. c <= iachar("Z")) then
-               r(k:k) = achar(c + da)
-            else
-               r(k:k) = s(k:k)
-            end if
-         end do
-      end function lower_ascii
 
    end subroutine apply_watch_flag
 
@@ -504,7 +483,7 @@ contains
       write(error_unit,"(a)") "  --watch-very-verbose | -vv"
       write(error_unit,"(a)") "      Same as verbosity=2 (prints watch list, more details)."
       write(error_unit,"(a)") "  --watch-debug"
-      write(error_unit,"(a)") "      Extra debug logs (watch list rebuilds, counts, keys)."
+      write(error_unit,"(a)") "      Extra debug logs. Use --watch-debug=false to disable a manifest setting."
       write(error_unit,"(a)") ""
 
       write(error_unit,"(a)") "  --watch-deps"
@@ -537,8 +516,14 @@ contains
 
       write(error_unit,"(a)") "  --watch-silent-fpm"
       write(error_unit,"(a)") "      Suppress fpm output; keep only fpm-watch status lines."
+      write(error_unit,"(a)") "      Use --watch-silent-fpm=false to override manifest suppression."
+      write(error_unit,"(a)") "  --watch-fpm <path>"
+      write(error_unit,"(a)") "      fpm executable to invoke (default: fpm on PATH)."
+      write(error_unit,"(a)") "  --watch-output-markers"
+      write(error_unit,"(a)") "      Frame raw stderr with cycle markers in structured logging mode (GUI integrations)."
+      write(error_unit,"(a)") "      Keep matching command events visible even in quiet mode."
       write(error_unit,"(a)") "  --watch-print-files"
-      write(error_unit,"(a)") "      Print the watched file list (limited) at startup."
+      write(error_unit,"(a)") "      Print the watched file list at startup; --watch-print-files=false disables it."
       write(error_unit,"(a)") ""
 
       write(error_unit,"(a)") "  --watch-ignore <glob>"
@@ -550,7 +535,7 @@ contains
       write(error_unit,"(a)") ""
 
       write(error_unit,"(a)") "  --watch-auto-restart"
-      write(error_unit,"(a)") "      Restart fpm-watch automatically if it crashes."
+      write(error_unit,"(a)") "      Restart on crashes; --watch-auto-restart=false disables a manifest setting."
       write(error_unit,"(a)") "  --watch-restart-delay <sec>"
       write(error_unit,"(a)") "      Delay before restart. Default: 1.0"
       write(error_unit,"(a)") "  --watch-restart-max <N>"
@@ -580,6 +565,8 @@ contains
       write(error_unit,"(a)") "  debug        = false"
       write(error_unit,"(a)") "  verbosity    = 0"
       write(error_unit,"(a)") '  log-format   = "text"'
+      write(error_unit,"(a)") '  fpm-executable = "fpm"'
+      write(error_unit,"(a)") "  output-markers = false"
       write(error_unit,"(a)") "  ignore       = []"
       write(error_unit,"(a)") "  include      = []"
       write(error_unit,"(a)") "  features     = []"

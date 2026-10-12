@@ -2,12 +2,12 @@
 module watch_banner
    use watch_types, only: watch_opts_t
    use watch_util, only: ftoa, trim_or_default, join_csv
-   use watch_log, only: log_event, log_int, log_real, log_string, log_bool
+   use watch_log, only: log_event, log_int, log_real, log_string, log_strings, log_bool
    use fpm_strings, only: string_t, str
    use fpm_command_line, only: fpm_build_settings, fpm_test_settings, fpm_run_settings
    implicit none
    private
-   public print_banner, print_file_list
+   public print_banner, print_file_list, print_configuration
 
 contains
 
@@ -20,7 +20,7 @@ contains
       real, intent(in) :: build_secs, secs_model, secs_targets, secs_watch
       integer, intent(in) :: roots_count
       integer :: nfiles
-      character(len=:), allocatable :: mode, message, features, profile, compiler, build_dir
+      character(len=:), allocatable :: mode, message
 
       nfiles = 0
       if (allocated(files)) nfiles = size(files)
@@ -34,6 +34,18 @@ contains
       call log_event("info", "watch.ready", message, &
                      [log_int("file_count", nfiles), log_int("root_count", roots_count), &
                       log_string("mode", mode), log_string("command", full_cmdline), log_bool("once", w%once)])
+      call print_configuration(settings, w)
+      call log_event("info", "watch.initialized", "Watch list initialized in " // ftoa(build_secs) // "s", &
+                     [log_real("duration_ms", build_secs * 1000.0), log_real("model_ms", secs_model * 1000.0), &
+                      log_real("targets_ms", secs_targets * 1000.0), log_real("watch_list_ms", secs_watch * 1000.0)], verbosity=1)
+   end subroutine print_banner
+
+   !> Report effective settings after startup or a successful watch-list refresh.
+   subroutine print_configuration(settings, w)
+      class(fpm_build_settings), intent(in) :: settings
+      type(watch_opts_t), intent(in) :: w
+      character(len=:), allocatable :: features, profile, compiler, build_dir
+
       profile = trim_or_default(settings%profile, "default")
       compiler = trim_or_default(settings%compiler, "(auto)")
       build_dir = trim_or_default(settings%build_dir, "build")
@@ -46,11 +58,9 @@ contains
                       log_string("features", features), log_bool("prune", settings%prune), log_bool("deps", w%watch_deps), &
                       log_bool("low_cpu", w%low_cpu), log_bool("silent_fpm", w%silent_fpm), &
                       log_bool("run_on_start", w%run_on_start), log_real("poll_ms", w%poll * 1000.0), &
-                      log_real("debounce_ms", w%debounce * 1000.0), log_real("rescan_s", w%rescan)], verbosity=1)
-      call log_event("info", "watch.initialized", "Watch list initialized in " // ftoa(build_secs) // "s", &
-                     [log_real("duration_ms", build_secs * 1000.0), log_real("model_ms", secs_model * 1000.0), &
-                      log_real("targets_ms", secs_targets * 1000.0), log_real("watch_list_ms", secs_watch * 1000.0)], verbosity=1)
-   end subroutine print_banner
+                      log_real("debounce_ms", w%debounce * 1000.0), log_real("rescan_s", w%rescan), &
+                      log_strings("ignore", w%ignore), log_strings("include", w%include)], verbosity=1)
+   end subroutine print_configuration
 
    !> Emit separate file events at high verbosity, capped at 200 files.
    subroutine print_file_list(files, w)

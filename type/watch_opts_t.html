@@ -89,7 +89,7 @@
 
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
-                 title="<p>21.2% of total for derived types.</p>Including implementation: 17 statements,  4.9% of total for derived types.">17 statements</a>
+                 title="<p>24.1% of total for derived types.</p>Including implementation: 20 statements,  5.7% of total for derived types.">20 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -134,14 +134,17 @@
             <a class="list-group-item" href="../type/watch_opts_t.html#variable-debounce">debounce</a>
             <a class="list-group-item" href="../type/watch_opts_t.html#variable-debug">debug</a>
             <a class="list-group-item" href="../type/watch_opts_t.html#variable-enabled_features">enabled_features</a>
-            <a class="list-group-item" href="../type/watch_opts_t.html#variable-ignore">ignore</a>
-            <a class="list-group-item" href="../type/watch_opts_t.html#variable-include">include</a>
+            <a class="list-group-item" href="../type/watch_opts_t.html#variable-fpm_executable">fpm_executable</a>
+            <a class="list-group-item" href="../type/watch_opts_t.html#variable-ignore~2">ignore</a>
+            <a class="list-group-item" href="../type/watch_opts_t.html#variable-include~2">include</a>
             <a class="list-group-item" href="../type/watch_opts_t.html#variable-log_format~4">log_format</a>
             <a class="list-group-item" href="../type/watch_opts_t.html#variable-low_cpu">low_cpu</a>
             <a class="list-group-item" href="../type/watch_opts_t.html#variable-once">once</a>
+            <a class="list-group-item" href="../type/watch_opts_t.html#variable-output_markers">output_markers</a>
             <a class="list-group-item" href="../type/watch_opts_t.html#variable-poll">poll</a>
             <a class="list-group-item" href="../type/watch_opts_t.html#variable-print_files_once">print_files_once</a>
             <a class="list-group-item" href="../type/watch_opts_t.html#variable-rescan">rescan</a>
+            <a class="list-group-item" href="../type/watch_opts_t.html#variable-restart_count~2">restart_count</a>
             <a class="list-group-item" href="../type/watch_opts_t.html#variable-run_on_start">run_on_start</a>
             <a class="list-group-item" href="../type/watch_opts_t.html#variable-silent_fpm">silent_fpm</a>
             <a class="list-group-item" href="../type/watch_opts_t.html#variable-verbosity">verbosity</a>
@@ -190,7 +193,7 @@
 - command-line flags (<code>--watch-*</code>).</p>
 <p>Time values (<code>poll</code>, <code>debounce</code>, <code>rescan</code>) are in seconds.
 Verbosity level:
-- <code>-1</code>: quiet (errors only)
+- <code>-1</code>: quiet (errors and enabled output protocol)
 - <code>0</code>: normal
 - <code>1..2</code>: more detail</p>
 <br>      <div class="card">
@@ -455,7 +458,24 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-ignore"></span>
+              <span class="anchor" id="variable-fpm_executable"></span>
+              character(len=:),
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>fpm_executable</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                <p>Enable extra debug output and internal timing/status messages.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ignore~2"></span>
               type(string_t),
             </td>
               <td>public,</td>
@@ -472,7 +492,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-include"></span>
+              <span class="anchor" id="variable-include~2"></span>
               type(string_t),
             </td>
               <td>public,</td>
@@ -501,7 +521,7 @@ large graphs.</div>
                 <td></td>
                 <td></td>
             <td>
-                <p>Enable extra debug output and internal timing/status messages.</p>
+                <p>Executable used for build/test/run; defaults to <code>fpm</code> on PATH.</p>
             </td>
         </tr>
         <tr>
@@ -536,6 +556,23 @@ large graphs.</div>
                 <td>.false.</td>
             <td>
                 
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-output_markers"></span>
+              logical,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>output_markers</strong></td>
+<td> =</td>
+                <td>.false.</td>
+            <td>
+                <p>Internal supervisor generation, retained during manifest refresh.</p>
             </td>
         </tr>
         <tr>
@@ -591,6 +628,23 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
+              <span class="anchor" id="variable-restart_count~2"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>restart_count</strong></td>
+<td> =</td>
+                <td>0</td>
+            <td>
+                <p>Also watch dependency project sources (can include paths under build dir).</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
               <span class="anchor" id="variable-run_on_start"></span>
               logical,
             </td>
@@ -620,7 +674,7 @@ large graphs.</div>
 <td> =</td>
                 <td>.false.</td>
             <td>
-                <p>Also watch dependency project sources (can include paths under build dir).</p>
+                <p>Frame raw output with cycle markers for GUI consumers (opt-in).</p>
             </td>
         </tr>
         <tr>
@@ -670,12 +724,14 @@ large graphs.</div>
     <h3><span class="anchor" id="src"></span>Source Code</h3>
     <div class="hl codehilite"><pre><span></span><span class="w">   </span><span class="k">type </span><span class="n">watch_opts_t</span>
 <span class="w">      </span><span class="c">!! Verbosity level:</span>
-<span class="w">      </span><span class="c">!! - `-1`: quiet (errors only)</span>
+<span class="w">      </span><span class="c">!! - `-1`: quiet (errors and enabled output protocol)</span>
 <span class="w">      </span><span class="c">!! - `0`: normal</span>
 <span class="w">      </span><span class="c">!! - `1..2`: more detail</span>
 <span class="w">      </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">verbosity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
 <span class="w">      </span><span class="c">!! Output format: text (default), json (JSON Lines), or logfmt.</span>
 <span class="w">      </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">log_format</span>
+<span class="w">      </span><span class="c">!! Executable used for build/test/run; defaults to `fpm` on PATH.</span>
+<span class="w">      </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">fpm_executable</span>
 <span class="w">      </span><span class="c">!! Enable extra debug output and internal timing/status messages.</span>
 <span class="w">      </span><span class="kt">logical</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">debug</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.</span>
 <span class="w">      </span><span class="c">!! Poll interval (seconds) between change scans.</span>
@@ -690,6 +746,10 @@ large graphs.</div>
 <span class="w">      </span><span class="kt">logical</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">print_files_once</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.</span>
 <span class="w">      </span><span class="c">!! Suppress `fpm` output; keep only `fpm-watch` status lines.</span>
 <span class="w">      </span><span class="kt">logical</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">silent_fpm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.</span>
+<span class="w">      </span><span class="c">!! Frame raw output with cycle markers for GUI consumers (opt-in).</span>
+<span class="w">      </span><span class="kt">logical</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">output_markers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.</span>
+<span class="w">      </span><span class="c">!! Internal supervisor generation, retained during manifest refresh.</span>
+<span class="w">      </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">restart_count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
 <span class="w">      </span><span class="c">!! Also watch dependency project sources (can include paths under build dir).</span>
 <span class="w">      </span><span class="kt">logical</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">watch_deps</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.</span>
 <span class="w">      </span><span class="c">!! Use OS sleep for waiting to minimize idle CPU usage.</span>
@@ -725,7 +785,7 @@ large graphs.</div>
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2026-10-12T11:58:15.281459+0000             </p>
+ on 2026-10-12T13:55:54.369963+0000             </p>
           </div>
         </div>
         <br>
