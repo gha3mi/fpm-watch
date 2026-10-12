@@ -7,6 +7,7 @@ import json
 import os
 from pathlib import Path
 import re
+import shlex
 import shutil
 import signal
 import subprocess
@@ -213,7 +214,8 @@ class WatchIntegration(unittest.TestCase):
                 self.assertEqual(result.returncode, 0, result.stderr)
                 events = records(result.stdout, format)
                 self.assertEqual(len(events), 1)
-                self.assertIn(flag, events[0]["command"])
+                quoted_flag = subprocess.list2cmdline([flag]) if os.name == "nt" else shlex.quote(flag)
+                self.assertIn(quoted_flag, events[0]["command"])
 
     def test_log_formatter_control_characters(self):
         result = subprocess.run(["fpm", "test", "--profile", "debug", "--target", "check_log", "--", "--fixture"],
