@@ -19,6 +19,13 @@ static int launch_failure(int error, int *launch_error) {
 #define watch_dup2 _dup2
 #define watch_close _close
 
+/* Preserve watcher options and forwarded patterns during MinGW startup. */
+#if defined(__MINGW64_VERSION_MAJOR)
+int _dowildcard = 0;
+#elif defined(__MINGW32__)
+int _CRT_glob = 0;
+#endif
+
 static volatile LONG interrupt_status = 0;
 
 static BOOL WINAPI watch_console_handler(DWORD event) {
