@@ -16,7 +16,6 @@ source-form = "free"
 
 [dependencies]
 fpm  = { git = "https://github.com/fortran-lang/fpm", tag = "v0.13.0" }
-FACE = { git = "https://github.com/szaghi/FACE" }
 
 [extra.ford]
 project             = "fpm-watch"

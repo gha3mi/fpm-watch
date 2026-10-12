@@ -36,7 +36,6 @@
 module watch_time
    use, intrinsic :: iso_fortran_env, only: int64
    use, intrinsic :: iso_c_binding,  only: c_double
-   use fpm_environment, only: get_os_type, OS_WINDOWS
    implicit none
    private
    public sleep_seconds, set_low_cpu
@@ -122,18 +121,11 @@ contains
    !! This routine delegates to the C shim `fpm_watch_sleep_seconds`, which
    !! performs platform-native sleeping (Windows `Sleep`, POSIX `nanosleep`).
    !!
-   !! The `fpm_environment` OS check is retained for clarity and future
-   !! platform-specific extensions, but both branches call the same shim.
-   !!
    !! ### Arguments
    !! - `s`: requested duration in seconds. Non-positive values return immediately.
    subroutine sleep_os(s)
       real, intent(in) :: s
-      if (get_os_type() == OS_WINDOWS) then
-         call fpm_watch_sleep_seconds(real(s, c_double))
-      else
-         call fpm_watch_sleep_seconds(real(s, c_double))
-      end if
+      call fpm_watch_sleep_seconds(real(s, c_double))
    end subroutine sleep_os
 
 end module watch_time

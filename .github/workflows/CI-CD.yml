@@ -51,6 +51,12 @@ jobs:
         if: runner.os == 'Windows'
         run: .\bin\fpm-watch.exe --watch-low-cpu --watch-once test
 
+      - name: Watcher behavior regressions
+        run: python test/integration.py --watcher ./bin/fpm-watch${{ runner.os == 'Windows' && '.exe' || '' }}
+
+      - name: Supervisor behavior regressions
+        run: python test/platform_regression.py ./bin/fpm-watch${{ runner.os == 'Windows' && '.exe' || '' }}
+
   doc_ford:
     if: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && !contains(github.event.head_commit.message, '[skip ci]') }}
     name: Generate FORD Documentation

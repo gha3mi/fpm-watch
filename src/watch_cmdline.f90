@@ -8,12 +8,27 @@
 !!   not for implementing a complete shell escaping library.
 !! - Windows vs POSIX quoting behavior is handled via `get_os_type()`.
 module watch_cmdline
-   use fpm_environment, only: get_os_type, OS_WINDOWS
+   use watch_util, only: starts_with
+   use watch_platform, only: is_windows_os => is_windows
    implicit none
    private
    public get_arg, join_argv, parse_int, parse_real, needs_quotes, quote_arg, is_windows_os, starts_with
+   public watch_option_takes_value
 
 contains
+
+   !> Return whether a bare watcher option consumes the following argv token.
+   pure logical function watch_option_takes_value(a) result(takes_value)
+      character(len=*), intent(in) :: a
+      select case (a)
+       case ("--watch-restart-delay", "--watch-restart-max", "--watch-self", &
+             "--watch-rescan", "--watch-ignore", "--watch-include", "--watch-feature", &
+             "--watch-poll", "--watch-debounce", "--watch-log-format")
+         takes_value = .true.
+       case default
+         takes_value = .false.
+      end select
+   end function watch_option_takes_value
 
    !> Retrieve a command-line argument as an allocatable string.
    function get_arg(i) result(a)
@@ -34,8 +49,8 @@ contains
 
    !> Join a range of argv entries into a single command-line string.
    !!
-   !! Each token is quoted when needed, using `quote_arg()`; quoting rules are
-   !! platform-dependent (Windows vs POSIX).
+   !! Every token is quoted using `quote_arg()`, including empty arguments.
+   !! Quoting rules are platform-dependent (Windows vs POSIX).
    function join_argv(i1, i2) result(s)
       integer, intent(in) :: i1, i2
       !! Inclusive range of argv indices to join.
@@ -46,63 +61,55 @@ contains
       s = ""
       do i = i1, i2
          a = get_arg(i)
-         if (len_trim(a) == 0) cycle
-         if (needs_quotes(a)) then
-            s = s // quote_arg(a) // " "
-         else
-            s = s // trim(a) // " "
-         end if
+         if (i > i1) s = s // " "
+         s = s // quote_arg(a)
       end do
-      s = trim(s)
    end function join_argv
 
-   !> Check whether a string begins with a given prefix.
-   pure logical function starts_with(s, prefix) result(ok)
-      character(len=*), intent(in) :: s, prefix
-      integer :: n
-      n = len_trim(prefix)
-      if (n <= 0) then
-         ok = .true.
-      else if (len_trim(s) < n) then
-         ok = .false.
-      else
-         ok = (s(1:n) == prefix(1:n))
-      end if
-   end function starts_with
 
    !> Determine whether an argument requires quoting for safe shell parsing.
    !!
-   !! A conservative check: any whitespace or quotes trigger quoting.
+   !! Only a nonempty token containing shell-safe characters can be unquoted.
    pure logical function needs_quotes(a) result(q)
       character(len=*), intent(in) :: a
-      q = (index(a, " ") /= 0) .or. (index(a, char(9)) /= 0) .or. (index(a, '"') /= 0) .or. (index(a, "'") /= 0)
+      character(len=*), parameter :: safe = &
+         "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_@+=:,./-"
+      q = len(a) == 0 .or. verify(a, safe) /= 0
    end function needs_quotes
 
    !> Quote an argument for the host shell, escaping embedded quotes as needed.
    !!
-   !! - On Windows, `"` is doubled.
+   !! - On Windows, `"` is doubled and preceding/trailing backslashes are doubled
+   !!   to preserve them through the C runtime's quoted-argument parser.
    !! - On POSIX shells, `'` is escaped using a standard `'` → `'"'"'` pattern.
    function quote_arg(a) result(q)
       character(len=*), intent(in) :: a
       character(len=:), allocatable :: q
       if (is_windows_os()) then
-         q = '"' // escape_quotes_win(trim(a)) // '"'
+         q = '"' // escape_quotes_win(a) // '"'
       else
-         q = "'" // escape_quotes_sh(trim(a)) // "'"
+         q = "'" // escape_quotes_sh(a) // "'"
       end if
    contains
       pure function escape_quotes_win(s) result(r)
          character(len=*), intent(in) :: s
          character(len=:), allocatable :: r
-         integer :: j
+         integer :: j, backslashes
          r = ""
-         do j = 1, len_trim(s)
-            if (s(j:j) == '"') then
-               r = r // '""'
-            else
-               r = r // s(j:j)
+         backslashes = 0
+         do j = 1, len(s)
+            if (s(j:j) == achar(92)) then
+               backslashes = backslashes + 1
+               cycle
             end if
+            if (s(j:j) == '"') then
+               r = r // repeat(achar(92), 2 * backslashes) // '""'
+            else
+               r = r // repeat(achar(92), backslashes) // s(j:j)
+            end if
+            backslashes = 0
          end do
+         r = r // repeat(achar(92), 2 * backslashes)
       end function escape_quotes_win
 
       pure function escape_quotes_sh(s) result(r)
@@ -110,7 +117,7 @@ contains
          character(len=:), allocatable :: r
          integer :: j
          r = ""
-         do j = 1, len_trim(s)
+         do j = 1, len(s)
             if (s(j:j) == "'") then
                r = r // "'""'""'"
             else
@@ -121,10 +128,6 @@ contains
    end function quote_arg
 
    !> Return whether the current OS should be treated as Windows for quoting.
-   logical function is_windows_os()
-      is_windows_os = (get_os_type() == OS_WINDOWS)
-   end function is_windows_os
-
    !> Parse an integer with a default fallback on I/O error.
    pure integer function parse_int(s, default) result(v)
       character(len=*), intent(in) :: s

@@ -5,10 +5,8 @@
 !! the watch loop.
 !!
 !! ## Execution flow
-!! 1. `maybe_supervise()` optionally re-executes `fpm-watch` under a supervisor
-!!    process when auto-restart is enabled.
-!! 2. `parse_cli_config()` builds a `watch_config_t` from defaults, `fpm.toml`
-!!    values, and command-line overrides.
+!! 1. `parse_cli_config()` builds configuration and selects the log format.
+!! 2. `maybe_supervise()` optionally re-executes `fpm-watch` under a supervisor.
 !! 3. `watcher_t%init()` initializes plugins, computes the initial watch list,
 !!    and (optionally) runs the command once.
 !! 4. `watcher_t%run()` enters the watch loop: sleep → scan → debounce → run.
@@ -22,15 +20,17 @@ program fpm_watch
    use watch_cli,     only: parse_cli_config
    use watch_engine,  only: watcher_t
    use watch_types,   only: watch_config_t
+   use watch_platform, only: termination_requested
    implicit none
 
    type(watch_config_t) :: cfg
    type(watcher_t)      :: w
 
-   call maybe_supervise()
-
    call parse_cli_config(cfg)
+   call maybe_supervise(cfg%w%log_format)
 
    call w%init(cfg)
    call w%run()
+   if (termination_requested()) stop 130
+   if (cfg%w%once .and. w%last_exit /= 0) stop w%last_exit
 end program fpm_watch

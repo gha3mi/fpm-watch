@@ -11,19 +11,21 @@
 !! - `file_mask`: bitmasks mapping each file to root targets
 !! - `roots`: the root targets corresponding to runnable/testable executables
 module watch_fpm_graph
-   use, intrinsic :: iso_fortran_env, only: int64, error_unit
+   use, intrinsic :: iso_fortran_env, only: int64
+   use, intrinsic :: iso_c_binding, only: c_int
    use watch_types, only: watch_opts_t, root_info_t
-   use watch_log, only: log_info
+   use watch_log, only: log_event, log_int, log_real, structured_logging
+   use watch_platform, only: begin_raw_output, end_raw_output
    use watch_filter, only: normalize_path, is_ignored_path, filter_watch_files, starts_with
    use watch_util, only: ftoa, trim_or_empty
    use fpm,              only: build_model
    use fpm_manifest,     only: package_config_t, get_package_data
    use fpm_model,        only: fpm_model_t, FPM_SCOPE_APP, FPM_SCOPE_TEST, FPM_SCOPE_EXAMPLE
-   use fpm_targets,      only: build_target_ptr, targets_from_sources
-   use fpm_filesystem,   only: basename, exists, join_path
+   use fpm_targets,      only: build_target_ptr, targets_from_sources, add_target_ptr
+   use fpm_filesystem,   only: basename, exists, join_path, dirname, canon_path, is_absolute_path
    use fpm_strings,      only: string_t, glob, str
    use fpm_error,        only: error_t
-   use fpm_dependency,   only: dependency_tree_t, new_dependency_tree
+   use fpm_dependency,   only: dependency_tree_t
    use fpm_command_line, only: fpm_build_settings, fpm_run_settings, fpm_test_settings
    implicit none
    private
@@ -50,7 +52,9 @@ contains
    !! - Root bitmasks are limited to `bit_size(0_int64)` (typically 64 roots).
    !! - Build directory paths are excluded from the watch list unless dependency
    !!   watching is enabled and the path is identified as belonging to a dep.
-   subroutine compute_watch_files_from_settings(settings, w, files, file_mask, roots, manifest_key, build_secs, secs_model, secs_targets, secs_watch)
+   !! - If `error` is present, model errors are returned without terminating the watcher.
+   subroutine compute_watch_files_from_settings(settings, w, files, file_mask, roots, &
+      manifest_key, build_secs, secs_model, secs_targets, secs_watch, error)
       class(fpm_build_settings), intent(inout) :: settings
       type(watch_opts_t), intent(in) :: w
       type(string_t), allocatable, intent(out) :: files(:)
@@ -59,12 +63,12 @@ contains
       integer(int64), intent(out) :: manifest_key
       real, intent(out) :: build_secs
       real, intent(out) :: secs_model, secs_targets, secs_watch
+      type(error_t), allocatable, intent(out), optional :: error
 
       type(package_config_t), allocatable :: package
       type(fpm_model_t),       allocatable :: model
       type(build_target_ptr),  allocatable :: targets(:)
       type(error_t), allocatable :: err
-      type(dependency_tree_t) :: tree
 
       logical, allocatable :: keep(:)
       logical, allocatable :: visited(:)
@@ -75,59 +79,56 @@ contains
       integer :: i, r, nroots
       integer(int64) :: rate, t0, t1, tw0, tw1
       integer :: n_before, n_after
+      integer(c_int) :: saved_output
 
       secs_model   = 0.0
       secs_targets = 0.0
       secs_watch   = 0.0
       build_secs   = 0.0
+      manifest_key = 0_int64
 
       call system_clock(count_rate=rate)
       if (rate <= 0_int64) rate = 1000_int64
 
       allocate(package, model)
 
+      call begin_raw_output(structured_logging(), saved_output)
       call get_package_data(package, "fpm.toml", err, apply_defaults=.true.)
+      call end_raw_output(saved_output)
       if (allocated(err)) then
-         write(error_unit,"(a)") "fpm-watch: manifest error: " // err%message
-         stop 1
-      end if
-
-      call new_dependency_tree(tree, build_dir=trim_or_empty(settings%build_dir), path_to_config=trim_or_empty(settings%path_to_config))
-
-      call tree%add(package, err)
-      if (allocated(err)) then
-         write(error_unit,"(a)") "fpm-watch: dependency error: " // err%message
-         stop 1
-      end if
-
-      if (w%watch_deps) then
-         call collect_dep_dirs(tree, dep_dirs)
-         if (w%verbosity >= 1) then
-            call log_info(w, "deps: watching dependency sources (deps=" // str(size(dep_dirs)) // ")")
-         end if
-      else
-         if (allocated(dep_dirs)) deallocate(dep_dirs)
-         allocate(dep_dirs(0))
+         call handle_graph_error(err, error, "manifest")
+         return
       end if
 
       call system_clock(t0)
+      call begin_raw_output(structured_logging(), saved_output)
       call build_model(model, settings, package, err)
+      call end_raw_output(saved_output)
       call system_clock(t1)
       secs_model = real(t1 - t0) / real(rate)
 
       if (allocated(err)) then
-         write(error_unit,"(a)") "fpm-watch: model error: " // err%message
-         stop 1
+         call handle_graph_error(err, error, "model")
+         return
+      end if
+
+      call collect_dep_dirs(model%deps, dep_dirs)
+      if (w%watch_deps .and. w%verbosity >= 1) then
+         call log_event("info", "graph.dependencies", "Watching " // str(size(dep_dirs)) // " dependencies", &
+                       [log_int("dependency_count", size(dep_dirs))], verbosity=1)
       end if
 
       call system_clock(t0)
+      call begin_raw_output(structured_logging(), saved_output)
       call targets_from_sources(targets, model, settings%prune, package%library, err)
+      call end_raw_output(saved_output)
       call system_clock(t1)
       secs_targets = real(t1 - t0) / real(rate)
 
       if (allocated(err)) then
-         write(error_unit,"(a)") "fpm-watch: targets error: " // err%message
-         stop 1
+         call release_targets(targets)
+         call handle_graph_error(err, error, "targets")
+         return
       end if
 
       call system_clock(tw0)
@@ -183,28 +184,18 @@ contains
          end if
       end if
 
-      if (w%watch_deps) then
-         call gather_files_with_mask(targets, visited, target_mask, files, file_mask, trim_or_empty(settings%build_dir), dep_dirs)
-      else
-         call gather_files_with_mask(targets, visited, target_mask, files, file_mask, trim_or_empty(settings%build_dir))
-      end if
+      call gather_files_with_mask(targets, visited, target_mask, files, file_mask, &
+         trim_or_empty(settings%build_dir), model, w%watch_deps, dep_dirs)
+
+      call push_file_with_mask(files, file_mask, "fpm.toml", trim_or_empty(settings%build_dir), 0_int64, dep_dirs)
 
       if (w%watch_deps) then
-         call push_file_with_mask(files, file_mask, "fpm.toml", trim_or_empty(settings%build_dir), 0_int64, dep_dirs)
-      else
-         call push_file_with_mask(files, file_mask, "fpm.toml", trim_or_empty(settings%build_dir), 0_int64)
+         do i = 1, size(dep_dirs)
+            if (len_trim(dep_dirs(i)%s) == 0) cycle
+            call push_file_with_mask(files, file_mask, join_path(dep_dirs(i)%s, "fpm.toml"), &
+               trim_or_empty(settings%build_dir), 0_int64, dep_dirs)
+         end do
       end if
-
-      do i = 1, tree%ndep
-         if (.not. allocated(tree%dep(i)%proj_dir)) cycle
-         if (len_trim(tree%dep(i)%proj_dir) == 0) cycle
-
-         if (w%watch_deps) then
-            call push_file_with_mask(files, file_mask, join_path(tree%dep(i)%proj_dir, "fpm.toml"), trim_or_empty(settings%build_dir), 0_int64, dep_dirs)
-         else
-            call push_file_with_mask(files, file_mask, join_path(tree%dep(i)%proj_dir, "fpm.toml"), trim_or_empty(settings%build_dir), 0_int64)
-         end if
-      end do
 
       n_before = 0
       if (allocated(files)) n_before = size(files)
@@ -215,22 +206,24 @@ contains
       if (allocated(files)) n_after = size(files)
 
       if (w%debug) then
-         call log_info(w, "debug: watch files filtered: " // str(n_before) // " -> " // str(n_after))
+         call log_event("debug", "graph.filtered", "Filtered watch list", &
+                        [log_int("files_before", n_before), log_int("files_after", n_after)])
       end if
 
       call system_clock(tw1)
       secs_watch = real(tw1 - tw0) / real(rate)
 
       build_secs = secs_model + secs_targets + secs_watch
-      manifest_key = 0_int64
 
       if (w%verbosity >= 1) then
-         call log_info(w, "timings: model=" // ftoa(secs_model) // "s targets=" // ftoa(secs_targets) // "s watchlist=" // ftoa(secs_watch) // "s")
-         call log_info(w, "targets: total=" // str(size(targets)) // " closure=" // str(count(visited)))
+         call log_event("info", "graph.ready", "Computed watch graph in " // ftoa(build_secs) // "s", &
+                       [log_real("model_ms", secs_model * 1000.0), log_real("targets_ms", secs_targets * 1000.0), &
+                        log_real("watch_list_ms", secs_watch * 1000.0), log_int("target_count", size(targets)), &
+                        log_int("closure_count", count(visited))], verbosity=1)
       end if
 
       deallocate(package, model)
-      if (allocated(targets)) deallocate(targets)
+      call release_targets(targets)
       if (allocated(keep)) deallocate(keep)
       if (allocated(visited)) deallocate(visited)
       if (allocated(target_mask)) deallocate(target_mask)
@@ -243,22 +236,78 @@ contains
          type(string_t), allocatable, intent(out) :: dep_dirs(:)
          integer :: i
 
-         if (tree%ndep <= 0) then
+         if (tree%ndep <= 1) then
             allocate(dep_dirs(0))
             return
          end if
 
-         allocate(dep_dirs(tree%ndep))
-         do i = 1, tree%ndep
+         ! The first node belongs to the main project, not a dependency.
+         allocate(dep_dirs(tree%ndep - 1))
+         do i = 2, tree%ndep
             if (allocated(tree%dep(i)%proj_dir)) then
-               dep_dirs(i)%s = normalize_path(trim(tree%dep(i)%proj_dir))
+               dep_dirs(i-1)%s = normalize_path(canon_path(tree%dep(i)%proj_dir))
             else
-               dep_dirs(i)%s = ""
+               dep_dirs(i-1)%s = ""
             end if
          end do
       end subroutine collect_dep_dirs
 
    end subroutine compute_watch_files_from_settings
+
+   !> Return a graph error to the caller, or report a fatal initial configuration error.
+   subroutine handle_graph_error(err, error, stage)
+      type(error_t), allocatable, intent(inout) :: err
+      type(error_t), allocatable, intent(out), optional :: error
+      character(len=*), intent(in) :: stage
+
+      if (present(error)) then
+         call move_alloc(err, error)
+      else
+         call log_event("error", "graph.failed", stage // " error: " // err%message)
+         stop 1
+      end if
+   end subroutine handle_graph_error
+
+   !> Release the uniquely owned target objects and their shared dependency references.
+   !!
+   !! fpm returns pointer wrappers without finalizers. Collect every reachable node
+   !! while all pointers remain valid, then remove the dependency references before
+   !! deallocating each target and its allocatable source/command data exactly once.
+   !! Nodes already discarded without remaining references by fpm's pruning routine
+   !! cannot be recovered through the returned target graph.
+   subroutine release_targets(targets)
+      type(build_target_ptr), allocatable, intent(inout) :: targets(:)
+      type(build_target_ptr), allocatable :: owned(:)
+      integer :: i, j
+
+      if (.not. allocated(targets)) return
+      allocate(owned(0))
+      do i = 1, size(targets)
+         if (.not. associated(targets(i)%ptr)) cycle
+         if (find_ptr_index(targets(i)%ptr, owned) > 0) cycle
+         call add_target_ptr(owned, targets(i))
+      end do
+
+      i = 1
+      do while (i <= size(owned))
+         if (allocated(owned(i)%ptr%dependencies)) then
+            do j = 1, size(owned(i)%ptr%dependencies)
+               if (.not. associated(owned(i)%ptr%dependencies(j)%ptr)) cycle
+               if (find_ptr_index(owned(i)%ptr%dependencies(j)%ptr, owned) > 0) cycle
+               call add_target_ptr(owned, owned(i)%ptr%dependencies(j))
+            end do
+         end if
+         i = i + 1
+      end do
+
+      deallocate(targets)
+      do i = 1, size(owned)
+         if (allocated(owned(i)%ptr%dependencies)) deallocate(owned(i)%ptr%dependencies)
+      end do
+      do i = 1, size(owned)
+         deallocate(owned(i)%ptr)
+      end do
+   end subroutine release_targets
 
    !> Return whether the settings correspond to `fpm run` or `fpm test`.
    logical function is_run_or_test(settings)
@@ -272,20 +321,23 @@ contains
       end select
    end function is_run_or_test
 
-   subroutine gather_files_with_mask(targets, visited, target_mask, files, file_mask, build_dir, dep_dirs)
+   subroutine gather_files_with_mask(targets, visited, target_mask, files, file_mask, build_dir, model, watch_deps, dep_dirs)
       type(build_target_ptr), intent(in) :: targets(:)
       logical, intent(in) :: visited(:)
       integer(int64), allocatable, intent(in), optional :: target_mask(:)
       type(string_t), allocatable, intent(out) :: files(:)
       integer(int64), allocatable, intent(out) :: file_mask(:)
       character(len=*), intent(in) :: build_dir
-      type(string_t), allocatable, intent(in), optional :: dep_dirs(:)
+      type(fpm_model_t), intent(in) :: model
+      logical, intent(in) :: watch_deps
+      type(string_t), allocatable, intent(in) :: dep_dirs(:)
 
       type(string_t), allocatable :: buf(:)
       integer(int64), allocatable :: mbuf(:)
       integer :: n, cap
       integer :: i, j
       integer(int64) :: m
+      character(len=:), allocatable :: include_file
 
       n = 0
       cap = 256
@@ -294,25 +346,28 @@ contains
       do i = 1, size(targets)
          if (.not. visited(i)) cycle
          if (.not. allocated(targets(i)%ptr%source)) cycle
+         if (.not. watch_deps) then
+            if (allocated(targets(i)%ptr%package_name)) then
+               if (targets(i)%ptr%package_name /= model%package_name) cycle
+            end if
+         end if
 
          m = 0_int64
          if (present(target_mask)) then
             if (allocated(target_mask)) m = target_mask(i)
          end if
 
-         if (present(dep_dirs)) then
-            call vec_push_unique(buf, mbuf, n, cap, targets(i)%ptr%source%file_name, build_dir, m, dep_dirs)
-         else
-            call vec_push_unique(buf, mbuf, n, cap, targets(i)%ptr%source%file_name, build_dir, m)
-         end if
+         call vec_push_unique(buf, mbuf, n, cap, targets(i)%ptr%source%file_name, build_dir, m, dep_dirs)
 
          if (allocated(targets(i)%ptr%source%include_dependencies)) then
             do j = 1, size(targets(i)%ptr%source%include_dependencies)
-               if (present(dep_dirs)) then
-                  call vec_push_unique(buf, mbuf, n, cap, targets(i)%ptr%source%include_dependencies(j)%s, build_dir, m, dep_dirs)
-               else
-                  call vec_push_unique(buf, mbuf, n, cap, targets(i)%ptr%source%include_dependencies(j)%s, build_dir, m)
+               include_file = resolve_include_file(targets(i)%ptr%source%file_name, &
+                  targets(i)%ptr%source%include_dependencies(j)%s, model%include_dirs)
+               if (len_trim(include_file) == 0) cycle
+               if (.not. watch_deps) then
+                  if (is_in_dep_dirs(include_file, dep_dirs)) cycle
                end if
+               call vec_push_unique(buf, mbuf, n, cap, include_file, build_dir, m, dep_dirs)
             end do
          end if
       end do
@@ -344,6 +399,40 @@ contains
       end subroutine finalize_vec
 
    end subroutine gather_files_with_mask
+
+   !> Resolve quoted includes using the source directory and fpm's include directories.
+   function resolve_include_file(source_file, include_name, include_dirs) result(path)
+      character(len=*), intent(in) :: source_file, include_name
+      type(string_t), allocatable, intent(in) :: include_dirs(:)
+      character(len=:), allocatable :: path, candidate
+      integer :: i
+
+      path = ""
+      if (len_trim(include_name) == 0) return
+
+      if (is_absolute_path(include_name)) then
+         if (exists(include_name)) path = normalize_path(canon_path(include_name))
+         return
+      end if
+
+      candidate = normalize_path(canon_path(join_path(dirname(source_file), include_name)))
+      if (exists(candidate)) then
+         path = candidate
+         return
+      end if
+
+      if (allocated(include_dirs)) then
+         do i = 1, size(include_dirs)
+            candidate = normalize_path(canon_path(join_path(include_dirs(i)%s, include_name)))
+            if (.not. exists(candidate)) cycle
+            path = candidate
+            return
+         end do
+      end if
+
+      ! Some compilers also search the invocation directory for Fortran INCLUDE.
+      if (exists(include_name)) path = normalize_path(canon_path(include_name))
+   end function resolve_include_file
 
    subroutine push_file_with_mask(files, file_mask, path, build_dir, mask, dep_dirs)
       type(string_t), allocatable, intent(inout) :: files(:)

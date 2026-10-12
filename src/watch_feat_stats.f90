@@ -9,7 +9,7 @@
 module watch_feat_stats
    use watch_feature_api, only: watch_feature_t
    use watch_types, only: watch_config_t
-   use watch_log, only: log_info
+   use watch_log, only: log_event
    implicit none
    private
    public new_stats_feature
@@ -36,7 +36,8 @@ contains
    subroutine stats_init(self, cfg)
       class(stats_feature_t), intent(inout) :: self
       type(watch_config_t), intent(in) :: cfg
-      call log_info(cfg%w, "feature enabled: stats")
+      self%runs = 0
+      if (cfg%w%verbosity >= 1) call log_event("info", "feature.enabled", "Feature enabled: stats", verbosity=1)
    end subroutine stats_init
 
    !> Update run counter after each completed command execution.

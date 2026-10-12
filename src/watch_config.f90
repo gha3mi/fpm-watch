@@ -27,6 +27,7 @@ contains
    subroutine set_watch_defaults(w)
       type(watch_opts_t), intent(inout) :: w
       w%verbosity = 0
+      w%log_format = "text"
       w%debug = .false.
       w%poll = 0.5
       w%debounce = 0.2
@@ -83,6 +84,7 @@ contains
       call toml_get_logical(wt, "once",         w%once)
 
       call toml_get_int(wt,     "verbosity", w%verbosity)
+      call toml_get_string(wt, "log-format", w%log_format)
 
       call toml_get_list_strings(wt, "ignore",   w%ignore)
       call toml_get_list_strings(wt, "include",  w%include)

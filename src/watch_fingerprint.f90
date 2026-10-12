@@ -14,7 +14,7 @@ module watch_fingerprint
    use fpm_command_line, only: fpm_build_settings
    implicit none
    private
-   public init_fingerprints, scan_changes, accept_changes, manifest_key_from_files, file_fingerprint
+   public init_fingerprints, scan_changes, accept_changes, manifest_key_from_files, file_fingerprint, watch_state_changed
 
    integer(int64), parameter :: FNV_OFFSET = 1469598103934665603_int64
    integer(int64), parameter :: FNV_PRIME  = 1099511628211_int64
@@ -23,6 +23,42 @@ module watch_fingerprint
    character(len=1), allocatable, save :: io_buf(:)
 
 contains
+
+   !> Compare watch snapshots without depending on file-list ordering.
+   !!
+   !! A rescan must report added, removed, and modified files before replacing
+   !! the old fingerprint baseline. Otherwise a newly discovered file is
+   !! silently accepted without triggering the configured command.
+   pure logical function watch_state_changed(old_files, old_fp, new_files, new_fp) result(changed)
+      type(string_t), allocatable, intent(in) :: old_files(:), new_files(:)
+      integer(int64), allocatable, intent(in) :: old_fp(:), new_fp(:)
+      integer :: nold, nnew, i, j
+      logical :: found
+
+      nold = 0
+      nnew = 0
+      if (allocated(old_files)) nold = size(old_files)
+      if (allocated(new_files)) nnew = size(new_files)
+      changed = (nold /= nnew)
+      if (changed .or. nnew == 0) return
+
+      changed = .true.
+      if (.not. allocated(old_fp)) return
+      if (.not. allocated(new_fp)) return
+      if (size(old_fp) /= nold .or. size(new_fp) /= nnew) return
+
+      do i = 1, nnew
+         found = .false.
+         do j = 1, nold
+            if (new_files(i)%s /= old_files(j)%s) cycle
+            if (new_fp(i) /= old_fp(j)) return
+            found = .true.
+            exit
+         end do
+         if (.not. found) return
+      end do
+      changed = .false.
+   end function watch_state_changed
 
    !> Initialize fingerprint arrays for a watch list.
    !!

@@ -3,125 +3,93 @@
 !! Provides the user-facing change summary and the mechanics to construct and
 !! execute the effective `fpm` command.
 module watch_exec
-   use, intrinsic :: iso_fortran_env, only: int64, output_unit
+   use, intrinsic :: iso_fortran_env, only: int64
    use watch_types, only: watch_opts_t, root_info_t
    use watch_util, only: ftoa
+   use watch_cmdline, only: quote_arg
+   use watch_platform, only: execute_command, termination_requested
    use fpm_strings, only: string_t, str
-   use fpm_filesystem, only: run
    use fpm_command_line, only: fpm_build_settings, fpm_test_settings, fpm_run_settings
-   use face, only: colorize
+   use watch_log, only: log_event, log_int, log_real, log_string, log_strings, log_bool, structured_logging
    implicit none
    private
    public report_changes, run_command_and_report, build_run_command
 
 contains
 
-   !> Print a summary of changed files.
-   !!
-   !! The output is intentionally limited (cap=8) to keep logs compact.
-   !! This routine is suppressed in quiet mode (`w%verbosity < 0`).
+   !> Emit a change summary, with individual paths available in verbose mode.
    subroutine report_changes(files, changed_idx, changed_count, w)
       type(string_t), allocatable, intent(in) :: files(:)
       integer, intent(in) :: changed_idx(:)
       integer, intent(in) :: changed_count
       type(watch_opts_t), intent(in) :: w
-      integer :: i, cap, idx
-
-      if (w%verbosity < 0) return
-
-      cap = 8
-      write(output_unit,"(a)") &
-         colorize("change     |", color_fg="yellow_intense", style="bold_on") // "  " // &
-         colorize(str(changed_count), color_fg="yellow_intense", style="bold_on") // &
-         " files (debounced " // colorize(ftoa(w%debounce), color_fg="yellow") // "s)"
-
-      if (changed_count == 0) return
+      integer :: i, idx, n
+      type(string_t), allocatable :: paths(:)
+      character(len=:), allocatable :: message
+      if (w%verbosity < 0 .or. changed_count == 0) return
       if (.not. allocated(files)) return
-
-      do i = 1, min(changed_count, cap)
+      allocate(paths(changed_count))
+      n = 0
+      do i = 1, changed_count
          idx = changed_idx(i)
          if (idx < 1 .or. idx > size(files)) cycle
-         write(output_unit,"(a)") "           |  " // colorize(trim(files(idx)%s), color_fg="yellow")
+         n = n + 1
+         paths(n) = files(idx)
       end do
-      if (changed_count > cap) then
-         write(output_unit,"(a)") &
-            "           |  ... +" // colorize(str(changed_count-cap), color_fg="yellow") // " more"
+      idx = changed_idx(1)
+      message = str(changed_count) // " files changed"
+      if (idx >= 1 .and. idx <= size(files)) then
+         if (changed_count == 1) message = "Changed " // files(idx)%s
       end if
+      call log_event("info", "watch.changed", message, &
+                     [log_int("file_count", changed_count), log_strings("paths", paths(:n)), &
+                      log_real("debounce_ms", w%debounce * 1000.0)])
+      do i = 1, min(changed_count, 8)
+         idx = changed_idx(i)
+         if (idx < 1 .or. idx > size(files)) cycle
+         call log_event("info", "watch.changed_file", "Changed " // files(idx)%s, &
+                        [log_string("path", files(idx)%s)], verbosity=1)
+      end do
    end subroutine report_changes
 
-   !> Execute a command and print pre/post status lines.
-   !!
-   !! This routine is responsible for:
-   !! - Printing a "run" line (unless quiet),
-   !! - Executing the command via `fpm_filesystem:run`,
-   !! - Timing the execution with `system_clock`,
-   !! - Printing a final OK/FAIL summary and returning `exitstat` and `secs`.
-   !!
-   !! When `w%silent_fpm` is true, the executed command's output is suppressed
-   !! (but the status lines from `fpm-watch` remain visible).
+   !> Run fpm and emit one start and one completion event.
+   !! Structured logging directs raw command stdout to stderr. Silent mode
+   !! suppresses both child streams. Failure events remain visible in quiet mode.
    subroutine run_command_and_report(cmd, w, exitstat, secs)
       character(len=*), intent(in) :: cmd
       type(watch_opts_t), intent(in) :: w
       integer, intent(out) :: exitstat
       real, intent(out) :: secs
-
       integer(int64) :: rate, t0, t1
-      logical :: verbose_run
-      character(len=:), allocatable :: status_color
-      character(len=:), allocatable :: status_word
+      character(len=:), allocatable :: action, message, level
+      logical :: interrupted
 
+      action = "Command"
+      if (index(cmd, "fpm build") == 1) action = "Build"
+      if (index(cmd, "fpm test") == 1) action = "Tests"
+      if (index(cmd, "fpm run") == 1) action = "Application"
+      call log_event("info", "command.started", "Running " // trim(cmd), &
+                     [log_string("command", trim(cmd)), log_bool("silent_fpm", w%silent_fpm)])
       call system_clock(count_rate=rate)
       if (rate <= 0_int64) rate = 1000_int64
-
-      verbose_run = .not. w%silent_fpm
-
-      if (w%verbosity >= 0) then
-         if (w%silent_fpm) then
-            write(output_unit,"(a)") &
-               colorize("run        |", color_fg="cyan_intense", style="bold_on") // "  " // &
-               colorize(trim(cmd), color_fg="white_intense") // "  " // &
-               colorize("(fpm output silenced)", color_fg="magenta_intense", style="italics_on")
-         else
-            write(output_unit,"(a)") &
-               colorize("run        |", color_fg="cyan_intense", style="bold_on") // "  " // &
-               colorize(trim(cmd), color_fg="white_intense")
-         end if
-      end if
-
-      if (w%verbosity >= 0) flush(output_unit)
-
       call system_clock(t0)
-      call run(trim(cmd), echo=.false., exitstat=exitstat, verbose=verbose_run)
+      call execute_command(trim(cmd), exitstat, silent=w%silent_fpm, stderr=structured_logging())
       call system_clock(t1)
-
       secs = real(t1 - t0) / real(rate)
-
-      if (exitstat == 0) then
-         status_color = "green_intense"
-         status_word  = "OK"
-      else
-         status_color = "red_intense"
-         status_word  = "FAIL"
+      interrupted = termination_requested()
+      level = "info"
+      message = action // " succeeded in " // ftoa(secs) // "s"
+      if (exitstat /= 0) then
+         level = "error"
+         message = action // " failed (exit " // str(exitstat) // ") after " // ftoa(secs) // "s"
       end if
-
-      if (w%verbosity >= 0) then
-         write(output_unit,"(a)") ""
-         write(output_unit,"(a)") &
-            colorize("done       |", color_fg=status_color, style="bold_on") // &
-            "  " // colorize(status_word, color_fg=status_color, style="bold_on") // &
-            "  exit=" // colorize(str(exitstat), color_fg=status_color, style="bold_on") // &
-            "  time=" // colorize(ftoa(secs), color_fg="yellow_intense") // "s"
-
-         write(output_unit,"(a)") &
-            colorize("command    |", color_fg="cyan_intense", style="bold_on") // "  " // &
-            colorize(trim(cmd), color_fg="white_intense")
-
-         write(output_unit,"(a)") &
-            colorize("watch      |", color_fg="cyan_intense", style="bold_on") // &
-            "  waiting (poll=" // colorize(ftoa(w%poll), color_fg="yellow") // "s" // &
-            ", debounce=" // colorize(ftoa(w%debounce), color_fg="yellow") // "s)  " // &
-            colorize("Ctrl+C", color_fg="red_intense", style="bold_on") // " to stop"
+      if (interrupted) then
+         level = "info"
+         message = action // " interrupted"
       end if
+      call log_event(level, "command.finished", message, &
+                     [log_string("command", trim(cmd)), log_int("exit_code", exitstat), &
+                      log_int("duration_ms", nint(secs * 1000.0, int64)), log_bool("interrupted", interrupted)])
    end subroutine run_command_and_report
 
    !> Construct the effective command to run based on changes and target masks.
@@ -231,7 +199,7 @@ contains
             nm = trim(roots(rr)%name)
             if (len_trim(nm) == 0) cycle
             if (len(s) > 0) s = s // " "
-            s = s // nm
+            s = s // quote_arg(nm)
          end do
       end function join_names_from_mask
 
