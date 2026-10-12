@@ -125,6 +125,15 @@ fpm-watch --watch-low-cpu --watch-auto-restart run --example my_example
 ```
 --watch-silent-fpm
     Suppress fpm output; show only fpm-watch status.
+    Use --watch-silent-fpm=false to override silent-fpm = true in fpm.toml.
+
+--watch-fpm <path>
+    Select the fpm executable (default: fpm on PATH).
+    Also accepts --watch-fpm=<path>.
+
+--watch-output-markers
+    In structured logging mode, frame raw stderr with per-command cycle markers
+    for GUI integrations (default: disabled).
 
 --watch-print-files
     Print watched file list at startup.
@@ -214,8 +223,8 @@ Use `event` and its attributes for automation rather than parsing the message:
 | `watch.changed` | `file_count`, `paths`, `debounce_ms` |
 | `watch.manifest_changed` | Manifest refresh is starting |
 | `watch.refresh_failed`, `watch.init_failed` | Error details in the message |
-| `command.started` | `command`, `silent_fpm` |
-| `command.finished` | `command`, `exit_code`, `duration_ms`, `interrupted` |
+| `command.started` | `command`, `silent_fpm`, `cycle_id` |
+| `command.finished` | `command`, `exit_code`, `duration_ms`, `interrupted`, `cycle_id` |
 | `watch.stopped` | `reason` (`stop_file` or `interrupt`) |
 | `supervisor.restart`, `supervisor.limit_reached` | `exit_code`, `restart_count` |
 
@@ -244,11 +253,27 @@ self          = ""
 debug         = false
 verbosity     = 0
 log-format    = "text"
+fpm-executable = "fpm"
+output-markers = false
 ignore        = []
 include       = []
 features      = []
 once          = false
 ```
+
+GUI integrations can select the same fpm executable as their ordinary builds
+and retain progress output even when the manifest defaults to silent mode:
+
+```bash
+fpm-watch --watch-log-format=json --watch-verbose=0 --watch-silent-fpm=false --watch-fpm /path/to/fpm build
+```
+
+For reliable per-cycle output attribution, add `--watch-output-markers`.
+Stderr then contains `@@fpm-watch:started:N@@` before each command's raw
+output and `@@fpm-watch:finished:N@@` after it. Match `N` to the JSON events'
+`cycle_id`; stdout and stderr may arrive in either order. Consume the markers
+as protocol records rather than displaying them. Without this option, stderr
+retains its ordinary output format.
 
 ## Stopping
 

@@ -38,6 +38,12 @@ program test_cmdline
             expected = expected // quote_arg(values(i)%s)
          end do
          call require(join_argv(2, command_argument_count()) == expected, "joined argv preserves all tokens")
+      else if (mode == "--watch-fpm" .or. mode == "--watch-fpm=custom fpm") then
+         call parse_cli_config(cfg)
+         call require(cfg%w%fpm_executable == "custom fpm", "custom executable preserved")
+         call require(.not. cfg%w%silent_fpm, "CLI overrides silent manifest default")
+         call require(cfg%cmd_prefix == quote_arg("custom fpm") // " run", "quoted executable prefix")
+         call require(cfg%fpm_cmdline == cfg%cmd_prefix // " " // cfg%cmd_rest, "custom command rebuilt")
       else if (mode == "run") then
          call parse_cli_config(cfg)
          select type (s => cfg%settings)
@@ -87,6 +93,13 @@ program test_cmdline
    cmd = quote_arg(get_arg(0)) // " run --target=" // quote_arg("one,two:three four") // &
       " --profile=release --runner-args=120"
    call run_child(cmd, "equals-style target value")
+
+   cmd = quote_arg(get_arg(0)) // " --watch-fpm " // quote_arg("custom fpm") // &
+      " --watch-silent-fpm --watch-silent-fpm=false run --profile=release"
+   call run_child(cmd, "custom executable and output override")
+   cmd = quote_arg(get_arg(0)) // " " // quote_arg("--watch-fpm=custom fpm") // &
+      " --watch-silent-fpm --watch-silent-fpm=false run --profile=release"
+   call run_child(cmd, "equals-style custom executable")
 
    runner = quote_arg("echo -- marker")
    rest = quote_arg("--runner") // " " // runner

@@ -3,7 +3,7 @@
 !! Provides the user-facing change summary and the mechanics to construct and
 !! execute the effective `fpm` command.
 module watch_exec
-   use, intrinsic :: iso_fortran_env, only: int64
+   use, intrinsic :: iso_fortran_env, only: int64, error_unit
    use watch_types, only: watch_opts_t, root_info_t
    use watch_util, only: ftoa
    use watch_cmdline, only: quote_arg
@@ -14,6 +14,7 @@ module watch_exec
    implicit none
    private
    public report_changes, run_command_and_report, build_run_command
+   integer(int64), save :: cycle_id = 0_int64
 
 contains
 
@@ -68,8 +69,11 @@ contains
       if (index(cmd, "fpm build") == 1) action = "Build"
       if (index(cmd, "fpm test") == 1) action = "Tests"
       if (index(cmd, "fpm run") == 1) action = "Application"
+      cycle_id = cycle_id + 1_int64
       call log_event("info", "command.started", "Running " // trim(cmd), &
-                     [log_string("command", trim(cmd)), log_bool("silent_fpm", w%silent_fpm)])
+                     [log_string("command", trim(cmd)), log_bool("silent_fpm", w%silent_fpm), &
+                      log_int("cycle_id", cycle_id)])
+      call output_boundary("started", w)
       call system_clock(count_rate=rate)
       if (rate <= 0_int64) rate = 1000_int64
       call system_clock(t0)
@@ -89,8 +93,22 @@ contains
       end if
       call log_event(level, "command.finished", message, &
                      [log_string("command", trim(cmd)), log_int("exit_code", exitstat), &
-                      log_int("duration_ms", nint(secs * 1000.0, int64)), log_bool("interrupted", interrupted)])
+                      log_int("duration_ms", nint(secs * 1000.0, int64)), log_bool("interrupted", interrupted), &
+                      log_int("cycle_id", cycle_id)])
+      call output_boundary("finished", w)
    end subroutine run_command_and_report
+
+   !> Frame one command's raw stream independently of stdout delivery order.
+   !! The opt-in markers share stderr with the child's output, so buffered
+   !! consumers can correlate cycles without ordering two separate pipes.
+   subroutine output_boundary(state, w)
+      character(len=*), intent(in) :: state
+      type(watch_opts_t), intent(in) :: w
+      if (.not. w%output_markers .or. .not. structured_logging()) return
+      write(error_unit, "(a)") ""
+      write(error_unit, "(a)") "@@fpm-watch:" // state // ":" // str(cycle_id) // "@@"
+      flush(error_unit)
+   end subroutine output_boundary
 
    !> Construct the effective command to run based on changes and target masks.
    !!

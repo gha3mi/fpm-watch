@@ -9,7 +9,7 @@ _fpm_watch() {
   i=1
   while (( i < ${#COMP_WORDS[@]} )); do
     case "${COMP_WORDS[i]}" in
-      --watch-poll|--watch-debounce|--watch-rescan|--watch-ignore|--watch-include|--watch-feature|--watch-restart-delay|--watch-restart-max|--watch-self|--watch-log-format)
+      --watch-poll|--watch-debounce|--watch-rescan|--watch-ignore|--watch-include|--watch-feature|--watch-restart-delay|--watch-restart-max|--watch-self|--watch-log-format|--watch-fpm)
         ((i+=2)); continue ;;
       --watch-verbose)
         if (( i+1 < ${#COMP_WORDS[@]} )) && [[ "${COMP_WORDS[i+1]}" =~ ^[0-2]$ ]]; then
@@ -63,6 +63,8 @@ _fpm_watch() {
 --watch-run-on-start
 --watch-no-run-on-start
 --watch-silent-fpm
+--watch-fpm
+--watch-output-markers
 --watch-print-files
 --watch-ignore
 --watch-include

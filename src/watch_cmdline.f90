@@ -23,7 +23,7 @@ contains
       select case (a)
        case ("--watch-restart-delay", "--watch-restart-max", "--watch-self", &
              "--watch-rescan", "--watch-ignore", "--watch-include", "--watch-feature", &
-             "--watch-poll", "--watch-debounce", "--watch-log-format")
+             "--watch-poll", "--watch-debounce", "--watch-log-format", "--watch-fpm")
          takes_value = .true.
        case default
          takes_value = .false.

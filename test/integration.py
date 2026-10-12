@@ -156,6 +156,33 @@ class WatchIntegration(unittest.TestCase):
                 for event in events:
                     self.assertIsNotNone(datetime.fromisoformat(event["timestamp"]).tzinfo)
 
+    def test_gui_cycle_protocol_and_executable_config(self):
+        executable = shutil.which("fpm")
+        self.manifest.write_text(self.manifest_text + '[extra.fpm-watch]\n'
+                                 + 'fpm-executable=' + json.dumps(executable) + '\n'
+                                 + 'silent-fpm=true\noutput-markers=true\n')
+        result = self.once("--watch-log-format=json", "--watch-silent-fpm=false", "run", "first")
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        events = records(result.stdout, "json")
+        started, finished = events[-2:]
+        self.assertEqual(started["cycle_id"], finished["cycle_id"])
+        self.assertIs(started["silent_fpm"], False)
+        self.assertIn(executable, started["command"])
+        lines = result.stderr.splitlines()
+        begin = lines.index(f'@@fpm-watch:started:{started["cycle_id"]}@@')
+        end = lines.index(f'@@fpm-watch:finished:{finished["cycle_id"]}@@')
+        self.assertIn("WATCH_RESULT", "\n".join(lines[begin + 1:end]))
+        result = self.once("--watch-log-format=json", "--watch-fpm", executable,
+                           "--watch-output-markers=false", "--watch-silent-fpm=false", "run", "first")
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertNotIn("@@fpm-watch:", result.stderr)
+
+    def test_custom_executable_cli_overrides_manifest(self):
+        self.manifest.write_text(self.manifest_text + '[extra.fpm-watch]\nfpm-executable="missing-fpm"\n')
+        result = self.once("--watch-fpm=" + shutil.which("fpm"), "run", "first")
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertIn("WATCH_RESULT", result.stdout)
+
     def test_logging_config_and_cli_override(self):
         self.manifest.write_text(self.manifest_text + '[extra.fpm-watch]\nlog-format="json"\n')
         result = self.once("--watch-no-run-on-start", "build")

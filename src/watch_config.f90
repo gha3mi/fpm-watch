@@ -28,6 +28,7 @@ contains
       type(watch_opts_t), intent(inout) :: w
       w%verbosity = 0
       w%log_format = "text"
+      w%fpm_executable = "fpm"
       w%debug = .false.
       w%poll = 0.5
       w%debounce = 0.2
@@ -35,6 +36,7 @@ contains
       w%run_on_start = .true.
       w%print_files_once = .false.
       w%silent_fpm = .false.
+      w%output_markers = .false.
       w%watch_deps = .false.
       w%low_cpu = .false.
       w%once = .false.
@@ -54,6 +56,8 @@ contains
       if (w%rescan < 0.0) w%rescan = 0.0
       if (w%verbosity > 2) w%verbosity = 2
       if (w%verbosity < -1) w%verbosity = -1
+      if (.not. allocated(w%fpm_executable)) w%fpm_executable = "fpm"
+      if (len_trim(w%fpm_executable) == 0) w%fpm_executable = "fpm"
    end subroutine normalize_watch_opts
 
    !> Apply configuration overrides from `fpm.toml` `[extra.fpm-watch]`.
@@ -77,6 +81,7 @@ contains
       call toml_get_logical(wt, "debug",        w%debug)
       call toml_get_logical(wt, "print-files",  w%print_files_once)
       call toml_get_logical(wt, "silent-fpm",   w%silent_fpm)
+      call toml_get_logical(wt, "output-markers", w%output_markers)
       call toml_get_logical(wt, "run-on-start", w%run_on_start)
 
       call toml_get_logical(wt, "deps",         w%watch_deps)
@@ -85,6 +90,7 @@ contains
 
       call toml_get_int(wt,     "verbosity", w%verbosity)
       call toml_get_string(wt, "log-format", w%log_format)
+      call toml_get_string(wt, "fpm-executable", w%fpm_executable)
 
       call toml_get_list_strings(wt, "ignore",   w%ignore)
       call toml_get_list_strings(wt, "include",  w%include)

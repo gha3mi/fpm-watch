@@ -13,7 +13,7 @@ module watch_cli
    use, intrinsic :: iso_fortran_env, only: error_unit
    use watch_types,  only: watch_config_t, watch_opts_t
    use watch_config, only: set_watch_defaults, apply_watch_from_manifest, normalize_watch_opts, push_feature
-   use watch_cmdline, only: get_arg, join_argv, parse_int, parse_real, starts_with, watch_option_takes_value
+   use watch_cmdline, only: get_arg, join_argv, quote_arg, parse_int, parse_real, starts_with, watch_option_takes_value
    use fpm_strings,  only: string_t, split
    use fpm_command_line, only: fpm_build_settings, fpm_run_settings, fpm_test_settings, get_fpm_env
    use watch_log, only: configure_logging, valid_log_format, log_event, structured_logging
@@ -48,6 +48,11 @@ contains
       call move_alloc(settings, cfg%settings)
 
       call split_cmd_after_subcmd(cfg%fpm_cmdline, cfg%cmd_prefix, cfg%cmd_rest)
+      if (cfg%w%fpm_executable /= "fpm") then
+         cfg%cmd_prefix = quote_arg(cfg%w%fpm_executable) // " " // cfg%subcmd
+         cfg%fpm_cmdline = cfg%cmd_prefix
+         if (len_trim(cfg%cmd_rest) > 0) cfg%fpm_cmdline = cfg%fpm_cmdline // " " // cfg%cmd_rest
+      end if
    end subroutine parse_cli_config
 
    !> Parse the complete CLI and produce watcher options + typed `fpm` settings.
@@ -356,6 +361,9 @@ contains
          continue
        case ("--watch-self")
          continue
+       case ("--watch-fpm")
+         if (len_trim(val) == 0) call usage_and_stop("--watch-fpm requires an executable path or name")
+         w%fpm_executable = val
 
        case ("--watch-deps")
          if (len_trim(val) > 0) then
@@ -395,7 +403,9 @@ contains
          w%print_files_once = .true.
          w%verbosity = max(w%verbosity, 2)
        case ("--watch-silent-fpm")
-         w%silent_fpm = .true.
+         w%silent_fpm = parse_bool(val, .true.)
+       case ("--watch-output-markers")
+         w%output_markers = parse_bool(val, .true.)
        case ("--watch-run-on-start")
          w%run_on_start = .true.
        case ("--watch-no-run-on-start")
@@ -537,6 +547,11 @@ contains
 
       write(error_unit,"(a)") "  --watch-silent-fpm"
       write(error_unit,"(a)") "      Suppress fpm output; keep only fpm-watch status lines."
+      write(error_unit,"(a)") "      Use --watch-silent-fpm=false to override manifest suppression."
+      write(error_unit,"(a)") "  --watch-fpm <path>"
+      write(error_unit,"(a)") "      fpm executable to invoke (default: fpm on PATH)."
+      write(error_unit,"(a)") "  --watch-output-markers"
+      write(error_unit,"(a)") "      Frame raw stderr with cycle markers in structured logging mode (GUI integrations)."
       write(error_unit,"(a)") "  --watch-print-files"
       write(error_unit,"(a)") "      Print the watched file list (limited) at startup."
       write(error_unit,"(a)") ""
@@ -580,6 +595,8 @@ contains
       write(error_unit,"(a)") "  debug        = false"
       write(error_unit,"(a)") "  verbosity    = 0"
       write(error_unit,"(a)") '  log-format   = "text"'
+      write(error_unit,"(a)") '  fpm-executable = "fpm"'
+      write(error_unit,"(a)") "  output-markers = false"
       write(error_unit,"(a)") "  ignore       = []"
       write(error_unit,"(a)") "  include      = []"
       write(error_unit,"(a)") "  features     = []"
