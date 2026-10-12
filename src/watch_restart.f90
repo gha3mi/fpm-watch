@@ -15,7 +15,8 @@
 !! Low CPU mode is also applied here so the supervisor delay sleeps are idle.
 module watch_restart
    use watch_time, only: sleep_seconds, set_low_cpu
-   use watch_cmdline, only: get_arg, parse_int, parse_real, quote_arg, starts_with, watch_option_takes_value
+   use watch_cmdline, only: get_arg, parse_int, parse_real, quote_arg, starts_with, parse_bool, &
+                            watch_option_takes_value
    use watch_config, only: get_restart_defaults
    use watch_platform, only: execute_command
    use watch_log, only: log_event, log_int, log_real, log_string
@@ -64,12 +65,12 @@ contains
       real :: delay
       logical :: interrupted
 
-      child_cmd = build_child_command(exe0, log_format)
       attempt = 0
       delay = max(0.0, delay0)
 
       do
          code = 0
+         child_cmd = build_child_command(exe0, log_format, attempt)
          call execute_command(child_cmd, code, interrupted)
 
          if (interrupted) then
@@ -97,19 +98,20 @@ contains
 
    !> Build the command line used to spawn the supervised child.
    !!
-   !! The child receives `--watch-child` and inherits most argv tokens, with
+   !! The child receives `--watch-child=<restart count>` and inherits most argv tokens, with
    !! supervisor-only flags removed to avoid recursion.
    !! The parent's selected format is retained across child restarts.
-   function build_child_command(exe0, log_format) result(cmd)
+   function build_child_command(exe0, log_format, restart_count) result(cmd)
       character(len=*), intent(in) :: exe0
       character(len=*), intent(in) :: log_format
+      integer, intent(in) :: restart_count
       character(len=:), allocatable :: cmd
       character(len=:), allocatable :: exe, a
       integer :: narg, i
       logical :: skip_next, copy_next, in_prefix
 
       exe = choose_self_exe(exe0)
-      cmd = quote_arg(exe) // " --watch-child --watch-log-format " // log_format
+      cmd = quote_arg(exe) // " --watch-child=" // str(restart_count) // " --watch-log-format " // log_format
 
       narg = command_argument_count()
       skip_next = .false.
@@ -141,8 +143,9 @@ contains
             cycle
          end if
 
-         if (a == "--watch-auto-restart") cycle
+         if (a == "--watch-auto-restart" .or. starts_with(a, "--watch-auto-restart=")) cycle
          if (a == "--watch-child") cycle
+         if (starts_with(a, "--watch-child=")) cycle
 
          select case (a)
           case ("--watch-restart-delay", "--watch-restart-max", "--watch-self", "--watch-log-format")
@@ -247,7 +250,14 @@ contains
             cycle
          end if
 
-         if (a == "--watch-child") then
+         if (starts_with(a, "--watch-auto-restart=")) then
+            v = a(len("--watch-auto-restart=")+1:)
+            auto_restart = parse_bool(v, .true.)
+            i = i + 1
+            cycle
+         end if
+
+         if (a == "--watch-child" .or. starts_with(a, "--watch-child=")) then
             is_child = .true.
             i = i + 1
             cycle
@@ -311,38 +321,6 @@ contains
             i = i + 1
          end if
       end do
-
-   contains
-
-      pure logical function parse_bool(s, default) result(vb)
-         character(len=*), intent(in) :: s
-         logical, intent(in) :: default
-         character(len=:), allocatable :: t
-         t = trim(adjustl(lower_ascii(s)))
-         select case (t)
-          case ("1","true","on","yes","y","t")
-            vb = .true.
-          case ("0","false","off","no","n","f")
-            vb = .false.
-          case default
-            vb = default
-         end select
-      end function parse_bool
-
-      pure function lower_ascii(s) result(r)
-         character(len=*), intent(in) :: s
-         character(len=len(s)) :: r
-         integer :: k, c, da
-         da = iachar("a") - iachar("A")
-         do k = 1, len(s)
-            c = iachar(s(k:k))
-            if (c >= iachar("A") .and. c <= iachar("Z")) then
-               r(k:k) = achar(c + da)
-            else
-               r(k:k) = s(k:k)
-            end if
-         end do
-      end function lower_ascii
 
    end subroutine parse_restart_flags
 

@@ -98,6 +98,20 @@ class WatchIntegration(unittest.TestCase):
             cwd=self.project, text=True, capture_output=True, timeout=30,
         )
 
+    def assert_cycle_protocol(self, result, format, expected_cycles):
+        events = [event for event in records(result.stdout, format)
+                  if event["event"] in ("command.started", "command.finished")]
+        self.assertEqual([event["event"] for event in events],
+                         ["command.started", "command.finished"] * expected_cycles)
+        ids = []
+        for started, finished in zip(events[::2], events[1::2]):
+            self.assertEqual(started["cycle_id"], finished["cycle_id"])
+            ids.append(started["cycle_id"])
+        self.assertEqual(len(set(ids)), expected_cycles)
+        markers = re.findall(r"^@@fpm-watch:(started|finished):(.+)@@$", result.stderr, re.MULTILINE)
+        self.assertEqual(markers, [(event["event"].split(".")[-1], str(event["cycle_id"]))
+                                   for event in events])
+
     @contextlib.contextmanager
     def watch(self, *args, stderr_path=None):
         log = self.root / "watcher.log"
@@ -163,9 +177,9 @@ class WatchIntegration(unittest.TestCase):
                                  + 'silent-fpm=true\noutput-markers=true\n')
         result = self.once("--watch-log-format=json", "--watch-silent-fpm=false", "run", "first")
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assert_cycle_protocol(result, "json", 1)
         events = records(result.stdout, "json")
         started, finished = events[-2:]
-        self.assertEqual(started["cycle_id"], finished["cycle_id"])
         self.assertIs(started["silent_fpm"], False)
         self.assertIn(executable, started["command"])
         lines = result.stderr.splitlines()
@@ -177,11 +191,69 @@ class WatchIntegration(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         self.assertNotIn("@@fpm-watch:", result.stderr)
 
+    def test_gui_cycles_remain_unique_after_supervisor_restart(self):
+        (self.project / "app/failed.f90").write_text("program failed\nstop 7\nend program failed\n")
+        for format in ("json", "logfmt"):
+            with self.subTest(format=format):
+                result = self.once("--watch-log-format", format, "--watch-output-markers",
+                                   "--watch-auto-restart", "--watch-restart-max", "2",
+                                   "--watch-restart-delay", "0", "run", "failed")
+                self.assertNotEqual(result.returncode, 0)
+                self.assert_cycle_protocol(result, format, 3)
+
+    def test_gui_markers_keep_events_in_quiet_mode(self):
+        (self.project / "app/failed.f90").write_text("program failed\nstop 7\nend program failed\n")
+        for format in ("json", "logfmt"):
+            for target in ("first", "failed"):
+                with self.subTest(format=format, target=target):
+                    result = self.once("--watch-log-format", format, "--watch-output-markers",
+                                       "--watch-quiet", "run", target)
+                    self.assertEqual(result.returncode == 0, target == "first", result.stderr)
+                    self.assert_cycle_protocol(result, format, 1)
+                    self.assertEqual(len(records(result.stdout, format)), 2)
+        result = self.once("--watch-output-markers", "--watch-quiet", "run", "first")
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertNotIn("@@fpm-watch:", result.stderr)
+        self.assertNotIn(" INFO ", result.stdout)
+
     def test_custom_executable_cli_overrides_manifest(self):
         self.manifest.write_text(self.manifest_text + '[extra.fpm-watch]\nfpm-executable="missing-fpm"\n')
         result = self.once("--watch-fpm=" + shutil.which("fpm"), "run", "first")
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         self.assertIn("WATCH_RESULT", result.stdout)
+
+    def test_false_flags_override_manifest_logging_and_supervisor(self):
+        self.manifest.write_text(self.manifest_text + '[extra.fpm-watch]\n'
+                                 + 'debug=true\nprint-files=true\nauto-restart=true\n'
+                                 + 'restart-max=1\nrestart-delay=0.0\nself="missing-watcher"\n')
+        result = self.once("--watch-log-format=json", "--watch-verbose=1", "--watch-debug=false",
+                           "--watch-print-files=false", "--watch-auto-restart=false", "build")
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        events = records(result.stdout, "json")
+        self.assertFalse(any(event["level"] == "debug" for event in events))
+        self.assertNotIn("watch.file", [event["event"] for event in events])
+        self.assertFalse(any(event["event"].startswith("supervisor.") for event in events))
+
+    def test_effective_configuration_updates_after_manifest_refresh(self):
+        self.manifest.write_text(self.manifest_text + '[extra.fpm-watch]\n'
+                                 + 'ignore=["generated/*"]\ninclude=["*.f90", "*.inc"]\n')
+        with self.watch("--watch-log-format=json", "--watch-verbose=1", "--watch-rescan=0",
+                        "build", "--compiler", "gfortran", "--profile", "debug",
+                        stderr_path=self.root / "fpm.log") as (process, log):
+            text = wait_for(process, log, lambda text: "watch.configuration" in text)
+            config = next(event for event in records(text, "json") if event["event"] == "watch.configuration")
+            self.assertEqual(config["compiler"], "gfortran")
+            self.assertEqual(config["profile"], "debug")
+            self.assertEqual(config["poll_ms"], 50)
+            self.assertEqual(config["ignore"], ["generated/*"])
+            self.assertEqual(config["include"], ["*.f90", "*.inc"])
+            self.manifest.write_text(self.manifest_text + '[extra.fpm-watch]\n'
+                                     + 'ignore=["new ignored/*"]\ninclude=["*.f90", "*.inc"]\n')
+            text = wait_for(process, log, lambda text: '"new ignored/*"' in text
+                            and "watch.refreshed" in text and "command.finished" in text)
+            configs = [event for event in records(text, "json") if event["event"] == "watch.configuration"]
+            self.assertEqual(configs[-1]["ignore"], ["new ignored/*"])
+            self.assertEqual(configs[-1]["include"], ["*.f90", "*.inc"])
 
     def test_logging_config_and_cli_override(self):
         self.manifest.write_text(self.manifest_text + '[extra.fpm-watch]\nlog-format="json"\n')

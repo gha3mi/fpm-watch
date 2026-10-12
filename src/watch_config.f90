@@ -37,6 +37,7 @@ contains
       w%print_files_once = .false.
       w%silent_fpm = .false.
       w%output_markers = .false.
+      w%restart_count = 0
       w%watch_deps = .false.
       w%low_cpu = .false.
       w%once = .false.

@@ -14,7 +14,7 @@ module watch_exec
    implicit none
    private
    public report_changes, run_command_and_report, build_run_command
-   integer(int64), save :: cycle_id = 0_int64
+   integer(int64), save :: cycle_number = 0_int64
 
 contains
 
@@ -62,18 +62,20 @@ contains
       integer, intent(out) :: exitstat
       real, intent(out) :: secs
       integer(int64) :: rate, t0, t1
-      character(len=:), allocatable :: action, message, level
-      logical :: interrupted
+      character(len=:), allocatable :: action, message, level, cycle_id
+      logical :: interrupted, protocol
 
       action = "Command"
       if (index(cmd, "fpm build") == 1) action = "Build"
       if (index(cmd, "fpm test") == 1) action = "Tests"
       if (index(cmd, "fpm run") == 1) action = "Application"
-      cycle_id = cycle_id + 1_int64
+      cycle_number = cycle_number + 1_int64
+      cycle_id = str(w%restart_count) // ":" // str(cycle_number)
+      protocol = w%output_markers .and. structured_logging()
       call log_event("info", "command.started", "Running " // trim(cmd), &
                      [log_string("command", trim(cmd)), log_bool("silent_fpm", w%silent_fpm), &
-                      log_int("cycle_id", cycle_id)])
-      call output_boundary("started", w)
+                      log_string("cycle_id", cycle_id)], force=protocol)
+      call output_boundary("started", cycle_id, protocol)
       call system_clock(count_rate=rate)
       if (rate <= 0_int64) rate = 1000_int64
       call system_clock(t0)
@@ -94,19 +96,19 @@ contains
       call log_event(level, "command.finished", message, &
                      [log_string("command", trim(cmd)), log_int("exit_code", exitstat), &
                       log_int("duration_ms", nint(secs * 1000.0, int64)), log_bool("interrupted", interrupted), &
-                      log_int("cycle_id", cycle_id)])
-      call output_boundary("finished", w)
+                      log_string("cycle_id", cycle_id)], force=protocol)
+      call output_boundary("finished", cycle_id, protocol)
    end subroutine run_command_and_report
 
    !> Frame one command's raw stream independently of stdout delivery order.
    !! The opt-in markers share stderr with the child's output, so buffered
    !! consumers can correlate cycles without ordering two separate pipes.
-   subroutine output_boundary(state, w)
-      character(len=*), intent(in) :: state
-      type(watch_opts_t), intent(in) :: w
-      if (.not. w%output_markers .or. .not. structured_logging()) return
+   subroutine output_boundary(state, cycle_id, enabled)
+      character(len=*), intent(in) :: state, cycle_id
+      logical, intent(in) :: enabled
+      if (.not. enabled) return
       write(error_unit, "(a)") ""
-      write(error_unit, "(a)") "@@fpm-watch:" // state // ":" // str(cycle_id) // "@@"
+      write(error_unit, "(a)") "@@fpm-watch:" // state // ":" // cycle_id // "@@"
       flush(error_unit)
    end subroutine output_boundary
 

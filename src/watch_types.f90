@@ -20,7 +20,7 @@ module watch_types
    !! Time values (`poll`, `debounce`, `rescan`) are in seconds.
    type watch_opts_t
       !! Verbosity level:
-      !! - `-1`: quiet (errors only)
+      !! - `-1`: quiet (errors and enabled output protocol)
       !! - `0`: normal
       !! - `1..2`: more detail
       integer :: verbosity = 0
@@ -44,6 +44,8 @@ module watch_types
       logical :: silent_fpm = .false.
       !! Frame raw output with cycle markers for GUI consumers (opt-in).
       logical :: output_markers = .false.
+      !! Internal supervisor generation, retained during manifest refresh.
+      integer :: restart_count = 0
       !! Also watch dependency project sources (can include paths under build dir).
       logical :: watch_deps = .false.
       !! Use OS sleep for waiting to minimize idle CPU usage.

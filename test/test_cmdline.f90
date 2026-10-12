@@ -5,7 +5,7 @@ program test_cmdline
    use fpm_command_line, only: fpm_run_settings
    use watch_types, only: watch_config_t
    use watch_cli, only: parse_cli_config
-   use watch_cmdline, only: get_arg, join_argv, quote_arg, needs_quotes, is_windows_os, watch_option_takes_value
+   use watch_cmdline, only: get_arg, join_argv, quote_arg, needs_quotes, is_windows_os, watch_option_takes_value, parse_bool
    use watch_platform, only: execute_command
    use watch_cmdsplice, only: split_cmd_after_subcmd, inject_names_into_cmd
    implicit none
@@ -80,6 +80,9 @@ program test_cmdline
    end if
    call require(watch_option_takes_value("--watch-ignore"), "watch option consumes value")
    call require(.not. watch_option_takes_value("--watch-ignore=run"), "equals-style watch option arity")
+   call require(parse_bool(" YES ", .false.), "case-insensitive true value")
+   call require(.not. parse_bool("OFF", .true.), "case-insensitive false value")
+   call require(parse_bool("invalid", .true.), "invalid boolean uses fallback")
 
    cmd = quote_arg(get_arg(0)) // " --check-argv"
    do i = 1, size(values)
