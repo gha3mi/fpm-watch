@@ -48,7 +48,13 @@ def records(text, format):
 
 
 def output(path):
-    return ANSI.sub("", path.read_text(errors="replace"))
+    return ANSI.sub("", path.read_text(encoding="utf-8", errors="replace"))
+
+
+def run_captured(command, cwd, timeout=30):
+    # Compiler and application output may contain bytes outside UTF-8.
+    return subprocess.run(command, cwd=cwd, capture_output=True, text=True,
+                          encoding="utf-8", errors="replace", timeout=timeout)
 
 
 def wait_for(process, log, predicate, timeout=15):
@@ -93,9 +99,9 @@ class WatchIntegration(unittest.TestCase):
         )
 
     def once(self, *args):
-        return subprocess.run(
+        return run_captured(
             [str(WATCHER), "--watch-low-cpu", "--watch-once", *args],
-            cwd=self.project, text=True, capture_output=True, timeout=30,
+            cwd=self.project,
         )
 
     def assert_cycle_protocol(self, result, format, expected_cycles):
@@ -140,8 +146,7 @@ class WatchIntegration(unittest.TestCase):
 
     def test_arguments_and_empty_values(self):
         args = ["*.toml", "one", "", "three", "trailing  ", "hello;value"]
-        direct = subprocess.run(["fpm", "run", "first", "--", *args], cwd=self.project,
-                                text=True, capture_output=True, timeout=30)
+        direct = run_captured(["fpm", "run", "first", "--", *args], cwd=self.project)
         result = self.once("run", "first", "--", *args)
         self.assertEqual(direct.returncode, 0, direct.stdout + direct.stderr)
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
@@ -200,6 +205,18 @@ class WatchIntegration(unittest.TestCase):
                                    "--watch-restart-delay", "0", "run", "failed")
                 self.assertNotEqual(result.returncode, 0)
                 self.assert_cycle_protocol(result, format, 3)
+
+    def test_gui_protocol_with_non_utf8_child_output(self):
+        (self.project / "app/raw.f90").write_text(
+            "program raw\nuse iso_fortran_env, only: error_unit\nimplicit none\n"
+            "print '(a)', achar(139)//'RAW_STDOUT'\n"
+            "write(error_unit, '(a)') achar(139)//'RAW_STDERR'\nend program raw\n"
+        )
+        result = self.once("--watch-log-format=json", "--watch-output-markers", "run", "raw")
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assert_cycle_protocol(result, "json", 1)
+        self.assertIn("\ufffdRAW_STDOUT", result.stderr)
+        self.assertIn("\ufffdRAW_STDERR", result.stderr)
 
     def test_gui_markers_keep_events_in_quiet_mode(self):
         (self.project / "app/failed.f90").write_text("program failed\nstop 7\nend program failed\n")
@@ -413,8 +430,7 @@ class WatchIntegration(unittest.TestCase):
 
     def test_once_failure_status(self):
         (self.project / "app/failed.f90").write_text("program failed\nstop 7\nend program failed\n")
-        direct = subprocess.run(["fpm", "run", "failed"], cwd=self.project,
-                                capture_output=True, text=True, timeout=30)
+        direct = run_captured(["fpm", "run", "failed"], cwd=self.project)
         result = self.once("run", "failed")
         self.assertNotEqual(direct.returncode, 0)
         self.assertEqual(result.returncode, direct.returncode, result.stdout + result.stderr)
