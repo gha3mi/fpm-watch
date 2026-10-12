@@ -14,11 +14,11 @@ module watch_cmdsplice
 
 contains
 
-   !> Split a command line into `<fpm subcmd>` prefix and remaining arguments.
+   !> Split a literal `fpm SUBCOMMAND` prefix from the remaining serialized arguments.
    !!
-   !! This is used to support name injection for `fpm run`/`fpm test`:
-   !! the injected names are inserted after `prefix` and before the rest,
-   !! while respecting a `--` delimiter.
+   !! Only the first two unquoted, whitespace-delimited tokens are scanned;
+   !! custom executable substitution happens later in `watch_cli`. Empty input,
+   !! a non-`fpm` first token, or a missing subcommand returns empty outputs.
    subroutine split_cmd_after_subcmd(full, prefix, rest)
       character(len=*), intent(in) :: full
       !! Full command string.
@@ -51,6 +51,7 @@ contains
 
    contains
 
+      !> Test the first whitespace-delimited token against a nonempty right-trimmed token.
       pure logical function starts_with_token(str, tok) result(ok)
          character(len=*), intent(in) :: str, tok
          integer :: e, n
@@ -63,6 +64,7 @@ contains
          ok = (e == n)
       end function starts_with_token
 
+      !> Return the next non-space/tab position at or after `i`, or zero if absent.
       pure integer function next_token_start(str, i) result(pos)
          character(len=*), intent(in) :: str
          integer, intent(in) :: i
@@ -79,6 +81,7 @@ contains
          end do
       end function next_token_start
 
+      !> Return the end of an unquoted space/tab-delimited token, or zero for an invalid start.
       pure integer function token_end(str, i) result(pos)
          character(len=*), intent(in) :: str
          integer, intent(in) :: i
@@ -99,13 +102,12 @@ contains
 
    end subroutine split_cmd_after_subcmd
 
-   !> Inject target names into a command line while respecting a `--` delimiter.
+   !> Insert already serialized names after fpm options and before a `--` token.
    !!
-   !! `fpm run` and `fpm test` accept optional name patterns. This helper
-   !! inserts those names into the right location:
-   !! - after the `prefix` and any existing `fpm` options,
-   !! - before a `--` delimiter (if present), so that program arguments remain
-   !!   attached to the executed program.
+   !! `prefix` includes the executable/subcommand; `rest` retains forwarded args.
+   !! `names` must already contain quoted argv tokens. Optional `windows` selects
+   !! delimiter parsing rules. An empty prefix returns an empty string; empty
+   !! names simply rejoin prefix and rest.
    function inject_names_into_cmd(prefix, rest, names, windows) result(out)
       character(len=*), intent(in) :: prefix
       !! Prefix up to and including the subcommand.
@@ -215,6 +217,7 @@ contains
          end do
       end function find_double_dash_delim
 
+      !> Return whether a character is a space or horizontal tab.
       pure logical function is_space(ch) result(ok)
          character, intent(in) :: ch
          ok = ch == " " .or. ch == char(9)

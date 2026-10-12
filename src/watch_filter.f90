@@ -1,12 +1,8 @@
-!> Watch list filtering and path normalization.
+!> Normalize paths and filter the computed watch list with fpm globs.
 !!
-!! Contains helpers to normalize paths and apply include/ignore globs to the
-!! computed set of watched files.
-!!
-!! Key behaviors:
-!! - Paths are normalized to use `/` separators.
-!! - Leading `./` segments are removed for consistent matching.
-!! - Build directory filtering is handled elsewhere (but helper exists here).
+!! Normalization changes backslashes to `/` and removes leading `./` segments;
+!! it does not canonicalize paths. Build-directory exclusion is applied by the
+!! graph collector. Include/ignore filters always retain watched `fpm.toml` files.
 module watch_filter
    use watch_util, only: starts_with
    use, intrinsic :: iso_fortran_env, only: int64
@@ -18,11 +14,10 @@ module watch_filter
 
 contains
 
-   !> Normalize a path to a consistent form for matching.
+   !> Right-trim a path, replace backslashes, and remove repeated leading `./`.
    !!
-   !! Transformations:
-   !! - Backslashes (`\`) → slashes (`/`)
-   !! - Strip any leading `./` prefixes (repeatedly)
+   !! Preserve case, interior separators, and `..` segments; no filesystem lookup
+   !! or canonicalization is performed.
    pure function normalize_path(path) result(p)
       character(len=*), intent(in) :: path
       character(len=:), allocatable :: p
@@ -41,6 +36,7 @@ contains
    end function normalize_path
 
 
+   !> Compare right-trimmed suffixes; an empty suffix matches every string.
    pure logical function ends_with(s, suffix) result(ok)
       character(len=*), intent(in) :: s, suffix
       integer :: ns, n
@@ -55,6 +51,7 @@ contains
       end if
    end function ends_with
 
+   !> Test for a slash-delimited interior or trailing path fragment.
    pure logical function contains_path_fragment(p, frag) result(ok)
       character(len=*), intent(in) :: p, frag
       character(len=:), allocatable :: needle
@@ -71,11 +68,11 @@ contains
       end if
    end function contains_path_fragment
 
-   !> Identify paths that should be ignored due to being inside the build directory.
+   !> Test normalized paths against a build directory or its slash-delimited fragments.
    !!
-   !! This is used to prevent watch loops from triggering rebuilds due to build
-   !! artifacts changing. When dependency watching is enabled, callers may
-   !! selectively override this behavior.
+   !! Matches the directory itself, its descendants, and interior/trailing path
+   !! fragments. An empty build directory matches nothing; dependency exceptions
+   !! are applied by the graph collector.
    pure logical function is_ignored_path(path, build_dir) result(ignored)
       character(len=*), intent(in) :: path, build_dir
       character(len=:), allocatable :: p, b
@@ -103,17 +100,19 @@ contains
       end if
    end function is_ignored_path
 
-   !> Apply include/ignore rules to the watch list.
+   !> Filter normalized paths and optional aligned masks, preserving order.
    !!
-   !! - If `include` patterns are empty, all files are included by default.
-   !! - If `include` patterns are present, only matching files are kept.
-   !! - If `ignore` patterns match a file, it is removed even if included.
-   !!
-   !! The `masks` array (when present) is filtered in sync with `files`.
+   !! Empty/unallocated include lists admit all files; matching ignore globs
+   !! remove included paths. A basename of `fpm.toml` bypasses both filters.
+   !! An unallocated file list is left unchanged. If masks are supplied but
+   !! unallocated, create zero masks before filtering them with the files.
    subroutine filter_watch_files(files, include, ignore, masks)
       type(string_t), allocatable, intent(inout) :: files(:)
+      !! Normalized input paths, replaced with the retained subset in the same order.
       type(string_t), allocatable, intent(in)    :: include(:), ignore(:)
+      !! Include and ignore glob lists, respectively; empty/unallocated lists impose no restriction.
       integer(int64), allocatable, intent(inout), optional :: masks(:)
+      !! Aligned file masks; created as zeros if supplied but unallocated, then filtered with files.
 
       logical, allocatable :: keep(:)
       type(string_t), allocatable :: out(:)
@@ -152,6 +151,7 @@ contains
 
    contains
 
+      !> Retain manifests unconditionally; otherwise require inclusion and no ignore match.
       logical function should_keep(path, include_pats, ignore_pats) result(ok)
          character(len=*), intent(in) :: path
          type(string_t), allocatable, intent(in) :: include_pats(:), ignore_pats(:)
@@ -164,6 +164,7 @@ contains
          ok = match_include(path, include_pats) .and. (.not. match_any(path, ignore_pats))
       end function should_keep
 
+      !> Test fpm globs after normalizing each nonempty pattern; an absent list matches nothing.
       logical function match_any(path, pats) result(ok)
          character(len=*), intent(in) :: path
          type(string_t), allocatable, intent(in) :: pats(:)
@@ -181,6 +182,7 @@ contains
          end do
       end function match_any
 
+      !> Admit every path for an empty/unallocated include list; otherwise require a glob match.
       logical function match_include(path, pats) result(ok)
          character(len=*), intent(in) :: path
          type(string_t), allocatable, intent(in) :: pats(:)

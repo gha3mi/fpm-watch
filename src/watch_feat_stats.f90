@@ -16,6 +16,7 @@ module watch_feat_stats
 
    !> A feature that counts how many command runs have completed.
    type, extends(watch_feature_t) :: stats_feature_t
+      !> Completed command cycles, including failed or interrupted commands.
       integer :: runs = 0
    contains
       procedure :: init         => stats_init
@@ -40,9 +41,7 @@ contains
       if (cfg%w%verbosity >= 1) call log_event("info", "feature.enabled", "Feature enabled: stats", verbosity=1)
    end subroutine stats_init
 
-   !> Update run counter after each completed command execution.
-   !!
-   !! The exit status and runtime are currently not used by this feature.
+   !> Increment the internal completed-command counter for every outcome; no statistics are emitted.
    subroutine stats_after(self, exitstat, seconds)
       class(stats_feature_t), intent(inout) :: self
       integer, intent(in) :: exitstat

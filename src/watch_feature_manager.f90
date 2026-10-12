@@ -15,11 +15,13 @@ module watch_feature_manager
 
    !> A thin wrapper to store an allocatable polymorphic feature instance.
    type feature_box_t
+      !> Owned polymorphic plugin instance, moved into this wrapper.
       class(watch_feature_t), allocatable :: p
    end type feature_box_t
 
    !> Container for multiple feature instances and their callback fan-out.
    type feature_manager_t
+      !> Owned plugins in callback invocation order.
       type(feature_box_t), allocatable :: feat(:)
    contains
       procedure :: add => fm_add
@@ -40,6 +42,7 @@ contains
    subroutine fm_add(self, f)
       class(feature_manager_t), intent(inout) :: self
       class(watch_feature_t), allocatable, intent(inout) :: f
+      !! Plugin to move into owned storage; unallocated afterward. Unallocated input is skipped by callbacks.
       type(feature_box_t), allocatable :: tmp(:)
       integer :: n, i
 
@@ -79,7 +82,7 @@ contains
       end do
    end subroutine on_start_all
 
-   !> Call `on_watch_list_built(files, roots)` on all registered features.
+   !> Pass mutable files/roots to each allocated feature in insertion order, preserving engine alignment.
    subroutine on_watch_list_built_all(self, files, roots)
       class(feature_manager_t), intent(inout) :: self
       type(string_t), allocatable, intent(inout) :: files(:)
@@ -113,7 +116,7 @@ contains
       end do
    end subroutine on_change_detected_all
 
-   !> Call `on_before_run(cmd)` on all registered features.
+   !> Pass the mutable command through features in insertion order; later features see earlier edits.
    subroutine on_before_run_all(self, cmd)
       class(feature_manager_t), intent(inout) :: self
       character(len=:), allocatable, intent(inout) :: cmd
@@ -124,7 +127,7 @@ contains
       end do
    end subroutine on_before_run_all
 
-   !> Call `on_after_run(exitstat, seconds)` on all registered features.
+   !> Pass the command status and elapsed seconds to all features after completion, including failures.
    subroutine on_after_run_all(self, exitstat, seconds)
       class(feature_manager_t), intent(inout) :: self
       integer, intent(in) :: exitstat

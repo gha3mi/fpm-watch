@@ -1,10 +1,8 @@
-!> Feature enablement and factory wiring.
+!> Enable built-in watcher plugins from `watch_opts_t%enabled_features`.
 !!
-!! Maps feature names (strings) to concrete feature implementations.
-!!
-!! Feature selection is user-controlled via:
-!! - `--watch-feature <name>` flags, and/or
-!! - `features = ["..."]` in `fpm.toml` `[extra.fpm-watch]`.
+!! Currently only `stats` is supported; it counts completed commands internally.
+!! Plugin names come from `[extra.fpm-watch].features` and `--watch-feature`,
+!! independently of fpm's build features. Unknown names produce a warning.
 module watch_feature_factory
    use watch_feature_manager, only: feature_manager_t
    use watch_types, only: watch_opts_t

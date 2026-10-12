@@ -1,15 +1,10 @@
-!> Compute watch lists from the `fpm` dependency graph.
+!> Build watch lists from fpm's manifest, model, and target graph.
 !!
-!! Builds the `fpm` model and expands targets into a set of source files to
-!! watch. Optional dependency watching can include dependency project trees
-!! (including those located under the build directory).
-!!
-!! This module is responsible for connecting `fpm-watch` to the `fpm` internal
-!! model/target structures. It selects the relevant closure of targets for the
-!! configured command (build/test/run), and produces:
-!! - `files`: unique normalized file paths
-!! - `file_mask`: bitmasks mapping each file to root targets
-!! - `roots`: the root targets corresponding to runnable/testable executables
+!! Build mode visits all returned targets. Run mode selects application or
+!! example closures by name; test mode visits all test executable closures.
+!! Sources, resolved includes, and manifests form a unique normalized path list.
+!! Optional dependency watching includes dependency paths under the build tree.
+!! Up to 64 run/test roots receive bitmasks for later affected-target selection.
 module watch_fpm_graph
    use, intrinsic :: iso_fortran_env, only: int64
    use, intrinsic :: iso_c_binding, only: c_int
@@ -33,37 +28,39 @@ module watch_fpm_graph
 
 contains
 
-   !> Compute watched files and masks from current `fpm` settings.
+   !> Build fpm's model and return the filtered source/include/manifest closure.
    !!
-   !! This is the primary "graph to watchlist" entry point.
+   !! `settings` may be updated by fpm model construction. `files` contains
+   !! unique normalized paths; aligned `file_mask` entries map files to `roots`.
+   !! Run selects named applications/examples; test collects all test roots.
+   !! Mapping is disabled when there are no roots or more than 64, yielding
+   !! empty `roots` and zero file masks while retaining the selected closure.
    !!
-   !! ### Outputs
-   !! - `files`: normalized, unique file paths to watch.
-   !! - `file_mask`: a bitmask per file that encodes which root target(s) the
-   !!   file belongs to (used for name injection on run/test).
-   !! - `roots`: root executable/test targets. `roots(r)%mask` is a 1-bit mask.
-   !! - `manifest_key`: placeholder output (computed elsewhere); set to `0` here.
-   !! - `build_secs`: sum of `secs_model + secs_targets + secs_watch`.
-   !! - `secs_model`: time spent building the `fpm` model.
-   !! - `secs_targets`: time spent expanding sources into targets.
-   !! - `secs_watch`: time spent collecting and filtering file paths.
-   !!
-   !! ### Notes
-   !! - Root bitmasks are limited to `bit_size(0_int64)` (typically 64 roots).
-   !! - Build directory paths are excluded from the watch list unless dependency
-   !!   watching is enabled and the path is identified as belonging to a dep.
-   !! - If `error` is present, model errors are returned without terminating the watcher.
+   !! `manifest_key` is always zero here; the engine computes it after refresh.
+   !! Timing outputs are seconds: `build_secs` sums model, target, and collection
+   !! time, excluding manifest reading. On manifest/model/target failure, return
+   !! allocated `error` if supplied, otherwise log the stage and exit with status 1.
+   !! Watch-list outputs are only usable after a successful return.
    subroutine compute_watch_files_from_settings(settings, w, files, file_mask, roots, &
       manifest_key, build_secs, secs_model, secs_targets, secs_watch, error)
       class(fpm_build_settings), intent(inout) :: settings
+      !! Typed build/run/test settings; fpm may update these while constructing its model.
       type(watch_opts_t), intent(in) :: w
+      !! Watcher dependency/filter/logging options; unallocated filters impose no restriction.
       type(string_t), allocatable, intent(out) :: files(:)
+      !! Unique normalized watched paths, allocated on success (possibly empty).
       integer(int64), allocatable, intent(out) :: file_mask(:)
+      !! Root-membership bits aligned with files; zero when root mapping is disabled.
       type(root_info_t), allocatable, intent(out) :: roots(:)
+      !! Executable names and distinct mask bits; empty for build mode or unsupported root counts.
       integer(int64), intent(out) :: manifest_key
+      !! Reserved output, always zero; computed from accepted files by the engine.
       real, intent(out) :: build_secs
+      !! Sum of model, target-construction, and watch-list collection times in seconds.
       real, intent(out) :: secs_model, secs_targets, secs_watch
+      !! Separate stage durations in seconds, respectively model, targets, and file collection.
       type(error_t), allocatable, intent(out), optional :: error
+      !! Allocated for manifest/model/target failure; omitted error output makes those failures fatal.
 
       type(package_config_t), allocatable :: package
       type(fpm_model_t),       allocatable :: model
@@ -231,6 +228,7 @@ contains
 
    contains
 
+      !> Return canonicalized dependency project directories, excluding the main-project node.
       subroutine collect_dep_dirs(tree, dep_dirs)
          type(dependency_tree_t), intent(in) :: tree
          type(string_t), allocatable, intent(out) :: dep_dirs(:)
@@ -254,7 +252,7 @@ contains
 
    end subroutine compute_watch_files_from_settings
 
-   !> Return a graph error to the caller, or report a fatal initial configuration error.
+   !> Transfer `err` to an optional error output, or log its stage and exit with status 1.
    subroutine handle_graph_error(err, error, stage)
       type(error_t), allocatable, intent(inout) :: err
       type(error_t), allocatable, intent(out), optional :: error
@@ -321,6 +319,12 @@ contains
       end select
    end function is_run_or_test
 
+   !> Collect visited source targets and resolved includes with aligned root masks.
+   !!
+   !! `visited` aligns with `targets`; an absent/unallocated `target_mask` yields
+   !! zero masks. When dependency watching is disabled, skip foreign-package
+   !! sources and includes inside dependency directories. Duplicate paths merge
+   !! masks; only existing paths passing build-directory checks are retained.
    subroutine gather_files_with_mask(targets, visited, target_mask, files, file_mask, build_dir, model, watch_deps, dep_dirs)
       type(build_target_ptr), intent(in) :: targets(:)
       logical, intent(in) :: visited(:)
@@ -376,6 +380,7 @@ contains
 
    contains
 
+      !> Transfer the populated buffer prefix into exact-size aligned file/mask arrays and release buffers.
       subroutine finalize_vec(buf, mbuf, n, files, file_mask)
          type(string_t), allocatable, intent(inout) :: buf(:)
          integer(int64), allocatable, intent(inout) :: mbuf(:)
@@ -400,7 +405,11 @@ contains
 
    end subroutine gather_files_with_mask
 
-   !> Resolve quoted includes using the source directory and fpm's include directories.
+   !> Resolve an include path, returning a normalized canonical path or an empty string.
+   !!
+   !! Existing absolute paths are accepted directly. Relative names are searched
+   !! beside the source, then in fpm include directories in order, then relative
+   !! to the current working directory. The first existing candidate wins.
    function resolve_include_file(source_file, include_name, include_dirs) result(path)
       character(len=*), intent(in) :: source_file, include_name
       type(string_t), allocatable, intent(in) :: include_dirs(:)
@@ -434,6 +443,7 @@ contains
       if (exists(include_name)) path = normalize_path(canon_path(include_name))
    end function resolve_include_file
 
+   !> Append an existing eligible path to aligned arrays, merging mask bits for duplicates.
    subroutine push_file_with_mask(files, file_mask, path, build_dir, mask, dep_dirs)
       type(string_t), allocatable, intent(inout) :: files(:)
       integer(int64), allocatable, intent(inout) :: file_mask(:)
@@ -470,6 +480,7 @@ contains
 
    contains
 
+      !> Transfer the populated buffer prefix into exact-size aligned file/mask arrays and release buffers.
       subroutine finalize_vec(buf, mbuf, n, files, file_mask)
          type(string_t), allocatable, intent(inout) :: buf(:)
          integer(int64), allocatable, intent(inout) :: mbuf(:)
@@ -501,6 +512,10 @@ contains
 
    end subroutine push_file_with_mask
 
+   !> Add a normalized existing path to a growable buffer, merging duplicate masks.
+   !!
+   !! Exclude build-directory paths unless supplied dependency directories contain
+   !! the path. `n` counts populated entries; `cap` and both buffers grow together.
    subroutine vec_push_unique(buf, mbuf, n, cap, path, build_dir, mask, dep_dirs)
       type(string_t), allocatable, intent(inout) :: buf(:)
       integer(int64), allocatable, intent(inout) :: mbuf(:)
@@ -537,6 +552,7 @@ contains
       mbuf(n) = mask
    end subroutine vec_push_unique
 
+   !> Test a normalized path against nonempty normalized dependency-directory prefixes.
    pure logical function is_in_dep_dirs(p, dep_dirs) result(ok)
       character(len=*), intent(in) :: p
       type(string_t), allocatable, intent(in) :: dep_dirs(:)
@@ -561,6 +577,7 @@ contains
       end do
    end function is_in_dep_dirs
 
+   !> Grow both file/mask buffers to at least 16 or 1.5 times the current capacity.
    subroutine vec_grow(buf, mbuf, cap)
       type(string_t), allocatable, intent(inout) :: buf(:)
       integer(int64), allocatable, intent(inout) :: mbuf(:)
@@ -581,6 +598,10 @@ contains
       cap = newcap
    end subroutine vec_grow
 
+   !> Mark executable targets in `scope` matching names without clearing existing marks.
+   !!
+   !! Absent/empty name patterns select all executables in scope. Otherwise match
+   !! fpm globs against each output basename with and without its suffix.
    subroutine select_names_or_all(targets, scope, names, keep)
       type(build_target_ptr), intent(in) :: targets(:)
       integer, intent(in) :: scope
@@ -624,6 +645,7 @@ contains
       end do
    end subroutine select_names_or_all
 
+   !> Recursively OR one root bit into reachable target masks, skipping already marked nodes.
    recursive subroutine dfs_mark_mask(node, all, tmask, mask)
       use fpm_targets, only: build_target_t
       type(build_target_t), pointer, intent(in) :: node
@@ -645,6 +667,7 @@ contains
       end if
    end subroutine dfs_mark_mask
 
+   !> Recursively mark reachable targets in `visited`, skipping already visited nodes.
    recursive subroutine dfs_mark_bool(node, all, visited)
       use fpm_targets, only: build_target_t
       type(build_target_t), pointer, intent(in) :: node
@@ -664,6 +687,7 @@ contains
       end if
    end subroutine dfs_mark_bool
 
+   !> Return the first 1-based index associated with target pointer `p`, or zero if absent.
    integer function find_ptr_index(p, all) result(idx)
       use fpm_targets, only: build_target_t
       type(build_target_t), pointer, intent(in) :: p
