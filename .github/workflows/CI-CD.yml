@@ -30,6 +30,13 @@ jobs:
         - {os: windows-latest, compiler: gfortran}
 
     steps:
+      # fpm has intermittently crashed with corrupted progress output while
+      # compiling targets concurrently on Windows. Use its serial backend.
+      - name: Serialize fpm builds on Windows
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: '"OMP_NUM_THREADS=1" >> $env:GITHUB_ENV'
+
       - name: Setup Fortran
         uses: gha3mi/setup-fortran-conda@latest
         with:
