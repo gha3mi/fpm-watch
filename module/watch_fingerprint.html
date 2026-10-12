@@ -203,10 +203,10 @@ File reads share a reusable module buffer and are intended for serial use.</p>
         <ul class="list-group list-group-flush">
             <li class="list-group-item">
               <ul class="list-inline">
-                  <li class="list-inline-item">fpm_strings</li>
                   <li class="list-inline-item"><a href='http://fortranwiki.org/fortran/show/iso_fortran_env'>iso_fortran_env</a></li>
-                  <li class="list-inline-item">fpm_filesystem</li>
+                  <li class="list-inline-item">fpm_strings</li>
                   <li class="list-inline-item">fpm_command_line</li>
+                  <li class="list-inline-item">fpm_filesystem</li>
               </ul>
             </li>
             <li class="list-group-item">
@@ -588,7 +588,7 @@ parameter
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-path"></span>
+              <span class="anchor" id="variable-path~4"></span>
               character(len=*),
             </td>
 <td>intent(in)</td>
@@ -633,7 +633,7 @@ parameter
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-settings"></span>
+              <span class="anchor" id="variable-settings~11"></span>
               class(fpm_build_settings),
             </td>
 <td>intent(in)</td>
@@ -648,7 +648,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-files~4"></span>
+              <span class="anchor" id="variable-files~15"></span>
               type(string_t),
             </td>
 <td>intent(in),</td>
@@ -693,7 +693,7 @@ parameter
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-old_files"></span>
+              <span class="anchor" id="variable-old_files~2"></span>
               type(string_t),
             </td>
 <td>intent(in),</td>
@@ -708,7 +708,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-old_fp"></span>
+              <span class="anchor" id="variable-old_fp~2"></span>
               integer(kind=int64),
             </td>
 <td>intent(in),</td>
@@ -723,7 +723,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-new_files"></span>
+              <span class="anchor" id="variable-new_files~2"></span>
               type(string_t),
             </td>
 <td>intent(in),</td>
@@ -788,7 +788,7 @@ parameter
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-fp_prev~3"></span>
+              <span class="anchor" id="variable-fp_prev~4"></span>
               integer(kind=int64),
             </td>
 <td>intent(inout)</td>
@@ -803,7 +803,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-fp_now~3"></span>
+              <span class="anchor" id="variable-fp_now~4"></span>
               integer(kind=int64),
             </td>
 <td>intent(in)</td>
@@ -818,7 +818,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-changed_idx~3"></span>
+              <span class="anchor" id="variable-changed_idx~7"></span>
               integer,
             </td>
 <td>intent(in)</td>
@@ -833,7 +833,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-changed_count~2"></span>
+              <span class="anchor" id="variable-changed_count~6"></span>
               integer,
             </td>
 <td>intent(in)</td>
@@ -873,7 +873,7 @@ parameter
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-files~2"></span>
+              <span class="anchor" id="variable-files~13"></span>
               type(string_t),
             </td>
 <td>intent(in),</td>
@@ -888,7 +888,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-fp_prev"></span>
+              <span class="anchor" id="variable-fp_prev~2"></span>
               integer(kind=int64),
             </td>
 <td>intent(inout),</td>
@@ -903,7 +903,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-fp_now"></span>
+              <span class="anchor" id="variable-fp_now~2"></span>
               integer(kind=int64),
             </td>
 <td>intent(inout),</td>
@@ -918,7 +918,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-changed_idx"></span>
+              <span class="anchor" id="variable-changed_idx~5"></span>
               integer,
             </td>
 <td>intent(inout),</td>
@@ -958,7 +958,7 @@ parameter
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-files~3"></span>
+              <span class="anchor" id="variable-files~14"></span>
               type(string_t),
             </td>
 <td>intent(in),</td>
@@ -973,7 +973,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-fp_prev~2"></span>
+              <span class="anchor" id="variable-fp_prev~3"></span>
               integer(kind=int64),
             </td>
 <td>intent(in)</td>
@@ -988,7 +988,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-fp_now~2"></span>
+              <span class="anchor" id="variable-fp_now~3"></span>
               integer(kind=int64),
             </td>
 <td>intent(inout)</td>
@@ -1003,7 +1003,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-changed_idx~2"></span>
+              <span class="anchor" id="variable-changed_idx~6"></span>
               integer,
             </td>
 <td>intent(inout)</td>
@@ -1018,7 +1018,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-changed_count"></span>
+              <span class="anchor" id="variable-changed_count~5"></span>
               integer,
             </td>
 <td>intent(out)</td>
@@ -1128,7 +1128,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-s~2"></span>
+              <span class="anchor" id="variable-s~13"></span>
               character(len=*),
             </td>
 <td>intent(in)</td>
@@ -1183,7 +1183,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-pos"></span>
+              <span class="anchor" id="variable-pos~4"></span>
               integer(kind=int64),
             </td>
 <td>intent(in)</td>
@@ -1198,7 +1198,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-n~4"></span>
+              <span class="anchor" id="variable-n~20"></span>
               integer,
             </td>
 <td>intent(in)</td>
@@ -1256,7 +1256,7 @@ parameter
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2026-10-12T14:42:46.282582+0000             </p>
+ on 2026-10-12T14:52:15.896174+0000             </p>
           </div>
         </div>
         <br>
