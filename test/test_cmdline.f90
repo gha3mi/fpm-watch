@@ -27,6 +27,11 @@ program test_cmdline
          expected = ""
          do i = 1, size(values)
             actual = get_arg(i + 1)
+            if (len(actual) /= len(values(i)%s) .or. actual /= values(i)%s) then
+               write(error_unit, "(a,i0,a,i0,a,i0)") "argument ", i, ": expected length ", &
+                  len(values(i)%s), ", actual length ", len(actual)
+               write(error_unit, "(a)") "expected: <" // values(i)%s // ">; actual: <" // actual // ">"
+            end if
             call require(len(actual) == len(values(i)%s), "forwarded argument length")
             call require(actual == values(i)%s, "forwarded argument contents")
             if (i > 1) expected = expected // " "
@@ -55,14 +60,15 @@ program test_cmdline
    call require(needs_quotes(""), "empty arguments require quotes")
    call require(needs_quotes("*.f90") .and. needs_quotes("a;b"), "shell metacharacters require quotes")
    call require(needs_quotes("tail "), "trailing spaces require quotes")
-   if (is_windows_os()) then
-      call require(quote_arg("") == '""', "Windows empty argument")
-      call require(quote_arg("tail  ") == '"tail  "', "Windows trailing spaces")
-      call require(quote_arg("dir" // achar(92)) == '"dir' // repeat(achar(92), 2) // '"', &
+   call require(quote_arg("", windows=.true.) == '""', "Windows empty argument")
+   call require(quote_arg("tail  ", windows=.true.) == '"tail  "', "Windows trailing spaces")
+   call require(quote_arg('double"quote', windows=.true.) == '"double' // achar(92) // '"quote"', &
+      "Windows embedded quote")
+   call require(quote_arg("dir" // achar(92), windows=.true.) == '"dir' // repeat(achar(92), 2) // '"', &
          "Windows trailing backslash")
-      call require(quote_arg("slash" // achar(92) // '"quote') == &
-         '"slash' // repeat(achar(92), 2) // '""quote"', "Windows backslash before embedded quote")
-   else
+   call require(quote_arg("slash" // achar(92) // '"quote', windows=.true.) == &
+      '"slash' // repeat(achar(92), 3) // '"quote"', "Windows backslash before embedded quote")
+   if (.not. is_windows_os()) then
       call require(quote_arg("") == "''", "POSIX empty argument")
       call require(quote_arg("tail  ") == "'tail  '", "POSIX trailing spaces")
    end if
@@ -98,6 +104,12 @@ program test_cmdline
    call split_cmd_after_subcmd("fpm run " // rest, prefix, actual)
    call require(prefix == "fpm run" .and. actual == rest, "command prefix and remainder")
 
+   runner = quote_arg('echo "quoted -- marker"', windows=.true.)
+   rest = "--runner " // runner // ' "--" "tail"'
+   expected = "fpm run --runner " // runner // ' first "--" "tail"'
+   call require(inject_names_into_cmd("fpm run", rest, "first", windows=.true.) == expected, &
+      "Windows escaped quotes preserve runner and delimiter")
+
 contains
 
    !> Assert a regression condition with an actionable failure message.
@@ -105,7 +117,7 @@ contains
       logical, intent(in) :: condition
       character(len=*), intent(in) :: message
       if (condition) return
-      write(error_unit, '(a)') "test_cmdline: " // message
+      write(error_unit, "(a)") "test_cmdline: " // message
       error stop 1
    end subroutine require
 

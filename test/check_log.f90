@@ -21,12 +21,12 @@ program check_log
       do i = 0, 31
          message = message // achar(i)
       end do
-      print '(a)', format_log_record("json", timestamp, "info", "test.record", message, &
+      print "(a)", format_log_record("json", timestamp, "info", "test.record", message, &
                                     [log_int("count", huge(0_int64)), log_strings("paths", [string_t(message)]), &
                                      log_real("missing", ieee_value(0.0, ieee_quiet_nan)), &
                                      log_string("unicode", "café € 😀"), &
                                      log_string("invalid_utf8", achar(128) // achar(255))])
-      print '(a)', format_log_record("logfmt", timestamp, "info", "test.record", message, &
+      print "(a)", format_log_record("logfmt", timestamp, "info", "test.record", message, &
                                     [log_int("count", 42), log_strings("paths", [string_t(message)]), &
                                      log_string("unicode", "café € 😀"), &
                                      log_string("invalid_utf8", achar(128) // achar(255))])
@@ -60,9 +60,9 @@ program check_log
 
    record = format_log_record("logfmt", timestamp, "info", "test.record", message, [log_int("count", 42)])
    if (index(record, achar(10)) /= 0 .or. index(record, achar(13)) /= 0) stop 9
-   begin = index(record, ' msg=') + len(' msg=')
-   finish = index(record, ' count=') - 1
-   quoted = '{"message":' // record(begin:finish) // '}'
+   begin = index(record, " msg=") + len(" msg=")
+   finish = index(record, " count=") - 1
+   quoted = '{"message":' // record(begin:finish) // "}"
    call json_loads(object, quoted, error=error)
    if (allocated(error)) stop 10
    select type (object)

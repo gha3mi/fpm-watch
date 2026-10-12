@@ -35,12 +35,12 @@ contains
       integer :: digits
       digits = 2
       if (present(precision)) digits = max(0, min(precision, 16))
-      write(format, '(a,i0,a)') '(f0.', digits, ')'
+      write(format, "(a,i0,a)") "(f0.", digits, ")"
       write(buf, format) x
-      if (index(buf, '*') > 0) write(buf, '(es24.16e3)') x
+      if (index(buf, "*") > 0) write(buf, "(es24.16e3)") x
       s = trim(adjustl(buf))
-      if (s(1:1) == '.') s = '0' // s
-      if (s(1:2) == '-.') s = '-0' // s(2:)
+      if (s(1:1) == ".") s = "0" // s
+      if (s(1:2) == "-.") s = "-0" // s(2:)
    end function ftoa
 
    !> Trim an allocatable string or return a default if empty/unallocated.

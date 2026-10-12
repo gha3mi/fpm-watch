@@ -24,7 +24,9 @@ jobs:
         include:
         - {os: ubuntu-latest,  compiler: gfortran}
         - {os: ubuntu-latest,  compiler: ifx     }
-        - {os: macos-latest,   compiler: gfortran}
+        # Higher GNU optimization spends most of this job compiling fpm's
+        # feature_collection module. Keep an optimized release build on macOS.
+        - {os: macos-latest,   compiler: gfortran, release_profile: ci-release}
         - {os: windows-latest, compiler: gfortran}
 
     steps:
@@ -37,19 +39,19 @@ jobs:
       - name: fpm build (debug)
         run: fpm build --compiler ${{ env.FPM_FC }} --profile debug --verbose
       - name: fpm build (release)
-        run: fpm build --compiler ${{ env.FPM_FC }} --profile release --verbose
+        run: fpm build --compiler ${{ env.FPM_FC }} --profile ${{ matrix.release_profile || 'release' }} --verbose
 
       - name: install fpm-watch
-        run: fpm install --compiler ${{ env.FPM_FC }} --prefix .
+        run: fpm install --compiler ${{ env.FPM_FC }} --profile ${{ matrix.release_profile || 'release' }} --prefix .
 
       - name: fpm-watch test
         if: runner.os != 'Windows'
         shell: bash
-        run: ./bin/fpm-watch --watch-low-cpu --watch-once test
+        run: ./bin/fpm-watch --watch-low-cpu --watch-once test --profile debug
 
       - name: fpm-watch test
         if: runner.os == 'Windows'
-        run: .\bin\fpm-watch.exe --watch-low-cpu --watch-once test
+        run: .\bin\fpm-watch.exe --watch-low-cpu --watch-once test --profile debug
 
       - name: Watcher behavior regressions
         run: python test/integration.py --watcher ./bin/fpm-watch${{ runner.os == 'Windows' && '.exe' || '' }}

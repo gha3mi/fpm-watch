@@ -79,13 +79,21 @@ contains
 
    !> Quote an argument for the host shell, escaping embedded quotes as needed.
    !!
-   !! - On Windows, `"` is doubled and preceding/trailing backslashes are doubled
-   !!   to preserve them through the C runtime's quoted-argument parser.
+   !! - On Windows, embedded quotes use an odd number of backslashes and
+   !!   trailing backslashes are doubled for the C runtime's argument parser.
    !! - On POSIX shells, `'` is escaped using a standard `'` → `'"'"'` pattern.
-   function quote_arg(a) result(q)
+   function quote_arg(a, windows) result(q)
       character(len=*), intent(in) :: a
+      logical, intent(in), optional :: windows
+      !! Explicit platform selection supports portable serialization checks.
       character(len=:), allocatable :: q
-      if (is_windows_os()) then
+      logical :: use_windows
+      if (present(windows)) then
+         use_windows = windows
+      else
+         use_windows = is_windows_os()
+      end if
+      if (use_windows) then
          q = '"' // escape_quotes_win(a) // '"'
       else
          q = "'" // escape_quotes_sh(a) // "'"
@@ -103,7 +111,7 @@ contains
                cycle
             end if
             if (s(j:j) == '"') then
-               r = r // repeat(achar(92), 2 * backslashes) // '""'
+               r = r // repeat(achar(92), 2 * backslashes + 1) // '"'
             else
                r = r // repeat(achar(92), backslashes) // s(j:j)
             end if
@@ -127,7 +135,6 @@ contains
       end function escape_quotes_sh
    end function quote_arg
 
-   !> Return whether the current OS should be treated as Windows for quoting.
    !> Parse an integer with a default fallback on I/O error.
    pure integer function parse_int(s, default) result(v)
       character(len=*), intent(in) :: s

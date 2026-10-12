@@ -86,19 +86,19 @@ contains
                 ',"event":' // json_quote(event) // ',"message":' // json_quote(message)
          if (present(fields)) then
             do i = 1, size(fields)
-               line = line // ',' // json_quote(fields(i)%key) // ':' // fields(i)%value
+               line = line // "," // json_quote(fields(i)%key) // ":" // fields(i)%value
             end do
          end if
-         line = line // '}'
+         line = line // "}"
        case ("logfmt")
-         line = 'timestamp=' // timestamp // ' level=' // level // ' event=' // event // &
-                ' msg=' // json_quote(message)
+         line = "timestamp=" // timestamp // " level=" // level // " event=" // event // &
+                " msg=" // json_quote(message)
          if (present(fields)) then
             do i = 1, size(fields)
-               if (fields(i)%value(1:1) == '[') then
-                  line = line // ' ' // fields(i)%key // '=' // json_quote(fields(i)%value)
+               if (fields(i)%value(1:1) == "[") then
+                  line = line // " " // fields(i)%key // "=" // json_quote(fields(i)%value)
                else
-                  line = line // ' ' // fields(i)%key // '=' // fields(i)%value
+                  line = line // " " // fields(i)%key // "=" // fields(i)%value
                end if
             end do
          end if
@@ -113,7 +113,7 @@ contains
           case default
             label = "INFO "
          end select
-         line = timestamp(12:19) // ' ' // label // ' ' // escape_text(message, .false.)
+         line = timestamp(12:19) // " " // label // " " // escape_text(message, .false.)
       end select
    end function format_log_record
 
@@ -140,23 +140,23 @@ contains
             if (delimiters) escaped = escaped // achar(92)
             escaped = escaped // value(i:i)
           case (8)
-            escaped = escaped // achar(92) // 'b'
+            escaped = escaped // achar(92) // "b"
           case (9)
-            escaped = escaped // achar(92) // 't'
+            escaped = escaped // achar(92) // "t"
           case (10)
-            escaped = escaped // achar(92) // 'n'
+            escaped = escaped // achar(92) // "n"
           case (12)
-            escaped = escaped // achar(92) // 'f'
+            escaped = escaped // achar(92) // "f"
           case (13)
-            escaped = escaped // achar(92) // 'r'
+            escaped = escaped // achar(92) // "r"
           case (0:7, 11, 14:31)
-            write(hex, '(z4.4)') code
-            escaped = escaped // achar(92) // 'u' // hex
+            write(hex, "(z4.4)") code
+            escaped = escaped // achar(92) // "u" // hex
           case (128:255)
             if (delimiters) then
                width = utf8_width(value, i)
                if (width == 0) then
-                  escaped = escaped // achar(92) // 'uFFFD'
+                  escaped = escaped // achar(92) // "uFFFD"
                else
                   escaped = escaped // value(i:i+width-1)
                   i = i + width - 1
@@ -216,12 +216,12 @@ contains
       type(log_field_t) :: field
       integer :: i
       field%key = key
-      field%value = '['
+      field%value = "["
       do i = 1, size(values)
-         if (i > 1) field%value = field%value // ','
+         if (i > 1) field%value = field%value // ","
          field%value = field%value // json_quote(values(i)%s)
       end do
-      field%value = field%value // ']'
+      field%value = field%value // "]"
    end function log_strings
 
    !> Construct a default-integer attribute.
@@ -238,7 +238,7 @@ contains
       integer(int64), intent(in) :: value
       type(log_field_t) :: field
       character(len=32) :: buffer
-      write(buffer, '(i0)') value
+      write(buffer, "(i0)") value
       field%key = key
       field%value = trim(buffer)
    end function log_int64
@@ -272,9 +272,9 @@ contains
       character(len=5) :: zone
       integer :: values(8)
       call date_and_time(zone=zone, values=values)
-      write(buffer, '(i4.4,a,i2.2,a,i2.2,a,i2.2,a,i2.2,a,i2.2,a,i3.3,a,a,a)') &
-         values(1), '-', values(2), '-', values(3), 'T', values(5), ':', values(6), ':', &
-         values(7), '.', values(8), zone(1:3), ':', zone(4:5)
+      write(buffer, "(i4.4,a,i2.2,a,i2.2,a,i2.2,a,i2.2,a,i2.2,a,i3.3,a,a,a)") &
+         values(1), "-", values(2), "-", values(3), "T", values(5), ":", values(6), ":", &
+         values(7), ".", values(8), zone(1:3), ":", zone(4:5)
       timestamp = buffer
    end function log_timestamp
 

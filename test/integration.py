@@ -70,14 +70,18 @@ class WatchIntegration(unittest.TestCase):
         self.project = self.root / "project"
         (self.project / "app").mkdir(parents=True)
         (self.project / "include").mkdir()
+        (self.project / "src").mkdir()
+        (self.project / "src/fixture.f90").write_text(
+            "module watch_fixture\nimplicit none\ninteger, parameter :: offset = 0\nend module watch_fixture\n"
+        )
         self.manifest = self.project / "fpm.toml"
         self.manifest_text = 'name="watch-fixture"\nversion="0.1.0"\n'
         self.manifest.write_text(self.manifest_text)
         (self.project / "include/value.inc").write_text("integer, parameter :: value = 1\n")
         (self.project / "app/first.f90").write_text(
-            "program first\nimplicit none\ninclude 'value.inc'\n"
+            "program first\nuse watch_fixture, only: offset\nimplicit none\ninclude 'value.inc'\n"
             "integer :: i, n\ncharacter(:), allocatable :: a\n"
-            "print *, 'WATCH_RESULT', value\n"
+            "print *, 'WATCH_RESULT', value + offset\n"
             "do i=1, command_argument_count()\n"
             "call get_command_argument(i,length=n)\nallocate(character(n)::a)\n"
             "call get_command_argument(i,a)\nprint '(a)', '<'//a//'>'\n"
@@ -212,7 +216,7 @@ class WatchIntegration(unittest.TestCase):
                 self.assertIn(flag, events[0]["command"])
 
     def test_log_formatter_control_characters(self):
-        result = subprocess.run(["fpm", "test", "--target", "check_log", "--", "--fixture"],
+        result = subprocess.run(["fpm", "test", "--profile", "debug", "--target", "check_log", "--", "--fixture"],
                                 cwd=Path(__file__).resolve().parents[1], capture_output=True,
                                 text=True, encoding="utf-8", timeout=60)
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)

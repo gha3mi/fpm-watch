@@ -275,6 +275,11 @@ and quoted C headers are resolved through source and fpm include directories.
 
 ## Development Checks
 
+macOS CI uses `fpm build --profile ci-release`, which selects GNU `-O1`
+to reduce compilation time for the fpm dependency. Other CI jobs use the
+standard release profile. CI installation reuses that build, and tests use
+the debug profile.
+
 ```bash
 fpm build --profile debug --verbose
 fpm build --profile release --verbose

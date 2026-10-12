@@ -106,17 +106,20 @@ contains
    !! - after the `prefix` and any existing `fpm` options,
    !! - before a `--` delimiter (if present), so that program arguments remain
    !!   attached to the executed program.
-   function inject_names_into_cmd(prefix, rest, names) result(out)
+   function inject_names_into_cmd(prefix, rest, names, windows) result(out)
       character(len=*), intent(in) :: prefix
       !! Prefix up to and including the subcommand.
       character(len=*), intent(in) :: rest
       !! Remaining arguments after the subcommand.
       character(len=*), intent(in) :: names
       !! Space-separated names to inject.
+      logical, intent(in), optional :: windows
+      !! Explicit platform selection supports portable serialization checks.
       character(len=:), allocatable :: out
 
       character(len=:), allocatable :: p, r, n, before, after
       integer :: dd
+      logical :: use_windows
 
       p = trim(prefix)
       r = adjustl(trim(rest))
@@ -136,7 +139,12 @@ contains
          return
       end if
 
-      dd = find_double_dash_delim(r, is_windows_os())
+      if (present(windows)) then
+         use_windows = windows
+      else
+         use_windows = is_windows_os()
+      end if
+      dd = find_double_dash_delim(r, use_windows)
       if (dd > 0) then
          if (dd > 1) then
             before = trim(r(1:dd-1))
@@ -174,6 +182,12 @@ contains
             quote = achar(0)
             do while (i <= n)
                ch = str(i:i)
+               if (windows .and. ch == achar(92) .and. i < n) then
+                  if (str(i+1:i+1) == achar(92) .or. str(i+1:i+1) == '"') then
+                     i = i + 2
+                     cycle
+                  end if
+               end if
                if (quote == achar(0)) then
                   if (is_space(ch)) exit
                   if (ch == '"' .or. (ch == "'" .and. .not. windows)) quote = ch
