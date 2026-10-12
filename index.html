@@ -146,7 +146,8 @@ fpm-watch<span class="w"> </span><span class="nb">test</span>
 fpm-watch<span class="w"> </span>run
 </code></pre></div>
 
-<p>Everything after <code>&lt;build|test|run&gt;</code> is passed directly to <code>fpm</code>.</p>
+<p>Everything after <code>&lt;build|test|run&gt;</code> is passed directly to <code>fpm</code>.
+Target lists such as <code>run --target first,second</code> use the same selection as <code>fpm</code>.</p>
 <p>Example:</p>
 <div class="codehilite"><pre><span></span><code>fpm-watch<span class="w"> </span>--watch-low-cpu<span class="w"> </span>--watch-auto-restart<span class="w"> </span>run<span class="w"> </span>--example<span class="w"> </span>my_example
 </code></pre></div>
@@ -161,6 +162,9 @@ fpm-watch<span class="w"> </span>run
 <span class="o">--</span><span class="nv">watch</span><span class="o">-</span><span class="nv">quiet</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="o">-</span><span class="nv">q</span>
 <span class="w">    </span><span class="nv">Quiet</span><span class="w"> </span><span class="nv">mode</span><span class="w"> </span><span class="ss">(</span><span class="nv">errors</span><span class="w"> </span><span class="nv">only</span><span class="ss">)</span>.
 
+<span class="o">--</span><span class="nv">watch</span><span class="o">-</span><span class="nv">log</span><span class="o">-</span><span class="nv">format</span><span class="w"> </span><span class="o">&lt;</span><span class="nv">text</span><span class="o">|</span><span class="nv">json</span><span class="o">|</span><span class="nv">logfmt</span><span class="o">&gt;</span>
+<span class="w">    </span><span class="nv">Log</span><span class="w"> </span><span class="nv">format</span><span class="w"> </span><span class="ss">(</span><span class="nv">default</span>:<span class="w"> </span><span class="nv">text</span><span class="ss">)</span>.<span class="w"> </span><span class="nv">Also</span><span class="w"> </span><span class="nv">accepts</span><span class="w"> </span><span class="o">--</span><span class="nv">watch</span><span class="o">-</span><span class="nv">log</span><span class="o">-</span><span class="nv">format</span><span class="o">=</span><span class="nv">json</span>.
+
 <span class="o">--</span><span class="nv">watch</span><span class="o">-</span><span class="nv">verbose</span>[<span class="o">=</span><span class="nv">N</span>]<span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="o">-</span><span class="nv">v</span>
 <span class="w">    </span><span class="nv">Increase</span><span class="w"> </span><span class="nv">verbosity</span><span class="w"> </span><span class="ss">(</span><span class="mi">0</span>–<span class="mi">2</span><span class="ss">)</span>.
 
@@ -173,7 +177,7 @@ fpm-watch<span class="w"> </span>run
 
 <h3>Dependency Watching</h3>
 <div class="codehilite"><pre><span></span><code>--watch-deps
-    Also watch dependency source trees.
+    Also watch dependency source trees and manifests, including feature/profile dependencies.
 
 --watch-no-deps
     Disable dependency watching (default).
@@ -195,7 +199,7 @@ fpm-watch<span class="w"> </span>run
 <span class="w">    </span><span class="nv">Debounce</span><span class="w"> </span><span class="nv">delay</span><span class="w"> </span><span class="nv">before</span><span class="w"> </span><span class="nv">running</span><span class="w"> </span><span class="ss">(</span><span class="nv">default</span>:<span class="w"> </span><span class="mi">0</span>.<span class="mi">2</span><span class="ss">)</span>.
 
 <span class="o">--</span><span class="nv">watch</span><span class="o">-</span><span class="nv">rescan</span><span class="w"> </span><span class="o">&lt;</span><span class="nv">sec</span><span class="o">&gt;</span>
-<span class="w">    </span><span class="nv">Periodically</span><span class="w"> </span><span class="nv">rebuild</span><span class="w"> </span><span class="nv">fpm</span><span class="w"> </span><span class="nv">model</span><span class="w"> </span><span class="ss">(</span><span class="nv">default</span>:<span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">disabled</span><span class="ss">)</span>.
+<span class="w">    </span><span class="nv">Periodically</span><span class="w"> </span><span class="nv">rebuild</span><span class="w"> </span><span class="nv">the</span><span class="w"> </span><span class="nv">fpm</span><span class="w"> </span><span class="nv">model</span><span class="w"> </span><span class="nv">and</span><span class="w"> </span><span class="nv">run</span><span class="w"> </span><span class="nv">on</span><span class="w"> </span><span class="nv">added</span><span class="o">/</span><span class="nv">removed</span><span class="w"> </span><span class="nv">sources</span><span class="w"> </span><span class="ss">(</span><span class="nv">default</span>:<span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">disabled</span><span class="ss">)</span>.
 
 <span class="o">--</span><span class="nv">watch</span><span class="o">-</span><span class="nv">no</span><span class="o">-</span><span class="nv">rescan</span>
 <span class="w">    </span><span class="nv">Disable</span><span class="w"> </span><span class="nv">periodic</span><span class="w"> </span><span class="nv">rescan</span>.
@@ -207,7 +211,7 @@ fpm-watch<span class="w"> </span>run
 <span class="w">    </span><span class="k">Wait</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nv">first</span><span class="w"> </span><span class="nv">change</span><span class="w"> </span><span class="nv">before</span><span class="w"> </span><span class="nv">running</span>.
 
 <span class="o">--</span><span class="nv">watch</span><span class="o">-</span><span class="nv">once</span>
-<span class="w">    </span><span class="nv">Run</span><span class="w"> </span><span class="nv">once</span><span class="w"> </span><span class="nv">and</span><span class="w"> </span><span class="k">exit</span><span class="w"> </span><span class="ss">(</span><span class="nv">no</span><span class="w"> </span><span class="nv">continuous</span><span class="w"> </span><span class="nv">watching</span><span class="ss">)</span>.
+<span class="w">    </span><span class="nv">Initialize</span>,<span class="w"> </span><span class="nv">run</span><span class="w"> </span><span class="nv">once</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="nv">run</span><span class="o">-</span><span class="nv">on</span><span class="o">-</span><span class="nv">start</span><span class="w"> </span><span class="nv">is</span><span class="w"> </span><span class="nv">enabled</span>,<span class="w"> </span><span class="nv">and</span><span class="w"> </span><span class="k">exit</span><span class="w"> </span><span class="nv">with</span><span class="w"> </span><span class="nv">fpm</span><span class="err">'s status.</span>
 </code></pre></div>
 
 <h3>Output Control</h3>
@@ -237,12 +241,96 @@ fpm-watch<span class="w"> </span>run
 <span class="w">    </span><span class="nv">Delay</span><span class="w"> </span><span class="nv">before</span><span class="w"> </span><span class="nv">restart</span><span class="w"> </span><span class="ss">(</span><span class="nv">default</span>:<span class="w"> </span><span class="mi">1</span>.<span class="mi">0</span><span class="ss">)</span>.
 
 <span class="o">--</span><span class="nv">watch</span><span class="o">-</span><span class="nv">restart</span><span class="o">-</span><span class="nv">max</span><span class="w"> </span><span class="o">&lt;</span><span class="nv">N</span><span class="o">&gt;</span>
-<span class="w">    </span><span class="nv">Maximum</span><span class="w"> </span><span class="nv">restart</span><span class="w"> </span><span class="nv">attempts</span><span class="w"> </span><span class="ss">(</span><span class="mi">0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">unlimited</span><span class="ss">)</span>.
+<span class="w">    </span><span class="nv">Maximum</span><span class="w"> </span><span class="nv">restart</span><span class="w"> </span><span class="nv">attempts</span><span class="w"> </span><span class="nv">after</span><span class="w"> </span><span class="nv">the</span><span class="w"> </span><span class="nv">initial</span><span class="w"> </span><span class="nv">launch</span><span class="w"> </span><span class="ss">(</span><span class="mi">0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">unlimited</span><span class="ss">)</span>.
 
 <span class="o">--</span><span class="nv">watch</span><span class="o">-</span><span class="nv">self</span><span class="w"> </span><span class="o">&lt;</span><span class="nv">path</span><span class="o">&gt;</span>
 <span class="w">    </span><span class="nv">Explicit</span><span class="w"> </span><span class="nv">path</span><span class="w"> </span><span class="nv">to</span><span class="w"> </span><span class="nv">fpm</span><span class="o">-</span><span class="nv">watch</span><span class="w"> </span><span class="nv">executable</span><span class="w"> </span><span class="ss">(</span><span class="nv">advanced</span><span class="ss">)</span>.
 </code></pre></div>
 
+<h2>Logging</h2>
+<p>Help and watcher logs are plain text without ANSI color codes; no color library
+is required. The default <code>text</code> format uses short, timestamped status lines.
+Configuration and timing details require <code>--watch-verbose</code>;
+individual watched files require <code>--watch-very-verbose</code> or <code>--watch-print-files</code>.
+<code>--watch-debug</code> emits additional records at the <code>debug</code> level. Quiet mode
+suppresses all watcher records except errors. Raw fpm output is controlled
+separately by <code>--watch-silent-fpm</code>.</p>
+<div class="codehilite"><pre><span></span><code>14:32:10 INFO  Watching 24 files (build); Ctrl+C or touch .fpm-watch.stop to stop
+14:32:15 INFO  Changed src/math.f90
+14:32:15 INFO  Running fpm build
+14:32:16 INFO  Build succeeded in 0.84s
+</code></pre></div>
+
+<p>Use <code>json</code> for <a href="https://jsonlines.org/">JSON Lines</a>, with one UTF-8 JSON object
+per line, or <code>logfmt</code> for <a href="https://brandur.org/logfmt">key/value records</a>:</p>
+<div class="codehilite"><pre><span></span><code>fpm-watch<span class="w"> </span>--watch-log-format<span class="w"> </span>json<span class="w"> </span>build<span class="w"> </span>&gt;<span class="w"> </span>watch.jsonl<span class="w"> </span><span class="m">2</span>&gt;<span class="w"> </span>fpm.log
+fpm-watch<span class="w"> </span>--watch-log-format<span class="w"> </span>logfmt<span class="w"> </span><span class="nb">test</span><span class="w"> </span>&gt;<span class="w"> </span>watch.log<span class="w"> </span><span class="m">2</span>&gt;<span class="w"> </span>fpm.log
+</code></pre></div>
+
+<p>In both structured formats, <strong>all watcher records, including errors, use
+stdout</strong>. Raw fpm/model output and compiler/runtime diagnostics use stderr,
+so stdout can be parsed directly. Avoid merging the streams with <code>2&gt;&amp;1</code> when
+collecting structured records. Text mode keeps the usual fpm streams and sends
+watcher errors to stderr.</p>
+<div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="nt">"timestamp"</span><span class="p">:</span><span class="s2">"2026-10-12T14:32:16.842+02:00"</span><span class="p">,</span><span class="nt">"level"</span><span class="p">:</span><span class="s2">"info"</span><span class="p">,</span><span class="nt">"event"</span><span class="p">:</span><span class="s2">"command.finished"</span><span class="p">,</span><span class="nt">"message"</span><span class="p">:</span><span class="s2">"Build succeeded in 0.84s"</span><span class="p">,</span><span class="nt">"command"</span><span class="p">:</span><span class="s2">"fpm build"</span><span class="p">,</span><span class="nt">"exit_code"</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="nt">"duration_ms"</span><span class="p">:</span><span class="mi">842</span><span class="p">,</span><span class="nt">"interrupted"</span><span class="p">:</span><span class="kc">false</span><span class="p">}</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>timestamp=2026-10-12T14:32:16.842+02:00 level=info event=command.finished msg="Build succeeded in 0.84s" command="fpm build" exit_code=0 duration_ms=842 interrupted=false
+</code></pre></div>
+
+<p>Every structured record has <code>timestamp</code> (RFC 3339 with milliseconds and an
+explicit UTC offset), <code>level</code>, <code>event</code>, and a human message (<code>message</code> in JSON,
+<code>msg</code> in logfmt). Event attributes use JSON numbers, booleans, strings, and
+arrays; logfmt uses scalar key/value fields, with arrays stored as quoted JSON.
+Quotes, backslashes, and control characters are escaped to keep each record on
+one physical line. Invalid UTF-8 bytes become Unicode replacement characters.
+Records are flushed immediately.</p>
+<p>Use <code>event</code> and its attributes for automation rather than parsing the message:</p>
+<table>
+<thead>
+<tr>
+<th>Event</th>
+<th>Useful attributes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>watch.ready</code></td>
+<td><code>file_count</code>, <code>root_count</code>, <code>mode</code>, <code>command</code>, <code>once</code></td>
+</tr>
+<tr>
+<td><code>watch.changed</code></td>
+<td><code>file_count</code>, <code>paths</code>, <code>debounce_ms</code></td>
+</tr>
+<tr>
+<td><code>watch.manifest_changed</code></td>
+<td>Manifest refresh is starting</td>
+</tr>
+<tr>
+<td><code>watch.refresh_failed</code>, <code>watch.init_failed</code></td>
+<td>Error details in the message</td>
+</tr>
+<tr>
+<td><code>command.started</code></td>
+<td><code>command</code>, <code>silent_fpm</code></td>
+</tr>
+<tr>
+<td><code>command.finished</code></td>
+<td><code>command</code>, <code>exit_code</code>, <code>duration_ms</code>, <code>interrupted</code></td>
+</tr>
+<tr>
+<td><code>watch.stopped</code></td>
+<td><code>reason</code> (<code>stop_file</code> or <code>interrupt</code>)</td>
+</tr>
+<tr>
+<td><code>supervisor.restart</code>, <code>supervisor.limit_reached</code></td>
+<td><code>exit_code</code>, <code>restart_count</code></td>
+</tr>
+</tbody>
+</table>
+<p>The selected format stays fixed for the process lifetime and supervisor
+restarts. Changing the manifest's <code>log-format</code> requires restarting the watcher. CLI options override
+the manifest setting.</p>
 <h2>Configuration via <code>fpm.toml</code></h2>
 <p>Defaults can be defined in your project:</p>
 <div class="codehilite"><pre><span></span><code><span class="k">[extra.fpm-watch]</span>
@@ -260,10 +348,11 @@ fpm-watch<span class="w"> </span>run
 <span class="n">self</span><span class="w">          </span><span class="o">=</span><span class="w"> </span><span class="s2">""</span>
 <span class="n">debug</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span>
 <span class="n">verbosity</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
+<span class="n">log-format</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="s2">"text"</span>
 <span class="n">ignore</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="p">[]</span>
 <span class="n">include</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="p">[]</span>
 <span class="n">features</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="p">[]</span>
-<span class="n">onece</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span>
+<span class="n">once</span><span class="w">          </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span>
 </code></pre></div>
 
 <h2>Stopping</h2>
@@ -271,10 +360,36 @@ fpm-watch<span class="w"> </span>run
 <div class="codehilite"><pre><span></span><code>Ctrl+C
 </code></pre></div>
 
+<p>This stops the watcher and an active command, including in supervisor mode.
+User interrupts do not trigger automatic restarts.</p>
 <p>Or create:</p>
 <div class="codehilite"><pre><span></span><code>touch .fpm-watch.stop
 </code></pre></div>
 
+<p>Changes to a watched manifest rebuild the watch list and run the command.
+An invalid manifest during watching reports an error and keeps the previous
+watch list until it can be refreshed successfully. Enable <code>--watch-rescan</code>
+to discover new source files without restarting the watcher. Fortran includes
+and quoted C headers are resolved through source and fpm include directories.</p>
+<h2>Development Checks</h2>
+<p>macOS CI uses <code>fpm build --profile ci-release</code>, which selects GNU <code>-O1</code>
+to reduce compilation time for the fpm dependency. Other CI jobs use the
+standard release profile. CI installation reuses that build, and tests use
+the debug profile.</p>
+<div class="codehilite"><pre><span></span><code>fpm<span class="w"> </span>build<span class="w"> </span>--profile<span class="w"> </span>debug<span class="w"> </span>--verbose
+fpm<span class="w"> </span>build<span class="w"> </span>--profile<span class="w"> </span>release<span class="w"> </span>--verbose
+fpm<span class="w"> </span><span class="nb">test</span>
+fpm<span class="w"> </span>install<span class="w"> </span>--prefix<span class="w"> </span>.
+./bin/fpm-watch<span class="w"> </span>--watch-low-cpu<span class="w"> </span>--watch-once<span class="w"> </span><span class="nb">test</span>
+python<span class="w"> </span>test/integration.py<span class="w"> </span>--watcher<span class="w"> </span>./bin/fpm-watch
+python<span class="w"> </span>test/platform_regression.py<span class="w"> </span>./bin/fpm-watch
+</code></pre></div>
+
+<p>On Windows, use <code>./bin/fpm-watch.exe</code>. The Python checks use only the standard
+library and temporary projects; <code>fpm test</code> covers command-line helpers,
+dependency graphs, command exit statuses, watch-list snapshots, and log encoding.
+The integration checks parse both structured formats and verify output-stream
+separation, configuration overrides, failures, and supervisor events.</p>
 <h2>Bash Completion</h2>
 <p>Enable bash tab-completion for <code>fpm-watch</code> by installing the provided script:</p>
 <div class="codehilite"><pre><span></span><code>mkdir<span class="w"> </span>-p<span class="w"> </span>~/.local/share/bash-completion/completions
@@ -310,7 +425,7 @@ cp<span class="w"> </span>completion.bash<span class="w"> </span>~/.local/share/
           <div class="col-xs-6 col-sm-3">
             <div>
               <h3>Source Files</h3>
-              <ul><li><a href='sourcefile/watch_banner.f90.html'>watch_banner.f90</a></li><li><a href='sourcefile/watch_cli.f90.html'>watch_cli.f90</a></li><li><a href='sourcefile/watch_clock.f90.html'>watch_clock.f90</a></li><li><a href='sourcefile/watch_cmdline.f90.html'>watch_cmdline.f90</a></li><li><a href='sourcefile/watch_cmdsplice.f90.html'>watch_cmdsplice.f90</a></li><li><a href='sourcefile/watch_config.f90.html'>watch_config.f90</a></li><li><a href='sourcefile/watch_engine.f90.html'>watch_engine.f90</a></li><li><a href='sourcefile/watch_exec.f90.html'>watch_exec.f90</a></li><li><a href='sourcefile/watch_feat_stats.f90.html'>watch_feat_stats.f90</a></li><li><a href='sourcefile/watch_feature_api.f90.html'>watch_feature_api.f90</a></li></ul>
+              <ul><li><a href='sourcefile/watch_banner.f90.html'>watch_banner.f90</a></li><li><a href='sourcefile/watch_cli.f90.html'>watch_cli.f90</a></li><li><a href='sourcefile/watch_cmdline.f90.html'>watch_cmdline.f90</a></li><li><a href='sourcefile/watch_cmdsplice.f90.html'>watch_cmdsplice.f90</a></li><li><a href='sourcefile/watch_config.f90.html'>watch_config.f90</a></li><li><a href='sourcefile/watch_engine.f90.html'>watch_engine.f90</a></li><li><a href='sourcefile/watch_exec.f90.html'>watch_exec.f90</a></li><li><a href='sourcefile/watch_feat_stats.f90.html'>watch_feat_stats.f90</a></li><li><a href='sourcefile/watch_feature_api.f90.html'>watch_feature_api.f90</a></li><li><a href='sourcefile/watch_feature_factory.f90.html'>watch_feature_factory.f90</a></li></ul>
             </div>
             <div>
               <ul>
@@ -321,7 +436,7 @@ cp<span class="w"> </span>completion.bash<span class="w"> </span>~/.local/share/
           <div class="col-xs-6 col-sm-3">
             <div>
               <h3>Modules</h3>
-              <ul><li><a href='module/watch_banner.html'>watch_banner</a></li><li><a href='module/watch_cli.html'>watch_cli</a></li><li><a href='module/watch_clock.html'>watch_clock</a></li><li><a href='module/watch_cmdline.html'>watch_cmdline</a></li><li><a href='module/watch_cmdsplice.html'>watch_cmdsplice</a></li><li><a href='module/watch_config.html'>watch_config</a></li><li><a href='module/watch_engine.html'>watch_engine</a></li><li><a href='module/watch_exec.html'>watch_exec</a></li><li><a href='module/watch_feat_stats.html'>watch_feat_stats</a></li><li><a href='module/watch_feature_api.html'>watch_feature_api</a></li></ul>
+              <ul><li><a href='module/watch_banner.html'>watch_banner</a></li><li><a href='module/watch_cli.html'>watch_cli</a></li><li><a href='module/watch_cmdline.html'>watch_cmdline</a></li><li><a href='module/watch_cmdsplice.html'>watch_cmdsplice</a></li><li><a href='module/watch_config.html'>watch_config</a></li><li><a href='module/watch_engine.html'>watch_engine</a></li><li><a href='module/watch_exec.html'>watch_exec</a></li><li><a href='module/watch_feat_stats.html'>watch_feat_stats</a></li><li><a href='module/watch_feature_api.html'>watch_feature_api</a></li><li><a href='module/watch_feature_factory.html'>watch_feature_factory</a></li></ul>
             </div>
             <div>
               <ul>
@@ -332,7 +447,7 @@ cp<span class="w"> </span>completion.bash<span class="w"> </span>~/.local/share/
           <div class="col-xs-6 col-sm-3">
             <div>
               <h3>Procedures</h3>
-              <ul><li><a href='proc/accept_changes.html'>accept_changes</a></li><li><a href='proc/accum_push.html'>accum_push</a></li><li><a href='proc/accum_to_array.html'>accum_to_array</a></li><li><a href='proc/active_features.html'>active_features</a></li><li><a href='proc/active_profile.html'>active_profile</a></li><li><a href='proc/add_features_csv.html'>add_features_csv</a></li><li><a href='proc/add_stats.html'>add_stats</a></li><li><a href='proc/any_manifest_changed.html'>any_manifest_changed</a></li><li><a href='proc/apply_watch_flag.html'>apply_watch_flag</a></li><li><a href='proc/apply_watch_from_manifest.html'>apply_watch_from_manifest</a></li></ul>
+              <ul><li><a href='proc/accept_changes.html'>accept_changes</a></li><li><a href='proc/add_features_csv.html'>add_features_csv</a></li><li><a href='proc/add_stats.html'>add_stats</a></li><li><a href='proc/add_target_names.html'>add_target_names</a></li><li><a href='proc/any_manifest_changed.html'>any_manifest_changed</a></li><li><a href='proc/apply_watch_flag.html'>apply_watch_flag</a></li><li><a href='proc/apply_watch_from_manifest.html'>apply_watch_from_manifest</a></li><li><a href='proc/begin_raw_output.html'>begin_raw_output</a></li><li><a href='proc/build_child_command.html'>build_child_command</a></li><li><a href='proc/build_run_command.html'>build_run_command</a></li></ul>
             </div>
             <div>
               <ul>
@@ -343,7 +458,7 @@ cp<span class="w"> </span>completion.bash<span class="w"> </span>~/.local/share/
           <div class="col-xs-6 col-sm-3">
             <div>
               <h3>Derived Types</h3>
-              <ul><li><a href='type/feature_box_t.html'>feature_box_t</a></li><li><a href='type/feature_manager_t.html'>feature_manager_t</a></li><li><a href='type/root_info_t.html'>root_info_t</a></li><li><a href='type/stats_feature_t.html'>stats_feature_t</a></li><li><a href='type/string_accum_t.html'>string_accum_t</a></li><li><a href='type/watch_config_t.html'>watch_config_t</a></li><li><a href='type/watch_feature_t.html'>watch_feature_t</a></li><li><a href='type/watch_opts_t.html'>watch_opts_t</a></li><li><a href='type/watcher_t.html'>watcher_t</a></li></ul>
+              <ul><li><a href='type/feature_box_t.html'>feature_box_t</a></li><li><a href='type/feature_manager_t.html'>feature_manager_t</a></li><li><a href='type/log_field_t.html'>log_field_t</a></li><li><a href='type/root_info_t.html'>root_info_t</a></li><li><a href='type/stats_feature_t.html'>stats_feature_t</a></li><li><a href='type/watch_config_t.html'>watch_config_t</a></li><li><a href='type/watch_feature_t.html'>watch_feature_t</a></li><li><a href='type/watch_opts_t.html'>watch_opts_t</a></li><li><a href='type/watcher_t.html'>watcher_t</a></li></ul>
             </div>
             <div>
               <ul>
@@ -367,7 +482,7 @@ cp<span class="w"> </span>completion.bash<span class="w"> </span>~/.local/share/
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2026-10-07T15:43:29.178131+0000             </p>
+ on 2026-10-12T11:58:15.281459+0000             </p>
           </div>
         </div>
         <br>

@@ -89,7 +89,7 @@
 
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
-                 title="<p>17.5% of total for derived types.</p>Including implementation: 86 statements, 23.8% of total for derived types.">14 statements</a>
+                 title="<p>21.2% of total for derived types.</p>Including implementation: 107 statements, 30.6% of total for derived types.">17 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -133,13 +133,16 @@
         <div class="list-group list-group-flush">
             <a class="list-group-item" href="../type/watcher_t.html#variable-cfg">cfg</a>
             <a class="list-group-item" href="../type/watcher_t.html#variable-changed_idx">changed_idx</a>
-            <a class="list-group-item" href="../type/watcher_t.html#variable-file_mask">file_mask</a>
-            <a class="list-group-item" href="../type/watcher_t.html#variable-files">files</a>
+            <a class="list-group-item" href="../type/watcher_t.html#variable-file_mask~6">file_mask</a>
+            <a class="list-group-item" href="../type/watcher_t.html#variable-files~9">files</a>
             <a class="list-group-item" href="../type/watcher_t.html#variable-fm">fm</a>
             <a class="list-group-item" href="../type/watcher_t.html#variable-fp_now">fp_now</a>
             <a class="list-group-item" href="../type/watcher_t.html#variable-fp_prev">fp_prev</a>
+            <a class="list-group-item" href="../type/watcher_t.html#variable-last_exit">last_exit</a>
+            <a class="list-group-item" href="../type/watcher_t.html#variable-last_refresh_error">last_refresh_error</a>
             <a class="list-group-item" href="../type/watcher_t.html#variable-man_prev">man_prev</a>
-            <a class="list-group-item" href="../type/watcher_t.html#variable-roots">roots</a>
+            <a class="list-group-item" href="../type/watcher_t.html#variable-manifest_refresh_pending">manifest_refresh_pending</a>
+            <a class="list-group-item" href="../type/watcher_t.html#variable-roots~2">roots</a>
         </div>
       </div>
     </div>
@@ -454,7 +457,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-file_mask"></span>
+              <span class="anchor" id="variable-file_mask~6"></span>
               integer(kind=int64),
             </td>
               <td>public,</td>
@@ -471,7 +474,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-files"></span>
+              <span class="anchor" id="variable-files~9"></span>
               type(string_t),
             </td>
               <td>public,</td>
@@ -539,6 +542,40 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
+              <span class="anchor" id="variable-last_exit"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>last_exit</strong></td>
+<td> =</td>
+                <td>0</td>
+            <td>
+                <p>Last refresh error, used to avoid repeating identical diagnostics.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-last_refresh_error"></span>
+              character(len=:),
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>last_refresh_error</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                <p>Retry a failed manifest refresh, including its settings and command.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
               <span class="anchor" id="variable-man_prev"></span>
               integer(kind=int64),
             </td>
@@ -551,12 +588,29 @@ large graphs.</div>
 <td> =</td>
                 <td>0_int64</td>
             <td>
+                <p>Exit status of the most recently executed command (also used by --watch-once).</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-manifest_refresh_pending"></span>
+              logical,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>manifest_refresh_pending</strong></td>
+<td> =</td>
+                <td>.false.</td>
+            <td>
                 
             </td>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-roots"></span>
+              <span class="anchor" id="variable-roots~2"></span>
               type(<a href='root_info_t.html'>root_info_t</a>),
             </td>
               <td>public,</td>
@@ -721,6 +775,12 @@ large graphs.</div>
 <span class="w">      </span><span class="kt">integer</span><span class="p">,</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">changed_idx</span><span class="p">(:)</span>
 
 <span class="w">      </span><span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">man_prev</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0_int64</span>
+<span class="w">      </span><span class="c">!! Exit status of the most recently executed command (also used by --watch-once).</span>
+<span class="w">      </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">last_exit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">      </span><span class="c">!! Last refresh error, used to avoid repeating identical diagnostics.</span>
+<span class="w">      </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">last_refresh_error</span>
+<span class="w">      </span><span class="c">!! Retry a failed manifest refresh, including its settings and command.</span>
+<span class="w">      </span><span class="kt">logical</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">manifest_refresh_pending</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.</span>
 <span class="w">   </span><span class="k">contains</span>
 <span class="k">      procedure</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">init</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">watcher_init</span>
 <span class="w">      </span><span class="k">procedure</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">run</span><span class="w">  </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">watcher_run</span>
@@ -747,7 +807,7 @@ large graphs.</div>
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2026-10-07T15:43:29.178131+0000             </p>
+ on 2026-10-12T11:58:15.281459+0000             </p>
           </div>
         </div>
         <br>

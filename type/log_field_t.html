@@ -10,7 +10,7 @@
     <meta name="author" content="Seyed Ali Ghasemi" >
     <link rel="icon" href="../favicon.png">
 
-    <title>ticks_to_seconds &ndash; fpm-watch</title>
+    <title>log_field_t &ndash; fpm-watch </title>
 
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -77,8 +77,8 @@
 
     <div class="container">
   <div class="row">
-    <h1>ticks_to_seconds
-      <small>Function</small>
+    <h1>log_field_t
+      <small>Derived Type</small>
       
     </h1>
       <div class="container p-2 mb-4 bg-light border rounded-3">
@@ -89,21 +89,21 @@
 
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
-                 title=" 0.1% of total for procedures.">4 statements</a>
+                 title="<p> 3.8% of total for derived types.</p>Including implementation: 3 statements,  0.9% of total for derived types.">3 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
               <i class="fa fa-code"></i>
-              <a href="../src/watch_clock.f90"> Source File</a>
+              <a href="../src/watch_log.f90"> Source File</a>
             </li>
         </ul>
       </div>
       <div class="col">
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb justify-content-end mb-0">
-                <li class="breadcrumb-item"><a href='../sourcefile/watch_clock.f90.html'>watch_clock.f90</a></li>
-                <li class="breadcrumb-item"><a href='../module/watch_clock.html'>watch_clock</a></li>
-            <li class="breadcrumb-item active" aria-current="page">ticks_to_seconds</li>
+                <li class="breadcrumb-item"><a href='../sourcefile/watch_log.f90.html'>watch_log.f90</a></li>
+                <li class="breadcrumb-item"><a href='../module/watch_log.html'>watch_log</a></li>
+            <li class="breadcrumb-item active" aria-current="page">log_field_t</li>
           </ol>
         </nav>
       </div>
@@ -124,7 +124,19 @@
       <div id="sidebar">
       <h3>Contents</h3>
   
-  
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#vars-0"
+         aria-expanded="false" aria-controls="vars-0">
+         <h4 class="card-header bg-primary text-white">Variables</h4>
+      </a>
+      <div id="vars-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../type/log_field_t.html#variable-key~7">key</a>
+            <a class="list-group-item" href="../type/log_field_t.html#variable-value~4">value</a>
+        </div>
+      </div>
+    </div>
+
   
   
   
@@ -146,7 +158,7 @@
     <div class="card card-primary">
       <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
       <div class="list-group">
-        <a class="list-group-item" href="../proc/ticks_to_seconds.html#src">ticks_to_seconds</a>
+        <a class="list-group-item" href="../type/log_field_t.html#src">log_field_t</a>
       </div>
     </div>
 
@@ -156,87 +168,74 @@
     </div>
     
     <div class="col-md-9" id='text'>
-    <h2>public pure function ticks_to_seconds(ticks, rate) result(secs)  
-</h2>
-    
+      <h2 id="type-def-statement">
+        type, public :: log_field_t</h2>
+    <p>A typed event attribute, stored as its JSON representation.</p>
+    <br>
 
-    <p>Convert ticks to seconds using a specified tick rate.</p>
-
-
-    <h3>Arguments</h3>
-        <table class="table table-striped varlist">
+    <section>
+    <h2>Components</h2>
+      <table class="table table-striped varlist">
     <thead>
       <tr>
         <th scope="col">Type</th>
-<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+<th scope="col">Visibility</th>        <th scope="col">Attributes</th>
         <th scope="col"></th>
         <th scope="col">Name</th>
-        <th scope="col"></th>
+<th></th><th scope="col">Initial</th>        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-ticks"></span>
-              integer(kind=int64),
+              <span class="anchor" id="variable-key~7"></span>
+              character(len=:),
             </td>
-<td>intent(in)</td>
-              <td></td>            <td>
-              
+              <td>public,</td>
+            <td>
+              allocatable
             </td>
             <td>::</td>
-            <td><strong>ticks</strong></td>
+            <td><strong>key</strong></td>
+                <td></td>
+                <td></td>
             <td>
-                <p>Tick delta and tick rate.</p>
+                
             </td>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-rate~5"></span>
-              integer(kind=int64),
+              <span class="anchor" id="variable-value~4"></span>
+              character(len=:),
             </td>
-<td>intent(in)</td>
-              <td></td>            <td>
-              
+              <td>public,</td>
+            <td>
+              allocatable
             </td>
             <td>::</td>
-            <td><strong>rate</strong></td>
+            <td><strong>value</strong></td>
+                <td></td>
+                <td></td>
             <td>
-                <p>Tick delta and tick rate.</p>
+                
             </td>
         </tr>
     </tbody>
   </table>
 
-      <h3>Return Value
-        <small>
-          <span class="anchor" id="variable-secs~3"></span>
-          real
-        </small>
-      </h3>
-      
+    </section>
     <br>
-
-
-    
-    
-
-    
     
 
 
 
-    
     <section>
-    <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="hl codehilite"><pre><span></span><span class="w">   </span><span class="k">pure </span><span class="kt">real </span><span class="k">function </span><span class="n">ticks_to_seconds</span><span class="p">(</span><span class="n">ticks</span><span class="p">,</span><span class="w"> </span><span class="n">rate</span><span class="p">)</span><span class="w"> </span><span class="k">result</span><span class="p">(</span><span class="n">secs</span><span class="p">)</span>
-<span class="w">      </span><span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">ticks</span><span class="p">,</span><span class="w"> </span><span class="n">rate</span>
-<span class="w">      </span><span class="c">!! Tick delta and tick rate.</span>
-<span class="w">      </span><span class="n">secs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">real</span><span class="p">(</span><span class="n">ticks</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="kt">real</span><span class="p">(</span><span class="n">rate</span><span class="p">)</span>
-<span class="w">   </span><span class="k">end function </span><span class="n">ticks_to_seconds</span>
+    <h3><span class="anchor" id="src"></span>Source Code</h3>
+    <div class="hl codehilite"><pre><span></span><span class="w">   </span><span class="k">type </span><span class="n">log_field_t</span>
+<span class="w">      </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="k">value</span>
+<span class="k">   end type </span><span class="n">log_field_t</span>
 </pre></div>
 
     </section>
-    <br>
     
     </div>
   </div>
@@ -256,7 +255,7 @@
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2026-10-07T15:43:29.178131+0000             </p>
+ on 2026-10-12T11:58:15.281459+0000             </p>
           </div>
         </div>
         <br>

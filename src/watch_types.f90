@@ -24,6 +24,8 @@ module watch_types
       !! - `0`: normal
       !! - `1..2`: more detail
       integer :: verbosity = 0
+      !! Output format: text (default), json (JSON Lines), or logfmt.
+      character(len=:), allocatable :: log_format
       !! Enable extra debug output and internal timing/status messages.
       logical :: debug = .false.
       !! Poll interval (seconds) between change scans.
