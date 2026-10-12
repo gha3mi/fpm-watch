@@ -198,20 +198,20 @@
     </div>
 
     <div class="col-md-9" id='text'>
-      <p>Platform-specific helpers.</p>
-<p>Provides interrupt-aware command execution, shell wrapping, and null-device
-paths for portable command execution.</p>
-<p>This module is intentionally minimal and uses <code>fpm_environment:get_os_type</code>
-for OS detection.</p>
+      <p>Portable synchronous process execution and stdout redirection.</p>
+<p>C wrappers launch commands, forward user interrupts, and redirect raw fpm
+library output. An interrupt received while waiting for a command latches
+<code>stop_requested</code>; ordinary nonzero child exits do not. OS detection uses
+<code>fpm_environment:get_os_type</code>.</p>
 <br>          <div class="card mb-4">
       <h3 class="card-header card-title bg-light">Uses</h3>
       <div class="card-body">
         <ul class="list-group list-group-flush">
             <li class="list-group-item">
               <ul class="list-inline">
+                  <li class="list-inline-item">fpm_environment</li>
                   <li class="list-inline-item"><a href='http://fortranwiki.org/fortran/show/iso_fortran_env'>iso_fortran_env</a></li>
                   <li class="list-inline-item"><a href='http://fortranwiki.org/fortran/show/iso_c_binding'>iso_c_binding</a></li>
-                  <li class="list-inline-item">fpm_environment</li>
                   <li class="list-inline-item"><a href='watch_log.html'>watch_log</a></li>
               </ul>
             </li>
@@ -767,7 +767,12 @@ large graphs.</div>
     private  function fpm_watch_execute(command, silent, interrupted, launch_error) result(status) bind(C, name="fpm_watch_execute"))  
 
     </h3>
-  <p>An assumed-size character array interoperates with a C string.</p>
+  <p>C process wrapper returning child status or 127 for a launch/wait error.</p>
+<p><code>command</code> is NUL-terminated. On Windows, <code>silent</code> selects inherited streams:
+0 normal, 1 discard both outputs, 2 redirect stdout to stderr. POSIX ignores
+this mode because the Fortran wrapper appends shell redirections.
+<code>interrupted</code> reports handled user interrupts; <code>launch_error</code> holds the OS
+error code separately from ordinary child failure.</p>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -792,7 +797,7 @@ large graphs.</div>
             <td>::</td>
             <td><strong>command</strong>(*)</td>
             <td>
-                
+                <p>NUL-terminated command bytes interoperating with a C string.</p>
             </td>
         </tr>
         <tr>
@@ -812,7 +817,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-interrupted~2"></span>
+              <span class="anchor" id="variable-interrupted~3"></span>
               integer(kind=c_int),
             </td>
 <td>intent(out)</td>
@@ -865,7 +870,7 @@ large graphs.</div>
     private  function fpm_watch_redirect_stdout() result(saved) bind(C, name="fpm_watch_redirect_stdout"))  
 
     </h3>
-  
+  <p>Redirect descriptor 1 to stderr; return a saved stdout descriptor or a negative OS error.</p>
 
   <h4>Arguments</h4>
     <em>None</em>
@@ -891,7 +896,7 @@ large graphs.</div>
     private  function fpm_watch_restore_stdout(saved) result(error) bind(C, name="fpm_watch_restore_stdout"))  
 
     </h3>
-  
+  <p>Restore and close a saved stdout descriptor; return zero on success or an OS error.</p>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -962,7 +967,7 @@ large graphs.</div>
 </h3></div>
     <div class="card-body">
           
-  <p>Return whether an executed command received a termination request.</p>
+  <p>Return the process-wide interruption flag latched by prior command executions.</p>
 
   <h4>Arguments</h4>
     <em>None</em>
@@ -985,7 +990,7 @@ large graphs.</div>
 </h3></div>
     <div class="card-body">
           
-  <p>Temporarily send fpm library output to stderr during model operations.</p>
+  <p>Optionally redirect process stdout to stderr, flushing Fortran output first.</p><a href="../proc/begin_raw_output.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -1040,7 +1045,7 @@ large graphs.</div>
 </h3></div>
     <div class="card-body">
           
-  <p>Flush fpm library output and restore the original stdout destination.</p>
+  <p>Flush raw library output, restore stdout, and close the saved C descriptor.</p><a href="../proc/end_raw_output.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -1080,7 +1085,7 @@ large graphs.</div>
 </h3></div>
     <div class="card-body">
           
-  <p>Execute a command while preserving user interruption requests.</p><a href="../proc/execute_command.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+  <p>Wait for a command and return its status while latching handled user interrupts.</p><a href="../proc/execute_command.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -1095,7 +1100,7 @@ large graphs.</div>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-cmd~3"></span>
+              <span class="anchor" id="variable-cmd~5"></span>
               character(len=*),
             </td>
 <td>intent(in)</td>
@@ -1105,12 +1110,12 @@ large graphs.</div>
             <td>::</td>
             <td><strong>cmd</strong></td>
             <td>
-
+<p>Serialized command; caller is responsible for quoting individual argv tokens.</p>
             </td>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-exitstat~2"></span>
+              <span class="anchor" id="variable-exitstat~3"></span>
               integer,
             </td>
 <td>intent(out)</td>
@@ -1120,12 +1125,12 @@ large graphs.</div>
             <td>::</td>
             <td><strong>exitstat</strong></td>
             <td>
-
+<p>Child/interrupt status, or 127 with a launch-failure event for OS execution errors.</p>
             </td>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-interrupted~3"></span>
+              <span class="anchor" id="variable-interrupted~4"></span>
               logical,
             </td>
 <td>intent(out),</td>
@@ -1135,7 +1140,7 @@ large graphs.</div>
             <td>::</td>
             <td><strong>interrupted</strong></td>
             <td>
-
+<p>True if the wrapper handled a user interrupt during this command.</p>
             </td>
         </tr>
         <tr>
@@ -1150,7 +1155,7 @@ large graphs.</div>
             <td>::</td>
             <td><strong>silent</strong></td>
             <td>
-
+<p>Suppress both command output streams (default false); takes precedence over stderr.</p>
             </td>
         </tr>
         <tr>
@@ -1165,7 +1170,7 @@ large graphs.</div>
             <td>::</td>
             <td><strong>stderr</strong></td>
             <td>
-
+<p>Redirect command stdout to stderr (default false).</p>
             </td>
         </tr>
     </tbody>
@@ -1198,7 +1203,7 @@ large graphs.</div>
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2026-10-12T13:55:54.369963+0000             </p>
+ on 2026-10-12T14:42:46.282582+0000             </p>
           </div>
         </div>
         <br>

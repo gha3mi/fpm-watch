@@ -174,23 +174,20 @@
     </div>
 
     <div class="col-md-9" id='text'>
-      <p>Watch list filtering and path normalization.</p>
-<p>Contains helpers to normalize paths and apply include/ignore globs to the
-computed set of watched files.</p>
-<p>Key behaviors:
-- Paths are normalized to use <code>/</code> separators.
-- Leading <code>./</code> segments are removed for consistent matching.
-- Build directory filtering is handled elsewhere (but helper exists here).</p>
+      <p>Normalize paths and filter the computed watch list with fpm globs.</p>
+<p>Normalization changes backslashes to <code>/</code> and removes leading <code>./</code> segments;
+it does not canonicalize paths. Build-directory exclusion is applied by the
+graph collector. Include/ignore filters always retain watched <code>fpm.toml</code> files.</p>
 <br>          <div class="card mb-4">
       <h3 class="card-header card-title bg-light">Uses</h3>
       <div class="card-body">
         <ul class="list-group list-group-flush">
             <li class="list-group-item">
               <ul class="list-inline">
+                  <li class="list-inline-item">fpm_strings</li>
                   <li class="list-inline-item"><a href='http://fortranwiki.org/fortran/show/iso_fortran_env'>iso_fortran_env</a></li>
                   <li class="list-inline-item">fpm_filesystem</li>
                   <li class="list-inline-item"><a href='watch_util.html'>watch_util</a></li>
-                  <li class="list-inline-item">fpm_strings</li>
               </ul>
             </li>
             <li class="list-group-item">
@@ -496,7 +493,7 @@ large graphs.</div>
 </h3></div>
     <div class="card-body">
           
-  <p>Identify paths that should be ignored due to being inside the build directory.</p><a href="../proc/is_ignored_path.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+  <p>Test normalized paths against a build directory or its slash-delimited fragments.</p><a href="../proc/is_ignored_path.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -511,7 +508,7 @@ large graphs.</div>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-path~5"></span>
+              <span class="anchor" id="variable-path~6"></span>
               character(len=*),
             </td>
 <td>intent(in)</td>
@@ -526,7 +523,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-build_dir~4"></span>
+              <span class="anchor" id="variable-build_dir~7"></span>
               character(len=*),
             </td>
 <td>intent(in)</td>
@@ -556,7 +553,7 @@ large graphs.</div>
 </h3></div>
     <div class="card-body">
           
-  <p>Normalize a path to a consistent form for matching.</p><a href="../proc/normalize_path.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+  <p>Right-trim a path, replace backslashes, and remove repeated leading <code>./</code>.</p><a href="../proc/normalize_path.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -571,7 +568,7 @@ large graphs.</div>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-path~4"></span>
+              <span class="anchor" id="variable-path~5"></span>
               character(len=*),
             </td>
 <td>intent(in)</td>
@@ -601,7 +598,7 @@ large graphs.</div>
 </h3></div>
     <div class="card-body">
           
-  
+  <p>Test for a slash-delimited interior or trailing path fragment.</p>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -616,7 +613,7 @@ large graphs.</div>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-p~6"></span>
+              <span class="anchor" id="variable-p~7"></span>
               character(len=*),
             </td>
 <td>intent(in)</td>
@@ -661,7 +658,7 @@ large graphs.</div>
 </h3></div>
     <div class="card-body">
           
-  
+  <p>Compare right-trimmed suffixes; an empty suffix matches every string.</p>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -676,7 +673,7 @@ large graphs.</div>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-s~4"></span>
+              <span class="anchor" id="variable-s~19"></span>
               character(len=*),
             </td>
 <td>intent(in)</td>
@@ -726,7 +723,7 @@ large graphs.</div>
 </h3></div>
     <div class="card-body">
           
-  <p>Apply include/ignore rules to the watch list.</p><a href="../proc/filter_watch_files.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+  <p>Filter normalized paths and optional aligned masks, preserving order.</p><a href="../proc/filter_watch_files.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -741,7 +738,7 @@ large graphs.</div>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-files~7"></span>
+              <span class="anchor" id="variable-files~16"></span>
               type(string_t),
             </td>
 <td>intent(inout),</td>
@@ -751,12 +748,12 @@ large graphs.</div>
             <td>::</td>
             <td><strong>files</strong>(:)</td>
             <td>
-
+<p>Normalized input paths, replaced with the retained subset in the same order.</p>
             </td>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-include"></span>
+              <span class="anchor" id="variable-include~2"></span>
               type(string_t),
             </td>
 <td>intent(in),</td>
@@ -766,12 +763,12 @@ large graphs.</div>
             <td>::</td>
             <td><strong>include</strong>(:)</td>
             <td>
-
+<p>Include and ignore glob lists, respectively; empty/unallocated lists impose no restriction.</p>
             </td>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-ignore"></span>
+              <span class="anchor" id="variable-ignore~2"></span>
               type(string_t),
             </td>
 <td>intent(in),</td>
@@ -781,7 +778,7 @@ large graphs.</div>
             <td>::</td>
             <td><strong>ignore</strong>(:)</td>
             <td>
-
+<p>Include and ignore glob lists, respectively; empty/unallocated lists impose no restriction.</p>
             </td>
         </tr>
         <tr>
@@ -796,7 +793,7 @@ large graphs.</div>
             <td>::</td>
             <td><strong>masks</strong>(:)</td>
             <td>
-
+<p>Aligned file masks; created as zeros if supplied but unallocated, then filtered with files.</p>
             </td>
         </tr>
     </tbody>
@@ -829,7 +826,7 @@ large graphs.</div>
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2026-10-12T13:55:54.369963+0000             </p>
+ on 2026-10-12T14:42:46.282582+0000             </p>
           </div>
         </div>
         <br>

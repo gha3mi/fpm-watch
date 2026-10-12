@@ -184,26 +184,22 @@
     </div>
 
     <div class="col-md-9" id='text'>
-      <p>Command-line parsing and configuration assembly.</p>
-<p>This module:
-- Applies built-in defaults (<code>set_watch_defaults</code>),
-- Applies project-level overrides from <code>fpm.toml</code> (<code>apply_watch_from_manifest</code>),
-- Parses <code>--watch-*</code> options and <code>fpm</code> subcommand arguments,
-- Produces a <code>watch_config_t</code> that drives the watcher engine.</p>
-<p>Parsing is deliberately simple and "argv-token based": it does not implement
-a full shell parser. The <code>fpm_cmdline</code> string is built for display and for
-execution via <code>watch_platform:execute_command</code>.</p>
+      <p>Assemble watcher options, typed fpm settings, and a serialized command.</p>
+<p>Built-in defaults are followed by <code>[extra.fpm-watch]</code> and leading watcher
+flags. All tokens after <code>build</code>, <code>test</code>, or <code>run</code> are retained for execution;
+recognized fpm options also populate the settings used for graph construction.
+Model-option scanning stops at <code>--</code>. Parsing uses argv tokens, not shell text.</p>
 <br>          <div class="card mb-4">
       <h3 class="card-header card-title bg-light">Uses</h3>
       <div class="card-body">
         <ul class="list-group list-group-flush">
             <li class="list-group-item">
               <ul class="list-inline">
-                  <li class="list-inline-item"><a href='watch_log.html'>watch_log</a></li>
                   <li class="list-inline-item"><a href='http://fortranwiki.org/fortran/show/iso_fortran_env'>iso_fortran_env</a></li>
                   <li class="list-inline-item"><a href='watch_config.html'>watch_config</a></li>
-                  <li class="list-inline-item">fpm_strings</li>
                   <li class="list-inline-item"><a href='watch_types.html'>watch_types</a></li>
+                  <li class="list-inline-item"><a href='watch_log.html'>watch_log</a></li>
+                  <li class="list-inline-item">fpm_strings</li>
                   <li class="list-inline-item">fpm_command_line</li>
                   <li class="list-inline-item"><a href='watch_cmdline.html'>watch_cmdline</a></li>
               </ul>
@@ -737,7 +733,7 @@ large graphs.</div>
 </h3></div>
     <div class="card-body">
           
-  <p>Read an fpm option value from <code>--key=value</code> or the following argv token.</p>
+  <p>Read <code>--key=value</code>, or advance <code>i</code> to the next argv token for an option value.</p><a href="../proc/fpm_option_value.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -752,7 +748,7 @@ large graphs.</div>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-i~34"></span>
+              <span class="anchor" id="variable-i~38"></span>
               integer,
             </td>
 <td>intent(inout)</td>
@@ -812,7 +808,7 @@ large graphs.</div>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-s~7"></span>
+              <span class="anchor" id="variable-s~4"></span>
               character(len=*),
             </td>
 <td>intent(in)</td>
@@ -842,7 +838,7 @@ large graphs.</div>
 </h3></div>
     <div class="card-body">
           
-  <p>Detect whether an argv token is a watcher-specific flag.</p><a href="../proc/is_watch_flag.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+  <p>Test for the <code>--watch-</code> prefix; supported flag names are validated separately.</p>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -902,7 +898,7 @@ large graphs.</div>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-value~3"></span>
+              <span class="anchor" id="variable-value~12"></span>
               character(len=*),
             </td>
 <td>intent(in)</td>
@@ -937,7 +933,7 @@ large graphs.</div>
 </h3></div>
     <div class="card-body">
           
-  <p>Parse CLI arguments and build the full watcher configuration.</p><a href="../proc/parse_cli_config.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+  <p>Parse argv and manifest options into an executable watcher configuration.</p><a href="../proc/parse_cli_config.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -952,7 +948,7 @@ large graphs.</div>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-cfg~2"></span>
+              <span class="anchor" id="variable-cfg~3"></span>
               type(<a href='../type/watch_config_t.html'>watch_config_t</a>),
             </td>
 <td>intent(out)</td>
@@ -962,7 +958,7 @@ large graphs.</div>
             <td>::</td>
             <td><strong>cfg</strong></td>
             <td>
-
+<p>Assembled watcher options, model settings, and serialized command/prefix/rest.</p>
             </td>
         </tr>
         <tr>
@@ -977,7 +973,7 @@ large graphs.</div>
             <td>::</td>
             <td><strong>log_format</strong></td>
             <td>
-
+<p>Pinned process format for a manifest refresh; overrides manifest and CLI format changes.</p>
             </td>
         </tr>
     </tbody>
@@ -1077,7 +1073,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-value~2"></span>
+              <span class="anchor" id="variable-value~11"></span>
               character(len=*),
             </td>
 <td>intent(in)</td>
@@ -1102,7 +1098,7 @@ large graphs.</div>
 </h3></div>
     <div class="card-body">
           
-  <p>Apply a single <code>--watch-*</code> flag to the watcher options.</p><a href="../proc/apply_watch_flag.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+  <p>Consume one leading watcher flag and normalize its options.</p><a href="../proc/apply_watch_flag.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -1132,7 +1128,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-i~35"></span>
+              <span class="anchor" id="variable-i~39"></span>
               integer,
             </td>
 <td>intent(inout)</td>
@@ -1162,7 +1158,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-w~7"></span>
+              <span class="anchor" id="variable-w~11"></span>
               type(<a href='../type/watch_opts_t.html'>watch_opts_t</a>),
             </td>
 <td>intent(inout)</td>
@@ -1187,7 +1183,7 @@ large graphs.</div>
 </h3></div>
     <div class="card-body">
           
-  <p>Populate <code>settings</code> with argv overrides of fpm environment defaults.</p><a href="../proc/init_build_settings.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+  <p>Copy parsed build and toolchain values into a typed fpm settings object.</p><a href="../proc/init_build_settings.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -1202,7 +1198,7 @@ large graphs.</div>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-settings~7"></span>
+              <span class="anchor" id="variable-settings~11"></span>
               class(fpm_build_settings),
             </td>
 <td>intent(inout)</td>
@@ -1247,7 +1243,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-profile~2"></span>
+              <span class="anchor" id="variable-profile~3"></span>
               character(len=*),
             </td>
 <td>intent(in)</td>
@@ -1407,7 +1403,7 @@ large graphs.</div>
 </h3></div>
     <div class="card-body">
           
-  <p>Parse the complete CLI and produce watcher options + typed <code>fpm</code> settings.</p><a href="../proc/parse_cli.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+  <p>Apply watcher defaults and leading flags, then collect fpm model settings.</p><a href="../proc/parse_cli.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -1422,7 +1418,7 @@ large graphs.</div>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-w~6"></span>
+              <span class="anchor" id="variable-w~10"></span>
               type(<a href='../type/watch_opts_t.html'>watch_opts_t</a>),
             </td>
 <td>intent(out)</td>
@@ -1437,7 +1433,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-settings~6"></span>
+              <span class="anchor" id="variable-settings~10"></span>
               class(fpm_build_settings),
             </td>
 <td>intent(out),</td>
@@ -1507,7 +1503,7 @@ large graphs.</div>
 </h3></div>
     <div class="card-body">
           
-  <p>Transfer collected name patterns into a run/test settings object.</p><a href="../proc/set_names.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+  <p>Copy nonempty target patterns into an initially unallocated <code>s%name</code>.</p><a href="../proc/set_names.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -1522,7 +1518,7 @@ large graphs.</div>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-s~8"></span>
+              <span class="anchor" id="variable-s~5"></span>
               class(fpm_run_settings),
             </td>
 <td>intent(inout)</td>
@@ -1646,7 +1642,7 @@ large graphs.</div>
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2026-10-12T13:55:54.369963+0000             </p>
+ on 2026-10-12T14:42:46.282582+0000             </p>
           </div>
         </div>
         <br>

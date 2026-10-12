@@ -10,7 +10,7 @@ module watch_util
 
 contains
 
-   !> Check whether a string begins with a given prefix.
+   !> Compare a case-sensitive, right-trimmed prefix; an empty prefix matches every string.
    pure logical function starts_with(s, prefix) result(ok)
       character(len=*), intent(in) :: s, prefix
       integer :: n
@@ -24,8 +24,11 @@ contains
       end if
    end function starts_with
 
-   !> Format a real number with a leading zero and configurable decimal places.
-   !! Scientific notation is used if the fixed-width buffer would overflow.
+   !> Format a real using two decimal places by default and a leading zero.
+   !!
+   !! Optional `precision` is clamped to 0..16. Fixed output that overflows the
+   !! 64-character buffer falls back to scientific notation. Nonfinite values
+   !! are not rejected here; typed real logging handles them separately.
    pure function ftoa(x, precision) result(s)
       real, intent(in) :: x
       integer, intent(in), optional :: precision

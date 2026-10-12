@@ -177,31 +177,25 @@
     </div>
 
     <div class="col-md-9" id='text'>
-      <p>Feature plugin API.</p>
-<p>Defines the base <code>watch_feature_t</code> type, which acts as a lightweight
-callback interface. Feature implementations can extend this type and
-override any subset of callbacks.</p>
-<h3>Callback order (typical)</h3>
-<ul>
-<li><code>init(cfg)</code> once during watcher init</li>
-<li><code>on_start()</code> once after init</li>
-<li><code>on_watch_list_built(files, roots)</code> after watch list computation (and on rebuild)</li>
-<li><code>on_manifest_changed(old_key, new_key)</code> when the manifest requires rebuild</li>
-<li><code>on_change_detected(changed)</code> when file changes are detected</li>
-<li><code>on_before_run(cmd)</code> just before running the command</li>
-<li><code>on_after_run(exitstat, seconds)</code> after command completion</li>
-</ul>
-<p>Default implementations are no-ops. Dummy references are used where needed
-to avoid compiler warnings about unused dummy arguments.</p>
+      <p>Synchronous watcher-plugin callbacks with overridable no-op defaults.</p>
+<p>Initialization calls <code>init</code>, then <code>on_start</code>, then <code>on_watch_list_built</code>.
+Successful refreshes call <code>on_watch_list_built</code> again. Manifest refreshes
+additionally call <code>on_manifest_changed</code> only if the manifest/settings key
+differs. Ordinary source changes call <code>on_change_detected</code> before execution;
+every command calls <code>on_before_run</code>, then <code>on_after_run</code>, including failures.</p>
+<p>Watch-list and command callbacks receive mutable arguments. Callbacks must
+preserve file/root ordering and membership because per-file masks are managed
+separately by the engine. Plugins are enabled at initialization, not refreshed
+when manifest plugin settings change.</p>
 <br>          <div class="card mb-4">
       <h3 class="card-header card-title bg-light">Uses</h3>
       <div class="card-body">
         <ul class="list-group list-group-flush">
             <li class="list-group-item">
               <ul class="list-inline">
+                  <li class="list-inline-item">fpm_strings</li>
                   <li class="list-inline-item"><a href='http://fortranwiki.org/fortran/show/iso_fortran_env'>iso_fortran_env</a></li>
                   <li class="list-inline-item"><a href='watch_types.html'>watch_types</a></li>
-                  <li class="list-inline-item">fpm_strings</li>
               </ul>
             </li>
             <li class="list-group-item">
@@ -624,7 +618,7 @@ large graphs.</div>
 </h3></div>
     <div class="card-body">
           
-  <p>No-op callback invoked after executing the command.</p>
+  <p>No-op completion callback receiving the command status and elapsed seconds, including failures.</p>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -639,7 +633,7 @@ large graphs.</div>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-self~15"></span>
+              <span class="anchor" id="variable-self~7"></span>
               class(<a href='../type/watch_feature_t.html'>watch_feature_t</a>),
             </td>
 <td>intent(inout)</td>
@@ -654,7 +648,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-exitstat~3"></span>
+              <span class="anchor" id="variable-exitstat"></span>
               integer,
             </td>
 <td>intent(in)</td>
@@ -664,12 +658,12 @@ large graphs.</div>
             <td>::</td>
             <td><strong>exitstat</strong></td>
             <td>
-
+<p>Command exit status, including failures and interruptions.</p>
             </td>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-seconds~2"></span>
+              <span class="anchor" id="variable-seconds"></span>
               real,
             </td>
 <td>intent(in)</td>
@@ -679,7 +673,7 @@ large graphs.</div>
             <td>::</td>
             <td><strong>seconds</strong></td>
             <td>
-
+<p>Measured duration of the command in seconds.</p>
             </td>
         </tr>
     </tbody>
@@ -694,7 +688,7 @@ large graphs.</div>
 </h3></div>
     <div class="card-body">
           
-  <p>No-op callback invoked just before executing the command.</p>
+  <p>No-op command callback; overrides may replace the allocated command before execution.</p>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -709,7 +703,7 @@ large graphs.</div>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-self~14"></span>
+              <span class="anchor" id="variable-self~6"></span>
               class(<a href='../type/watch_feature_t.html'>watch_feature_t</a>),
             </td>
 <td>intent(inout)</td>
@@ -724,7 +718,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-cmd~4"></span>
+              <span class="anchor" id="variable-cmd"></span>
               character(len=:),
             </td>
 <td>intent(inout),</td>
@@ -734,7 +728,7 @@ large graphs.</div>
             <td>::</td>
             <td><strong>cmd</strong></td>
             <td>
-
+<p>Allocated command string that an override may modify before it is executed.</p>
             </td>
         </tr>
     </tbody>
@@ -764,7 +758,7 @@ large graphs.</div>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-self~13"></span>
+              <span class="anchor" id="variable-self~5"></span>
               class(<a href='../type/watch_feature_t.html'>watch_feature_t</a>),
             </td>
 <td>intent(inout)</td>
@@ -779,7 +773,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-changed~3"></span>
+              <span class="anchor" id="variable-changed"></span>
               type(string_t),
             </td>
 <td>intent(in),</td>
@@ -819,7 +813,7 @@ large graphs.</div>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-self~9"></span>
+              <span class="anchor" id="variable-self"></span>
               class(<a href='../type/watch_feature_t.html'>watch_feature_t</a>),
             </td>
 <td>intent(inout)</td>
@@ -834,7 +828,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-cfg~3"></span>
+              <span class="anchor" id="variable-cfg"></span>
               type(<a href='../type/watch_config_t.html'>watch_config_t</a>),
             </td>
 <td>intent(in)</td>
@@ -859,7 +853,7 @@ large graphs.</div>
 </h3></div>
     <div class="card-body">
           
-  <p>No-op callback for watch list rebuild completion.</p>
+  <p>No-op watch-list callback; overrides must preserve file/root alignment with engine masks.</p>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -874,7 +868,7 @@ large graphs.</div>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-self~11"></span>
+              <span class="anchor" id="variable-self~3"></span>
               class(<a href='../type/watch_feature_t.html'>watch_feature_t</a>),
             </td>
 <td>intent(inout)</td>
@@ -889,7 +883,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-files~11"></span>
+              <span class="anchor" id="variable-files"></span>
               type(string_t),
             </td>
 <td>intent(inout),</td>
@@ -899,12 +893,12 @@ large graphs.</div>
             <td>::</td>
             <td><strong>files</strong>(:)</td>
             <td>
-
+<p>Accepted path list; overrides must preserve alignment with the engine-owned per-file masks.</p>
             </td>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-roots~3"></span>
+              <span class="anchor" id="variable-roots"></span>
               type(<a href='../type/root_info_t.html'>root_info_t</a>),
             </td>
 <td>intent(inout),</td>
@@ -914,7 +908,7 @@ large graphs.</div>
             <td>::</td>
             <td><strong>roots</strong>(:)</td>
             <td>
-
+<p>Root names/bits; overrides must preserve membership represented in file masks.</p>
             </td>
         </tr>
     </tbody>
@@ -944,7 +938,7 @@ large graphs.</div>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-self~12"></span>
+              <span class="anchor" id="variable-self~4"></span>
               class(<a href='../type/watch_feature_t.html'>watch_feature_t</a>),
             </td>
 <td>intent(inout)</td>
@@ -959,7 +953,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-old_key~2"></span>
+              <span class="anchor" id="variable-old_key"></span>
               integer(kind=int64),
             </td>
 <td>intent(in)</td>
@@ -974,7 +968,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-new_key~2"></span>
+              <span class="anchor" id="variable-new_key"></span>
               integer(kind=int64),
             </td>
 <td>intent(in)</td>
@@ -1014,7 +1008,7 @@ large graphs.</div>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-self~10"></span>
+              <span class="anchor" id="variable-self~2"></span>
               class(<a href='../type/watch_feature_t.html'>watch_feature_t</a>),
             </td>
 <td>intent(inout)</td>
@@ -1057,7 +1051,7 @@ large graphs.</div>
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2026-10-12T13:55:54.369963+0000             </p>
+ on 2026-10-12T14:42:46.282582+0000             </p>
           </div>
         </div>
         <br>

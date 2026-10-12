@@ -1,10 +1,9 @@
-!> Platform-specific helpers.
+!> Portable synchronous process execution and stdout redirection.
 !!
-!! Provides interrupt-aware command execution, shell wrapping, and null-device
-!! paths for portable command execution.
-!!
-!! This module is intentionally minimal and uses `fpm_environment:get_os_type`
-!! for OS detection.
+!! C wrappers launch commands, forward user interrupts, and redirect raw fpm
+!! library output. An interrupt received while waiting for a command latches
+!! `stop_requested`; ordinary nonzero child exits do not. OS detection uses
+!! `fpm_environment:get_os_type`.
 module watch_platform
    use, intrinsic :: iso_c_binding, only: c_char, c_int, c_null_char
    use, intrinsic :: iso_fortran_env, only: output_unit
@@ -19,10 +18,17 @@ module watch_platform
    logical, save :: stop_requested = .false.
 
    interface
+      !> C process wrapper returning child status or 127 for a launch/wait error.
+      !!
+      !! `command` is NUL-terminated. On Windows, `silent` selects inherited streams:
+      !! 0 normal, 1 discard both outputs, 2 redirect stdout to stderr. POSIX ignores
+      !! this mode because the Fortran wrapper appends shell redirections.
+      !! `interrupted` reports handled user interrupts; `launch_error` holds the OS
+      !! error code separately from ordinary child failure.
       function fpm_watch_execute(command, silent, interrupted, launch_error) bind(C, name="fpm_watch_execute") result(status)
          import c_char, c_int
          implicit none
-         !! An assumed-size character array interoperates with a C string.
+         !> NUL-terminated command bytes interoperating with a C string.
          ! allow(C071)
          character(kind=c_char), intent(in) :: command(*)
          integer(c_int), value :: silent
@@ -30,11 +36,13 @@ module watch_platform
          integer(c_int), intent(out) :: launch_error
          integer(c_int) :: status
       end function fpm_watch_execute
+      !> Redirect descriptor 1 to stderr; return a saved stdout descriptor or a negative OS error.
       function fpm_watch_redirect_stdout() bind(C, name="fpm_watch_redirect_stdout") result(saved)
          import c_int
          implicit none
          integer(c_int) :: saved
       end function fpm_watch_redirect_stdout
+      !> Restore and close a saved stdout descriptor; return zero on success or an OS error.
       function fpm_watch_restore_stdout(saved) bind(C, name="fpm_watch_restore_stdout") result(error)
          import c_int
          implicit none
@@ -45,25 +53,29 @@ module watch_platform
 
 contains
 
-   !> Execute a command while preserving user interruption requests.
+   !> Wait for a command and return its status while latching handled user interrupts.
    !!
-   !! The C wrapper waits for the child without ignoring console interrupts, as
-   !! some implementations of synchronous `execute_command_line` do. Ordinary
-   !! command failures are returned without requesting watcher termination.
-   !! POSIX children share the foreground process group for interactive input;
-   !! temporary signal handlers forward requests to the immediate child. On
-   !! Windows, console requests terminate the child's job and its descendants.
-   !! Uninterrupted command exits preserve the lifetime of background children.
-   !! Original signal handlers are restored when the command finishes.
-   !! Windows executables receive quoted argv directly; command scripts use a
-   !! shell fallback. Silent output uses inherited null handles on Windows and
-   !! shell redirection on POSIX.
+   !! `silent` suppresses both output streams and takes precedence over `stderr`,
+   !! which redirects command stdout to stderr. Both options default to false.
+   !! Launch/wait errors log `command.launch_failed` and return 127; ordinary
+   !! failures preserve the child status. Optional `interrupted` reports this
+   !! command's handled interruption, while `termination_requested` remains latched.
+   !!
+   !! POSIX uses `/bin/sh -c` and temporarily forwards SIGINT/SIGQUIT/SIGTERM to
+   !! the immediate child in the foreground process group. Windows launches
+   !! executables directly, with a cmd fallback for scripts, and terminates the
+   !! child's job on console interruption. Normal exits retain background children.
    subroutine execute_command(cmd, exitstat, interrupted, silent, stderr)
       character(len=*), intent(in) :: cmd
+      !! Serialized command; caller is responsible for quoting individual argv tokens.
       integer, intent(out) :: exitstat
+      !! Child/interrupt status, or 127 with a launch-failure event for OS execution errors.
       logical, intent(out), optional :: interrupted
+      !! True if the wrapper handled a user interrupt during this command.
       logical, intent(in), optional :: silent
+      !! Suppress both command output streams (default false); takes precedence over stderr.
       logical, intent(in), optional :: stderr
+      !! Redirect command stdout to stderr (default false).
       integer(c_int) :: status, was_interrupted, launch_error, silent_mode
       character(len=:), allocatable :: effective_cmd
 
@@ -91,7 +103,11 @@ contains
       end if
    end subroutine execute_command
 
-   !> Temporarily send fpm library output to stderr during model operations.
+   !> Optionally redirect process stdout to stderr, flushing Fortran output first.
+   !!
+   !! Return a saved C descriptor in `saved`, or -1 when redirection is disabled.
+   !! Pair successful redirection with `end_raw_output`. Redirection failure logs
+   !! an error and exits with status 127; this is process-wide, not thread-local.
    subroutine begin_raw_output(redirect, saved)
       logical, intent(in) :: redirect
       integer(c_int), intent(out) :: saved
@@ -106,7 +122,10 @@ contains
       end if
    end subroutine begin_raw_output
 
-   !> Flush fpm library output and restore the original stdout destination.
+   !> Flush raw library output, restore stdout, and close the saved C descriptor.
+   !!
+   !! Negative `saved` values are no-ops. Restoration failure logs an error and
+   !! exits with status 127; a saved descriptor must only be restored once.
    subroutine end_raw_output(saved)
       integer(c_int), intent(in) :: saved
       integer(c_int) :: error
@@ -120,7 +139,7 @@ contains
       end if
    end subroutine end_raw_output
 
-   !> Return whether an executed command received a termination request.
+   !> Return the process-wide interruption flag latched by prior command executions.
    logical function termination_requested() result(requested)
       requested = stop_requested
    end function termination_requested

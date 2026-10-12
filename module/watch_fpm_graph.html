@@ -183,38 +183,34 @@
     </div>
 
     <div class="col-md-9" id='text'>
-      <p>Compute watch lists from the <code>fpm</code> dependency graph.</p>
-<p>Builds the <code>fpm</code> model and expands targets into a set of source files to
-watch. Optional dependency watching can include dependency project trees
-(including those located under the build directory).</p>
-<p>This module is responsible for connecting <code>fpm-watch</code> to the <code>fpm</code> internal
-model/target structures. It selects the relevant closure of targets for the
-configured command (build/test/run), and produces:
-- <code>files</code>: unique normalized file paths
-- <code>file_mask</code>: bitmasks mapping each file to root targets
-- <code>roots</code>: the root targets corresponding to runnable/testable executables</p>
+      <p>Build watch lists from fpm's manifest, model, and target graph.</p>
+<p>Build mode visits all returned targets. Run mode selects application or
+example closures by name; test mode visits all test executable closures.
+Sources, resolved includes, and manifests form a unique normalized path list.
+Optional dependency watching includes dependency paths under the build tree.
+Up to 64 run/test roots receive bitmasks for later affected-target selection.</p>
 <br>          <div class="card mb-4">
       <h3 class="card-header card-title bg-light">Uses</h3>
       <div class="card-body">
         <ul class="list-group list-group-flush">
             <li class="list-group-item">
               <ul class="list-inline">
-                  <li class="list-inline-item"><a href='watch_log.html'>watch_log</a></li>
-                  <li class="list-inline-item"><a href='http://fortranwiki.org/fortran/show/iso_c_binding'>iso_c_binding</a></li>
                   <li class="list-inline-item">fpm</li>
+                  <li class="list-inline-item">fpm_model</li>
+                  <li class="list-inline-item"><a href='watch_util.html'>watch_util</a></li>
+                  <li class="list-inline-item">fpm_manifest</li>
+                  <li class="list-inline-item">fpm_dependency</li>
                   <li class="list-inline-item"><a href='http://fortranwiki.org/fortran/show/iso_fortran_env'>iso_fortran_env</a></li>
-                  <li class="list-inline-item"><a href='watch_filter.html'>watch_filter</a></li>
-                  <li class="list-inline-item">fpm_targets</li>
+                  <li class="list-inline-item"><a href='watch_types.html'>watch_types</a></li>
+                  <li class="list-inline-item"><a href='watch_log.html'>watch_log</a></li>
                   <li class="list-inline-item">fpm_error</li>
                   <li class="list-inline-item">fpm_strings</li>
-                  <li class="list-inline-item"><a href='watch_types.html'>watch_types</a></li>
-                  <li class="list-inline-item"><a href='watch_util.html'>watch_util</a></li>
+                  <li class="list-inline-item"><a href='watch_filter.html'>watch_filter</a></li>
                   <li class="list-inline-item">fpm_command_line</li>
-                  <li class="list-inline-item">fpm_dependency</li>
-                  <li class="list-inline-item">fpm_manifest</li>
-                  <li class="list-inline-item"><a href='watch_platform.html'>watch_platform</a></li>
-                  <li class="list-inline-item">fpm_model</li>
                   <li class="list-inline-item">fpm_filesystem</li>
+                  <li class="list-inline-item">fpm_targets</li>
+                  <li class="list-inline-item"><a href='http://fortranwiki.org/fortran/show/iso_c_binding'>iso_c_binding</a></li>
+                  <li class="list-inline-item"><a href='watch_platform.html'>watch_platform</a></li>
               </ul>
             </li>
             <li class="list-group-item">
@@ -770,7 +766,7 @@ large graphs.</div>
 </h3></div>
     <div class="card-body">
           
-  
+  <p>Return the first 1-based index associated with target pointer <code>p</code>, or zero if absent.</p>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -785,7 +781,7 @@ large graphs.</div>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-p~4"></span>
+              <span class="anchor" id="variable-p~3"></span>
               type(build_target_t),
             </td>
 <td>intent(in),</td>
@@ -830,7 +826,7 @@ large graphs.</div>
 </h3></div>
     <div class="card-body">
           
-  
+  <p>Test a normalized path against nonempty normalized dependency-directory prefixes.</p>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -845,7 +841,7 @@ large graphs.</div>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-p~3"></span>
+              <span class="anchor" id="variable-p~2"></span>
               character(len=*),
             </td>
 <td>intent(in)</td>
@@ -905,7 +901,7 @@ large graphs.</div>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-settings~2"></span>
+              <span class="anchor" id="variable-settings~6"></span>
               class(fpm_build_settings),
             </td>
 <td>intent(in)</td>
@@ -935,7 +931,7 @@ large graphs.</div>
 </h3></div>
     <div class="card-body">
           
-  <p>Resolve quoted includes using the source directory and fpm's include directories.</p>
+  <p>Resolve an include path, returning a normalized canonical path or an empty string.</p><a href="../proc/resolve_include_file.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -1015,7 +1011,7 @@ large graphs.</div>
 </h3></div>
     <div class="card-body">
           
-  <p>Compute watched files and masks from current <code>fpm</code> settings.</p><a href="../proc/compute_watch_files_from_settings.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+  <p>Build fpm's model and return the filtered source/include/manifest closure.</p><a href="../proc/compute_watch_files_from_settings.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -1030,7 +1026,7 @@ large graphs.</div>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-settings"></span>
+              <span class="anchor" id="variable-settings~5"></span>
               class(fpm_build_settings),
             </td>
 <td>intent(inout)</td>
@@ -1040,12 +1036,12 @@ large graphs.</div>
             <td>::</td>
             <td><strong>settings</strong></td>
             <td>
-
+<p>Typed build/run/test settings; fpm may update these while constructing its model.</p>
             </td>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-w~4"></span>
+              <span class="anchor" id="variable-w~5"></span>
               type(<a href='../type/watch_opts_t.html'>watch_opts_t</a>),
             </td>
 <td>intent(in)</td>
@@ -1055,12 +1051,12 @@ large graphs.</div>
             <td>::</td>
             <td><strong>w</strong></td>
             <td>
-
+<p>Watcher dependency/filter/logging options; unallocated filters impose no restriction.</p>
             </td>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-files~2"></span>
+              <span class="anchor" id="variable-files~7"></span>
               type(string_t),
             </td>
 <td>intent(out),</td>
@@ -1070,7 +1066,7 @@ large graphs.</div>
             <td>::</td>
             <td><strong>files</strong>(:)</td>
             <td>
-
+<p>Unique normalized watched paths, allocated on success (possibly empty).</p>
             </td>
         </tr>
         <tr>
@@ -1085,7 +1081,7 @@ large graphs.</div>
             <td>::</td>
             <td><strong>file_mask</strong>(:)</td>
             <td>
-
+<p>Root-membership bits aligned with files; zero when root mapping is disabled.</p>
             </td>
         </tr>
         <tr>
@@ -1100,7 +1096,7 @@ large graphs.</div>
             <td>::</td>
             <td><strong>roots</strong>(:)</td>
             <td>
-
+<p>Executable names and distinct mask bits; empty for build mode or unsupported root counts.</p>
             </td>
         </tr>
         <tr>
@@ -1115,12 +1111,12 @@ large graphs.</div>
             <td>::</td>
             <td><strong>manifest_key</strong></td>
             <td>
-
+<p>Reserved output, always zero; computed from accepted files by the engine.</p>
             </td>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-build_secs"></span>
+              <span class="anchor" id="variable-build_secs~2"></span>
               real,
             </td>
 <td>intent(out)</td>
@@ -1130,12 +1126,12 @@ large graphs.</div>
             <td>::</td>
             <td><strong>build_secs</strong></td>
             <td>
-
+<p>Sum of model, target-construction, and watch-list collection times in seconds.</p>
             </td>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-secs_model"></span>
+              <span class="anchor" id="variable-secs_model~2"></span>
               real,
             </td>
 <td>intent(out)</td>
@@ -1145,12 +1141,12 @@ large graphs.</div>
             <td>::</td>
             <td><strong>secs_model</strong></td>
             <td>
-
+<p>Separate stage durations in seconds, respectively model, targets, and file collection.</p>
             </td>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-secs_targets"></span>
+              <span class="anchor" id="variable-secs_targets~2"></span>
               real,
             </td>
 <td>intent(out)</td>
@@ -1160,12 +1156,12 @@ large graphs.</div>
             <td>::</td>
             <td><strong>secs_targets</strong></td>
             <td>
-
+<p>Separate stage durations in seconds, respectively model, targets, and file collection.</p>
             </td>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-secs_watch"></span>
+              <span class="anchor" id="variable-secs_watch~2"></span>
               real,
             </td>
 <td>intent(out)</td>
@@ -1175,7 +1171,7 @@ large graphs.</div>
             <td>::</td>
             <td><strong>secs_watch</strong></td>
             <td>
-
+<p>Separate stage durations in seconds, respectively model, targets, and file collection.</p>
             </td>
         </tr>
         <tr>
@@ -1190,7 +1186,7 @@ large graphs.</div>
             <td>::</td>
             <td><strong>error</strong></td>
             <td>
-
+<p>Allocated for manifest/model/target failure; omitted error output makes those failures fatal.</p>
             </td>
         </tr>
     </tbody>
@@ -1205,7 +1201,7 @@ large graphs.</div>
 </h3></div>
     <div class="card-body">
           
-  
+  <p>Recursively mark reachable targets in <code>visited</code>, skipping already visited nodes.</p>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -1275,7 +1271,7 @@ large graphs.</div>
 </h3></div>
     <div class="card-body">
           
-  
+  <p>Recursively OR one root bit into reachable target masks, skipping already marked nodes.</p>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -1360,7 +1356,7 @@ large graphs.</div>
 </h3></div>
     <div class="card-body">
           
-  
+  <p>Collect visited source targets and resolved includes with aligned root masks.</p><a href="../proc/gather_files_with_mask.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -1420,7 +1416,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-files~3"></span>
+              <span class="anchor" id="variable-files~8"></span>
               type(string_t),
             </td>
 <td>intent(out),</td>
@@ -1450,7 +1446,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-build_dir"></span>
+              <span class="anchor" id="variable-build_dir~2"></span>
               character(len=*),
             </td>
 <td>intent(in)</td>
@@ -1520,7 +1516,7 @@ large graphs.</div>
 </h3></div>
     <div class="card-body">
           
-  <p>Return a graph error to the caller, or report a fatal initial configuration error.</p>
+  <p>Transfer <code>err</code> to an optional error output, or log its stage and exit with status 1.</p>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -1535,7 +1531,7 @@ large graphs.</div>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-err~4"></span>
+              <span class="anchor" id="variable-err~2"></span>
               type(error_t),
             </td>
 <td>intent(inout),</td>
@@ -1590,7 +1586,7 @@ large graphs.</div>
 </h3></div>
     <div class="card-body">
           
-  
+  <p>Append an existing eligible path to aligned arrays, merging mask bits for duplicates.</p>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -1605,7 +1601,7 @@ large graphs.</div>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-files~5"></span>
+              <span class="anchor" id="variable-files~10"></span>
               type(string_t),
             </td>
 <td>intent(inout),</td>
@@ -1635,7 +1631,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-path~2"></span>
+              <span class="anchor" id="variable-path~3"></span>
               character(len=*),
             </td>
 <td>intent(in)</td>
@@ -1650,7 +1646,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-build_dir~2"></span>
+              <span class="anchor" id="variable-build_dir~3"></span>
               character(len=*),
             </td>
 <td>intent(in)</td>
@@ -1745,7 +1741,7 @@ large graphs.</div>
 </h3></div>
     <div class="card-body">
           
-  
+  <p>Mark executable targets in <code>scope</code> matching names without clearing existing marks.</p><a href="../proc/select_names_or_all.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -1830,7 +1826,7 @@ large graphs.</div>
 </h3></div>
     <div class="card-body">
           
-  
+  <p>Grow both file/mask buffers to at least 16 or 1.5 times the current capacity.</p>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -1845,7 +1841,7 @@ large graphs.</div>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-buf~6"></span>
+              <span class="anchor" id="variable-buf~7"></span>
               type(string_t),
             </td>
 <td>intent(inout),</td>
@@ -1875,7 +1871,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-cap~4"></span>
+              <span class="anchor" id="variable-cap~5"></span>
               integer,
             </td>
 <td>intent(inout)</td>
@@ -1900,7 +1896,7 @@ large graphs.</div>
 </h3></div>
     <div class="card-body">
           
-  
+  <p>Add a normalized existing path to a growable buffer, merging duplicate masks.</p><a href="../proc/vec_push_unique.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -1915,7 +1911,7 @@ large graphs.</div>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-buf~5"></span>
+              <span class="anchor" id="variable-buf~6"></span>
               type(string_t),
             </td>
 <td>intent(inout),</td>
@@ -1945,7 +1941,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-n~7"></span>
+              <span class="anchor" id="variable-n~10"></span>
               integer,
             </td>
 <td>intent(inout)</td>
@@ -1960,7 +1956,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-cap~3"></span>
+              <span class="anchor" id="variable-cap~4"></span>
               integer,
             </td>
 <td>intent(inout)</td>
@@ -1975,7 +1971,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-path~3"></span>
+              <span class="anchor" id="variable-path~4"></span>
               character(len=*),
             </td>
 <td>intent(in)</td>
@@ -1990,7 +1986,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-build_dir~3"></span>
+              <span class="anchor" id="variable-build_dir~4"></span>
               character(len=*),
             </td>
 <td>intent(in)</td>
@@ -2063,7 +2059,7 @@ large graphs.</div>
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2026-10-12T13:55:54.369963+0000             </p>
+ on 2026-10-12T14:42:46.282582+0000             </p>
           </div>
         </div>
         <br>

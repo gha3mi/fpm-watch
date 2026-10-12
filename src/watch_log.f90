@@ -1,7 +1,9 @@
-!> Shared event logging for terminal text, JSON Lines, and logfmt.
+!> Emit terminal text, JSON Lines, and logfmt using process-wide settings.
 !!
-!! Structured records always use stdout, including errors. Text errors use
-!! stderr. Every record is flushed and occupies exactly one physical line.
+!! Structured records, including errors, use stdout; text errors use stderr.
+!! Each emitted record is flushed immediately and occupies one physical line.
+!! Field constructors serialize typed values as JSON; logfmt quotes array values.
+!! Structured strings escape controls and replace invalid UTF-8 bytes with U+FFFD.
 module watch_log
    use, intrinsic :: iso_fortran_env, only: int64, output_unit, error_unit
    use watch_types, only: watch_opts_t
@@ -15,6 +17,7 @@ module watch_log
 
    !> A typed event attribute, stored as its JSON representation.
    type log_field_t
+      !> Attribute name (`key`) and its complete serialized JSON representation (`value`).
       character(len=:), allocatable :: key, value
    end type log_field_t
 
@@ -22,13 +25,19 @@ module watch_log
       module procedure log_default_int, log_int64
    end interface log_int
 
+   !> Selected process format; unallocated state is treated as text.
    character(len=:), allocatable, save :: active_format
+   !> Minimum-detail filter: -1 quiet, 0 normal, 1..2 additional detail.
    integer, save :: active_verbosity = 0
+   !> Allow debug-level records when verbosity also permits them.
    logical, save :: active_debug = .false.
 
 contains
 
-   !> Set process logging options after configuration has been accepted.
+   !> Copy format, verbosity, and debug options into process-wide logger state.
+   !!
+   !! An unallocated format selects text. Callers must validate format names;
+   !! this routine neither normalizes nor validates the configuration.
    subroutine configure_logging(w)
       type(watch_opts_t), intent(in) :: w
       active_format = "text"
@@ -37,7 +46,7 @@ contains
       active_debug = w%debug
    end subroutine configure_logging
 
-   !> Return whether a format name is supported.
+   !> Accept exactly the case-sensitive format names `text`, `json`, and `logfmt`.
    pure logical function valid_log_format(name) result(valid)
       character(len=*), intent(in) :: name
       valid = name == "text" .or. name == "json" .or. name == "logfmt"
@@ -49,15 +58,21 @@ contains
       if (allocated(active_format)) structured = active_format /= "text"
    end function structured_logging
 
-   !> Emit an event with stable identity and optional typed attributes.
-   !! Errors and forced protocol records bypass verbosity and debug filtering.
-   !! Other debug events require debug mode and are suppressed by quiet mode.
-   !! Verbosity controls additional detail.
+   !> Format, write, and flush one timestamped event with optional typed attributes.
+   !!
+   !! `verbosity` is the minimum detail level, defaulting to zero. Quiet mode
+   !! suppresses non-error records; debug records additionally require debug mode.
+   !! `force=true` and errors bypass both filters. Structured output always uses
+   !! stdout; only text errors use stderr. `fields` should use the typed constructors.
    subroutine log_event(level, event, message, fields, verbosity, force)
       character(len=*), intent(in) :: level, event, message
+      !! Severity, stable event identifier, and human-readable message, respectively.
       type(log_field_t), intent(in), optional :: fields(:)
+      !! Typed attributes constructed with log_string/log_strings/log_int/log_real/log_bool.
       integer, intent(in), optional :: verbosity
+      !! Minimum active verbosity for this non-error event; defaults to zero.
       logical, intent(in), optional :: force
+      !! Bypass verbosity/debug filters for required protocol events; defaults to false.
       integer :: unit, detail
       logical :: required
       character(len=:), allocatable :: line, timestamp
@@ -79,7 +94,12 @@ contains
       flush(unit)
    end subroutine log_event
 
-   !> Render a record without performing I/O or reading the clock.
+   !> Render text, JSON, or logfmt without logging I/O or reading the clock.
+   !!
+   !! `timestamp` must provide RFC 3339 text (at least 19 characters for text mode).
+   !! Structured fields require allocated keys and nonempty serialized JSON values.
+   !! Text uses HH:MM:SS, level, and message; it omits event/attribute fields.
+   !! Unrecognized formats use text. This routine does not apply verbosity filters.
    pure function format_log_record(format, timestamp, level, event, message, fields) result(line)
       character(len=*), intent(in) :: format, timestamp, level, event, message
       type(log_field_t), intent(in), optional :: fields(:)
@@ -122,14 +142,17 @@ contains
       end select
    end function format_log_record
 
-   !> Quote a UTF-8 string, escaping JSON control characters and delimiters.
+   !> Quote a byte string as JSON, escaping controls and replacing invalid UTF-8 bytes with U+FFFD.
    pure function json_quote(value) result(quoted)
       character(len=*), intent(in) :: value
       character(len=:), allocatable :: quoted
       quoted = '"' // escape_text(value, .true.) // '"'
    end function json_quote
 
-   !> Escape controls for a physical line, and JSON delimiters when requested.
+   !> Escape control bytes so a message stays on one physical line.
+   !!
+   !! When `delimiters` is true, also escape quotes/backslashes and replace invalid
+   !! UTF-8 bytes with JSON U+FFFD escapes. Text mode preserves non-ASCII bytes.
    pure function escape_text(value, delimiters) result(escaped)
       character(len=*), intent(in) :: value
       logical, intent(in) :: delimiters
@@ -176,7 +199,10 @@ contains
       end do
    end function escape_text
 
-   !> Return a valid UTF-8 sequence width, or zero for an invalid byte sequence.
+   !> Validate a multibyte UTF-8 sequence at a valid 1-based byte position.
+   !!
+   !! Return 2..4 for a valid sequence, or zero for invalid/truncated input,
+   !! ASCII bytes, surrogate encodings, or out-of-range Unicode values.
    pure integer function utf8_width(value, position) result(width)
       character(len=*), intent(in) :: value
       integer, intent(in) :: position
@@ -248,7 +274,7 @@ contains
       field%value = trim(buffer)
    end function log_int64
 
-   !> Construct a finite real attribute with three decimal places.
+   !> Serialize a real with three decimal places (scientific fallback); nonfinite values become JSON null.
    pure function log_real(key, value) result(field)
       use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
       character(len=*), intent(in) :: key

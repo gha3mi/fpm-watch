@@ -455,12 +455,12 @@ large graphs.</div>
     </div>
 
 
-    <p>Construct the effective command to run based on changes and target masks.</p>
-<p>For <code>fpm build</code>, the original command is returned unchanged.</p>
-<p>For <code>fpm run</code> and <code>fpm test</code>, if the user did not already pin names via
-<code>--name</code>/positional patterns, this routine can inject a computed set of
-target names corresponding to the changed files. This reduces redundant
-builds and speeds up iterative workflows.</p>
+    <p>Inject affected root names into an unpinned run/test command.</p>
+<p><code>changed_idx(:changed_count)</code> indexes <code>file_mask</code>, whose bits correspond
+to <code>roots</code>. Combine those bits and quote the matching root names before
+the program-argument <code>--</code> delimiter. Return <code>full_cmdline</code> unchanged for
+build mode, explicit target patterns, unavailable masks/roots, no matched
+names, or an empty command prefix.</p>
 
 
     <h3>Arguments</h3>
@@ -476,7 +476,7 @@ builds and speeds up iterative workflows.</p>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-settings~11"></span>
+              <span class="anchor" id="variable-settings~8"></span>
               class(fpm_build_settings),
             </td>
 <td>intent(in)</td>
@@ -486,7 +486,7 @@ builds and speeds up iterative workflows.</p>
             <td>::</td>
             <td><strong>settings</strong></td>
             <td>
-                
+                <p>Run/test type and explicit target patterns used to decide whether injection is allowed.</p>
             </td>
         </tr>
         <tr>
@@ -501,7 +501,7 @@ builds and speeds up iterative workflows.</p>
             <td>::</td>
             <td><strong>full_cmdline</strong></td>
             <td>
-                
+                <p>Complete serialized command, returned when no target injection is possible.</p>
             </td>
         </tr>
         <tr>
@@ -516,7 +516,7 @@ builds and speeds up iterative workflows.</p>
             <td>::</td>
             <td><strong>cmd_prefix</strong></td>
             <td>
-                
+                <p>Serialized executable/subcommand prefix for the replacement command.</p>
             </td>
         </tr>
         <tr>
@@ -531,12 +531,12 @@ builds and speeds up iterative workflows.</p>
             <td>::</td>
             <td><strong>cmd_rest</strong></td>
             <td>
-                
+                <p>Serialized forwarded fpm/program arguments after the subcommand.</p>
             </td>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-roots~4"></span>
+              <span class="anchor" id="variable-roots~3"></span>
               type(<a href='../type/root_info_t.html'>root_info_t</a>),
             </td>
 <td>intent(in),</td>
@@ -546,7 +546,7 @@ builds and speeds up iterative workflows.</p>
             <td>::</td>
             <td><strong>roots</strong>(:)</td>
             <td>
-                
+                <p>Root executable names and their single-bit membership masks.</p>
             </td>
         </tr>
         <tr>
@@ -561,7 +561,7 @@ builds and speeds up iterative workflows.</p>
             <td>::</td>
             <td><strong>file_mask</strong>(:)</td>
             <td>
-                
+                <p>Root bits per watched file, indexed by changed_idx.</p>
             </td>
         </tr>
         <tr>
@@ -576,7 +576,7 @@ builds and speeds up iterative workflows.</p>
             <td>::</td>
             <td><strong>changed_idx</strong>(:)</td>
             <td>
-                
+                <p>1-based file indices; only the first changed_count entries are read.</p>
             </td>
         </tr>
         <tr>
@@ -591,7 +591,7 @@ builds and speeds up iterative workflows.</p>
             <td>::</td>
             <td><strong>changed_count</strong></td>
             <td>
-                
+                <p>Number of changed indices in the active buffer prefix.</p>
             </td>
         </tr>
     </tbody>
@@ -599,7 +599,7 @@ builds and speeds up iterative workflows.</p>
 
       <h3>Return Value
         <small>
-          <span class="anchor" id="variable-cmd~6"></span>
+          <span class="anchor" id="variable-cmd~4"></span>
           character(len=:), allocatable
         </small>
       </h3>
@@ -910,13 +910,21 @@ large graphs.</div>
     <div class="hl codehilite"><pre><span></span><span class="w">   </span><span class="k">function </span><span class="n">build_run_command</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span><span class="w"> </span><span class="n">full_cmdline</span><span class="p">,</span><span class="w"> </span><span class="n">cmd_prefix</span><span class="p">,</span><span class="w"> </span><span class="n">cmd_rest</span><span class="p">,</span><span class="w"> </span><span class="n">roots</span><span class="p">,</span><span class="w"> </span><span class="n">file_mask</span><span class="p">,</span><span class="w"> </span><span class="n">changed_idx</span><span class="p">,</span><span class="w"> </span><span class="n">changed_count</span><span class="p">)</span><span class="w"> </span><span class="k">result</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
 <span class="w">      </span><span class="k">use </span><span class="n">watch_cmdsplice</span><span class="p">,</span><span class="w"> </span><span class="k">only</span><span class="p">:</span><span class="w"> </span><span class="n">inject_names_into_cmd</span>
 <span class="w">      </span><span class="k">class</span><span class="p">(</span><span class="n">fpm_build_settings</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">settings</span>
+<span class="w">      </span><span class="c">!! Run/test type and explicit target patterns used to decide whether injection is allowed.</span>
 <span class="w">      </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">full_cmdline</span>
+<span class="w">      </span><span class="c">!! Complete serialized command, returned when no target injection is possible.</span>
 <span class="w">      </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">cmd_prefix</span>
+<span class="w">      </span><span class="c">!! Serialized executable/subcommand prefix for the replacement command.</span>
 <span class="w">      </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">cmd_rest</span>
+<span class="w">      </span><span class="c">!! Serialized forwarded fpm/program arguments after the subcommand.</span>
 <span class="w">      </span><span class="k">type</span><span class="p">(</span><span class="n">root_info_t</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">roots</span><span class="p">(:)</span>
+<span class="w">      </span><span class="c">!! Root executable names and their single-bit membership masks.</span>
 <span class="w">      </span><span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">file_mask</span><span class="p">(:)</span>
+<span class="w">      </span><span class="c">!! Root bits per watched file, indexed by changed_idx.</span>
 <span class="w">      </span><span class="kt">integer</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">changed_idx</span><span class="p">(:)</span>
+<span class="w">      </span><span class="c">!! 1-based file indices; only the first changed_count entries are read.</span>
 <span class="w">      </span><span class="kt">integer</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">changed_count</span>
+<span class="w">      </span><span class="c">!! Number of changed indices in the active buffer prefix.</span>
 <span class="w">      </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">cmd</span>
 
 <span class="w">      </span><span class="kt">logical</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">is_test</span><span class="p">,</span><span class="w"> </span><span class="n">is_run</span>
@@ -992,7 +1000,8 @@ large graphs.</div>
 
 <span class="w">   </span><span class="k">contains</span>
 
-<span class="k">      function </span><span class="n">join_names_from_mask</span><span class="p">(</span><span class="n">roots</span><span class="p">,</span><span class="w"> </span><span class="n">mask</span><span class="p">)</span><span class="w"> </span><span class="k">result</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+<span class="w">      </span><span class="c">!&gt; Join quoted, nonempty root names whose bits intersect `mask`, in root order.</span>
+<span class="w">      </span><span class="k">function </span><span class="n">join_names_from_mask</span><span class="p">(</span><span class="n">roots</span><span class="p">,</span><span class="w"> </span><span class="n">mask</span><span class="p">)</span><span class="w"> </span><span class="k">result</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
 <span class="w">         </span><span class="k">type</span><span class="p">(</span><span class="n">root_info_t</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">roots</span><span class="p">(:)</span>
 <span class="w">         </span><span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">mask</span>
 <span class="w">         </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">s</span>
@@ -1034,7 +1043,7 @@ large graphs.</div>
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2026-10-12T13:55:54.369963+0000             </p>
+ on 2026-10-12T14:42:46.282582+0000             </p>
           </div>
         </div>
         <br>

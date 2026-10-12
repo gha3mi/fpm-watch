@@ -192,23 +192,21 @@
     </div>
 
     <div class="col-md-9" id='text'>
-      <p>Lightweight file fingerprinting for change detection.</p>
-<p>Uses a size-mixed FNV-1a hash of up to three fixed-size blocks from the file
-(head, mid, tail) to efficiently detect modifications.</p>
-<p>This fingerprint is intended as a fast heuristic:
-- It is not a cryptographic hash.
-- It trades perfect detection for performance on large trees.
-- Combining size + multiple sample blocks provides good practical coverage.</p>
+      <p>Sample file contents and compare watch-list snapshots.</p>
+<p>Fingerprints mix file size with FNV-style samples of at most three 4096-byte
+blocks: head, middle, and tail. Same-size edits outside the sampled regions
+can be missed. Fingerprints are change-detection heuristics, not content IDs.
+File reads share a reusable module buffer and are intended for serial use.</p>
 <br>          <div class="card mb-4">
       <h3 class="card-header card-title bg-light">Uses</h3>
       <div class="card-body">
         <ul class="list-group list-group-flush">
             <li class="list-group-item">
               <ul class="list-inline">
+                  <li class="list-inline-item">fpm_strings</li>
                   <li class="list-inline-item"><a href='http://fortranwiki.org/fortran/show/iso_fortran_env'>iso_fortran_env</a></li>
                   <li class="list-inline-item">fpm_filesystem</li>
                   <li class="list-inline-item">fpm_command_line</li>
-                  <li class="list-inline-item">fpm_strings</li>
               </ul>
             </li>
             <li class="list-group-item">
@@ -555,7 +553,7 @@ parameter
                 <td></td>
                 <td></td>
             <td>
-                
+                <p>Shared 4096-byte scratch buffer; file fingerprinting is not reentrant.</p>
             </td>
         </tr>
     </tbody>
@@ -575,7 +573,7 @@ parameter
 </h3></div>
     <div class="card-body">
           
-  <p>Compute a fingerprint for a file path.</p><a href="../proc/file_fingerprint.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+  <p>Mix file size with up to three sampled blocks of at most 4096 bytes each.</p><a href="../proc/file_fingerprint.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -590,7 +588,7 @@ parameter
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-path~9"></span>
+              <span class="anchor" id="variable-path"></span>
               character(len=*),
             </td>
 <td>intent(in)</td>
@@ -600,7 +598,7 @@ parameter
             <td>::</td>
             <td><strong>path</strong></td>
             <td>
-
+<p>File path to sample; trailing blanks are removed before inquiry/open.</p>
             </td>
         </tr>
     </tbody>
@@ -620,7 +618,7 @@ parameter
 </h3></div>
     <div class="card-body">
           
-  <p>Compute a key representing the current manifest-related configuration.</p><a href="../proc/manifest_key_from_files.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+  <p>Mix selected fpm settings and watched manifest paths/fingerprints into a key.</p><a href="../proc/manifest_key_from_files.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -635,7 +633,7 @@ parameter
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-settings~4"></span>
+              <span class="anchor" id="variable-settings"></span>
               class(fpm_build_settings),
             </td>
 <td>intent(in)</td>
@@ -650,7 +648,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-files~10"></span>
+              <span class="anchor" id="variable-files~4"></span>
               type(string_t),
             </td>
 <td>intent(in),</td>
@@ -680,7 +678,7 @@ parameter
 </h3></div>
     <div class="card-body">
           
-  <p>Compare watch snapshots without depending on file-list ordering.</p><a href="../proc/watch_state_changed.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+  <p>Compare unique path/fingerprint snapshots independently of file ordering.</p><a href="../proc/watch_state_changed.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -775,7 +773,7 @@ parameter
 </h3></div>
     <div class="card-body">
           
-  <p>Accept the new fingerprints for the subset of changed indices.</p><a href="../proc/accept_changes.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+  <p>Copy sampled fingerprints into the baseline for valid changed indices.</p><a href="../proc/accept_changes.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -875,7 +873,7 @@ parameter
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-files~8"></span>
+              <span class="anchor" id="variable-files~2"></span>
               type(string_t),
             </td>
 <td>intent(in),</td>
@@ -945,7 +943,7 @@ parameter
 </h3></div>
     <div class="card-body">
           
-  <p>Scan files and return indices of changed entries.</p><a href="../proc/scan_changes.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+  <p>Resample files and return 1-based indices differing from the accepted baseline.</p><a href="../proc/scan_changes.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -960,7 +958,7 @@ parameter
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-files~9"></span>
+              <span class="anchor" id="variable-files~3"></span>
               type(string_t),
             </td>
 <td>intent(in),</td>
@@ -1045,7 +1043,7 @@ parameter
 </h3></div>
     <div class="card-body">
           
-  <p>Mix a single 64-bit value into a 64-bit FNV-1a state.</p>
+  <p>XOR one integer into the hash state, then multiply by the FNV prime.</p>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -1100,7 +1098,7 @@ parameter
 </h3></div>
     <div class="card-body">
           
-  <p>Mix a string into a 64-bit FNV-1a state.</p>
+  <p>Mix each byte of a right-trimmed string using XOR and the FNV prime.</p>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -1130,7 +1128,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-s~6"></span>
+              <span class="anchor" id="variable-s~2"></span>
               character(len=*),
             </td>
 <td>intent(in)</td>
@@ -1155,7 +1153,7 @@ parameter
 </h3></div>
     <div class="card-body">
           
-  <p>Hash a single file block at a specific stream position.</p>
+  <p>Mix bytes from a 1-based stream position; skip the block if its read fails.</p>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -1200,7 +1198,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-n~14"></span>
+              <span class="anchor" id="variable-n~4"></span>
               integer,
             </td>
 <td>intent(in)</td>
@@ -1258,7 +1256,7 @@ parameter
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2026-10-12T13:55:54.369963+0000             </p>
+ on 2026-10-12T14:42:46.282582+0000             </p>
           </div>
         </div>
         <br>

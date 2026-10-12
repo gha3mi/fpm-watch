@@ -160,27 +160,17 @@
 </h2>
     
 
-    <p>Compute watched files and masks from current <code>fpm</code> settings.</p>
-<p>This is the primary "graph to watchlist" entry point.</p>
-<h3>Outputs</h3>
-<ul>
-<li><code>files</code>: normalized, unique file paths to watch.</li>
-<li><code>file_mask</code>: a bitmask per file that encodes which root target(s) the
-  file belongs to (used for name injection on run/test).</li>
-<li><code>roots</code>: root executable/test targets. <code>roots(r)%mask</code> is a 1-bit mask.</li>
-<li><code>manifest_key</code>: placeholder output (computed elsewhere); set to <code>0</code> here.</li>
-<li><code>build_secs</code>: sum of <code>secs_model + secs_targets + secs_watch</code>.</li>
-<li><code>secs_model</code>: time spent building the <code>fpm</code> model.</li>
-<li><code>secs_targets</code>: time spent expanding sources into targets.</li>
-<li><code>secs_watch</code>: time spent collecting and filtering file paths.</li>
-</ul>
-<h3>Notes</h3>
-<ul>
-<li>Root bitmasks are limited to <code>bit_size(0_int64)</code> (typically 64 roots).</li>
-<li>Build directory paths are excluded from the watch list unless dependency
-  watching is enabled and the path is identified as belonging to a dep.</li>
-<li>If <code>error</code> is present, model errors are returned without terminating the watcher.</li>
-</ul>
+    <p>Build fpm's model and return the filtered source/include/manifest closure.</p>
+<p><code>settings</code> may be updated by fpm model construction. <code>files</code> contains
+unique normalized paths; aligned <code>file_mask</code> entries map files to <code>roots</code>.
+Run selects named applications/examples; test collects all test roots.
+Mapping is disabled when there are no roots or more than 64, yielding
+empty <code>roots</code> and zero file masks while retaining the selected closure.</p>
+<p><code>manifest_key</code> is always zero here; the engine computes it after refresh.
+Timing outputs are seconds: <code>build_secs</code> sums model, target, and collection
+time, excluding manifest reading. On manifest/model/target failure, return
+allocated <code>error</code> if supplied, otherwise log the stage and exit with status 1.
+Watch-list outputs are only usable after a successful return.</p>
 
 
     <h3>Arguments</h3>
@@ -196,7 +186,7 @@
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-settings"></span>
+              <span class="anchor" id="variable-settings~5"></span>
               class(fpm_build_settings),
             </td>
 <td>intent(inout)</td>
@@ -206,12 +196,12 @@
             <td>::</td>
             <td><strong>settings</strong></td>
             <td>
-                
+                <p>Typed build/run/test settings; fpm may update these while constructing its model.</p>
             </td>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-w~4"></span>
+              <span class="anchor" id="variable-w~5"></span>
               type(<a href='../type/watch_opts_t.html'>watch_opts_t</a>),
             </td>
 <td>intent(in)</td>
@@ -221,12 +211,12 @@
             <td>::</td>
             <td><strong>w</strong></td>
             <td>
-                
+                <p>Watcher dependency/filter/logging options; unallocated filters impose no restriction.</p>
             </td>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-files~2"></span>
+              <span class="anchor" id="variable-files~7"></span>
               type(string_t),
             </td>
 <td>intent(out),</td>
@@ -236,7 +226,7 @@
             <td>::</td>
             <td><strong>files</strong>(:)</td>
             <td>
-                
+                <p>Unique normalized watched paths, allocated on success (possibly empty).</p>
             </td>
         </tr>
         <tr>
@@ -251,7 +241,7 @@
             <td>::</td>
             <td><strong>file_mask</strong>(:)</td>
             <td>
-                
+                <p>Root-membership bits aligned with files; zero when root mapping is disabled.</p>
             </td>
         </tr>
         <tr>
@@ -266,7 +256,7 @@
             <td>::</td>
             <td><strong>roots</strong>(:)</td>
             <td>
-                
+                <p>Executable names and distinct mask bits; empty for build mode or unsupported root counts.</p>
             </td>
         </tr>
         <tr>
@@ -281,12 +271,12 @@
             <td>::</td>
             <td><strong>manifest_key</strong></td>
             <td>
-                
+                <p>Reserved output, always zero; computed from accepted files by the engine.</p>
             </td>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-build_secs"></span>
+              <span class="anchor" id="variable-build_secs~2"></span>
               real,
             </td>
 <td>intent(out)</td>
@@ -296,12 +286,12 @@
             <td>::</td>
             <td><strong>build_secs</strong></td>
             <td>
-                
+                <p>Sum of model, target-construction, and watch-list collection times in seconds.</p>
             </td>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-secs_model"></span>
+              <span class="anchor" id="variable-secs_model~2"></span>
               real,
             </td>
 <td>intent(out)</td>
@@ -311,12 +301,12 @@
             <td>::</td>
             <td><strong>secs_model</strong></td>
             <td>
-                
+                <p>Separate stage durations in seconds, respectively model, targets, and file collection.</p>
             </td>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-secs_targets"></span>
+              <span class="anchor" id="variable-secs_targets~2"></span>
               real,
             </td>
 <td>intent(out)</td>
@@ -326,12 +316,12 @@
             <td>::</td>
             <td><strong>secs_targets</strong></td>
             <td>
-                
+                <p>Separate stage durations in seconds, respectively model, targets, and file collection.</p>
             </td>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-secs_watch"></span>
+              <span class="anchor" id="variable-secs_watch~2"></span>
               real,
             </td>
 <td>intent(out)</td>
@@ -341,7 +331,7 @@
             <td>::</td>
             <td><strong>secs_watch</strong></td>
             <td>
-                
+                <p>Separate stage durations in seconds, respectively model, targets, and file collection.</p>
             </td>
         </tr>
         <tr>
@@ -356,7 +346,7 @@
             <td>::</td>
             <td><strong>error</strong></td>
             <td>
-                
+                <p>Allocated for manifest/model/target failure; omitted error output makes those failures fatal.</p>
             </td>
         </tr>
     </tbody>
@@ -1570,14 +1560,23 @@ large graphs.</div>
     <div class="hl codehilite"><pre><span></span><span class="w">   </span><span class="k">subroutine </span><span class="n">compute_watch_files_from_settings</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span><span class="w"> </span><span class="n">w</span><span class="p">,</span><span class="w"> </span><span class="n">files</span><span class="p">,</span><span class="w"> </span><span class="n">file_mask</span><span class="p">,</span><span class="w"> </span><span class="n">roots</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span>
 <span class="w">      </span><span class="n">manifest_key</span><span class="p">,</span><span class="w"> </span><span class="n">build_secs</span><span class="p">,</span><span class="w"> </span><span class="n">secs_model</span><span class="p">,</span><span class="w"> </span><span class="n">secs_targets</span><span class="p">,</span><span class="w"> </span><span class="n">secs_watch</span><span class="p">,</span><span class="w"> </span><span class="n">error</span><span class="p">)</span>
 <span class="w">      </span><span class="k">class</span><span class="p">(</span><span class="n">fpm_build_settings</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">settings</span>
+<span class="w">      </span><span class="c">!! Typed build/run/test settings; fpm may update these while constructing its model.</span>
 <span class="w">      </span><span class="k">type</span><span class="p">(</span><span class="n">watch_opts_t</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">w</span>
+<span class="w">      </span><span class="c">!! Watcher dependency/filter/logging options; unallocated filters impose no restriction.</span>
 <span class="w">      </span><span class="k">type</span><span class="p">(</span><span class="n">string_t</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">files</span><span class="p">(:)</span>
+<span class="w">      </span><span class="c">!! Unique normalized watched paths, allocated on success (possibly empty).</span>
 <span class="w">      </span><span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">file_mask</span><span class="p">(:)</span>
+<span class="w">      </span><span class="c">!! Root-membership bits aligned with files; zero when root mapping is disabled.</span>
 <span class="w">      </span><span class="k">type</span><span class="p">(</span><span class="n">root_info_t</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">roots</span><span class="p">(:)</span>
+<span class="w">      </span><span class="c">!! Executable names and distinct mask bits; empty for build mode or unsupported root counts.</span>
 <span class="w">      </span><span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">manifest_key</span>
+<span class="w">      </span><span class="c">!! Reserved output, always zero; computed from accepted files by the engine.</span>
 <span class="w">      </span><span class="kt">real</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">build_secs</span>
+<span class="w">      </span><span class="c">!! Sum of model, target-construction, and watch-list collection times in seconds.</span>
 <span class="w">      </span><span class="kt">real</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">secs_model</span><span class="p">,</span><span class="w"> </span><span class="n">secs_targets</span><span class="p">,</span><span class="w"> </span><span class="n">secs_watch</span>
+<span class="w">      </span><span class="c">!! Separate stage durations in seconds, respectively model, targets, and file collection.</span>
 <span class="w">      </span><span class="k">type</span><span class="p">(</span><span class="n">error_t</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">),</span><span class="w"> </span><span class="k">optional</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">error</span>
+<span class="w">      </span><span class="c">!! Allocated for manifest/model/target failure; omitted error output makes those failures fatal.</span>
 
 <span class="w">      </span><span class="k">type</span><span class="p">(</span><span class="n">package_config_t</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">package</span>
 <span class="w">      </span><span class="k">type</span><span class="p">(</span><span class="n">fpm_model_t</span><span class="p">),</span><span class="w">       </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">model</span>
@@ -1745,7 +1744,8 @@ large graphs.</div>
 
 <span class="w">   </span><span class="k">contains</span>
 
-<span class="k">      subroutine </span><span class="n">collect_dep_dirs</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span><span class="w"> </span><span class="n">dep_dirs</span><span class="p">)</span>
+<span class="w">      </span><span class="c">!&gt; Return canonicalized dependency project directories, excluding the main-project node.</span>
+<span class="w">      </span><span class="k">subroutine </span><span class="n">collect_dep_dirs</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span><span class="w"> </span><span class="n">dep_dirs</span><span class="p">)</span>
 <span class="w">         </span><span class="k">type</span><span class="p">(</span><span class="n">dependency_tree_t</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">tree</span>
 <span class="w">         </span><span class="k">type</span><span class="p">(</span><span class="n">string_t</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">dep_dirs</span><span class="p">(:)</span>
 <span class="w">         </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">i</span>
@@ -1790,7 +1790,7 @@ large graphs.</div>
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2026-10-12T13:55:54.369963+0000             </p>
+ on 2026-10-12T14:42:46.282582+0000             </p>
           </div>
         </div>
         <br>

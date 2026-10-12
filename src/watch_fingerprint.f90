@@ -1,12 +1,9 @@
-!> Lightweight file fingerprinting for change detection.
+!> Sample file contents and compare watch-list snapshots.
 !!
-!! Uses a size-mixed FNV-1a hash of up to three fixed-size blocks from the file
-!! (head, mid, tail) to efficiently detect modifications.
-!!
-!! This fingerprint is intended as a fast heuristic:
-!! - It is not a cryptographic hash.
-!! - It trades perfect detection for performance on large trees.
-!! - Combining size + multiple sample blocks provides good practical coverage.
+!! Fingerprints mix file size with FNV-style samples of at most three 4096-byte
+!! blocks: head, middle, and tail. Same-size edits outside the sampled regions
+!! can be missed. Fingerprints are change-detection heuristics, not content IDs.
+!! File reads share a reusable module buffer and are intended for serial use.
 module watch_fingerprint
    use, intrinsic :: iso_fortran_env, only: int64
    use fpm_strings, only: string_t
@@ -20,15 +17,16 @@ module watch_fingerprint
    integer(int64), parameter :: FNV_PRIME  = 1099511628211_int64
    integer, parameter :: BLOCK_SIZE = 4096
 
+   !> Shared 4096-byte scratch buffer; file fingerprinting is not reentrant.
    character(len=1), allocatable, save :: io_buf(:)
 
 contains
 
-   !> Compare watch snapshots without depending on file-list ordering.
+   !> Compare unique path/fingerprint snapshots independently of file ordering.
    !!
-   !! A rescan must report added, removed, and modified files before replacing
-   !! the old fingerprint baseline. Otherwise a newly discovered file is
-   !! silently accepted without triggering the configured command.
+   !! Unallocated path lists count as empty. Added/removed paths, changed
+   !! fingerprints, or missing/mismatched fingerprint arrays for nonempty lists
+   !! report a change. Two empty snapshots compare equal.
    pure logical function watch_state_changed(old_files, old_fp, new_files, new_fp) result(changed)
       type(string_t), allocatable, intent(in) :: old_files(:), new_files(:)
       integer(int64), allocatable, intent(in) :: old_fp(:), new_fp(:)
@@ -93,10 +91,11 @@ contains
       fp_now = fp_prev
    end subroutine init_fingerprints
 
-   !> Scan files and return indices of changed entries.
+   !> Resample files and return 1-based indices differing from the accepted baseline.
    !!
-   !! `changed_idx(1:changed_count)` contains the 1-based indices into `files`
-   !! for which the fingerprint differs from `fp_prev`.
+   !! `fp_prev`, `fp_now`, and `changed_idx` must have space for every file.
+   !! Only `changed_idx(:changed_count)` is defined by this scan; `fp_prev`
+   !! remains unchanged. An empty/unallocated file list reports no changes.
    subroutine scan_changes(files, fp_prev, fp_now, changed_idx, changed_count)
       type(string_t), allocatable, intent(in) :: files(:)
       integer(int64), intent(in) :: fp_prev(:)
@@ -119,10 +118,11 @@ contains
       end do
    end subroutine scan_changes
 
-   !> Accept the new fingerprints for the subset of changed indices.
+   !> Copy sampled fingerprints into the baseline for valid changed indices.
    !!
-   !! After a successful run, this updates `fp_prev` so future scans detect new
-   !! changes relative to the latest known state.
+   !! The engine accepts ordinary edits after command completion even if fpm
+   !! failed, and accepts failed manifest-refresh samples while retaining a retry
+   !! flag. Invalid indices are skipped; both fingerprint arrays must be aligned.
    subroutine accept_changes(fp_prev, fp_now, changed_idx, changed_count)
       integer(int64), intent(inout) :: fp_prev(:)
       integer(int64), intent(in)    :: fp_now(:)
@@ -135,13 +135,12 @@ contains
       end do
    end subroutine accept_changes
 
-   !> Compute a key representing the current manifest-related configuration.
+   !> Mix selected fpm settings and watched manifest paths/fingerprints into a key.
    !!
-   !! This key is used to detect when changes require rebuilding the watch list.
-   !! It includes:
-   !! - Selected `fpm_build_settings` fields
-   !! - Feature list (`settings%features`)
-   !! - The fingerprint of any watched file named `fpm.toml`
+   !! Includes build directory, toolchain, profile, compile/link flags, pruning,
+   !! build-tests, and fpm features. File and feature ordering affects the key.
+   !! The engine compares keys for plugin notifications after successful manifest
+   !! refreshes; this key does not trigger the refresh itself.
    integer(int64) function manifest_key_from_files(settings, files) result(k)
       class(fpm_build_settings), intent(in) :: settings
       type(string_t), allocatable, intent(in) :: files(:)
@@ -191,6 +190,7 @@ contains
 
    contains
 
+      !> Mix a right-trimmed, allocated, nonempty string into the current hash state.
       subroutine mix_alloc(h, s)
          integer(int64), intent(inout) :: h
          character(len=:), allocatable, intent(in) :: s
@@ -201,16 +201,15 @@ contains
 
    end function manifest_key_from_files
 
-   !> Compute a fingerprint for a file path.
+   !> Mix file size with up to three sampled blocks of at most 4096 bytes each.
    !!
-   !! Strategy:
-   !! - Read the file size (`inquire(size=...)`).
-   !! - Hash up to three blocks (head/mid/tail) using FNV-1a mixing.
-   !! - Combine with file size to reduce collision risk.
-   !!
-   !! Missing/unreadable files return `0`.
+   !! Missing files, failed size inquiries, and nonpositive sizes return zero.
+   !! If opening fails, return a size-only value mixed with the initial hash;
+   !! failed block reads contribute nothing. Larger files sample head, middle,
+   !! and tail, which may overlap. Uses the shared module scratch buffer.
    integer(int64) function file_fingerprint(path) result(fp)
       character(len=*), intent(in) :: path
+      !! File path to sample; trailing blanks are removed before inquiry/open.
       logical :: ex
       integer(int64) :: sz, h, n64, pos_mid, pos_end, pos_max
       integer :: u, ios, n
@@ -257,7 +256,7 @@ contains
       fp = ieor(ishft(sz, 1), h)
    end function file_fingerprint
 
-   !> Hash a single file block at a specific stream position.
+   !> Mix bytes from a 1-based stream position; skip the block if its read fails.
    subroutine hash_block(u, pos, n, h)
       integer, intent(in) :: u
       integer(int64), intent(in) :: pos
@@ -275,7 +274,7 @@ contains
       end if
    end subroutine hash_block
 
-   !> Mix a string into a 64-bit FNV-1a state.
+   !> Mix each byte of a right-trimmed string using XOR and the FNV prime.
    subroutine fnv1a_mix_str(h, s)
       integer(int64), intent(inout) :: h
       character(len=*), intent(in)  :: s
@@ -285,7 +284,7 @@ contains
       end do
    end subroutine fnv1a_mix_str
 
-   !> Mix a single 64-bit value into a 64-bit FNV-1a state.
+   !> XOR one integer into the hash state, then multiply by the FNV prime.
    subroutine fnv1a_mix_i64(h, x)
       integer(int64), intent(inout) :: h
       integer(int64), intent(in)    :: x

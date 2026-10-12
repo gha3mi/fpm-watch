@@ -185,46 +185,11 @@
     </div>
 
     <div class="col-md-9" id='text'>
-      <p>Sleep utilities and low-CPU waiting.</p>
-<p><code>fpm-watch</code> is primarily poll-based. This module provides two waiting
-strategies:</p>
-<ul>
-<li>
-<p><strong>Spin wait</strong> (<code>sleep_spin</code>): uses <code>system_clock</code> in a tight loop.
-  This is portable and offers good timing resolution, but it can consume CPU.</p>
-</li>
-<li>
-<p><strong>OS sleep</strong> (<code>sleep_os</code>): delegates to a small C shim
-  (<code>fpm_watch_sleep_seconds</code>) which performs an efficient, platform-native
-  sleep:</p>
-<ul>
-<li>Windows: <code>Sleep(milliseconds)</code></li>
-<li>POSIX: <code>nanosleep(timespec)</code> (with EINTR retry)</li>
-</ul>
-</li>
-</ul>
-<p>The public entry point <code>sleep_seconds</code> dispatches between these strategies
-depending on the global low-CPU mode flag set by <code>set_low_cpu</code>.</p>
-<h2>Design notes</h2>
-<ul>
-<li>The OS sleep is implemented in C to avoid link-time issues where referencing
-  platform-specific symbols (e.g. <code>Sleep</code> or <code>nanosleep</code>) from Fortran can
-  break linking on the “other” platform even if the routine is never called.</li>
-<li><code>sleep_seconds</code> is intentionally lightweight and safe to call frequently.</li>
-</ul>
-<h2>Usage</h2>
-<div class="codehilite"><pre><span></span><code><span class="k">use </span><span class="n">watch_time</span><span class="p">,</span><span class="w"> </span><span class="k">only</span><span class="p">:</span><span class="w"> </span><span class="n">set_low_cpu</span><span class="p">,</span><span class="w"> </span><span class="n">sleep_seconds</span>
-
-<span class="k">call </span><span class="n">set_low_cpu</span><span class="p">(.</span><span class="n">true</span><span class="p">.)</span><span class="w">   </span><span class="c">! prefer OS sleep (near-zero idle CPU)</span>
-<span class="k">call </span><span class="n">sleep_seconds</span><span class="p">(</span><span class="mf">0.25</span><span class="p">)</span><span class="w">   </span><span class="c">! sleep for ~250 ms</span>
-</code></pre></div>
-
-<h2>Threading/Signals</h2>
-<ul>
-<li>Spin sleep does not yield; it runs until time has elapsed.</li>
-<li>OS sleep yields to the OS scheduler; on POSIX the C shim typically retries
-  on interrupt (EINTR) to honor the requested duration.</li>
-</ul>
+      <p>Choose busy waiting or OS sleep for polling, debounce, and restart delays.</p>
+<p><code>set_low_cpu</code> selects a process-wide backend: <code>system_clock</code> spin waiting
+by default, or the C sleep shim when enabled. Windows uses <code>Sleep</code> with
+millisecond rounding; POSIX uses <code>nanosleep</code>, retrying the remaining duration
+after EINTR. These waits do not poll the watcher's termination flag.</p>
 <br>          <div class="card mb-4">
       <h3 class="card-header card-title bg-light">Uses</h3>
       <div class="card-body">
@@ -545,14 +510,7 @@ large graphs.</div>
       </h3>
     </div>
       <div class="card-body">
-        <p>C shim providing a portable OS sleep implementation.</p>
-<p>The actual platform-specific sleep is implemented in C to prevent
-link-time failures that can occur if Fortran directly references
-<code>Sleep</code> (Windows) or <code>nanosleep</code> (POSIX) symbols in the same object.</p>
-<h3>Arguments</h3>
-<ul>
-<li><code>sec</code>: requested sleep duration in seconds.</li>
-</ul>
+        <p>Binding to the C implementation of portable OS sleep.</p>
       </div>
     <ul class="list-group">
         <li class="list-group-item">
@@ -560,7 +518,7 @@ link-time failures that can occur if Fortran directly references
     private  subroutine fpm_watch_sleep_seconds(sec) bind(C, name="fpm_watch_sleep_seconds")  
 
     </h3>
-  
+  <p>C OS-sleep backend; <code>sec</code> is passed by value in seconds, with nonpositive values ignored.</p>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -609,7 +567,7 @@ link-time failures that can occur if Fortran directly references
 </h3></div>
     <div class="card-body">
           
-  <p>Enable or disable low-CPU mode.</p><a href="../proc/set_low_cpu.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+  <p>Set the process-wide waiting backend: true selects OS sleep, false selects busy waiting.</p>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -624,7 +582,7 @@ link-time failures that can occur if Fortran directly references
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-flag"></span>
+              <span class="anchor" id="variable-flag~2"></span>
               logical,
             </td>
 <td>intent(in)</td>
@@ -649,7 +607,7 @@ link-time failures that can occur if Fortran directly references
 </h3></div>
     <div class="card-body">
           
-  <p>Sleep for approximately <code>s</code> seconds.</p><a href="../proc/sleep_seconds.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+  <p>Wait approximately <code>s</code> seconds using the currently selected backend.</p><a href="../proc/sleep_seconds.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -664,7 +622,7 @@ link-time failures that can occur if Fortran directly references
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-s"></span>
+              <span class="anchor" id="variable-s~20"></span>
               real,
             </td>
 <td>intent(in)</td>
@@ -689,7 +647,7 @@ link-time failures that can occur if Fortran directly references
 </h3></div>
     <div class="card-body">
           
-  <p>OS-backed sleep for approximately <code>s</code> seconds.</p><a href="../proc/sleep_os.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+  <p>Convert seconds to C double and invoke the OS-sleep shim; nonpositive durations are ignored there.</p>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -704,7 +662,7 @@ link-time failures that can occur if Fortran directly references
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-s~3"></span>
+              <span class="anchor" id="variable-s~22"></span>
               real,
             </td>
 <td>intent(in)</td>
@@ -729,7 +687,7 @@ link-time failures that can occur if Fortran directly references
 </h3></div>
     <div class="card-body">
           
-  <p>Busy-wait for approximately <code>s</code> seconds.</p><a href="../proc/sleep_spin.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+  <p>Busy-wait for the truncated number of system-clock ticks in <code>s</code> seconds.</p><a href="../proc/sleep_spin.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -744,7 +702,7 @@ link-time failures that can occur if Fortran directly references
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-s~2"></span>
+              <span class="anchor" id="variable-s~21"></span>
               real,
             </td>
 <td>intent(in)</td>
@@ -787,7 +745,7 @@ link-time failures that can occur if Fortran directly references
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2026-10-12T13:55:54.369963+0000             </p>
+ on 2026-10-12T14:42:46.282582+0000             </p>
           </div>
         </div>
         <br>

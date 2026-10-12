@@ -160,12 +160,10 @@
 </h2>
     
 
-    <p>Quote an argument for the host shell, escaping embedded quotes as needed.</p>
-<ul>
-<li>On Windows, embedded quotes use an odd number of backslashes and
-  trailing backslashes are doubled for the C runtime's argument parser.</li>
-<li>On POSIX shells, <code>'</code> is escaped using a standard <code>'</code> → <code>'"'"'</code> pattern.</li>
-</ul>
+    <p>Serialize one complete argv token, preserving whitespace and empty arguments.</p>
+<p>Optional <code>windows</code> overrides host detection. Windows doubles trailing
+backslashes and escapes embedded double quotes for the C-runtime parser.
+POSIX uses single quotes, breaking out of them to represent embedded quotes.</p>
 
 
     <h3>Arguments</h3>
@@ -181,7 +179,7 @@
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-a~11"></span>
+              <span class="anchor" id="variable-a~10"></span>
               character(len=*),
             </td>
 <td>intent(in)</td>
@@ -639,7 +637,8 @@ large graphs.</div>
 <span class="k">         </span><span class="n">q</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"'"</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="n">escape_quotes_sh</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="s2">"'"</span>
 <span class="w">      </span><span class="k">end if</span>
 <span class="k">   contains</span>
-<span class="k">      pure function </span><span class="n">escape_quotes_win</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="w"> </span><span class="k">result</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+<span class="w">      </span><span class="c">!&gt; Escape embedded quotes and trailing backslashes for a double-quoted Windows argv token.</span>
+<span class="w">      </span><span class="k">pure function </span><span class="n">escape_quotes_win</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="w"> </span><span class="k">result</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
 <span class="w">         </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">s</span>
 <span class="w">         </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">r</span>
 <span class="w">         </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="n">backslashes</span>
@@ -660,6 +659,7 @@ large graphs.</div>
 <span class="k">         </span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="nb">repeat</span><span class="p">(</span><span class="nb">achar</span><span class="p">(</span><span class="mi">92</span><span class="p">),</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">backslashes</span><span class="p">)</span>
 <span class="w">      </span><span class="k">end function </span><span class="n">escape_quotes_win</span>
 
+<span class="w">      </span><span class="c">!&gt; Replace embedded single quotes with quoted fragments suitable for a POSIX shell.</span>
 <span class="w">      </span><span class="k">pure function </span><span class="n">escape_quotes_sh</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="w"> </span><span class="k">result</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
 <span class="w">         </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">s</span>
 <span class="w">         </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">r</span>
@@ -697,7 +697,7 @@ large graphs.</div>
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2026-10-12T13:55:54.369963+0000             </p>
+ on 2026-10-12T14:42:46.282582+0000             </p>
           </div>
         </div>
         <br>

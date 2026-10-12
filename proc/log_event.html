@@ -160,10 +160,11 @@
 </h2>
     
 
-    <p>Emit an event with stable identity and optional typed attributes.
-Errors and forced protocol records bypass verbosity and debug filtering.
-Other debug events require debug mode and are suppressed by quiet mode.
-Verbosity controls additional detail.</p>
+    <p>Format, write, and flush one timestamped event with optional typed attributes.</p>
+<p><code>verbosity</code> is the minimum detail level, defaulting to zero. Quiet mode
+suppresses non-error records; debug records additionally require debug mode.
+<code>force=true</code> and errors bypass both filters. Structured output always uses
+stdout; only text errors use stderr. <code>fields</code> should use the typed constructors.</p>
 
 
     <h3>Arguments</h3>
@@ -189,7 +190,7 @@ Verbosity controls additional detail.</p>
             <td>::</td>
             <td><strong>level</strong></td>
             <td>
-                
+                <p>Severity, stable event identifier, and human-readable message, respectively.</p>
             </td>
         </tr>
         <tr>
@@ -204,7 +205,7 @@ Verbosity controls additional detail.</p>
             <td>::</td>
             <td><strong>event</strong></td>
             <td>
-                
+                <p>Severity, stable event identifier, and human-readable message, respectively.</p>
             </td>
         </tr>
         <tr>
@@ -219,7 +220,7 @@ Verbosity controls additional detail.</p>
             <td>::</td>
             <td><strong>message</strong></td>
             <td>
-                
+                <p>Severity, stable event identifier, and human-readable message, respectively.</p>
             </td>
         </tr>
         <tr>
@@ -234,12 +235,12 @@ Verbosity controls additional detail.</p>
             <td>::</td>
             <td><strong>fields</strong>(:)</td>
             <td>
-                
+                <p>Typed attributes constructed with log_string/log_strings/log_int/log_real/log_bool.</p>
             </td>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-verbosity~2"></span>
+              <span class="anchor" id="variable-verbosity"></span>
               integer,
             </td>
 <td>intent(in),</td>
@@ -249,7 +250,7 @@ Verbosity controls additional detail.</p>
             <td>::</td>
             <td><strong>verbosity</strong></td>
             <td>
-                
+                <p>Minimum active verbosity for this non-error event; defaults to zero.</p>
             </td>
         </tr>
         <tr>
@@ -264,7 +265,7 @@ Verbosity controls additional detail.</p>
             <td>::</td>
             <td><strong>force</strong></td>
             <td>
-                
+                <p>Bypass verbosity/debug filters for required protocol events; defaults to false.</p>
             </td>
         </tr>
     </tbody>
@@ -1068,9 +1069,13 @@ large graphs.</div>
     <h2><span class="anchor" id="src"></span>Source Code</h2>
     <div class="hl codehilite"><pre><span></span><span class="w">   </span><span class="k">subroutine </span><span class="n">log_event</span><span class="p">(</span><span class="n">level</span><span class="p">,</span><span class="w"> </span><span class="n">event</span><span class="p">,</span><span class="w"> </span><span class="n">message</span><span class="p">,</span><span class="w"> </span><span class="n">fields</span><span class="p">,</span><span class="w"> </span><span class="n">verbosity</span><span class="p">,</span><span class="w"> </span><span class="n">force</span><span class="p">)</span>
 <span class="w">      </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">level</span><span class="p">,</span><span class="w"> </span><span class="n">event</span><span class="p">,</span><span class="w"> </span><span class="n">message</span>
+<span class="w">      </span><span class="c">!! Severity, stable event identifier, and human-readable message, respectively.</span>
 <span class="w">      </span><span class="k">type</span><span class="p">(</span><span class="n">log_field_t</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="w"> </span><span class="k">optional</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">fields</span><span class="p">(:)</span>
+<span class="w">      </span><span class="c">!! Typed attributes constructed with log_string/log_strings/log_int/log_real/log_bool.</span>
 <span class="w">      </span><span class="kt">integer</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="w"> </span><span class="k">optional</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">verbosity</span>
+<span class="w">      </span><span class="c">!! Minimum active verbosity for this non-error event; defaults to zero.</span>
 <span class="w">      </span><span class="kt">logical</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="w"> </span><span class="k">optional</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">force</span>
+<span class="w">      </span><span class="c">!! Bypass verbosity/debug filters for required protocol events; defaults to false.</span>
 <span class="w">      </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">unit</span><span class="p">,</span><span class="w"> </span><span class="n">detail</span>
 <span class="w">      </span><span class="kt">logical</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">required</span>
 <span class="w">      </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">line</span><span class="p">,</span><span class="w"> </span><span class="n">timestamp</span>
@@ -1114,7 +1119,7 @@ large graphs.</div>
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2026-10-12T13:55:54.369963+0000             </p>
+ on 2026-10-12T14:42:46.282582+0000             </p>
           </div>
         </div>
         <br>

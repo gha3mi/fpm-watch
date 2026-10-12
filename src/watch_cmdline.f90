@@ -1,12 +1,9 @@
-!> Command-line helpers.
+!> Read argv tokens, parse option values, and serialize command arguments.
 !!
-!! Provides convenience wrappers around `get_command_argument` and a small
-!! collection of parsing and quoting helpers used throughout `fpm-watch`.
-!!
-!! Notes:
-!! - Argument quoting here is intended for building a safe *command string*,
-!!   not for implementing a complete shell escaping library.
-!! - Windows vs POSIX quoting behavior is handled via `get_os_type()`.
+!! `quote_arg` always quotes the full token, including empty arguments. POSIX
+!! serialization uses single quotes; Windows uses double quotes and C-runtime
+!! backslash rules. Platform selection comes from `watch_platform:is_windows`
+!! unless a quoting caller supplies an explicit override.
 module watch_cmdline
    use watch_util, only: starts_with
    use watch_platform, only: is_windows_os => is_windows
@@ -17,7 +14,10 @@ module watch_cmdline
 
 contains
 
-   !> Parse a boolean spelling, falling back when the value is unrecognized.
+   !> Parse trimmed, case-insensitive boolean spellings or return `default`.
+   !!
+   !! True accepts `1`, `true`, `on`, `yes`, `y`, `t`; false accepts `0`, `false`,
+   !! `off`, `no`, `n`, `f`. Empty and unrecognized values use the fallback.
    pure logical function parse_bool(s, default) result(v)
       character(len=*), intent(in) :: s
       logical, intent(in) :: default
@@ -63,10 +63,10 @@ contains
       end select
    end function watch_option_takes_value
 
-   !> Retrieve a command-line argument as an allocatable string.
+   !> Return argv entry `i`, or an empty string for a missing, empty, or unreadable argument.
    function get_arg(i) result(a)
       integer, intent(in) :: i
-      !! 0-based/1-based index passed to `get_command_argument`.
+      !! Argument index: 0 is the executable name; actual arguments start at 1.
       character(len=:), allocatable :: a
       integer :: n, istat
       n = 0
@@ -80,10 +80,10 @@ contains
       if (istat /= 0) a = ""
    end function get_arg
 
-   !> Join a range of argv entries into a single command-line string.
+   !> Serialize argv entries from `i1` through `i2` with spaces and platform quoting.
    !!
-   !! Every token is quoted using `quote_arg()`, including empty arguments.
-   !! Quoting rules are platform-dependent (Windows vs POSIX).
+   !! Every token, including an empty one, passes through `quote_arg`. A reversed
+   !! range returns an empty command string.
    function join_argv(i1, i2) result(s)
       integer, intent(in) :: i1, i2
       !! Inclusive range of argv indices to join.
@@ -100,9 +100,9 @@ contains
    end function join_argv
 
 
-   !> Determine whether an argument requires quoting for safe shell parsing.
+   !> Test whether a token is empty or contains bytes outside the shell-safe set.
    !!
-   !! Only a nonempty token containing shell-safe characters can be unquoted.
+   !! Retained as a query helper; `quote_arg` quotes tokens regardless of this result.
    pure logical function needs_quotes(a) result(q)
       character(len=*), intent(in) :: a
       character(len=*), parameter :: safe = &
@@ -110,11 +110,11 @@ contains
       q = len(a) == 0 .or. verify(a, safe) /= 0
    end function needs_quotes
 
-   !> Quote an argument for the host shell, escaping embedded quotes as needed.
+   !> Serialize one complete argv token, preserving whitespace and empty arguments.
    !!
-   !! - On Windows, embedded quotes use an odd number of backslashes and
-   !!   trailing backslashes are doubled for the C runtime's argument parser.
-   !! - On POSIX shells, `'` is escaped using a standard `'` → `'"'"'` pattern.
+   !! Optional `windows` overrides host detection. Windows doubles trailing
+   !! backslashes and escapes embedded double quotes for the C-runtime parser.
+   !! POSIX uses single quotes, breaking out of them to represent embedded quotes.
    function quote_arg(a, windows) result(q)
       character(len=*), intent(in) :: a
       logical, intent(in), optional :: windows
@@ -132,6 +132,7 @@ contains
          q = "'" // escape_quotes_sh(a) // "'"
       end if
    contains
+      !> Escape embedded quotes and trailing backslashes for a double-quoted Windows argv token.
       pure function escape_quotes_win(s) result(r)
          character(len=*), intent(in) :: s
          character(len=:), allocatable :: r
@@ -153,6 +154,7 @@ contains
          r = r // repeat(achar(92), 2 * backslashes)
       end function escape_quotes_win
 
+      !> Replace embedded single quotes with quoted fragments suitable for a POSIX shell.
       pure function escape_quotes_sh(s) result(r)
          character(len=*), intent(in) :: s
          character(len=:), allocatable :: r
@@ -168,7 +170,7 @@ contains
       end function escape_quotes_sh
    end function quote_arg
 
-   !> Parse an integer with a default fallback on I/O error.
+   !> Read an integer with list-directed input; return `default` if the read fails.
    pure integer function parse_int(s, default) result(v)
       character(len=*), intent(in) :: s
       integer, intent(in) :: default
@@ -177,7 +179,7 @@ contains
       if (ios /= 0) v = default
    end function parse_int
 
-   !> Parse a real with a default fallback on I/O error.
+   !> Read a real with list-directed input; return `default` if the read fails.
    pure real function parse_real(s, default) result(v)
       character(len=*), intent(in) :: s
       real, intent(in) :: default

@@ -1,11 +1,9 @@
-!> Project configuration and defaults.
+!> Read watcher and supervisor defaults through fpm's TOML interface.
 !!
-!! Reads watcher configuration from:
-!! - Built-in defaults (`set_watch_defaults`)
-!! - `fpm.toml` under `[extra.fpm-watch]` (`apply_watch_from_manifest`)
-!!
-!! Also provides helper routines used by the supervisor (`watch_restart`) for
-!! auto-restart defaults (delay, max restarts, self path).
+!! Missing or unreadable watcher tables leave existing values unchanged.
+!! Scalar keys replace defaults; manifest lists replace existing arrays.
+!! CLI list options subsequently append unique entries through `push_feature`.
+!! Supervisor defaults are read separately by `get_restart_defaults`.
 module watch_config
    use watch_types, only: watch_opts_t
    use fpm_strings, only: string_t
@@ -19,11 +17,10 @@ module watch_config
 
 contains
 
-   !> Apply built-in defaults to watcher options.
+   !> Reset scalar watcher options and ensure list arrays are allocated.
    !!
-   !! This routine sets conservative defaults intended to work well for most
-   !! projects, and ensures that list fields are always allocated (possibly
-   !! with size zero).
+   !! Existing include/ignore/plugin arrays are retained. Fresh options receive
+   !! empty arrays; supervisor options have separate defaults.
    subroutine set_watch_defaults(w)
       type(watch_opts_t), intent(inout) :: w
       w%verbosity = 0
@@ -46,10 +43,11 @@ contains
       if (.not. allocated(w%enabled_features)) allocate(w%enabled_features(0))
    end subroutine set_watch_defaults
 
-   !> Normalize watcher options and clamp to safe bounds.
+   !> Normalize timing bounds, verbosity, and the executable name.
    !!
-   !! Clamping prevents pathological values (e.g., negative times, too-small poll
-   !! intervals) from degrading performance or usability.
+   !! Clamp poll to at least 0.05 s, debounce/rescan to nonnegative values, and
+   !! verbosity to -1..2. Restore an empty/unallocated fpm executable to `fpm`.
+   !! Log-format validation and list allocation are handled separately.
    subroutine normalize_watch_opts(w)
       type(watch_opts_t), intent(inout) :: w
       if (w%poll < 0.05) w%poll = 0.05
@@ -61,10 +59,12 @@ contains
       if (len_trim(w%fpm_executable) == 0) w%fpm_executable = "fpm"
    end subroutine normalize_watch_opts
 
-   !> Apply configuration overrides from `fpm.toml` `[extra.fpm-watch]`.
+   !> Replace recognized options from `[extra.fpm-watch]` and normalize them.
    !!
-   !! Missing keys are ignored; successfully read values override existing
-   !! defaults.
+   !! Missing keys or values that TOML getters cannot read leave existing options
+   !! unchanged. Successfully read lists replace existing arrays. Supervisor keys
+   !! are handled by `get_restart_defaults`; log-format validation belongs to CLI
+   !! configuration assembly.
    subroutine apply_watch_from_manifest(w)
       type(watch_opts_t), intent(inout) :: w
 
@@ -106,6 +106,7 @@ contains
    !! `[extra.fpm-watch]`.
    !!
    !! Keys:
+   !!
    !! - `auto-restart` (logical)
    !! - `restart-delay` (real, seconds)
    !! - `restart-max` (integer, 0 = unlimited)
@@ -142,13 +143,11 @@ contains
       if (restart_max < 0) restart_max = 0
    end subroutine get_restart_defaults
 
-   !> Locate and return the `[extra.fpm-watch]` table from `fpm.toml`.
+   !> Locate `[extra.fpm-watch]` in the current directory's `fpm.toml`.
    !!
-   !! Returns `ok=.false.` when:
-   !! - `fpm.toml` is missing,
-   !! - the TOML cannot be read,
-   !! - the `extra` table is absent,
-   !! - the `fpm-watch` table is absent.
+   !! `ok` is false and `wt` is null when the file/table is absent or unreadable.
+   !! On success, `wt` points inside `root` and remains valid only while `root`
+   !! remains allocated.
    subroutine load_watch_table(root, wt, ok)
       type(toml_table), allocatable, intent(out) :: root
       type(toml_table), pointer, intent(out) :: wt
@@ -251,9 +250,10 @@ contains
       call move_alloc(tmp, list)
    end subroutine toml_get_list_strings
 
-   !> Append a feature name to a `string_t` array if not already present.
+   !> Append a unique, nonempty, right-trimmed string to an allocatable list.
    !!
-   !! This is used both for plugin feature names and for `ignore/include` patterns.
+   !! Used for fpm features, watcher plugins, target patterns, and filters.
+   !! Comparisons are case-sensitive; leading whitespace is retained.
    subroutine push_feature(features, name)
       type(string_t), allocatable, intent(inout) :: features(:)
       character(len=*), intent(in) :: name

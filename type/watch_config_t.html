@@ -134,9 +134,9 @@
             <a class="list-group-item" href="../type/watch_config_t.html#variable-cmd_prefix">cmd_prefix</a>
             <a class="list-group-item" href="../type/watch_config_t.html#variable-cmd_rest">cmd_rest</a>
             <a class="list-group-item" href="../type/watch_config_t.html#variable-fpm_cmdline">fpm_cmdline</a>
-            <a class="list-group-item" href="../type/watch_config_t.html#variable-settings~3">settings</a>
+            <a class="list-group-item" href="../type/watch_config_t.html#variable-settings~7">settings</a>
             <a class="list-group-item" href="../type/watch_config_t.html#variable-subcmd">subcmd</a>
-            <a class="list-group-item" href="../type/watch_config_t.html#variable-w~5">w</a>
+            <a class="list-group-item" href="../type/watch_config_t.html#variable-w~6">w</a>
         </div>
       </div>
     </div>
@@ -175,8 +175,7 @@
       <h2 id="type-def-statement">
         type, public :: watch_config_t</h2>
     <p>Fully assembled watcher configuration.</p>
-<p>This record is the primary input to <code>watcher_t%init()</code>.
-Watcher options.</p>
+<p>This record is the primary input to <code>watcher_t%init()</code>.</p>
 <br>      <div class="card">
         <div class="card-header">
           <h3 class="card-title">Inherits</h3>
@@ -413,7 +412,7 @@ large graphs.</div>
                 <td></td>
                 <td></td>
             <td>
-                <p>Cached remainder after the subcommand token (for injection).</p>
+                <p>Cached prefix up to and including the subcommand token (for injection).</p>
             </td>
         </tr>
         <tr>
@@ -430,7 +429,7 @@ large graphs.</div>
                 <td></td>
                 <td></td>
             <td>
-                
+                <p>Cached remainder after the subcommand token (for injection).</p>
             </td>
         </tr>
         <tr>
@@ -447,12 +446,12 @@ large graphs.</div>
                 <td></td>
                 <td></td>
             <td>
-                <p>Selected <code>fpm</code> subcommand (<code>build</code>, <code>test</code>, or <code>run</code>).</p>
+                <p>Full command line string to execute (e.g., <code>fpm test -- ...</code>).</p>
             </td>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-settings~3"></span>
+              <span class="anchor" id="variable-settings~7"></span>
               class(fpm_build_settings),
             </td>
               <td>public,</td>
@@ -464,7 +463,7 @@ large graphs.</div>
                 <td></td>
                 <td></td>
             <td>
-                <p>Cached prefix up to and including the subcommand token (for injection).</p>
+                <p>Typed <code>fpm</code> settings corresponding to <code>subcmd</code>.</p>
             </td>
         </tr>
         <tr>
@@ -481,12 +480,12 @@ large graphs.</div>
                 <td></td>
                 <td></td>
             <td>
-                <p>Typed <code>fpm</code> settings corresponding to <code>subcmd</code>.</p>
+                <p>Selected <code>fpm</code> subcommand (<code>build</code>, <code>test</code>, or <code>run</code>).</p>
             </td>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-w~5"></span>
+              <span class="anchor" id="variable-w~6"></span>
               type(<a href='watch_opts_t.html'>watch_opts_t</a>),
             </td>
               <td>public</td>
@@ -498,7 +497,7 @@ large graphs.</div>
                 <td></td>
                 <td></td>
             <td>
-                <p>Full command line string to execute (e.g., <code>fpm test -- ...</code>).</p>
+                <p>Watcher options.</p>
             </td>
         </tr>
     </tbody>
@@ -513,17 +512,17 @@ large graphs.</div>
     <section>
     <h3><span class="anchor" id="src"></span>Source Code</h3>
     <div class="hl codehilite"><pre><span></span><span class="w">   </span><span class="k">type </span><span class="n">watch_config_t</span>
-<span class="w">      </span><span class="c">!! Watcher options.</span>
+<span class="w">      </span><span class="c">!&gt; Watcher options.</span>
 <span class="w">      </span><span class="k">type</span><span class="p">(</span><span class="n">watch_opts_t</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">w</span>
-<span class="w">      </span><span class="c">!! Full command line string to execute (e.g., `fpm test -- ...`).</span>
+<span class="w">      </span><span class="c">!&gt; Full command line string to execute (e.g., `fpm test -- ...`).</span>
 <span class="w">      </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">fpm_cmdline</span>
-<span class="w">      </span><span class="c">!! Selected `fpm` subcommand (`build`, `test`, or `run`).</span>
+<span class="w">      </span><span class="c">!&gt; Selected `fpm` subcommand (`build`, `test`, or `run`).</span>
 <span class="w">      </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">subcmd</span>
-<span class="w">      </span><span class="c">!! Typed `fpm` settings corresponding to `subcmd`.</span>
+<span class="w">      </span><span class="c">!&gt; Typed `fpm` settings corresponding to `subcmd`.</span>
 <span class="w">      </span><span class="k">class</span><span class="p">(</span><span class="n">fpm_build_settings</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">settings</span>
-<span class="w">      </span><span class="c">!! Cached prefix up to and including the subcommand token (for injection).</span>
+<span class="w">      </span><span class="c">!&gt; Cached prefix up to and including the subcommand token (for injection).</span>
 <span class="w">      </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">cmd_prefix</span>
-<span class="w">      </span><span class="c">!! Cached remainder after the subcommand token (for injection).</span>
+<span class="w">      </span><span class="c">!&gt; Cached remainder after the subcommand token (for injection).</span>
 <span class="w">      </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">cmd_rest</span>
 <span class="w">   </span><span class="k">end type </span><span class="n">watch_config_t</span>
 </pre></div>
@@ -548,7 +547,7 @@ large graphs.</div>
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2026-10-12T13:55:54.369963+0000             </p>
+ on 2026-10-12T14:42:46.282582+0000             </p>
           </div>
         </div>
         <br>

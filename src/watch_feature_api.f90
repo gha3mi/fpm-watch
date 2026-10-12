@@ -1,20 +1,15 @@
-!> Feature plugin API.
+!> Synchronous watcher-plugin callbacks with overridable no-op defaults.
 !!
-!! Defines the base `watch_feature_t` type, which acts as a lightweight
-!! callback interface. Feature implementations can extend this type and
-!! override any subset of callbacks.
+!! Initialization calls `init`, then `on_start`, then `on_watch_list_built`.
+!! Successful refreshes call `on_watch_list_built` again. Manifest refreshes
+!! additionally call `on_manifest_changed` only if the manifest/settings key
+!! differs. Ordinary source changes call `on_change_detected` before execution;
+!! every command calls `on_before_run`, then `on_after_run`, including failures.
 !!
-!! ### Callback order (typical)
-!! - `init(cfg)` once during watcher init
-!! - `on_start()` once after init
-!! - `on_watch_list_built(files, roots)` after watch list computation (and on rebuild)
-!! - `on_manifest_changed(old_key, new_key)` when the manifest requires rebuild
-!! - `on_change_detected(changed)` when file changes are detected
-!! - `on_before_run(cmd)` just before running the command
-!! - `on_after_run(exitstat, seconds)` after command completion
-!!
-!! Default implementations are no-ops. Dummy references are used where needed
-!! to avoid compiler warnings about unused dummy arguments.
+!! Watch-list and command callbacks receive mutable arguments. Callbacks must
+!! preserve file/root ordering and membership because per-file masks are managed
+!! separately by the engine. Plugins are enabled at initialization, not refreshed
+!! when manifest plugin settings change.
 module watch_feature_api
    use, intrinsic :: iso_fortran_env, only: int64
    use watch_types, only: watch_config_t, root_info_t
@@ -51,11 +46,13 @@ contains
       class(watch_feature_t), intent(inout) :: self
    end subroutine feat_noop
 
-   !> No-op callback for watch list rebuild completion.
+   !> No-op watch-list callback; overrides must preserve file/root alignment with engine masks.
    subroutine feat_list_noop(self, files, roots)
       class(watch_feature_t), intent(inout) :: self
       type(string_t), allocatable, intent(inout) :: files(:)
+      !! Accepted path list; overrides must preserve alignment with the engine-owned per-file masks.
       type(root_info_t), allocatable, intent(inout) :: roots(:)
+      !! Root names/bits; overrides must preserve membership represented in file masks.
       if (.false.) then
          if (allocated(files)) continue
          if (allocated(roots)) continue
@@ -80,20 +77,23 @@ contains
       end if
    end subroutine feat_change_noop
 
-   !> No-op callback invoked just before executing the command.
+   !> No-op command callback; overrides may replace the allocated command before execution.
    subroutine feat_before_noop(self, cmd)
       class(watch_feature_t), intent(inout) :: self
       character(len=:), allocatable, intent(inout) :: cmd
+      !! Allocated command string that an override may modify before it is executed.
       if (.false.) then
          if (allocated(cmd)) continue
       end if
    end subroutine feat_before_noop
 
-   !> No-op callback invoked after executing the command.
+   !> No-op completion callback receiving the command status and elapsed seconds, including failures.
    subroutine feat_after_noop(self, exitstat, seconds)
       class(watch_feature_t), intent(inout) :: self
       integer, intent(in) :: exitstat
+      !! Command exit status, including failures and interruptions.
       real,    intent(in) :: seconds
+      !! Measured duration of the command in seconds.
       if (.false.) then
          if (exitstat /= 0) continue
          if (seconds < 0.0) continue

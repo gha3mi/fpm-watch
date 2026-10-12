@@ -1,12 +1,9 @@
-!> Watch loop engine and watcher state.
+!> Portable polling, watch-list refreshes, and synchronous command execution.
 !!
-!! This module contains the `watcher_t` type, which:
-!! - Builds and maintains the watch list,
-!! - Tracks file fingerprints for change detection,
-!! - Runs `fpm` commands when changes are detected,
-!! - Coordinates optional feature plugins.
-!!
-!! The engine is intentionally "poll-based" to remain portable across platforms.
+!! The engine debounces changes, maps source edits to run/test targets, and
+!! refreshes the graph after watched manifest edits or optional periodic rescans.
+!! Failed refreshes preserve the accepted watch list. Commands block polling;
+!! ordinary command failures do not terminate continuous watching.
 module watch_engine
    use, intrinsic :: iso_fortran_env, only: int64
    use watch_types, only: watch_config_t, root_info_t
@@ -27,32 +24,38 @@ module watch_engine
    private
    public watcher_t
 
-   !> Main watcher state and methods.
+   !> Accepted configuration, plugin instances, watch graph, and fingerprint baselines.
    !!
-   !! `watcher_t` owns:
-   !! - The effective configuration (`cfg`)
-   !! - Feature plugins (`fm`)
-   !! - Watch list (`files`) plus per-file target masks (`file_mask`)
-   !! - Fingerprinting buffers for change detection (`fp_prev`, `fp_now`)
-   !! - The current manifest key used to detect "rebuild needed" events (`man_prev`)
+   !! File masks and roots describe affected-target membership. `man_prev` stores the
+   !! last manifest/settings key for plugin notifications. A failed manifest refresh
+   !! leaves a retry flag while accepted configuration and watch-list state are retained.
    type watcher_t
+      !> Accepted watcher settings and serialized fpm command.
       type(watch_config_t) :: cfg
+      !> Plugins enabled during initialization.
       type(feature_manager_t) :: fm
 
+      !> Unique normalized watched paths, aligned with masks and fingerprints.
       type(string_t), allocatable :: files(:)
+      !> Per-file root-membership bits for affected run/test target selection.
       integer(int64), allocatable :: file_mask(:)
+      !> Named run/test roots; empty when root-bit mapping is unavailable.
       type(root_info_t), allocatable :: roots(:)
 
+      !> Accepted file fingerprints used as the change-detection baseline.
       integer(int64), allocatable :: fp_prev(:)
+      !> Latest sampled fingerprints; aligned with `files`.
       integer(int64), allocatable :: fp_now(:)
+      !> Reusable 1-based index buffer; only the active changed-count prefix is meaningful.
       integer, allocatable :: changed_idx(:)
 
+      !> Manifest/settings key from the last successful refresh, used for plugin notifications.
       integer(int64) :: man_prev = 0_int64
-      !! Exit status of the most recently executed command (also used by --watch-once).
+      !> Most recent command exit status; zero before a run, propagated by one-shot mode.
       integer :: last_exit = 0
-      !! Last refresh error, used to avoid repeating identical diagnostics.
+      !> Last graph-refresh error text, retained to suppress repeated diagnostics.
       character(len=:), allocatable :: last_refresh_error
-      !! Retry a failed manifest refresh, including its settings and command.
+      !> Retry manifest settings/graph refresh on a later edit or periodic rescan.
       logical :: manifest_refresh_pending = .false.
    contains
       procedure :: init => watcher_init
@@ -61,16 +64,16 @@ module watch_engine
 
 contains
 
-   !> Initialize a watcher instance from configuration.
+   !> Initialize logging, waiting mode, plugins, the watch list, and fingerprints.
    !!
-   !! This routine:
-   !! - Applies low-CPU mode selection to the sleep implementation.
-   !! - Enables requested feature plugins and calls their init/start callbacks.
-   !! - Builds the initial watch list and fingerprints.
-   !! - Optionally performs an initial run (`w%run_on_start`).
+   !! Plugin init/start callbacks precede graph construction. A failed initial
+   !! graph terminates with status 1. Run the full configured command if
+   !! `run_on_start` is enabled, including in one-shot mode.
    subroutine watcher_init(self, cfg)
       class(watcher_t), intent(inout) :: self
+      !! Intended for fresh state; plugin storage and prior command status are not cleared.
       type(watch_config_t), intent(in) :: cfg
+      !! Parsed configuration with allocated model settings and normalized watcher options.
 
       self%cfg = cfg
       call configure_logging(cfg%w)
@@ -87,19 +90,17 @@ contains
       end if
    end subroutine watcher_init
 
-   !> Run the main watch loop until termination.
+   !> Poll until a stop file or termination request is detected.
    !!
-   !! Termination conditions:
-   !! - The sentinel file `.fpm-watch.stop` exists, or
-   !! - The process receives an external termination (e.g., Ctrl+C).
+   !! Return immediately in one-shot mode. Otherwise sleep, fingerprint files,
+   !! debounce detected changes, and resample before acting. A watched manifest
+   !! change or pending manifest refresh reparses settings and refreshes the graph.
+   !! Other edits select an affected-target command and accept sampled fingerprints
+   !! after the command, including failures. Commands run synchronously.
    !!
-   !! Each iteration performs:
-   !! 1. Sleep for `poll` seconds.
-   !! 2. Scan for changes (fingerprints).
-   !! 3. If changes were found, sleep for `debounce` seconds and rescan.
-   !! 4. If `fpm.toml` changed, rebuild watch list.
-   !! 5. Otherwise, run the computed `fpm` command (with target injection
-   !!    for run/test), notify plugins, and accept fingerprints.
+   !! Optional rescans refresh the graph and run the full command if paths or
+   !! fingerprints changed. A pending manifest refresh is retried on later edits
+   !! or rescans. Stop-file checks occur between commands and around waits.
    subroutine watcher_run(self)
       class(watcher_t), intent(inout) :: self
 
@@ -202,9 +203,12 @@ contains
       end if
    end subroutine watcher_run
 
-   !> Handle a manifest change (`fpm.toml`) by rebuilding the watch list.
+   !> Reparse settings, refresh the graph, and run after a manifest change.
    !!
-   !! This also notifies feature plugins via `on_manifest_changed`.
+   !! Pin the current log format. On refresh failure restore the accepted
+   !! configuration and leave a retry pending. On success update waiting mode,
+   !! notify plugins if the manifest/settings key changed, and run the full
+   !! command. `refreshed` reports graph-refresh success, not command success.
    subroutine handle_manifest_change(self, refreshed)
       class(watcher_t), intent(inout) :: self
       logical, intent(out) :: refreshed
@@ -253,9 +257,11 @@ contains
       end do
    end function any_manifest_changed
 
-   !> Run the configured command once without change detection.
+   !> Execute one command cycle with before/after plugin callbacks.
    !!
-   !! Used for the optional "run on start" behavior.
+   !! Plugins may modify the local copy of `cmd0` before execution. Store the
+   !! resulting exit status in `self%last_exit`; command failure does not stop
+   !! the engine. Used for startup, edits, manifest refreshes, and rescans.
    subroutine run_once(self, cmd0)
       class(watcher_t), intent(inout) :: self
       character(len=*), intent(in) :: cmd0
@@ -269,17 +275,22 @@ contains
       call self%fm%on_after_run_all(exitstat, secs)
    end subroutine run_once
 
-   !> Recompute the watch list, rebuild fingerprints, and print/log the result.
+   !> Build a candidate graph and replace the accepted watch-list snapshot.
    !!
-   !! Called:
-   !! - During initialization,
-   !! - When the manifest changes,
-   !! - Periodically when `rescan > 0`.
+   !! `print_header` selects initialization: failures exit with status 1, and
+   !! success prints startup details. Later failures preserve files, masks, roots,
+   !! fingerprints, and accepted model settings; identical diagnostics are suppressed.
+   !! `refreshed` is true only after success. If requested, `watch_changed` compares
+   !! paths and fingerprints with the old snapshot before resetting the baseline.
+   !! Recompute the manifest/settings key after the watch-list plugin callback.
    subroutine rebuild_watch_list(self, print_header, watch_changed, refreshed)
       class(watcher_t), intent(inout) :: self
       logical, intent(in) :: print_header
+      !! True for initial setup (fatal errors and startup logging); false for recoverable refreshes.
       logical, intent(out), optional :: watch_changed
+      !! True on a successful refresh if paths or fingerprints differ from the previous snapshot.
       logical, intent(out), optional :: refreshed
+      !! True only after the candidate graph and new fingerprint baseline are accepted.
 
       integer(int64) :: rate, t0, t1, candidate_manifest_key
       real :: build_secs_total

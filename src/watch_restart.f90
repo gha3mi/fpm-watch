@@ -1,18 +1,10 @@
-!> Supervisor and auto-restart support.
+!> Supervise watcher children and restart them on nonzero exit.
 !!
-!! When enabled, `fpm-watch` can run under a supervisor loop that restarts the
-!! watcher on failure (non-zero exit status).
-!!
-!! Configuration sources:
-!! - CLI flags:
-!!   - `--watch-auto-restart`
-!!   - `--watch-restart-delay <sec>`
-!!   - `--watch-restart-max <n>`
-!!   - `--watch-self <path>`
-!! - `fpm.toml` `[extra.fpm-watch]` keys:
-!!   - `auto-restart`, `restart-delay`, `restart-max`, `self` / `self-exe`
-!!
-!! Low CPU mode is also applied here so the supervisor delay sleeps are idle.
+!! Leading CLI flags override manifest supervisor defaults. A zero child exit
+!! or user interruption ends supervision; other exits restart after the delay,
+!! subject to the restart limit. Command failures only reach the supervisor
+!! if the watcher itself exits nonzero, as in one-shot mode. Child generations
+!! share the parent's selected log format and use distinct cycle-ID prefixes.
 module watch_restart
    use watch_time, only: sleep_seconds, set_low_cpu
    use watch_cmdline, only: get_arg, parse_int, parse_real, quote_arg, starts_with, parse_bool, &
@@ -48,12 +40,12 @@ contains
       end if
    end subroutine maybe_supervise
 
-   !> Run the supervisor loop, restarting the child on non-zero exit.
+   !> Launch watcher children until success, user interruption, or restart exhaustion.
    !!
-   !! The supervisor will:
-   !! - Execute the child command.
-   !! - Exit if the child returns `0`.
-   !! - Otherwise wait `delay0` seconds and restart, until `max0` is reached.
+   !! `max0` counts restarts after the initial launch; nonpositive values are
+   !! unlimited. Clamp `delay0` to zero or greater. Each restart increments the
+   !! child generation. A user interruption or exhausted limit exits with the
+   !! child execution status; a zero child status exits successfully.
    subroutine supervisor_loop(delay0, max0, exe0, log_format)
       real, intent(in) :: delay0
       integer, intent(in) :: max0
@@ -96,11 +88,11 @@ contains
       stop 0
    end subroutine supervisor_loop
 
-   !> Build the command line used to spawn the supervised child.
+   !> Serialize child argv with a generation counter and the parent's log format.
    !!
-   !! The child receives `--watch-child=<restart count>` and inherits most argv tokens, with
-   !! supervisor-only flags removed to avoid recursion.
-   !! The parent's selected format is retained across child restarts.
+   !! Remove supervisor flags and prior log-format/child markers from the leading
+   !! watcher options. Preserve other leading values and every forwarded token
+   !! after the subcommand, quoting each original argv token independently.
    function build_child_command(exe0, log_format, restart_count) result(cmd)
       character(len=*), intent(in) :: exe0
       character(len=*), intent(in) :: log_format
@@ -202,10 +194,12 @@ contains
       exe = "fpm-watch"
    end function choose_self_exe
 
-   !> Parse restart-related flags and apply manifest defaults.
+   !> Apply leading restart flags over manifest supervisor defaults.
    !!
-   !! This routine also applies `--watch-low-cpu` to the sleep implementation
-   !! so supervisor delays do not busy-wait.
+   !! Stop scanning at the subcommand and skip other value-option arguments.
+   !! Leading low-CPU CLI flags also select the supervisor's waiting backend;
+   !! this routine does not read the manifest's low-cpu setting. A child marker
+   !! prevents recursive supervision. Numeric parse errors retain fallback values.
    subroutine parse_restart_flags(auto_restart, restart_delay, restart_max, is_child, self_exe)
       logical, intent(out) :: auto_restart, is_child
       real,    intent(out) :: restart_delay

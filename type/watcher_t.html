@@ -131,10 +131,10 @@
       </a>
       <div id="vars-0" class="collapse">
         <div class="list-group list-group-flush">
-            <a class="list-group-item" href="../type/watcher_t.html#variable-cfg~5">cfg</a>
+            <a class="list-group-item" href="../type/watcher_t.html#variable-cfg~4">cfg</a>
             <a class="list-group-item" href="../type/watcher_t.html#variable-changed_idx~6">changed_idx</a>
             <a class="list-group-item" href="../type/watcher_t.html#variable-file_mask~7">file_mask</a>
-            <a class="list-group-item" href="../type/watcher_t.html#variable-files~15">files</a>
+            <a class="list-group-item" href="../type/watcher_t.html#variable-files~14">files</a>
             <a class="list-group-item" href="../type/watcher_t.html#variable-fm~3">fm</a>
             <a class="list-group-item" href="../type/watcher_t.html#variable-fp_now~4">fp_now</a>
             <a class="list-group-item" href="../type/watcher_t.html#variable-fp_prev~4">fp_prev</a>
@@ -169,7 +169,7 @@
       </a>
       <div id="boundprocs-0" class="collapse">
         <div class="list-group list-group-flush">
-            <a class="list-group-item" href="../type/watcher_t.html#boundprocedure-init~3">init</a>
+            <a class="list-group-item" href="../type/watcher_t.html#boundprocedure-init~2">init</a>
             <a class="list-group-item" href="../type/watcher_t.html#boundprocedure-run">run</a>
         </div>
       </div>
@@ -192,13 +192,10 @@
     <div class="col-md-9" id='text'>
       <h2 id="type-def-statement">
         type, public :: watcher_t</h2>
-    <p>Main watcher state and methods.</p>
-<p><code>watcher_t</code> owns:
-- The effective configuration (<code>cfg</code>)
-- Feature plugins (<code>fm</code>)
-- Watch list (<code>files</code>) plus per-file target masks (<code>file_mask</code>)
-- Fingerprinting buffers for change detection (<code>fp_prev</code>, <code>fp_now</code>)
-- The current manifest key used to detect "rebuild needed" events (<code>man_prev</code>)</p>
+    <p>Accepted configuration, plugin instances, watch graph, and fingerprint baselines.</p>
+<p>File masks and roots describe affected-target membership. <code>man_prev</code> stores the
+last manifest/settings key for plugin notifications. A failed manifest refresh
+leaves a retry flag while accepted configuration and watch-list state are retained.</p>
 <br>      <div class="card">
         <div class="card-header">
           <h3 class="card-title">Inherits</h3>
@@ -423,7 +420,7 @@ large graphs.</div>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-cfg~5"></span>
+              <span class="anchor" id="variable-cfg~4"></span>
               type(<a href='watch_config_t.html'>watch_config_t</a>),
             </td>
               <td>public</td>
@@ -435,7 +432,7 @@ large graphs.</div>
                 <td></td>
                 <td></td>
             <td>
-                
+                <p>Accepted watcher settings and serialized fpm command.</p>
             </td>
         </tr>
         <tr>
@@ -452,7 +449,7 @@ large graphs.</div>
                 <td></td>
                 <td></td>
             <td>
-                
+                <p>Reusable 1-based index buffer; only the active changed-count prefix is meaningful.</p>
             </td>
         </tr>
         <tr>
@@ -469,12 +466,12 @@ large graphs.</div>
                 <td></td>
                 <td></td>
             <td>
-                
+                <p>Per-file root-membership bits for affected run/test target selection.</p>
             </td>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-files~15"></span>
+              <span class="anchor" id="variable-files~14"></span>
               type(string_t),
             </td>
               <td>public,</td>
@@ -486,7 +483,7 @@ large graphs.</div>
                 <td></td>
                 <td></td>
             <td>
-                
+                <p>Unique normalized watched paths, aligned with masks and fingerprints.</p>
             </td>
         </tr>
         <tr>
@@ -503,7 +500,7 @@ large graphs.</div>
                 <td></td>
                 <td></td>
             <td>
-                
+                <p>Plugins enabled during initialization.</p>
             </td>
         </tr>
         <tr>
@@ -520,7 +517,7 @@ large graphs.</div>
                 <td></td>
                 <td></td>
             <td>
-                
+                <p>Latest sampled fingerprints; aligned with <code>files</code>.</p>
             </td>
         </tr>
         <tr>
@@ -537,7 +534,7 @@ large graphs.</div>
                 <td></td>
                 <td></td>
             <td>
-                
+                <p>Accepted file fingerprints used as the change-detection baseline.</p>
             </td>
         </tr>
         <tr>
@@ -554,7 +551,7 @@ large graphs.</div>
 <td> =</td>
                 <td>0</td>
             <td>
-                <p>Last refresh error, used to avoid repeating identical diagnostics.</p>
+                <p>Most recent command exit status; zero before a run, propagated by one-shot mode.</p>
             </td>
         </tr>
         <tr>
@@ -571,7 +568,7 @@ large graphs.</div>
                 <td></td>
                 <td></td>
             <td>
-                <p>Retry a failed manifest refresh, including its settings and command.</p>
+                <p>Last graph-refresh error text, retained to suppress repeated diagnostics.</p>
             </td>
         </tr>
         <tr>
@@ -588,7 +585,7 @@ large graphs.</div>
 <td> =</td>
                 <td>0_int64</td>
             <td>
-                <p>Exit status of the most recently executed command (also used by --watch-once).</p>
+                <p>Manifest/settings key from the last successful refresh, used for plugin notifications.</p>
             </td>
         </tr>
         <tr>
@@ -605,7 +602,7 @@ large graphs.</div>
 <td> =</td>
                 <td>.false.</td>
             <td>
-                
+                <p>Retry manifest settings/graph refresh on a later edit or periodic rescan.</p>
             </td>
         </tr>
         <tr>
@@ -622,7 +619,7 @@ large graphs.</div>
                 <td></td>
                 <td></td>
             <td>
-                
+                <p>Named run/test roots; empty when root-bit mapping is unavailable.</p>
             </td>
         </tr>
     </tbody>
@@ -638,7 +635,7 @@ large graphs.</div>
           <div class="row">
               <div class="card mt-3">
     <div class="card-header codesum">
-      <span class="anchor" id="boundprocedure-init~3"></span>
+      <span class="anchor" id="boundprocedure-init~2"></span>
       <h3>
           procedure, public ::
   <strong>init</strong> => <a href='/home/runner/work/fpm-watch/fpm-watch/doc/proc/watcher_init.html'>watcher_init</a>
@@ -652,7 +649,7 @@ large graphs.</div>
 </h3>
     
 
-  <p>Initialize a watcher instance from configuration.</p><a href="../proc/watcher_init.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+  <p>Initialize logging, waiting mode, plugins, the watch list, and fingerprints.</p><a href="../proc/watcher_init.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -677,7 +674,7 @@ large graphs.</div>
             <td>::</td>
             <td><strong>self</strong></td>
             <td>
-
+<p>Intended for fresh state; plugin storage and prior command status are not cleared.</p>
             </td>
         </tr>
         <tr>
@@ -692,7 +689,7 @@ large graphs.</div>
             <td>::</td>
             <td><strong>cfg</strong></td>
             <td>
-
+<p>Parsed configuration with allocated model settings and normalized watcher options.</p>
             </td>
         </tr>
     </tbody>
@@ -721,7 +718,7 @@ large graphs.</div>
 </h3>
     
 
-  <p>Run the main watch loop until termination.</p><a href="../proc/watcher_run.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+  <p>Poll until a stop file or termination request is detected.</p><a href="../proc/watcher_run.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -763,23 +760,32 @@ large graphs.</div>
     <section>
     <h3><span class="anchor" id="src"></span>Source Code</h3>
     <div class="hl codehilite"><pre><span></span><span class="w">   </span><span class="k">type </span><span class="n">watcher_t</span>
+<span class="w">      </span><span class="c">!&gt; Accepted watcher settings and serialized fpm command.</span>
 <span class="w">      </span><span class="k">type</span><span class="p">(</span><span class="n">watch_config_t</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">cfg</span>
+<span class="w">      </span><span class="c">!&gt; Plugins enabled during initialization.</span>
 <span class="w">      </span><span class="k">type</span><span class="p">(</span><span class="n">feature_manager_t</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">fm</span>
 
+<span class="w">      </span><span class="c">!&gt; Unique normalized watched paths, aligned with masks and fingerprints.</span>
 <span class="w">      </span><span class="k">type</span><span class="p">(</span><span class="n">string_t</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">files</span><span class="p">(:)</span>
+<span class="w">      </span><span class="c">!&gt; Per-file root-membership bits for affected run/test target selection.</span>
 <span class="w">      </span><span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">file_mask</span><span class="p">(:)</span>
+<span class="w">      </span><span class="c">!&gt; Named run/test roots; empty when root-bit mapping is unavailable.</span>
 <span class="w">      </span><span class="k">type</span><span class="p">(</span><span class="n">root_info_t</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">roots</span><span class="p">(:)</span>
 
+<span class="w">      </span><span class="c">!&gt; Accepted file fingerprints used as the change-detection baseline.</span>
 <span class="w">      </span><span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">fp_prev</span><span class="p">(:)</span>
+<span class="w">      </span><span class="c">!&gt; Latest sampled fingerprints; aligned with `files`.</span>
 <span class="w">      </span><span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">fp_now</span><span class="p">(:)</span>
+<span class="w">      </span><span class="c">!&gt; Reusable 1-based index buffer; only the active changed-count prefix is meaningful.</span>
 <span class="w">      </span><span class="kt">integer</span><span class="p">,</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">changed_idx</span><span class="p">(:)</span>
 
+<span class="w">      </span><span class="c">!&gt; Manifest/settings key from the last successful refresh, used for plugin notifications.</span>
 <span class="w">      </span><span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">man_prev</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0_int64</span>
-<span class="w">      </span><span class="c">!! Exit status of the most recently executed command (also used by --watch-once).</span>
+<span class="w">      </span><span class="c">!&gt; Most recent command exit status; zero before a run, propagated by one-shot mode.</span>
 <span class="w">      </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">last_exit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
-<span class="w">      </span><span class="c">!! Last refresh error, used to avoid repeating identical diagnostics.</span>
+<span class="w">      </span><span class="c">!&gt; Last graph-refresh error text, retained to suppress repeated diagnostics.</span>
 <span class="w">      </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">last_refresh_error</span>
-<span class="w">      </span><span class="c">!! Retry a failed manifest refresh, including its settings and command.</span>
+<span class="w">      </span><span class="c">!&gt; Retry manifest settings/graph refresh on a later edit or periodic rescan.</span>
 <span class="w">      </span><span class="kt">logical</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">manifest_refresh_pending</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.</span>
 <span class="w">   </span><span class="k">contains</span>
 <span class="k">      procedure</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">init</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">watcher_init</span>
@@ -807,7 +813,7 @@ large graphs.</div>
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2026-10-12T13:55:54.369963+0000             </p>
+ on 2026-10-12T14:42:46.282582+0000             </p>
           </div>
         </div>
         <br>

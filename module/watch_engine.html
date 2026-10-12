@@ -186,34 +186,32 @@
     </div>
 
     <div class="col-md-9" id='text'>
-      <p>Watch loop engine and watcher state.</p>
-<p>This module contains the <code>watcher_t</code> type, which:
-- Builds and maintains the watch list,
-- Tracks file fingerprints for change detection,
-- Runs <code>fpm</code> commands when changes are detected,
-- Coordinates optional feature plugins.</p>
-<p>The engine is intentionally "poll-based" to remain portable across platforms.</p>
+      <p>Portable polling, watch-list refreshes, and synchronous command execution.</p>
+<p>The engine debounces changes, maps source edits to run/test targets, and
+refreshes the graph after watched manifest edits or optional periodic rescans.
+Failed refreshes preserve the accepted watch list. Commands block polling;
+ordinary command failures do not terminate continuous watching.</p>
 <br>          <div class="card mb-4">
       <h3 class="card-header card-title bg-light">Uses</h3>
       <div class="card-body">
         <ul class="list-group list-group-flush">
             <li class="list-group-item">
               <ul class="list-inline">
-                  <li class="list-inline-item"><a href='watch_log.html'>watch_log</a></li>
-                  <li class="list-inline-item"><a href='watch_fpm_graph.html'>watch_fpm_graph</a></li>
                   <li class="list-inline-item"><a href='watch_banner.html'>watch_banner</a></li>
-                  <li class="list-inline-item"><a href='watch_feature_factory.html'>watch_feature_factory</a></li>
                   <li class="list-inline-item"><a href='http://fortranwiki.org/fortran/show/iso_fortran_env'>iso_fortran_env</a></li>
-                  <li class="list-inline-item"><a href='watch_time.html'>watch_time</a></li>
                   <li class="list-inline-item"><a href='watch_feature_manager.html'>watch_feature_manager</a></li>
-                  <li class="list-inline-item">fpm_error</li>
-                  <li class="list-inline-item"><a href='watch_cli.html'>watch_cli</a></li>
-                  <li class="list-inline-item"><a href='watch_exec.html'>watch_exec</a></li>
-                  <li class="list-inline-item">fpm_strings</li>
                   <li class="list-inline-item"><a href='watch_types.html'>watch_types</a></li>
+                  <li class="list-inline-item"><a href='watch_log.html'>watch_log</a></li>
+                  <li class="list-inline-item">fpm_error</li>
                   <li class="list-inline-item"><a href='watch_fingerprint.html'>watch_fingerprint</a></li>
-                  <li class="list-inline-item"><a href='watch_platform.html'>watch_platform</a></li>
+                  <li class="list-inline-item"><a href='watch_feature_factory.html'>watch_feature_factory</a></li>
+                  <li class="list-inline-item"><a href='watch_fpm_graph.html'>watch_fpm_graph</a></li>
+                  <li class="list-inline-item"><a href='watch_time.html'>watch_time</a></li>
+                  <li class="list-inline-item">fpm_strings</li>
+                  <li class="list-inline-item"><a href='watch_exec.html'>watch_exec</a></li>
                   <li class="list-inline-item">fpm_filesystem</li>
+                  <li class="list-inline-item"><a href='watch_cli.html'>watch_cli</a></li>
+                  <li class="list-inline-item"><a href='watch_platform.html'>watch_platform</a></li>
               </ul>
             </li>
             <li class="list-group-item">
@@ -1164,7 +1162,7 @@ large graphs.</div>
       </h3>
     </div>
     <div class="card-body">
-      <p>Main watcher state and methods.</p><a href="../type/watcher_t.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+      <p>Accepted configuration, plugin instances, watch graph, and fingerprint baselines.</p><a href="../type/watcher_t.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
         <h4>Components</h4>
           <table class="table table-striped varlist">
@@ -1179,7 +1177,7 @@ large graphs.</div>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-cfg~5"></span>
+              <span class="anchor" id="variable-cfg~4"></span>
               type(<a href='../type/watch_config_t.html'>watch_config_t</a>),
             </td>
               <td>public</td>
@@ -1191,7 +1189,7 @@ large graphs.</div>
                 <td></td>
                 <td></td>
             <td>
-
+<p>Accepted watcher settings and serialized fpm command.</p>
             </td>
         </tr>
         <tr>
@@ -1208,7 +1206,7 @@ large graphs.</div>
                 <td></td>
                 <td></td>
             <td>
-
+<p>Reusable 1-based index buffer; only the active changed-count prefix is meaningful.</p>
             </td>
         </tr>
         <tr>
@@ -1225,12 +1223,12 @@ large graphs.</div>
                 <td></td>
                 <td></td>
             <td>
-
+<p>Per-file root-membership bits for affected run/test target selection.</p>
             </td>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-files~15"></span>
+              <span class="anchor" id="variable-files~14"></span>
               type(string_t),
             </td>
               <td>public,</td>
@@ -1242,7 +1240,7 @@ large graphs.</div>
                 <td></td>
                 <td></td>
             <td>
-
+<p>Unique normalized watched paths, aligned with masks and fingerprints.</p>
             </td>
         </tr>
         <tr>
@@ -1259,7 +1257,7 @@ large graphs.</div>
                 <td></td>
                 <td></td>
             <td>
-
+<p>Plugins enabled during initialization.</p>
             </td>
         </tr>
         <tr>
@@ -1276,7 +1274,7 @@ large graphs.</div>
                 <td></td>
                 <td></td>
             <td>
-
+<p>Latest sampled fingerprints; aligned with <code>files</code>.</p>
             </td>
         </tr>
         <tr>
@@ -1293,7 +1291,7 @@ large graphs.</div>
                 <td></td>
                 <td></td>
             <td>
-
+<p>Accepted file fingerprints used as the change-detection baseline.</p>
             </td>
         </tr>
         <tr>
@@ -1310,7 +1308,7 @@ large graphs.</div>
 <td> =</td>
                 <td>0</td>
             <td>
-<p>Last refresh error, used to avoid repeating identical diagnostics.</p>
+<p>Most recent command exit status; zero before a run, propagated by one-shot mode.</p>
             </td>
         </tr>
         <tr>
@@ -1327,7 +1325,7 @@ large graphs.</div>
                 <td></td>
                 <td></td>
             <td>
-<p>Retry a failed manifest refresh, including its settings and command.</p>
+<p>Last graph-refresh error text, retained to suppress repeated diagnostics.</p>
             </td>
         </tr>
         <tr>
@@ -1344,7 +1342,7 @@ large graphs.</div>
 <td> =</td>
                 <td>0_int64</td>
             <td>
-<p>Exit status of the most recently executed command (also used by --watch-once).</p>
+<p>Manifest/settings key from the last successful refresh, used for plugin notifications.</p>
             </td>
         </tr>
         <tr>
@@ -1361,7 +1359,7 @@ large graphs.</div>
 <td> =</td>
                 <td>.false.</td>
             <td>
-
+<p>Retry manifest settings/graph refresh on a later edit or periodic rescan.</p>
             </td>
         </tr>
         <tr>
@@ -1378,7 +1376,7 @@ large graphs.</div>
                 <td></td>
                 <td></td>
             <td>
-
+<p>Named run/test roots; empty when root-bit mapping is unavailable.</p>
             </td>
         </tr>
     </tbody>
@@ -1392,7 +1390,7 @@ large graphs.</div>
           <tbody>
               <tr>
                 <td>  procedure, public ::
-  <strong><a href='../type/watcher_t.html#boundprocedure-init~3'>init</a></strong> => <a href='/home/runner/work/fpm-watch/fpm-watch/doc/proc/watcher_init.html'>watcher_init</a></td>
+  <strong><a href='../type/watcher_t.html#boundprocedure-init~2'>init</a></strong> => <a href='/home/runner/work/fpm-watch/fpm-watch/doc/proc/watcher_init.html'>watcher_init</a></td>
                   <td></td>
               </tr>
               <tr>
@@ -1430,7 +1428,7 @@ large graphs.</div>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-files~16"></span>
+              <span class="anchor" id="variable-files~15"></span>
               type(string_t),
             </td>
 <td>intent(in),</td>
@@ -1495,7 +1493,7 @@ large graphs.</div>
 </h3></div>
     <div class="card-body">
           
-  <p>Handle a manifest change (<code>fpm.toml</code>) by rebuilding the watch list.</p><a href="../proc/handle_manifest_change.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+  <p>Reparse settings, refresh the graph, and run after a manifest change.</p><a href="../proc/handle_manifest_change.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -1510,7 +1508,7 @@ large graphs.</div>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-self~20"></span>
+              <span class="anchor" id="variable-self~18"></span>
               class(<a href='../type/watcher_t.html'>watcher_t</a>),
             </td>
 <td>intent(inout)</td>
@@ -1550,7 +1548,7 @@ large graphs.</div>
 </h3></div>
     <div class="card-body">
           
-  <p>Recompute the watch list, rebuild fingerprints, and print/log the result.</p><a href="../proc/rebuild_watch_list.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+  <p>Build a candidate graph and replace the accepted watch-list snapshot.</p><a href="../proc/rebuild_watch_list.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -1565,7 +1563,7 @@ large graphs.</div>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-self~22"></span>
+              <span class="anchor" id="variable-self~20"></span>
               class(<a href='../type/watcher_t.html'>watcher_t</a>),
             </td>
 <td>intent(inout)</td>
@@ -1590,7 +1588,7 @@ large graphs.</div>
             <td>::</td>
             <td><strong>print_header</strong></td>
             <td>
-
+<p>True for initial setup (fatal errors and startup logging); false for recoverable refreshes.</p>
             </td>
         </tr>
         <tr>
@@ -1605,7 +1603,7 @@ large graphs.</div>
             <td>::</td>
             <td><strong>watch_changed</strong></td>
             <td>
-
+<p>True on a successful refresh if paths or fingerprints differ from the previous snapshot.</p>
             </td>
         </tr>
         <tr>
@@ -1620,7 +1618,7 @@ large graphs.</div>
             <td>::</td>
             <td><strong>refreshed</strong></td>
             <td>
-
+<p>True only after the candidate graph and new fingerprint baseline are accepted.</p>
             </td>
         </tr>
     </tbody>
@@ -1635,7 +1633,7 @@ large graphs.</div>
 </h3></div>
     <div class="card-body">
           
-  <p>Run the configured command once without change detection.</p><a href="../proc/run_once.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+  <p>Execute one command cycle with before/after plugin callbacks.</p><a href="../proc/run_once.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -1650,7 +1648,7 @@ large graphs.</div>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-self~21"></span>
+              <span class="anchor" id="variable-self~19"></span>
               class(<a href='../type/watcher_t.html'>watcher_t</a>),
             </td>
 <td>intent(inout)</td>
@@ -1690,7 +1688,7 @@ large graphs.</div>
 </h3></div>
     <div class="card-body">
           
-  <p>Initialize a watcher instance from configuration.</p><a href="../proc/watcher_init.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+  <p>Initialize logging, waiting mode, plugins, the watch list, and fingerprints.</p><a href="../proc/watcher_init.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -1705,7 +1703,7 @@ large graphs.</div>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-self~18"></span>
+              <span class="anchor" id="variable-self~16"></span>
               class(<a href='../type/watcher_t.html'>watcher_t</a>),
             </td>
 <td>intent(inout)</td>
@@ -1715,12 +1713,12 @@ large graphs.</div>
             <td>::</td>
             <td><strong>self</strong></td>
             <td>
-
+<p>Intended for fresh state; plugin storage and prior command status are not cleared.</p>
             </td>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-cfg~6"></span>
+              <span class="anchor" id="variable-cfg~5"></span>
               type(<a href='../type/watch_config_t.html'>watch_config_t</a>),
             </td>
 <td>intent(in)</td>
@@ -1730,7 +1728,7 @@ large graphs.</div>
             <td>::</td>
             <td><strong>cfg</strong></td>
             <td>
-
+<p>Parsed configuration with allocated model settings and normalized watcher options.</p>
             </td>
         </tr>
     </tbody>
@@ -1745,7 +1743,7 @@ large graphs.</div>
 </h3></div>
     <div class="card-body">
           
-  <p>Run the main watch loop until termination.</p><a href="../proc/watcher_run.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+  <p>Poll until a stop file or termination request is detected.</p><a href="../proc/watcher_run.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -1760,7 +1758,7 @@ large graphs.</div>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-self~19"></span>
+              <span class="anchor" id="variable-self~17"></span>
               class(<a href='../type/watcher_t.html'>watcher_t</a>),
             </td>
 <td>intent(inout)</td>
@@ -1803,7 +1801,7 @@ large graphs.</div>
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2026-10-12T13:55:54.369963+0000             </p>
+ on 2026-10-12T14:42:46.282582+0000             </p>
           </div>
         </div>
         <br>

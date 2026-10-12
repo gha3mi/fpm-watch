@@ -91,12 +91,12 @@
 <!--active-->			   <tr class="">
                  <td><a href='../module/watch_cli.html'>watch_cli</a></td>
                  <td><a href='../sourcefile/watch_cli.f90.html'>watch_cli.f90</a></td>
-                 <td><p>Command-line parsing and configuration assembly.</p><a href="../module/watch_cli.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+                 <td><p>Assemble watcher options, typed fpm settings, and a serialized command.</p><a href="../module/watch_cli.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 <!---->			   <tr class="active">
                  <td><a href='../module/watch_cmdline.html'>watch_cmdline</a></td>
                  <td><a href='../sourcefile/watch_cmdline.f90.html'>watch_cmdline.f90</a></td>
-                 <td><p>Command-line helpers.</p><a href="../module/watch_cmdline.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+                 <td><p>Read argv tokens, parse option values, and serialize command arguments.</p><a href="../module/watch_cmdline.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 <!--active-->			   <tr class="">
                  <td><a href='../module/watch_cmdsplice.html'>watch_cmdsplice</a></td>
@@ -106,17 +106,17 @@
 <!---->			   <tr class="active">
                  <td><a href='../module/watch_config.html'>watch_config</a></td>
                  <td><a href='../sourcefile/watch_config.f90.html'>watch_config.f90</a></td>
-                 <td><p>Project configuration and defaults.</p><a href="../module/watch_config.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+                 <td><p>Read watcher and supervisor defaults through fpm's TOML interface.</p><a href="../module/watch_config.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 <!--active-->			   <tr class="">
                  <td><a href='../module/watch_engine.html'>watch_engine</a></td>
                  <td><a href='../sourcefile/watch_engine.f90.html'>watch_engine.f90</a></td>
-                 <td><p>Watch loop engine and watcher state.</p><a href="../module/watch_engine.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+                 <td><p>Portable polling, watch-list refreshes, and synchronous command execution.</p><a href="../module/watch_engine.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 <!---->			   <tr class="active">
                  <td><a href='../module/watch_exec.html'>watch_exec</a></td>
                  <td><a href='../sourcefile/watch_exec.f90.html'>watch_exec.f90</a></td>
-                 <td><p>Command execution and run reporting.</p><a href="../module/watch_exec.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+                 <td><p>Select affected targets, execute fpm, and emit command-cycle events.</p><a href="../module/watch_exec.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 <!--active-->			   <tr class="">
                  <td><a href='../module/watch_feat_stats.html'>watch_feat_stats</a></td>
@@ -126,12 +126,12 @@
 <!---->			   <tr class="active">
                  <td><a href='../module/watch_feature_api.html'>watch_feature_api</a></td>
                  <td><a href='../sourcefile/watch_feature_api.f90.html'>watch_feature_api.f90</a></td>
-                 <td><p>Feature plugin API.</p><a href="../module/watch_feature_api.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+                 <td><p>Synchronous watcher-plugin callbacks with overridable no-op defaults.</p><a href="../module/watch_feature_api.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 <!--active-->			   <tr class="">
                  <td><a href='../module/watch_feature_factory.html'>watch_feature_factory</a></td>
                  <td><a href='../sourcefile/watch_feature_factory.f90.html'>watch_feature_factory.f90</a></td>
-                 <td><p>Feature enablement and factory wiring.</p><a href="../module/watch_feature_factory.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+                 <td><p>Enable built-in watcher plugins from <code>watch_opts_t%enabled_features</code>.</p><a href="../module/watch_feature_factory.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 <!---->			   <tr class="active">
                  <td><a href='../module/watch_feature_manager.html'>watch_feature_manager</a></td>
@@ -141,37 +141,37 @@
 <!--active-->			   <tr class="">
                  <td><a href='../module/watch_filter.html'>watch_filter</a></td>
                  <td><a href='../sourcefile/watch_filter.f90.html'>watch_filter.f90</a></td>
-                 <td><p>Watch list filtering and path normalization.</p><a href="../module/watch_filter.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+                 <td><p>Normalize paths and filter the computed watch list with fpm globs.</p><a href="../module/watch_filter.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 <!---->			   <tr class="active">
                  <td><a href='../module/watch_fingerprint.html'>watch_fingerprint</a></td>
                  <td><a href='../sourcefile/watch_fingerprint.f90.html'>watch_fingerprint.f90</a></td>
-                 <td><p>Lightweight file fingerprinting for change detection.</p><a href="../module/watch_fingerprint.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+                 <td><p>Sample file contents and compare watch-list snapshots.</p><a href="../module/watch_fingerprint.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 <!--active-->			   <tr class="">
                  <td><a href='../module/watch_fpm_graph.html'>watch_fpm_graph</a></td>
                  <td><a href='../sourcefile/watch_fpm_graph.f90.html'>watch_fpm_graph.f90</a></td>
-                 <td><p>Compute watch lists from the <code>fpm</code> dependency graph.</p><a href="../module/watch_fpm_graph.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+                 <td><p>Build watch lists from fpm's manifest, model, and target graph.</p><a href="../module/watch_fpm_graph.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 <!---->			   <tr class="active">
                  <td><a href='../module/watch_log.html'>watch_log</a></td>
                  <td><a href='../sourcefile/watch_log.f90.html'>watch_log.f90</a></td>
-                 <td><p>Shared event logging for terminal text, JSON Lines, and logfmt.</p><a href="../module/watch_log.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+                 <td><p>Emit terminal text, JSON Lines, and logfmt using process-wide settings.</p><a href="../module/watch_log.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 <!--active-->			   <tr class="">
                  <td><a href='../module/watch_platform.html'>watch_platform</a></td>
                  <td><a href='../sourcefile/watch_platform.f90.html'>watch_platform.f90</a></td>
-                 <td><p>Platform-specific helpers.</p><a href="../module/watch_platform.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+                 <td><p>Portable synchronous process execution and stdout redirection.</p><a href="../module/watch_platform.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 <!---->			   <tr class="active">
                  <td><a href='../module/watch_restart.html'>watch_restart</a></td>
                  <td><a href='../sourcefile/watch_restart.f90.html'>watch_restart.f90</a></td>
-                 <td><p>Supervisor and auto-restart support.</p><a href="../module/watch_restart.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+                 <td><p>Supervise watcher children and restart them on nonzero exit.</p><a href="../module/watch_restart.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 <!--active-->			   <tr class="">
                  <td><a href='../module/watch_time.html'>watch_time</a></td>
                  <td><a href='../sourcefile/watch_time.f90.html'>watch_time.f90</a></td>
-                 <td><p>Sleep utilities and low-CPU waiting.</p><a href="../module/watch_time.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+                 <td><p>Choose busy waiting or OS sleep for polling, debounce, and restart delays.</p><a href="../module/watch_time.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 <!---->			   <tr class="active">
                  <td><a href='../module/watch_types.html'>watch_types</a></td>
@@ -1296,7 +1296,7 @@ large graphs.</div>
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2026-10-12T13:55:54.369963+0000             </p>
+ on 2026-10-12T14:42:46.282582+0000             </p>
           </div>
         </div>
         <br>

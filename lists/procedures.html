@@ -87,7 +87,7 @@
                  <td><a href='../proc/accept_changes.html'>accept_changes</a></td>
                  <td><a href='../module/watch_fingerprint.html'>watch_fingerprint</a></td>
                  <td>Subroutine</td>
-                 <td><p>Accept the new fingerprints for the subset of changed indices.</p><a href="../proc/accept_changes.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+                 <td><p>Copy sampled fingerprints into the baseline for valid changed indices.</p><a href="../proc/accept_changes.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/add_features_csv.html'>add_features_csv</a></td>
@@ -117,31 +117,31 @@
                  <td><a href='../proc/apply_watch_flag.html'>apply_watch_flag</a></td>
                  <td><a href='../module/watch_cli.html'>watch_cli</a></td>
                  <td>Subroutine</td>
-                 <td><p>Apply a single <code>--watch-*</code> flag to the watcher options.</p><a href="../proc/apply_watch_flag.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+                 <td><p>Consume one leading watcher flag and normalize its options.</p><a href="../proc/apply_watch_flag.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/apply_watch_from_manifest.html'>apply_watch_from_manifest</a></td>
                  <td><a href='../module/watch_config.html'>watch_config</a></td>
                  <td>Subroutine</td>
-                 <td><p>Apply configuration overrides from <code>fpm.toml</code> <code>[extra.fpm-watch]</code>.</p><a href="../proc/apply_watch_from_manifest.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+                 <td><p>Replace recognized options from <code>[extra.fpm-watch]</code> and normalize them.</p><a href="../proc/apply_watch_from_manifest.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/begin_raw_output.html'>begin_raw_output</a></td>
                  <td><a href='../module/watch_platform.html'>watch_platform</a></td>
                  <td>Subroutine</td>
-                 <td><p>Temporarily send fpm library output to stderr during model operations.</p></td>
+                 <td><p>Optionally redirect process stdout to stderr, flushing Fortran output first.</p><a href="../proc/begin_raw_output.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/build_child_command.html'>build_child_command</a></td>
                  <td><a href='../module/watch_restart.html'>watch_restart</a></td>
                  <td>Function</td>
-                 <td><p>Build the command line used to spawn the supervised child.</p><a href="../proc/build_child_command.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+                 <td><p>Serialize child argv with a generation counter and the parent's log format.</p><a href="../proc/build_child_command.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/build_run_command.html'>build_run_command</a></td>
                  <td><a href='../module/watch_exec.html'>watch_exec</a></td>
                  <td>Function</td>
-                 <td><p>Construct the effective command to run based on changes and target masks.</p><a href="../proc/build_run_command.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+                 <td><p>Inject affected root names into an unpinned run/test command.</p><a href="../proc/build_run_command.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/choose_self_exe.html'>choose_self_exe</a></td>
@@ -159,19 +159,19 @@
                  <td><a href='../proc/compute_watch_files_from_settings.html'>compute_watch_files_from_settings</a></td>
                  <td><a href='../module/watch_fpm_graph.html'>watch_fpm_graph</a></td>
                  <td>Subroutine</td>
-                 <td><p>Compute watched files and masks from current <code>fpm</code> settings.</p><a href="../proc/compute_watch_files_from_settings.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+                 <td><p>Build fpm's model and return the filtered source/include/manifest closure.</p><a href="../proc/compute_watch_files_from_settings.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/configure_logging.html'>configure_logging</a></td>
                  <td><a href='../module/watch_log.html'>watch_log</a></td>
                  <td>Subroutine</td>
-                 <td><p>Set process logging options after configuration has been accepted.</p></td>
+                 <td><p>Copy format, verbosity, and debug options into process-wide logger state.</p><a href="../proc/configure_logging.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/contains_path_fragment.html'>contains_path_fragment</a></td>
                  <td><a href='../module/watch_filter.html'>watch_filter</a></td>
                  <td>Function</td>
-                 <td></td>
+                 <td><p>Test for a slash-delimited interior or trailing path fragment.</p></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/default_build_dir.html'>default_build_dir</a></td>
@@ -183,13 +183,13 @@
                  <td><a href='../proc/dfs_mark_bool.html'>dfs_mark_bool</a></td>
                  <td><a href='../module/watch_fpm_graph.html'>watch_fpm_graph</a></td>
                  <td>Subroutine</td>
-                 <td></td>
+                 <td><p>Recursively mark reachable targets in <code>visited</code>, skipping already visited nodes.</p></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/dfs_mark_mask.html'>dfs_mark_mask</a></td>
                  <td><a href='../module/watch_fpm_graph.html'>watch_fpm_graph</a></td>
                  <td>Subroutine</td>
-                 <td></td>
+                 <td><p>Recursively OR one root bit into reachable target masks, skipping already marked nodes.</p></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/enable_features.html'>enable_features</a></td>
@@ -201,37 +201,37 @@
                  <td><a href='../proc/end_raw_output.html'>end_raw_output</a></td>
                  <td><a href='../module/watch_platform.html'>watch_platform</a></td>
                  <td>Subroutine</td>
-                 <td><p>Flush fpm library output and restore the original stdout destination.</p></td>
+                 <td><p>Flush raw library output, restore stdout, and close the saved C descriptor.</p><a href="../proc/end_raw_output.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/ends_with.html'>ends_with</a></td>
                  <td><a href='../module/watch_filter.html'>watch_filter</a></td>
                  <td>Function</td>
-                 <td></td>
+                 <td><p>Compare right-trimmed suffixes; an empty suffix matches every string.</p></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/escape_text.html'>escape_text</a></td>
                  <td><a href='../module/watch_log.html'>watch_log</a></td>
                  <td>Function</td>
-                 <td><p>Escape controls for a physical line, and JSON delimiters when requested.</p></td>
+                 <td><p>Escape control bytes so a message stays on one physical line.</p><a href="../proc/escape_text.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/execute_command.html'>execute_command</a></td>
                  <td><a href='../module/watch_platform.html'>watch_platform</a></td>
                  <td>Subroutine</td>
-                 <td><p>Execute a command while preserving user interruption requests.</p><a href="../proc/execute_command.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+                 <td><p>Wait for a command and return its status while latching handled user interrupts.</p><a href="../proc/execute_command.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/feat_after_noop.html'>feat_after_noop</a></td>
                  <td><a href='../module/watch_feature_api.html'>watch_feature_api</a></td>
                  <td>Subroutine</td>
-                 <td><p>No-op callback invoked after executing the command.</p></td>
+                 <td><p>No-op completion callback receiving the command status and elapsed seconds, including failures.</p></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/feat_before_noop.html'>feat_before_noop</a></td>
                  <td><a href='../module/watch_feature_api.html'>watch_feature_api</a></td>
                  <td>Subroutine</td>
-                 <td><p>No-op callback invoked just before executing the command.</p></td>
+                 <td><p>No-op command callback; overrides may replace the allocated command before execution.</p></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/feat_change_noop.html'>feat_change_noop</a></td>
@@ -249,7 +249,7 @@
                  <td><a href='../proc/feat_list_noop.html'>feat_list_noop</a></td>
                  <td><a href='../module/watch_feature_api.html'>watch_feature_api</a></td>
                  <td>Subroutine</td>
-                 <td><p>No-op callback for watch list rebuild completion.</p></td>
+                 <td><p>No-op watch-list callback; overrides must preserve file/root alignment with engine masks.</p></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/feat_manifest_noop.html'>feat_manifest_noop</a></td>
@@ -267,19 +267,19 @@
                  <td><a href='../proc/file_fingerprint.html'>file_fingerprint</a></td>
                  <td><a href='../module/watch_fingerprint.html'>watch_fingerprint</a></td>
                  <td>Function</td>
-                 <td><p>Compute a fingerprint for a file path.</p><a href="../proc/file_fingerprint.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+                 <td><p>Mix file size with up to three sampled blocks of at most 4096 bytes each.</p><a href="../proc/file_fingerprint.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/filter_watch_files.html'>filter_watch_files</a></td>
                  <td><a href='../module/watch_filter.html'>watch_filter</a></td>
                  <td>Subroutine</td>
-                 <td><p>Apply include/ignore rules to the watch list.</p><a href="../proc/filter_watch_files.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+                 <td><p>Filter normalized paths and optional aligned masks, preserving order.</p><a href="../proc/filter_watch_files.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/find_ptr_index.html'>find_ptr_index</a></td>
                  <td><a href='../module/watch_fpm_graph.html'>watch_fpm_graph</a></td>
                  <td>Function</td>
-                 <td></td>
+                 <td><p>Return the first 1-based index associated with target pointer <code>p</code>, or zero if absent.</p></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/fm_add.html'>fm_add</a></td>
@@ -291,25 +291,25 @@
                  <td><a href='../proc/fnv1a_mix_i64.html'>fnv1a_mix_i64</a></td>
                  <td><a href='../module/watch_fingerprint.html'>watch_fingerprint</a></td>
                  <td>Subroutine</td>
-                 <td><p>Mix a single 64-bit value into a 64-bit FNV-1a state.</p></td>
+                 <td><p>XOR one integer into the hash state, then multiply by the FNV prime.</p></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/fnv1a_mix_str.html'>fnv1a_mix_str</a></td>
                  <td><a href='../module/watch_fingerprint.html'>watch_fingerprint</a></td>
                  <td>Subroutine</td>
-                 <td><p>Mix a string into a 64-bit FNV-1a state.</p></td>
+                 <td><p>Mix each byte of a right-trimmed string using XOR and the FNV prime.</p></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/format_log_record.html'>format_log_record</a></td>
                  <td><a href='../module/watch_log.html'>watch_log</a></td>
                  <td>Function</td>
-                 <td><p>Render a record without performing I/O or reading the clock.</p></td>
+                 <td><p>Render text, JSON, or logfmt without logging I/O or reading the clock.</p><a href="../proc/format_log_record.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/fpm_option_value.html'>fpm_option_value</a></td>
                  <td><a href='../module/watch_cli.html'>watch_cli</a></td>
                  <td>Function</td>
-                 <td><p>Read an fpm option value from <code>--key=value</code> or the following argv token.</p></td>
+                 <td><p>Read <code>--key=value</code>, or advance <code>i</code> to the next argv token for an option value.</p><a href="../proc/fpm_option_value.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 			   <tr>
                  <td><a href='../interface/fpm_watch_execute.html'>fpm_watch_execute</a></td>
@@ -333,26 +333,25 @@
                  <td><a href='../interface/fpm_watch_sleep_seconds.html'>fpm_watch_sleep_seconds</a></td>
                  <td><a href='../module/watch_time.html'>watch_time</a></td>
                  <td>Interface</td>
-                 <td><p>C shim providing a portable OS sleep implementation.</p><a href="../interface/fpm_watch_sleep_seconds.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+                 <td><p>Binding to the C implementation of portable OS sleep.</p></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/ftoa.html'>ftoa</a></td>
                  <td><a href='../module/watch_util.html'>watch_util</a></td>
                  <td>Function</td>
-                 <td><p>Format a real number with a leading zero and configurable decimal places.
-Scientific notation is used if the fixed-width buffer would overflow.</p></td>
+                 <td><p>Format a real using two decimal places by default and a leading zero.</p><a href="../proc/ftoa.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/gather_files_with_mask.html'>gather_files_with_mask</a></td>
                  <td><a href='../module/watch_fpm_graph.html'>watch_fpm_graph</a></td>
                  <td>Subroutine</td>
-                 <td></td>
+                 <td><p>Collect visited source targets and resolved includes with aligned root masks.</p><a href="../proc/gather_files_with_mask.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/get_arg.html'>get_arg</a></td>
                  <td><a href='../module/watch_cmdline.html'>watch_cmdline</a></td>
                  <td>Function</td>
-                 <td><p>Retrieve a command-line argument as an allocatable string.</p></td>
+                 <td><p>Return argv entry <code>i</code>, or an empty string for a missing, empty, or unreadable argument.</p></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/get_restart_defaults.html'>get_restart_defaults</a></td>
@@ -364,19 +363,19 @@ Scientific notation is used if the fixed-width buffer would overflow.</p></td>
                  <td><a href='../proc/handle_graph_error.html'>handle_graph_error</a></td>
                  <td><a href='../module/watch_fpm_graph.html'>watch_fpm_graph</a></td>
                  <td>Subroutine</td>
-                 <td><p>Return a graph error to the caller, or report a fatal initial configuration error.</p></td>
+                 <td><p>Transfer <code>err</code> to an optional error output, or log its stage and exit with status 1.</p></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/handle_manifest_change.html'>handle_manifest_change</a></td>
                  <td><a href='../module/watch_engine.html'>watch_engine</a></td>
                  <td>Subroutine</td>
-                 <td><p>Handle a manifest change (<code>fpm.toml</code>) by rebuilding the watch list.</p><a href="../proc/handle_manifest_change.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+                 <td><p>Reparse settings, refresh the graph, and run after a manifest change.</p><a href="../proc/handle_manifest_change.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/hash_block.html'>hash_block</a></td>
                  <td><a href='../module/watch_fingerprint.html'>watch_fingerprint</a></td>
                  <td>Subroutine</td>
-                 <td><p>Hash a single file block at a specific stream position.</p></td>
+                 <td><p>Mix bytes from a 1-based stream position; skip the block if its read fails.</p></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/init_all.html'>init_all</a></td>
@@ -388,7 +387,7 @@ Scientific notation is used if the fixed-width buffer would overflow.</p></td>
                  <td><a href='../proc/init_build_settings.html'>init_build_settings</a></td>
                  <td><a href='../module/watch_cli.html'>watch_cli</a></td>
                  <td>Subroutine</td>
-                 <td><p>Populate <code>settings</code> with argv overrides of fpm environment defaults.</p><a href="../proc/init_build_settings.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+                 <td><p>Copy parsed build and toolchain values into a typed fpm settings object.</p><a href="../proc/init_build_settings.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/init_fingerprints.html'>init_fingerprints</a></td>
@@ -400,19 +399,19 @@ Scientific notation is used if the fixed-width buffer would overflow.</p></td>
                  <td><a href='../proc/inject_names_into_cmd.html'>inject_names_into_cmd</a></td>
                  <td><a href='../module/watch_cmdsplice.html'>watch_cmdsplice</a></td>
                  <td>Function</td>
-                 <td><p>Inject target names into a command line while respecting a <code>--</code> delimiter.</p><a href="../proc/inject_names_into_cmd.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+                 <td><p>Insert already serialized names after fpm options and before a <code>--</code> token.</p><a href="../proc/inject_names_into_cmd.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/is_ignored_path.html'>is_ignored_path</a></td>
                  <td><a href='../module/watch_filter.html'>watch_filter</a></td>
                  <td>Function</td>
-                 <td><p>Identify paths that should be ignored due to being inside the build directory.</p><a href="../proc/is_ignored_path.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+                 <td><p>Test normalized paths against a build directory or its slash-delimited fragments.</p><a href="../proc/is_ignored_path.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/is_in_dep_dirs.html'>is_in_dep_dirs</a></td>
                  <td><a href='../module/watch_fpm_graph.html'>watch_fpm_graph</a></td>
                  <td>Function</td>
-                 <td></td>
+                 <td><p>Test a normalized path against nonempty normalized dependency-directory prefixes.</p></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/is_run_or_test.html'>is_run_or_test</a></td>
@@ -430,7 +429,7 @@ Scientific notation is used if the fixed-width buffer would overflow.</p></td>
                  <td><a href='../proc/is_watch_flag.html'>is_watch_flag</a></td>
                  <td><a href='../module/watch_cli.html'>watch_cli</a></td>
                  <td>Function</td>
-                 <td><p>Detect whether an argv token is a watcher-specific flag.</p><a href="../proc/is_watch_flag.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+                 <td><p>Test for the <code>--watch-</code> prefix; supported flag names are validated separately.</p></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/is_windows.html'>is_windows</a></td>
@@ -442,7 +441,7 @@ Scientific notation is used if the fixed-width buffer would overflow.</p></td>
                  <td><a href='../proc/join_argv.html'>join_argv</a></td>
                  <td><a href='../module/watch_cmdline.html'>watch_cmdline</a></td>
                  <td>Function</td>
-                 <td><p>Join a range of argv entries into a single command-line string.</p><a href="../proc/join_argv.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+                 <td><p>Serialize argv entries from <code>i1</code> through <code>i2</code> with spaces and platform quoting.</p><a href="../proc/join_argv.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/join_csv.html'>join_csv</a></td>
@@ -454,13 +453,13 @@ Scientific notation is used if the fixed-width buffer would overflow.</p></td>
                  <td><a href='../proc/json_quote.html'>json_quote</a></td>
                  <td><a href='../module/watch_log.html'>watch_log</a></td>
                  <td>Function</td>
-                 <td><p>Quote a UTF-8 string, escaping JSON control characters and delimiters.</p></td>
+                 <td><p>Quote a byte string as JSON, escaping controls and replacing invalid UTF-8 bytes with U+FFFD.</p></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/load_watch_table.html'>load_watch_table</a></td>
                  <td><a href='../module/watch_config.html'>watch_config</a></td>
                  <td>Subroutine</td>
-                 <td><p>Locate and return the <code>[extra.fpm-watch]</code> table from <code>fpm.toml</code>.</p><a href="../proc/load_watch_table.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+                 <td><p>Locate <code>[extra.fpm-watch]</code> in the current directory's <code>fpm.toml</code>.</p><a href="../proc/load_watch_table.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/log_bool.html'>log_bool</a></td>
@@ -478,10 +477,7 @@ Scientific notation is used if the fixed-width buffer would overflow.</p></td>
                  <td><a href='../proc/log_event.html'>log_event</a></td>
                  <td><a href='../module/watch_log.html'>watch_log</a></td>
                  <td>Subroutine</td>
-                 <td><p>Emit an event with stable identity and optional typed attributes.
-Errors and forced protocol records bypass verbosity and debug filtering.
-Other debug events require debug mode and are suppressed by quiet mode.
-Verbosity controls additional detail.</p></td>
+                 <td><p>Format, write, and flush one timestamped event with optional typed attributes.</p><a href="../proc/log_event.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 			   <tr>
                  <td><a href='../interface/log_int.html'>log_int</a></td>
@@ -499,7 +495,7 @@ Verbosity controls additional detail.</p></td>
                  <td><a href='../proc/log_real.html'>log_real</a></td>
                  <td><a href='../module/watch_log.html'>watch_log</a></td>
                  <td>Function</td>
-                 <td><p>Construct a finite real attribute with three decimal places.</p></td>
+                 <td><p>Serialize a real with three decimal places (scientific fallback); nonfinite values become JSON null.</p></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/log_string.html'>log_string</a></td>
@@ -529,7 +525,7 @@ Verbosity controls additional detail.</p></td>
                  <td><a href='../proc/manifest_key_from_files.html'>manifest_key_from_files</a></td>
                  <td><a href='../module/watch_fingerprint.html'>watch_fingerprint</a></td>
                  <td>Function</td>
-                 <td><p>Compute a key representing the current manifest-related configuration.</p><a href="../proc/manifest_key_from_files.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+                 <td><p>Mix selected fpm settings and watched manifest paths/fingerprints into a key.</p><a href="../proc/manifest_key_from_files.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/maybe_supervise.html'>maybe_supervise</a></td>
@@ -541,7 +537,7 @@ Verbosity controls additional detail.</p></td>
                  <td><a href='../proc/needs_quotes.html'>needs_quotes</a></td>
                  <td><a href='../module/watch_cmdline.html'>watch_cmdline</a></td>
                  <td>Function</td>
-                 <td><p>Determine whether an argument requires quoting for safe shell parsing.</p><a href="../proc/needs_quotes.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+                 <td><p>Test whether a token is empty or contains bytes outside the shell-safe set.</p><a href="../proc/needs_quotes.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/new_stats_feature.html'>new_stats_feature</a></td>
@@ -553,25 +549,25 @@ Verbosity controls additional detail.</p></td>
                  <td><a href='../proc/normalize_path.html'>normalize_path</a></td>
                  <td><a href='../module/watch_filter.html'>watch_filter</a></td>
                  <td>Function</td>
-                 <td><p>Normalize a path to a consistent form for matching.</p><a href="../proc/normalize_path.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+                 <td><p>Right-trim a path, replace backslashes, and remove repeated leading <code>./</code>.</p><a href="../proc/normalize_path.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/normalize_watch_opts.html'>normalize_watch_opts</a></td>
                  <td><a href='../module/watch_config.html'>watch_config</a></td>
                  <td>Subroutine</td>
-                 <td><p>Normalize watcher options and clamp to safe bounds.</p><a href="../proc/normalize_watch_opts.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+                 <td><p>Normalize timing bounds, verbosity, and the executable name.</p><a href="../proc/normalize_watch_opts.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/on_after_run_all.html'>on_after_run_all</a></td>
                  <td><a href='../module/watch_feature_manager.html'>watch_feature_manager</a></td>
                  <td>Subroutine</td>
-                 <td><p>Call <code>on_after_run(exitstat, seconds)</code> on all registered features.</p></td>
+                 <td><p>Pass the command status and elapsed seconds to all features after completion, including failures.</p></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/on_before_run_all.html'>on_before_run_all</a></td>
                  <td><a href='../module/watch_feature_manager.html'>watch_feature_manager</a></td>
                  <td>Subroutine</td>
-                 <td><p>Call <code>on_before_run(cmd)</code> on all registered features.</p></td>
+                 <td><p>Pass the mutable command through features in insertion order; later features see earlier edits.</p></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/on_change_detected_all.html'>on_change_detected_all</a></td>
@@ -595,93 +591,91 @@ Verbosity controls additional detail.</p></td>
                  <td><a href='../proc/on_watch_list_built_all.html'>on_watch_list_built_all</a></td>
                  <td><a href='../module/watch_feature_manager.html'>watch_feature_manager</a></td>
                  <td>Subroutine</td>
-                 <td><p>Call <code>on_watch_list_built(files, roots)</code> on all registered features.</p></td>
+                 <td><p>Pass mutable files/roots to each allocated feature in insertion order, preserving engine alignment.</p></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/output_boundary.html'>output_boundary</a></td>
                  <td><a href='../module/watch_exec.html'>watch_exec</a></td>
                  <td>Subroutine</td>
-                 <td><p>Frame one command's raw stream independently of stdout delivery order.
-The opt-in markers share stderr with the child's output, so buffered
-consumers can correlate cycles without ordering two separate pipes.</p></td>
+                 <td><p>Flush a stderr boundary marker when the structured output protocol is enabled.</p><a href="../proc/output_boundary.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/parse_bool.html'>parse_bool</a></td>
                  <td><a href='../module/watch_cmdline.html'>watch_cmdline</a></td>
                  <td>Function</td>
-                 <td><p>Parse a boolean spelling, falling back when the value is unrecognized.</p></td>
+                 <td><p>Parse trimmed, case-insensitive boolean spellings or return <code>default</code>.</p><a href="../proc/parse_bool.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/parse_cli.html'>parse_cli</a></td>
                  <td><a href='../module/watch_cli.html'>watch_cli</a></td>
                  <td>Subroutine</td>
-                 <td><p>Parse the complete CLI and produce watcher options + typed <code>fpm</code> settings.</p><a href="../proc/parse_cli.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+                 <td><p>Apply watcher defaults and leading flags, then collect fpm model settings.</p><a href="../proc/parse_cli.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/parse_cli_config.html'>parse_cli_config</a></td>
                  <td><a href='../module/watch_cli.html'>watch_cli</a></td>
                  <td>Subroutine</td>
-                 <td><p>Parse CLI arguments and build the full watcher configuration.</p><a href="../proc/parse_cli_config.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+                 <td><p>Parse argv and manifest options into an executable watcher configuration.</p><a href="../proc/parse_cli_config.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/parse_int.html'>parse_int</a></td>
                  <td><a href='../module/watch_cmdline.html'>watch_cmdline</a></td>
                  <td>Function</td>
-                 <td><p>Parse an integer with a default fallback on I/O error.</p></td>
+                 <td><p>Read an integer with list-directed input; return <code>default</code> if the read fails.</p></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/parse_real.html'>parse_real</a></td>
                  <td><a href='../module/watch_cmdline.html'>watch_cmdline</a></td>
                  <td>Function</td>
-                 <td><p>Parse a real with a default fallback on I/O error.</p></td>
+                 <td><p>Read a real with list-directed input; return <code>default</code> if the read fails.</p></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/parse_restart_flags.html'>parse_restart_flags</a></td>
                  <td><a href='../module/watch_restart.html'>watch_restart</a></td>
                  <td>Subroutine</td>
-                 <td><p>Parse restart-related flags and apply manifest defaults.</p><a href="../proc/parse_restart_flags.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+                 <td><p>Apply leading restart flags over manifest supervisor defaults.</p><a href="../proc/parse_restart_flags.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/print_banner.html'>print_banner</a></td>
                  <td><a href='../module/watch_banner.html'>watch_banner</a></td>
                  <td>Subroutine</td>
-                 <td><p>Emit one startup summary and optional configuration/timing details.</p></td>
+                 <td><p>Emit a startup summary and optional configuration/timing records.</p><a href="../proc/print_banner.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/print_configuration.html'>print_configuration</a></td>
                  <td><a href='../module/watch_banner.html'>watch_banner</a></td>
                  <td>Subroutine</td>
-                 <td><p>Report effective settings after startup or a successful watch-list refresh.</p></td>
+                 <td><p>Report effective model/watch settings at verbosity 1 after startup or refresh.</p><a href="../proc/print_configuration.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/print_file_list.html'>print_file_list</a></td>
                  <td><a href='../module/watch_banner.html'>watch_banner</a></td>
                  <td>Subroutine</td>
-                 <td><p>Emit separate file events at high verbosity, capped at 200 files.</p></td>
+                 <td><p>Emit up to 200 <code>watch.file</code> records when verbosity is at least 2.</p><a href="../proc/print_file_list.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/push_feature.html'>push_feature</a></td>
                  <td><a href='../module/watch_config.html'>watch_config</a></td>
                  <td>Subroutine</td>
-                 <td><p>Append a feature name to a <code>string_t</code> array if not already present.</p><a href="../proc/push_feature.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+                 <td><p>Append a unique, nonempty, right-trimmed string to an allocatable list.</p><a href="../proc/push_feature.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/push_file_with_mask.html'>push_file_with_mask</a></td>
                  <td><a href='../module/watch_fpm_graph.html'>watch_fpm_graph</a></td>
                  <td>Subroutine</td>
-                 <td></td>
+                 <td><p>Append an existing eligible path to aligned arrays, merging mask bits for duplicates.</p></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/quote_arg.html'>quote_arg</a></td>
                  <td><a href='../module/watch_cmdline.html'>watch_cmdline</a></td>
                  <td>Function</td>
-                 <td><p>Quote an argument for the host shell, escaping embedded quotes as needed.</p><a href="../proc/quote_arg.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+                 <td><p>Serialize one complete argv token, preserving whitespace and empty arguments.</p><a href="../proc/quote_arg.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/rebuild_watch_list.html'>rebuild_watch_list</a></td>
                  <td><a href='../module/watch_engine.html'>watch_engine</a></td>
                  <td>Subroutine</td>
-                 <td><p>Recompute the watch list, rebuild fingerprints, and print/log the result.</p><a href="../proc/rebuild_watch_list.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+                 <td><p>Build a candidate graph and replace the accepted watch-list snapshot.</p><a href="../proc/rebuild_watch_list.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/release_targets.html'>release_targets</a></td>
@@ -693,93 +687,91 @@ consumers can correlate cycles without ordering two separate pipes.</p></td>
                  <td><a href='../proc/report_changes.html'>report_changes</a></td>
                  <td><a href='../module/watch_exec.html'>watch_exec</a></td>
                  <td>Subroutine</td>
-                 <td><p>Emit a change summary, with individual paths available in verbose mode.</p></td>
+                 <td><p>Emit changed paths and a summary unless quiet mode suppresses them.</p><a href="../proc/report_changes.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/resolve_include_file.html'>resolve_include_file</a></td>
                  <td><a href='../module/watch_fpm_graph.html'>watch_fpm_graph</a></td>
                  <td>Function</td>
-                 <td><p>Resolve quoted includes using the source directory and fpm's include directories.</p></td>
+                 <td><p>Resolve an include path, returning a normalized canonical path or an empty string.</p><a href="../proc/resolve_include_file.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/run_command_and_report.html'>run_command_and_report</a></td>
                  <td><a href='../module/watch_exec.html'>watch_exec</a></td>
                  <td>Subroutine</td>
-                 <td><p>Run fpm and emit one start and one completion event.
-Structured logging directs raw command stdout to stderr. Silent mode
-suppresses both child streams. Failure events remain visible in quiet mode.</p></td>
+                 <td><p>Execute synchronously and report start, completion, exit status, and seconds.</p><a href="../proc/run_command_and_report.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/run_once.html'>run_once</a></td>
                  <td><a href='../module/watch_engine.html'>watch_engine</a></td>
                  <td>Subroutine</td>
-                 <td><p>Run the configured command once without change detection.</p><a href="../proc/run_once.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+                 <td><p>Execute one command cycle with before/after plugin callbacks.</p><a href="../proc/run_once.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/scan_changes.html'>scan_changes</a></td>
                  <td><a href='../module/watch_fingerprint.html'>watch_fingerprint</a></td>
                  <td>Subroutine</td>
-                 <td><p>Scan files and return indices of changed entries.</p><a href="../proc/scan_changes.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+                 <td><p>Resample files and return 1-based indices differing from the accepted baseline.</p><a href="../proc/scan_changes.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/select_names_or_all.html'>select_names_or_all</a></td>
                  <td><a href='../module/watch_fpm_graph.html'>watch_fpm_graph</a></td>
                  <td>Subroutine</td>
-                 <td></td>
+                 <td><p>Mark executable targets in <code>scope</code> matching names without clearing existing marks.</p><a href="../proc/select_names_or_all.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/set_low_cpu.html'>set_low_cpu</a></td>
                  <td><a href='../module/watch_time.html'>watch_time</a></td>
                  <td>Subroutine</td>
-                 <td><p>Enable or disable low-CPU mode.</p><a href="../proc/set_low_cpu.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+                 <td><p>Set the process-wide waiting backend: true selects OS sleep, false selects busy waiting.</p></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/set_names.html'>set_names</a></td>
                  <td><a href='../module/watch_cli.html'>watch_cli</a></td>
                  <td>Subroutine</td>
-                 <td><p>Transfer collected name patterns into a run/test settings object.</p><a href="../proc/set_names.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+                 <td><p>Copy nonempty target patterns into an initially unallocated <code>s%name</code>.</p><a href="../proc/set_names.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/set_watch_defaults.html'>set_watch_defaults</a></td>
                  <td><a href='../module/watch_config.html'>watch_config</a></td>
                  <td>Subroutine</td>
-                 <td><p>Apply built-in defaults to watcher options.</p><a href="../proc/set_watch_defaults.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+                 <td><p>Reset scalar watcher options and ensure list arrays are allocated.</p><a href="../proc/set_watch_defaults.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/sleep_os.html'>sleep_os</a></td>
                  <td><a href='../module/watch_time.html'>watch_time</a></td>
                  <td>Subroutine</td>
-                 <td><p>OS-backed sleep for approximately <code>s</code> seconds.</p><a href="../proc/sleep_os.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+                 <td><p>Convert seconds to C double and invoke the OS-sleep shim; nonpositive durations are ignored there.</p></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/sleep_seconds.html'>sleep_seconds</a></td>
                  <td><a href='../module/watch_time.html'>watch_time</a></td>
                  <td>Subroutine</td>
-                 <td><p>Sleep for approximately <code>s</code> seconds.</p><a href="../proc/sleep_seconds.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+                 <td><p>Wait approximately <code>s</code> seconds using the currently selected backend.</p><a href="../proc/sleep_seconds.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/sleep_spin.html'>sleep_spin</a></td>
                  <td><a href='../module/watch_time.html'>watch_time</a></td>
                  <td>Subroutine</td>
-                 <td><p>Busy-wait for approximately <code>s</code> seconds.</p><a href="../proc/sleep_spin.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+                 <td><p>Busy-wait for the truncated number of system-clock ticks in <code>s</code> seconds.</p><a href="../proc/sleep_spin.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/split_cmd_after_subcmd.html'>split_cmd_after_subcmd</a></td>
                  <td><a href='../module/watch_cmdsplice.html'>watch_cmdsplice</a></td>
                  <td>Subroutine</td>
-                 <td><p>Split a command line into <code>&lt;fpm subcmd&gt;</code> prefix and remaining arguments.</p><a href="../proc/split_cmd_after_subcmd.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+                 <td><p>Split a literal <code>fpm SUBCOMMAND</code> prefix from the remaining serialized arguments.</p><a href="../proc/split_cmd_after_subcmd.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/starts_with.html'>starts_with</a></td>
                  <td><a href='../module/watch_util.html'>watch_util</a></td>
                  <td>Function</td>
-                 <td><p>Check whether a string begins with a given prefix.</p></td>
+                 <td><p>Compare a case-sensitive, right-trimmed prefix; an empty prefix matches every string.</p></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/stats_after.html'>stats_after</a></td>
                  <td><a href='../module/watch_feat_stats.html'>watch_feat_stats</a></td>
                  <td>Subroutine</td>
-                 <td><p>Update run counter after each completed command execution.</p><a href="../proc/stats_after.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+                 <td><p>Increment the internal completed-command counter for every outcome; no statistics are emitted.</p></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/stats_init.html'>stats_init</a></td>
@@ -797,7 +789,7 @@ suppresses both child streams. Failure events remain visible in quiet mode.</p><
                  <td><a href='../proc/supervisor_loop.html'>supervisor_loop</a></td>
                  <td><a href='../module/watch_restart.html'>watch_restart</a></td>
                  <td>Subroutine</td>
-                 <td><p>Run the supervisor loop, restarting the child on non-zero exit.</p><a href="../proc/supervisor_loop.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+                 <td><p>Launch watcher children until success, user interruption, or restart exhaustion.</p><a href="../proc/supervisor_loop.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/target_pattern.html'>target_pattern</a></td>
@@ -809,7 +801,7 @@ suppresses both child streams. Failure events remain visible in quiet mode.</p><
                  <td><a href='../proc/termination_requested.html'>termination_requested</a></td>
                  <td><a href='../module/watch_platform.html'>watch_platform</a></td>
                  <td>Function</td>
-                 <td><p>Return whether an executed command received a termination request.</p></td>
+                 <td><p>Return the process-wide interruption flag latched by prior command executions.</p></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/toml_get_int.html'>toml_get_int</a></td>
@@ -875,25 +867,25 @@ suppresses both child streams. Failure events remain visible in quiet mode.</p><
                  <td><a href='../proc/utf8_width.html'>utf8_width</a></td>
                  <td><a href='../module/watch_log.html'>watch_log</a></td>
                  <td>Function</td>
-                 <td><p>Return a valid UTF-8 sequence width, or zero for an invalid byte sequence.</p></td>
+                 <td><p>Validate a multibyte UTF-8 sequence at a valid 1-based byte position.</p><a href="../proc/utf8_width.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/valid_log_format.html'>valid_log_format</a></td>
                  <td><a href='../module/watch_log.html'>watch_log</a></td>
                  <td>Function</td>
-                 <td><p>Return whether a format name is supported.</p></td>
+                 <td><p>Accept exactly the case-sensitive format names <code>text</code>, <code>json</code>, and <code>logfmt</code>.</p></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/vec_grow.html'>vec_grow</a></td>
                  <td><a href='../module/watch_fpm_graph.html'>watch_fpm_graph</a></td>
                  <td>Subroutine</td>
-                 <td></td>
+                 <td><p>Grow both file/mask buffers to at least 16 or 1.5 times the current capacity.</p></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/vec_push_unique.html'>vec_push_unique</a></td>
                  <td><a href='../module/watch_fpm_graph.html'>watch_fpm_graph</a></td>
                  <td>Subroutine</td>
-                 <td></td>
+                 <td><p>Add a normalized existing path to a growable buffer, merging duplicate masks.</p><a href="../proc/vec_push_unique.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/watch_option_takes_value.html'>watch_option_takes_value</a></td>
@@ -905,19 +897,19 @@ suppresses both child streams. Failure events remain visible in quiet mode.</p><
                  <td><a href='../proc/watch_state_changed.html'>watch_state_changed</a></td>
                  <td><a href='../module/watch_fingerprint.html'>watch_fingerprint</a></td>
                  <td>Function</td>
-                 <td><p>Compare watch snapshots without depending on file-list ordering.</p><a href="../proc/watch_state_changed.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+                 <td><p>Compare unique path/fingerprint snapshots independently of file ordering.</p><a href="../proc/watch_state_changed.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/watcher_init.html'>watcher_init</a></td>
                  <td><a href='../module/watch_engine.html'>watch_engine</a></td>
                  <td>Subroutine</td>
-                 <td><p>Initialize a watcher instance from configuration.</p><a href="../proc/watcher_init.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+                 <td><p>Initialize logging, waiting mode, plugins, the watch list, and fingerprints.</p><a href="../proc/watcher_init.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/watcher_run.html'>watcher_run</a></td>
                  <td><a href='../module/watch_engine.html'>watch_engine</a></td>
                  <td>Subroutine</td>
-                 <td><p>Run the main watch loop until termination.</p><a href="../proc/watcher_run.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+                 <td><p>Poll until a stop file or termination request is detected.</p><a href="../proc/watcher_run.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 			 </tbody></table>
              <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
@@ -4195,7 +4187,7 @@ large graphs.</div>
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2026-10-12T13:55:54.369963+0000             </p>
+ on 2026-10-12T14:42:46.282582+0000             </p>
           </div>
         </div>
         <br>

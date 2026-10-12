@@ -171,9 +171,9 @@
         <ul class="list-group list-group-flush">
             <li class="list-group-item">
               <ul class="list-inline">
+                  <li class="list-inline-item">fpm_strings</li>
                   <li class="list-inline-item"><a href='http://fortranwiki.org/fortran/show/iso_fortran_env'>iso_fortran_env</a></li>
                   <li class="list-inline-item">fpm_command_line</li>
-                  <li class="list-inline-item">fpm_strings</li>
               </ul>
             </li>
             <li class="list-group-item">
@@ -856,7 +856,7 @@ large graphs.</div>
       </h3>
     </div>
     <div class="card-body">
-      <p>Root target metadata used for change → target mapping.</p><a href="../type/root_info_t.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+      <p>Executable basename and one root bit used for affected-target selection.</p><a href="../type/root_info_t.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
         <h4>Components</h4>
           <table class="table table-striped varlist">
@@ -883,7 +883,7 @@ large graphs.</div>
 <td> =</td>
                 <td>0_int64</td>
             <td>
-
+<p>Single bit identifying this root in target and file membership masks.</p>
             </td>
         </tr>
         <tr>
@@ -900,7 +900,7 @@ large graphs.</div>
                 <td></td>
                 <td></td>
             <td>
-
+<p>Executable output basename without suffix, used as an fpm target pattern.</p>
             </td>
         </tr>
     </tbody>
@@ -949,7 +949,7 @@ large graphs.</div>
                 <td></td>
                 <td></td>
             <td>
-<p>Cached remainder after the subcommand token (for injection).</p>
+<p>Cached prefix up to and including the subcommand token (for injection).</p>
             </td>
         </tr>
         <tr>
@@ -966,7 +966,7 @@ large graphs.</div>
                 <td></td>
                 <td></td>
             <td>
-
+<p>Cached remainder after the subcommand token (for injection).</p>
             </td>
         </tr>
         <tr>
@@ -983,12 +983,12 @@ large graphs.</div>
                 <td></td>
                 <td></td>
             <td>
-<p>Selected <code>fpm</code> subcommand (<code>build</code>, <code>test</code>, or <code>run</code>).</p>
+<p>Full command line string to execute (e.g., <code>fpm test -- ...</code>).</p>
             </td>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-settings~3"></span>
+              <span class="anchor" id="variable-settings~7"></span>
               class(fpm_build_settings),
             </td>
               <td>public,</td>
@@ -1000,7 +1000,7 @@ large graphs.</div>
                 <td></td>
                 <td></td>
             <td>
-<p>Cached prefix up to and including the subcommand token (for injection).</p>
+<p>Typed <code>fpm</code> settings corresponding to <code>subcmd</code>.</p>
             </td>
         </tr>
         <tr>
@@ -1017,12 +1017,12 @@ large graphs.</div>
                 <td></td>
                 <td></td>
             <td>
-<p>Typed <code>fpm</code> settings corresponding to <code>subcmd</code>.</p>
+<p>Selected <code>fpm</code> subcommand (<code>build</code>, <code>test</code>, or <code>run</code>).</p>
             </td>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-w~5"></span>
+              <span class="anchor" id="variable-w~6"></span>
               type(<a href='../type/watch_opts_t.html'>watch_opts_t</a>),
             </td>
               <td>public</td>
@@ -1034,7 +1034,7 @@ large graphs.</div>
                 <td></td>
                 <td></td>
             <td>
-<p>Full command line string to execute (e.g., <code>fpm test -- ...</code>).</p>
+<p>Watcher options.</p>
             </td>
         </tr>
     </tbody>
@@ -1056,7 +1056,7 @@ large graphs.</div>
       </h3>
     </div>
     <div class="card-body">
-      <p>Watcher configuration options.</p><a href="../type/watch_opts_t.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+      <p>Watcher options assembled from defaults, manifest values, and leading CLI flags.</p><a href="../type/watch_opts_t.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
         <h4>Components</h4>
           <table class="table table-striped varlist">
@@ -1083,7 +1083,7 @@ large graphs.</div>
 <td> =</td>
                 <td>0.2</td>
             <td>
-<p>Optional periodic rescan interval (seconds). <code>0</code> disables periodic rescans.</p>
+<p>Seconds to wait after detecting a change before resampling.</p>
             </td>
         </tr>
         <tr>
@@ -1100,7 +1100,7 @@ large graphs.</div>
 <td> =</td>
                 <td>.false.</td>
             <td>
-<p>Poll interval (seconds) between change scans.</p>
+<p>Enable debug-level records; quiet mode still suppresses them.</p>
             </td>
         </tr>
         <tr>
@@ -1117,7 +1117,7 @@ large graphs.</div>
                 <td></td>
                 <td></td>
             <td>
-<p>Run once (init + optional run-on-start) and exit (CI-friendly).</p>
+<p>Watcher-plugin names, distinct from fpm build features.</p>
             </td>
         </tr>
         <tr>
@@ -1134,12 +1134,12 @@ large graphs.</div>
                 <td></td>
                 <td></td>
             <td>
-<p>Enable extra debug output and internal timing/status messages.</p>
+<p>Executable used for build/test/run; defaults to <code>fpm</code> on PATH.</p>
             </td>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-ignore~2"></span>
+              <span class="anchor" id="variable-ignore"></span>
               type(string_t),
             </td>
               <td>public,</td>
@@ -1151,12 +1151,12 @@ large graphs.</div>
                 <td></td>
                 <td></td>
             <td>
-<p>Glob patterns to include; if empty, includes all.</p>
+<p>Ignore globs, applied after include rules; watched manifests bypass filtering.</p>
             </td>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-include~2"></span>
+              <span class="anchor" id="variable-include"></span>
               type(string_t),
             </td>
               <td>public,</td>
@@ -1168,7 +1168,7 @@ large graphs.</div>
                 <td></td>
                 <td></td>
             <td>
-<p>Names of optional feature plugins to enable.</p>
+<p>Include globs; empty means all eligible files. Watched manifests always remain.</p>
             </td>
         </tr>
         <tr>
@@ -1185,7 +1185,7 @@ large graphs.</div>
                 <td></td>
                 <td></td>
             <td>
-<p>Executable used for build/test/run; defaults to <code>fpm</code> on PATH.</p>
+<p>Output format: text (default), json (JSON Lines), or logfmt.</p>
             </td>
         </tr>
         <tr>
@@ -1202,7 +1202,7 @@ large graphs.</div>
 <td> =</td>
                 <td>.false.</td>
             <td>
-<p>Glob patterns to ignore.</p>
+<p>Use OS sleep for waiting to minimize idle CPU usage.</p>
             </td>
         </tr>
         <tr>
@@ -1219,7 +1219,7 @@ large graphs.</div>
 <td> =</td>
                 <td>.false.</td>
             <td>
-
+<p>Run once (init + optional run-on-start) and exit (CI-friendly).</p>
             </td>
         </tr>
         <tr>
@@ -1236,7 +1236,7 @@ large graphs.</div>
 <td> =</td>
                 <td>.false.</td>
             <td>
-<p>Internal supervisor generation, retained during manifest refresh.</p>
+<p>Bracket command stderr and force cycle events in structured logging only.</p>
             </td>
         </tr>
         <tr>
@@ -1253,7 +1253,7 @@ large graphs.</div>
 <td> =</td>
                 <td>0.5</td>
             <td>
-<p>Debounce interval (seconds) used after the first detected change.</p>
+<p>Seconds between polling scans; normalized to at least 0.05.</p>
             </td>
         </tr>
         <tr>
@@ -1270,7 +1270,7 @@ large graphs.</div>
 <td> =</td>
                 <td>.false.</td>
             <td>
-<p>Suppress <code>fpm</code> output; keep only <code>fpm-watch</code> status lines.</p>
+<p>Request a startup file list; the logger additionally requires verbosity 2.</p>
             </td>
         </tr>
         <tr>
@@ -1287,7 +1287,7 @@ large graphs.</div>
 <td> =</td>
                 <td>0.0</td>
             <td>
-<p>Run the command once immediately on startup.</p>
+<p>Optional periodic rescan interval (seconds). <code>0</code> disables periodic rescans.</p>
             </td>
         </tr>
         <tr>
@@ -1304,7 +1304,7 @@ large graphs.</div>
 <td> =</td>
                 <td>0</td>
             <td>
-<p>Also watch dependency project sources (can include paths under build dir).</p>
+<p>Internal supervisor generation, retained during manifest refresh.</p>
             </td>
         </tr>
         <tr>
@@ -1321,7 +1321,7 @@ large graphs.</div>
 <td> =</td>
                 <td>.true.</td>
             <td>
-<p>Print the watched file list once at startup (requires high verbosity).</p>
+<p>Run the command once immediately on startup.</p>
             </td>
         </tr>
         <tr>
@@ -1338,12 +1338,12 @@ large graphs.</div>
 <td> =</td>
                 <td>.false.</td>
             <td>
-<p>Frame raw output with cycle markers for GUI consumers (opt-in).</p>
+<p>Suppress both command output streams; watcher and model records remain separate.</p>
             </td>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-verbosity"></span>
+              <span class="anchor" id="variable-verbosity~2"></span>
               integer,
             </td>
               <td>public</td>
@@ -1355,7 +1355,7 @@ large graphs.</div>
 <td> =</td>
                 <td>0</td>
             <td>
-<p>Output format: text (default), json (JSON Lines), or logfmt.</p>
+<p>Verbosity level:</p><a href="../type/watch_opts_t.html#variable-verbosity~2" class="pull-right"><emph>Read more&hellip;</emph></a>
             </td>
         </tr>
         <tr>
@@ -1372,7 +1372,7 @@ large graphs.</div>
 <td> =</td>
                 <td>.false.</td>
             <td>
-<p>Use OS sleep for waiting to minimize idle CPU usage.</p>
+<p>Also watch dependency project sources (can include paths under build dir).</p>
             </td>
         </tr>
     </tbody>
@@ -1409,7 +1409,7 @@ large graphs.</div>
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2026-10-12T13:55:54.369963+0000             </p>
+ on 2026-10-12T14:42:46.282582+0000             </p>
           </div>
         </div>
         <br>

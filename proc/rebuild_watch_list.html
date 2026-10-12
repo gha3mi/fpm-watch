@@ -160,11 +160,13 @@
 </h2>
     
 
-    <p>Recompute the watch list, rebuild fingerprints, and print/log the result.</p>
-<p>Called:
-- During initialization,
-- When the manifest changes,
-- Periodically when <code>rescan &gt; 0</code>.</p>
+    <p>Build a candidate graph and replace the accepted watch-list snapshot.</p>
+<p><code>print_header</code> selects initialization: failures exit with status 1, and
+success prints startup details. Later failures preserve files, masks, roots,
+fingerprints, and accepted model settings; identical diagnostics are suppressed.
+<code>refreshed</code> is true only after success. If requested, <code>watch_changed</code> compares
+paths and fingerprints with the old snapshot before resetting the baseline.
+Recompute the manifest/settings key after the watch-list plugin callback.</p>
 
 
     <h3>Arguments</h3>
@@ -180,7 +182,7 @@
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-self~22"></span>
+              <span class="anchor" id="variable-self~20"></span>
               class(<a href='../type/watcher_t.html'>watcher_t</a>),
             </td>
 <td>intent(inout)</td>
@@ -205,7 +207,7 @@
             <td>::</td>
             <td><strong>print_header</strong></td>
             <td>
-                
+                <p>True for initial setup (fatal errors and startup logging); false for recoverable refreshes.</p>
             </td>
         </tr>
         <tr>
@@ -220,7 +222,7 @@
             <td>::</td>
             <td><strong>watch_changed</strong></td>
             <td>
-                
+                <p>True on a successful refresh if paths or fingerprints differ from the previous snapshot.</p>
             </td>
         </tr>
         <tr>
@@ -235,7 +237,7 @@
             <td>::</td>
             <td><strong>refreshed</strong></td>
             <td>
-                
+                <p>True only after the candidate graph and new fingerprint baseline are accepted.</p>
             </td>
         </tr>
     </tbody>
@@ -1871,8 +1873,11 @@ large graphs.</div>
     <div class="hl codehilite"><pre><span></span><span class="w">   </span><span class="k">subroutine </span><span class="n">rebuild_watch_list</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="n">print_header</span><span class="p">,</span><span class="w"> </span><span class="n">watch_changed</span><span class="p">,</span><span class="w"> </span><span class="n">refreshed</span><span class="p">)</span>
 <span class="w">      </span><span class="k">class</span><span class="p">(</span><span class="n">watcher_t</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">self</span>
 <span class="w">      </span><span class="kt">logical</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">print_header</span>
+<span class="w">      </span><span class="c">!! True for initial setup (fatal errors and startup logging); false for recoverable refreshes.</span>
 <span class="w">      </span><span class="kt">logical</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">),</span><span class="w"> </span><span class="k">optional</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">watch_changed</span>
+<span class="w">      </span><span class="c">!! True on a successful refresh if paths or fingerprints differ from the previous snapshot.</span>
 <span class="w">      </span><span class="kt">logical</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">),</span><span class="w"> </span><span class="k">optional</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">refreshed</span>
+<span class="w">      </span><span class="c">!! True only after the candidate graph and new fingerprint baseline are accepted.</span>
 
 <span class="w">      </span><span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">rate</span><span class="p">,</span><span class="w"> </span><span class="n">t0</span><span class="p">,</span><span class="w"> </span><span class="n">t1</span><span class="p">,</span><span class="w"> </span><span class="n">candidate_manifest_key</span>
 <span class="w">      </span><span class="kt">real</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">build_secs_total</span>
@@ -1999,7 +2004,7 @@ large graphs.</div>
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2026-10-12T13:55:54.369963+0000             </p>
+ on 2026-10-12T14:42:46.282582+0000             </p>
           </div>
         </div>
         <br>

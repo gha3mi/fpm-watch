@@ -170,23 +170,22 @@
     </div>
 
     <div class="col-md-9" id='text'>
-      <p>Project configuration and defaults.</p>
-<p>Reads watcher configuration from:
-- Built-in defaults (<code>set_watch_defaults</code>)
-- <code>fpm.toml</code> under <code>[extra.fpm-watch]</code> (<code>apply_watch_from_manifest</code>)</p>
-<p>Also provides helper routines used by the supervisor (<code>watch_restart</code>) for
-auto-restart defaults (delay, max restarts, self path).</p>
+      <p>Read watcher and supervisor defaults through fpm's TOML interface.</p>
+<p>Missing or unreadable watcher tables leave existing values unchanged.
+Scalar keys replace defaults; manifest lists replace existing arrays.
+CLI list options subsequently append unique entries through <code>push_feature</code>.
+Supervisor defaults are read separately by <code>get_restart_defaults</code>.</p>
 <br>          <div class="card mb-4">
       <h3 class="card-header card-title bg-light">Uses</h3>
       <div class="card-body">
         <ul class="list-group list-group-flush">
             <li class="list-group-item">
               <ul class="list-inline">
-                  <li class="list-inline-item">fpm_toml</li>
                   <li class="list-inline-item">tomlf</li>
+                  <li class="list-inline-item"><a href='watch_types.html'>watch_types</a></li>
                   <li class="list-inline-item">fpm_error</li>
                   <li class="list-inline-item">fpm_strings</li>
-                  <li class="list-inline-item"><a href='watch_types.html'>watch_types</a></li>
+                  <li class="list-inline-item">fpm_toml</li>
                   <li class="list-inline-item">fpm_filesystem</li>
               </ul>
             </li>
@@ -557,7 +556,7 @@ large graphs.</div>
 </h3></div>
     <div class="card-body">
           
-  <p>Apply configuration overrides from <code>fpm.toml</code> <code>[extra.fpm-watch]</code>.</p><a href="../proc/apply_watch_from_manifest.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+  <p>Replace recognized options from <code>[extra.fpm-watch]</code> and normalize them.</p><a href="../proc/apply_watch_from_manifest.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -572,7 +571,7 @@ large graphs.</div>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-w~3"></span>
+              <span class="anchor" id="variable-w~14"></span>
               type(<a href='../type/watch_opts_t.html'>watch_opts_t</a>),
             </td>
 <td>intent(inout)</td>
@@ -612,7 +611,7 @@ large graphs.</div>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-auto_restart"></span>
+              <span class="anchor" id="variable-auto_restart~3"></span>
               logical,
             </td>
 <td>intent(out)</td>
@@ -627,7 +626,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-restart_delay"></span>
+              <span class="anchor" id="variable-restart_delay~3"></span>
               real,
             </td>
 <td>intent(out)</td>
@@ -642,7 +641,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-restart_max"></span>
+              <span class="anchor" id="variable-restart_max~3"></span>
               integer,
             </td>
 <td>intent(out)</td>
@@ -657,7 +656,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-self_exe"></span>
+              <span class="anchor" id="variable-self_exe~3"></span>
               character(len=:),
             </td>
 <td>intent(out),</td>
@@ -682,7 +681,7 @@ large graphs.</div>
 </h3></div>
     <div class="card-body">
           
-  <p>Normalize watcher options and clamp to safe bounds.</p><a href="../proc/normalize_watch_opts.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+  <p>Normalize timing bounds, verbosity, and the executable name.</p><a href="../proc/normalize_watch_opts.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -697,7 +696,7 @@ large graphs.</div>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-w~2"></span>
+              <span class="anchor" id="variable-w~13"></span>
               type(<a href='../type/watch_opts_t.html'>watch_opts_t</a>),
             </td>
 <td>intent(inout)</td>
@@ -722,7 +721,7 @@ large graphs.</div>
 </h3></div>
     <div class="card-body">
           
-  <p>Append a feature name to a <code>string_t</code> array if not already present.</p><a href="../proc/push_feature.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+  <p>Append a unique, nonempty, right-trimmed string to an allocatable list.</p><a href="../proc/push_feature.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -737,7 +736,7 @@ large graphs.</div>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-features"></span>
+              <span class="anchor" id="variable-features~5"></span>
               type(string_t),
             </td>
 <td>intent(inout),</td>
@@ -752,7 +751,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-name"></span>
+              <span class="anchor" id="variable-name~4"></span>
               character(len=*),
             </td>
 <td>intent(in)</td>
@@ -777,7 +776,7 @@ large graphs.</div>
 </h3></div>
     <div class="card-body">
           
-  <p>Apply built-in defaults to watcher options.</p><a href="../proc/set_watch_defaults.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+  <p>Reset scalar watcher options and ensure list arrays are allocated.</p><a href="../proc/set_watch_defaults.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -792,7 +791,7 @@ large graphs.</div>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-w"></span>
+              <span class="anchor" id="variable-w~12"></span>
               type(<a href='../type/watch_opts_t.html'>watch_opts_t</a>),
             </td>
 <td>intent(inout)</td>
@@ -817,7 +816,7 @@ large graphs.</div>
 </h3></div>
     <div class="card-body">
           
-  <p>Locate and return the <code>[extra.fpm-watch]</code> table from <code>fpm.toml</code>.</p><a href="../proc/load_watch_table.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+  <p>Locate <code>[extra.fpm-watch]</code> in the current directory's <code>fpm.toml</code>.</p><a href="../proc/load_watch_table.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -862,7 +861,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-ok~3"></span>
+              <span class="anchor" id="variable-ok~6"></span>
               logical,
             </td>
 <td>intent(out)</td>
@@ -917,7 +916,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-key~2"></span>
+              <span class="anchor" id="variable-key~10"></span>
               character(len=*),
             </td>
 <td>intent(in)</td>
@@ -932,7 +931,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-v~2"></span>
+              <span class="anchor" id="variable-v~6"></span>
               integer,
             </td>
 <td>intent(inout)</td>
@@ -987,7 +986,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-key~5"></span>
+              <span class="anchor" id="variable-key~13"></span>
               character(len=*),
             </td>
 <td>intent(in)</td>
@@ -1057,7 +1056,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-key~3"></span>
+              <span class="anchor" id="variable-key~11"></span>
               character(len=*),
             </td>
 <td>intent(in)</td>
@@ -1072,7 +1071,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-v~3"></span>
+              <span class="anchor" id="variable-v~7"></span>
               logical,
             </td>
 <td>intent(inout)</td>
@@ -1127,7 +1126,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-key"></span>
+              <span class="anchor" id="variable-key~9"></span>
               character(len=*),
             </td>
 <td>intent(in)</td>
@@ -1142,7 +1141,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-v"></span>
+              <span class="anchor" id="variable-v~5"></span>
               real,
             </td>
 <td>intent(inout)</td>
@@ -1197,7 +1196,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-key~4"></span>
+              <span class="anchor" id="variable-key~12"></span>
               character(len=*),
             </td>
 <td>intent(in)</td>
@@ -1212,7 +1211,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-v~4"></span>
+              <span class="anchor" id="variable-v~8"></span>
               character(len=:),
             </td>
 <td>intent(inout),</td>
@@ -1255,7 +1254,7 @@ large graphs.</div>
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2026-10-12T13:55:54.369963+0000             </p>
+ on 2026-10-12T14:42:46.282582+0000             </p>
           </div>
         </div>
         <br>

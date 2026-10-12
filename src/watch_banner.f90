@@ -11,7 +11,12 @@ module watch_banner
 
 contains
 
-   !> Emit one startup summary and optional configuration/timing details.
+   !> Emit a startup summary and optional configuration/timing records.
+   !!
+   !! `watch.ready` uses normal verbosity; configuration/timings require level 1.
+   !! Read `mode` from typed settings. Unallocated files count as zero; time
+   !! inputs are seconds and event timing fields are milliseconds. Quiet mode
+   !! suppresses these records. File-list output is handled separately by the engine.
    subroutine print_banner(full_cmdline, settings, w, files, build_secs, roots_count, secs_model, secs_targets, secs_watch)
       character(len=*), intent(in) :: full_cmdline
       class(fpm_build_settings), intent(in) :: settings
@@ -40,7 +45,10 @@ contains
                       log_real("targets_ms", secs_targets * 1000.0), log_real("watch_list_ms", secs_watch * 1000.0)], verbosity=1)
    end subroutine print_banner
 
-   !> Report effective settings after startup or a successful watch-list refresh.
+   !> Report effective model/watch settings at verbosity 1 after startup or refresh.
+   !!
+   !! Features are a comma-separated fpm feature string; include/ignore attributes
+   !! are arrays. Poll/debounce fields are milliseconds and rescan is seconds.
    subroutine print_configuration(settings, w)
       class(fpm_build_settings), intent(in) :: settings
       type(watch_opts_t), intent(in) :: w
@@ -62,7 +70,11 @@ contains
                       log_strings("ignore", w%ignore), log_strings("include", w%include)], verbosity=1)
    end subroutine print_configuration
 
-   !> Emit separate file events at high verbosity, capped at 200 files.
+   !> Emit up to 200 `watch.file` records when verbosity is at least 2.
+   !!
+   !! Larger lists produce an omitted-count record. Unallocated lists are ignored.
+   !! The engine calls this at startup only when `print_files_once` is enabled,
+   !! and after successful refreshes whenever verbosity is at least 2.
    subroutine print_file_list(files, w)
       type(string_t), allocatable, intent(in) :: files(:)
       type(watch_opts_t), intent(in) :: w

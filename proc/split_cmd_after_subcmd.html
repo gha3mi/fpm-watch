@@ -160,10 +160,10 @@
 </h2>
     
 
-    <p>Split a command line into <code>&lt;fpm subcmd&gt;</code> prefix and remaining arguments.</p>
-<p>This is used to support name injection for <code>fpm run</code>/<code>fpm test</code>:
-the injected names are inserted after <code>prefix</code> and before the rest,
-while respecting a <code>--</code> delimiter.</p>
+    <p>Split a literal <code>fpm SUBCOMMAND</code> prefix from the remaining serialized arguments.</p>
+<p>Only the first two unquoted, whitespace-delimited tokens are scanned;
+custom executable substitution happens later in <code>watch_cli</code>. Empty input,
+a non-<code>fpm</code> first token, or a missing subcommand returns empty outputs.</p>
 
 
     <h3>Arguments</h3>
@@ -194,7 +194,7 @@ while respecting a <code>--</code> delimiter.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-prefix~2"></span>
+              <span class="anchor" id="variable-prefix"></span>
               character(len=:),
             </td>
 <td>intent(out),</td>
@@ -422,7 +422,8 @@ large graphs.</div>
 
 <span class="k">   contains</span>
 
-<span class="k">      pure </span><span class="kt">logical </span><span class="k">function </span><span class="n">starts_with_token</span><span class="p">(</span><span class="n">str</span><span class="p">,</span><span class="w"> </span><span class="n">tok</span><span class="p">)</span><span class="w"> </span><span class="k">result</span><span class="p">(</span><span class="n">ok</span><span class="p">)</span>
+<span class="w">      </span><span class="c">!&gt; Test the first whitespace-delimited token against a nonempty right-trimmed token.</span>
+<span class="w">      </span><span class="k">pure </span><span class="kt">logical </span><span class="k">function </span><span class="n">starts_with_token</span><span class="p">(</span><span class="n">str</span><span class="p">,</span><span class="w"> </span><span class="n">tok</span><span class="p">)</span><span class="w"> </span><span class="k">result</span><span class="p">(</span><span class="n">ok</span><span class="p">)</span>
 <span class="w">         </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">str</span><span class="p">,</span><span class="w"> </span><span class="n">tok</span>
 <span class="w">         </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">e</span><span class="p">,</span><span class="w"> </span><span class="n">n</span>
 <span class="w">         </span><span class="n">ok</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.</span>
@@ -434,6 +435,7 @@ large graphs.</div>
 <span class="w">         </span><span class="n">ok</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">e</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">n</span><span class="p">)</span>
 <span class="w">      </span><span class="k">end function </span><span class="n">starts_with_token</span>
 
+<span class="w">      </span><span class="c">!&gt; Return the next non-space/tab position at or after `i`, or zero if absent.</span>
 <span class="w">      </span><span class="k">pure </span><span class="kt">integer </span><span class="k">function </span><span class="n">next_token_start</span><span class="p">(</span><span class="n">str</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="k">result</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
 <span class="w">         </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">str</span>
 <span class="w">         </span><span class="kt">integer</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">i</span>
@@ -450,6 +452,7 @@ large graphs.</div>
 <span class="w">         </span><span class="k">end do</span>
 <span class="k">      end function </span><span class="n">next_token_start</span>
 
+<span class="w">      </span><span class="c">!&gt; Return the end of an unquoted space/tab-delimited token, or zero for an invalid start.</span>
 <span class="w">      </span><span class="k">pure </span><span class="kt">integer </span><span class="k">function </span><span class="n">token_end</span><span class="p">(</span><span class="n">str</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="k">result</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
 <span class="w">         </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">str</span>
 <span class="w">         </span><span class="kt">integer</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">i</span>
@@ -492,7 +495,7 @@ large graphs.</div>
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2026-10-12T13:55:54.369963+0000             </p>
+ on 2026-10-12T14:42:46.282582+0000             </p>
           </div>
         </div>
         <br>

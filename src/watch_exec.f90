@@ -1,7 +1,8 @@
-!> Command execution and run reporting.
+!> Select affected targets, execute fpm, and emit command-cycle events.
 !!
-!! Provides the user-facing change summary and the mechanics to construct and
-!! execute the effective `fpm` command.
+!! Commands run synchronously through `watch_platform`. Structured logging
+!! sends raw command stdout to stderr; optional boundary markers correlate
+!! that stream with command events. Target injection preserves explicit names.
 module watch_exec
    use, intrinsic :: iso_fortran_env, only: int64, error_unit
    use watch_types, only: watch_opts_t, root_info_t
@@ -14,11 +15,16 @@ module watch_exec
    implicit none
    private
    public report_changes, run_command_and_report, build_run_command
+   !> Process-local command counter, incremented before each start event.
    integer(int64), save :: cycle_number = 0_int64
 
 contains
 
-   !> Emit a change summary, with individual paths available in verbose mode.
+   !> Emit changed paths and a summary unless quiet mode suppresses them.
+   !!
+   !! `changed_idx(:changed_count)` contains 1-based indices into `files`.
+   !! The summary includes every valid path; verbosity 1 emits individual records
+   !! for at most the first eight changed indices.
    subroutine report_changes(files, changed_idx, changed_count, w)
       type(string_t), allocatable, intent(in) :: files(:)
       integer, intent(in) :: changed_idx(:)
@@ -53,14 +59,22 @@ contains
       end do
    end subroutine report_changes
 
-   !> Run fpm and emit one start and one completion event.
-   !! Structured logging directs raw command stdout to stderr. Silent mode
-   !! suppresses both child streams. Failure events remain visible in quiet mode.
+   !> Execute synchronously and report start, completion, exit status, and seconds.
+   !!
+   !! `cycle_id` combines the supervisor generation and a process-local counter.
+   !! Structured mode sends raw command stdout to stderr; silent mode suppresses
+   !! both child streams. In structured mode only, output markers bracket stderr
+   !! and force both command events through quiet filtering. Failures are errors;
+   !! a latched user interruption is reported as an interrupted completion.
    subroutine run_command_and_report(cmd, w, exitstat, secs)
       character(len=*), intent(in) :: cmd
+      !! Complete serialized command to execute synchronously.
       type(watch_opts_t), intent(in) :: w
+      !! Output suppression, cycle generation, and optional output-marker settings.
       integer, intent(out) :: exitstat
+      !! Command status, including 127 when the platform wrapper cannot launch or wait.
       real, intent(out) :: secs
+      !! Elapsed command time in seconds, excluding event formatting and boundary writes.
       integer(int64) :: rate, t0, t1
       character(len=:), allocatable :: action, message, level, cycle_id
       logical :: interrupted, protocol
@@ -100,9 +114,10 @@ contains
       call output_boundary("finished", cycle_id, protocol)
    end subroutine run_command_and_report
 
-   !> Frame one command's raw stream independently of stdout delivery order.
-   !! The opt-in markers share stderr with the child's output, so buffered
-   !! consumers can correlate cycles without ordering two separate pipes.
+   !> Flush a stderr boundary marker when the structured output protocol is enabled.
+   !!
+   !! The marker follows a blank line and contains the same opaque `cycle_id`
+   !! as the command events; stdout and stderr delivery order need not match.
    subroutine output_boundary(state, cycle_id, enabled)
       character(len=*), intent(in) :: state, cycle_id
       logical, intent(in) :: enabled
@@ -112,24 +127,31 @@ contains
       flush(error_unit)
    end subroutine output_boundary
 
-   !> Construct the effective command to run based on changes and target masks.
+   !> Inject affected root names into an unpinned run/test command.
    !!
-   !! For `fpm build`, the original command is returned unchanged.
-   !!
-   !! For `fpm run` and `fpm test`, if the user did not already pin names via
-   !! `--name`/positional patterns, this routine can inject a computed set of
-   !! target names corresponding to the changed files. This reduces redundant
-   !! builds and speeds up iterative workflows.
+   !! `changed_idx(:changed_count)` indexes `file_mask`, whose bits correspond
+   !! to `roots`. Combine those bits and quote the matching root names before
+   !! the program-argument `--` delimiter. Return `full_cmdline` unchanged for
+   !! build mode, explicit target patterns, unavailable masks/roots, no matched
+   !! names, or an empty command prefix.
    function build_run_command(settings, full_cmdline, cmd_prefix, cmd_rest, roots, file_mask, changed_idx, changed_count) result(cmd)
       use watch_cmdsplice, only: inject_names_into_cmd
       class(fpm_build_settings), intent(in) :: settings
+      !! Run/test type and explicit target patterns used to decide whether injection is allowed.
       character(len=*), intent(in) :: full_cmdline
+      !! Complete serialized command, returned when no target injection is possible.
       character(len=*), intent(in) :: cmd_prefix
+      !! Serialized executable/subcommand prefix for the replacement command.
       character(len=*), intent(in) :: cmd_rest
+      !! Serialized forwarded fpm/program arguments after the subcommand.
       type(root_info_t), allocatable, intent(in) :: roots(:)
+      !! Root executable names and their single-bit membership masks.
       integer(int64), allocatable, intent(in) :: file_mask(:)
+      !! Root bits per watched file, indexed by changed_idx.
       integer, intent(in) :: changed_idx(:)
+      !! 1-based file indices; only the first changed_count entries are read.
       integer, intent(in) :: changed_count
+      !! Number of changed indices in the active buffer prefix.
       character(len=:), allocatable :: cmd
 
       logical :: is_test, is_run
@@ -205,6 +227,7 @@ contains
 
    contains
 
+      !> Join quoted, nonempty root names whose bits intersect `mask`, in root order.
       function join_names_from_mask(roots, mask) result(s)
          type(root_info_t), intent(in) :: roots(:)
          integer(int64), intent(in) :: mask

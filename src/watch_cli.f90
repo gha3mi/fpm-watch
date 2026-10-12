@@ -1,14 +1,9 @@
-!> Command-line parsing and configuration assembly.
+!> Assemble watcher options, typed fpm settings, and a serialized command.
 !!
-!! This module:
-!! - Applies built-in defaults (`set_watch_defaults`),
-!! - Applies project-level overrides from `fpm.toml` (`apply_watch_from_manifest`),
-!! - Parses `--watch-*` options and `fpm` subcommand arguments,
-!! - Produces a `watch_config_t` that drives the watcher engine.
-!!
-!! Parsing is deliberately simple and "argv-token based": it does not implement
-!! a full shell parser. The `fpm_cmdline` string is built for display and for
-!! execution via `watch_platform:execute_command`.
+!! Built-in defaults are followed by `[extra.fpm-watch]` and leading watcher
+!! flags. All tokens after `build`, `test`, or `run` are retained for execution;
+!! recognized fpm options also populate the settings used for graph construction.
+!! Model-option scanning stops at `--`. Parsing uses argv tokens, not shell text.
 module watch_cli
    use, intrinsic :: iso_fortran_env, only: error_unit
    use watch_types,  only: watch_config_t, watch_opts_t
@@ -24,19 +19,18 @@ module watch_cli
 
 contains
 
-   !> Parse CLI arguments and build the full watcher configuration.
+   !> Parse argv and manifest options into an executable watcher configuration.
    !!
-   !! Produces a `watch_config_t`:
-   !! - `cfg%w` contains watcher options (polling, debounce, flags, etc.)
-   !! - `cfg%settings` holds the typed `fpm` settings for the selected subcommand
-   !! - `cfg%fpm_cmdline` is the effective command string
-   !! - `cfg%cmd_prefix` and `cfg%cmd_rest` are helper fields used to inject
-   !!   target names into `run`/`test` commands.
-   !! The optional format retains the startup selection during manifest refresh.
+   !! `cfg%settings` describes the graph; `cfg%fpm_cmdline` retains forwarded argv
+   !! with platform quoting. `cmd_prefix` and `cmd_rest` support target injection.
+   !! A custom fpm executable replaces the command prefix after splitting it.
+   !! Optional `log_format` pins the existing format during manifest refreshes.
    subroutine parse_cli_config(cfg, log_format)
       use watch_cmdsplice, only: split_cmd_after_subcmd
       type(watch_config_t), intent(out) :: cfg
+      !! Assembled watcher options, model settings, and serialized command/prefix/rest.
       character(len=*), intent(in), optional :: log_format
+      !! Pinned process format for a manifest refresh; overrides manifest and CLI format changes.
 
       character(len=:), allocatable :: fpm_cmdline
       class(fpm_build_settings), allocatable :: settings
@@ -56,16 +50,14 @@ contains
       end if
    end subroutine parse_cli_config
 
-   !> Parse the complete CLI and produce watcher options + typed `fpm` settings.
+   !> Apply watcher defaults and leading flags, then collect fpm model settings.
    !!
-   !! Parsing order:
-   !! 1. Initialize watcher options from defaults and `fpm.toml`.
-   !! 2. Consume leading `--watch-*` options and verbosity flags (`-q`, `-v`).
-   !! 3. Identify the `fpm` subcommand (`build|test|run`).
-   !! 4. Parse selected `fpm` settings used to build the model (profile, flags,
-   !!    compilers, build-dir, features, and run/test names).
-   !!
-   !! All arguments after the subcommand are also preserved in `fpm_cmdline`.
+   !! Watcher flags stop at the subcommand. Recognized fpm options accept either
+   !! `--key=value` or a following token; model parsing stops at `--`, while all
+   !! forwarded tokens remain in the command. Toolchain defaults come from
+   !! `get_fpm_env`; CLI values replace them. Include/ignore/plugin flags append
+   !! unique manifest entries, and verbose flags raise the current level.
+   !! Invalid commands, log formats, or missing required values exit with status 2.
    subroutine parse_cli(w, settings, fpm_cmdline, subcmd, log_format)
       type(watch_opts_t), intent(out) :: w
       class(fpm_build_settings), allocatable, intent(out) :: settings
@@ -268,7 +260,10 @@ contains
       call normalize_watch_opts(w)
    end subroutine parse_cli
 
-   !> Read an fpm option value from `--key=value` or the following argv token.
+   !> Read `--key=value`, or advance `i` to the next argv token for an option value.
+   !!
+   !! An absent following token exits with status 2. Empty `=value` strings are
+   !! returned unchanged; this helper does not validate the selected fpm value.
    function fpm_option_value(i, narg) result(value)
       integer, intent(inout) :: i
       integer, intent(in) :: narg
@@ -313,22 +308,19 @@ contains
       ok = (trim(s) == "build") .or. (trim(s) == "test") .or. (trim(s) == "run")
    end function is_supported_subcmd
 
-   !> Detect whether an argv token is a watcher-specific flag.
-   !!
-   !! Watcher flags are of the form `--watch-*` and are consumed by `fpm-watch`
-   !! itself rather than forwarded to `fpm`.
+   !> Test for the `--watch-` prefix; supported flag names are validated separately.
    pure logical function is_watch_flag(a) result(ok)
       character(len=*), intent(in) :: a
       ok = starts_with(a, "--watch-")
    end function is_watch_flag
 
-   !> Apply a single `--watch-*` flag to the watcher options.
+   !> Consume one leading watcher flag and normalize its options.
    !!
-   !! Supports both `--flag=value` and `--flag value` styles for flags that take
-   !! a value.
-   !!
-   !! This routine is called while scanning the argv prefix before the `fpm`
-   !! subcommand token.
+   !! Required value options accept `=value` or advance `i` to the next token.
+   !! Boolean and verbosity values use `=value`; bare boolean flags enable the
+   !! setting. Numeric parse failures retain a fallback value. Supervisor flags
+   !! are consumed here but applied separately by `watch_restart`. Unknown flags
+   !! or invalid log formats exit with status 2.
    subroutine apply_watch_flag(a, i, narg, w)
       character(len=*), intent(in) :: a
       integer, intent(inout) :: i
@@ -589,15 +581,11 @@ contains
 
    end subroutine usage_print_only
 
-   !> Populate `settings` with argv overrides of fpm environment defaults.
+   !> Copy parsed build and toolchain values into a typed fpm settings object.
    !!
-   !! This routine centralizes:
-   !! - `build_dir`, `profile`, `features`,
-   !! - Fortran/C/C++ toolchain selection (`FPM_FC`, `FPM_CC`, `FPM_CXX`, `FPM_AR`),
-   !! - Common compile and link flags (`--flag`, `--c-flag`, `--cxx-flag`, `--link-flag`).
-   !!
-   !! Defaults are read with `fpm_command_line:get_fpm_env` before argv parsing,
-   !! so explicit option values always override the environment.
+   !! `parse_cli` resolves environment defaults and CLI overrides beforehand.
+   !! This routine disables model verbosity, replaces the feature array, and
+   !! assigns toolchain/flag strings. An empty profile retains the type default.
    subroutine init_build_settings(settings, build_dir, prune, profile, features, compiler_in, c_compiler_in, cxx_compiler_in, archiver_in, flag_in, cflag_in, cxxflag_in, ldflag_in)
       class(fpm_build_settings), intent(inout) :: settings
       character(len=*), intent(in) :: build_dir
@@ -636,10 +624,10 @@ contains
       dir = "build"
    end function default_build_dir
 
-   !> Transfer collected name patterns into a run/test settings object.
+   !> Copy nonempty target patterns into an initially unallocated `s%name`.
    !!
-   !! The `names` array contains tokens collected from positional arguments in
-   !! `fpm-watch run/test` invocations. Only non-empty entries are copied.
+   !! Patterns come from positional names, `--target`, or `--all`. Empty or
+   !! unallocated input leaves `s%name` unchanged; copied names are right-trimmed.
    pure subroutine set_names(s, names)
       class(fpm_run_settings), intent(inout) :: s
       type(string_t), allocatable, intent(in) :: names(:)

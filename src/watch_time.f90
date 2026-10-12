@@ -1,38 +1,9 @@
-!> Sleep utilities and low-CPU waiting.
+!> Choose busy waiting or OS sleep for polling, debounce, and restart delays.
 !!
-!! `fpm-watch` is primarily poll-based. This module provides two waiting
-!! strategies:
-!!
-!! - **Spin wait** (`sleep_spin`): uses `system_clock` in a tight loop.
-!!   This is portable and offers good timing resolution, but it can consume CPU.
-!!
-!! - **OS sleep** (`sleep_os`): delegates to a small C shim
-!!   (`fpm_watch_sleep_seconds`) which performs an efficient, platform-native
-!!   sleep:
-!!     - Windows: `Sleep(milliseconds)`
-!!     - POSIX: `nanosleep(timespec)` (with EINTR retry)
-!!
-!! The public entry point `sleep_seconds` dispatches between these strategies
-!! depending on the global low-CPU mode flag set by `set_low_cpu`.
-!!
-!! ## Design notes
-!! - The OS sleep is implemented in C to avoid link-time issues where referencing
-!!   platform-specific symbols (e.g. `Sleep` or `nanosleep`) from Fortran can
-!!   break linking on the “other” platform even if the routine is never called.
-!! - `sleep_seconds` is intentionally lightweight and safe to call frequently.
-!!
-!! ## Usage
-!! ```fortran
-!! use watch_time, only: set_low_cpu, sleep_seconds
-!!
-!! call set_low_cpu(.true.)   ! prefer OS sleep (near-zero idle CPU)
-!! call sleep_seconds(0.25)   ! sleep for ~250 ms
-!! ```
-!!
-!! ## Threading/Signals
-!! - Spin sleep does not yield; it runs until time has elapsed.
-!! - OS sleep yields to the OS scheduler; on POSIX the C shim typically retries
-!!   on interrupt (EINTR) to honor the requested duration.
+!! `set_low_cpu` selects a process-wide backend: `system_clock` spin waiting
+!! by default, or the C sleep shim when enabled. Windows uses `Sleep` with
+!! millisecond rounding; POSIX uses `nanosleep`, retrying the remaining duration
+!! after EINTR. These waits do not poll the watcher's termination flag.
 module watch_time
    use, intrinsic :: iso_fortran_env, only: int64
    use, intrinsic :: iso_c_binding,  only: c_double
@@ -46,15 +17,9 @@ module watch_time
    !! - `.true.`           : `sleep_seconds` uses `sleep_os` (OS-backed sleep).
    logical, save :: low_cpu_mode = .false.
 
-   !> C shim providing a portable OS sleep implementation.
-   !!
-   !! The actual platform-specific sleep is implemented in C to prevent
-   !! link-time failures that can occur if Fortran directly references
-   !! `Sleep` (Windows) or `nanosleep` (POSIX) symbols in the same object.
-   !!
-   !! ### Arguments
-   !! - `sec`: requested sleep duration in seconds.
+   !> Binding to the C implementation of portable OS sleep.
    interface
+      !> C OS-sleep backend; `sec` is passed by value in seconds, with nonpositive values ignored.
       subroutine fpm_watch_sleep_seconds(sec) bind(C, name="fpm_watch_sleep_seconds")
          import c_double
          implicit none
@@ -64,26 +29,16 @@ module watch_time
 
 contains
 
-   !> Enable or disable low-CPU mode.
-   !!
-   !! When enabled, `sleep_seconds` uses the OS sleep backend which typically
-   !! yields to the scheduler and keeps idle CPU usage close to zero.
-   !!
-   !! ### Arguments
-   !! - `flag`: `.true.` to enable low-CPU mode, `.false.` to use spin-waiting.
+   !> Set the process-wide waiting backend: true selects OS sleep, false selects busy waiting.
    subroutine set_low_cpu(flag)
       logical, intent(in) :: flag
       low_cpu_mode = flag
    end subroutine set_low_cpu
 
-   !> Sleep for approximately `s` seconds.
+   !> Wait approximately `s` seconds using the currently selected backend.
    !!
-   !! Dispatches to either:
-   !! - `sleep_os` when low-CPU mode is enabled, or
-   !! - `sleep_spin` when low-CPU mode is disabled.
-   !!
-   !! ### Arguments
-   !! - `s`: requested duration in seconds. Non-positive values return immediately.
+   !! Nonpositive values return immediately. OS sleep yields to the scheduler;
+   !! spin waiting consumes CPU. Neither backend checks watcher cancellation.
    subroutine sleep_seconds(s)
       real, intent(in) :: s
       if (s <= 0.0) return
@@ -94,13 +49,10 @@ contains
       end if
    end subroutine sleep_seconds
 
-   !> Busy-wait for approximately `s` seconds.
+   !> Busy-wait for the truncated number of system-clock ticks in `s` seconds.
    !!
-   !! This implementation uses `system_clock` to measure elapsed ticks.
-   !! It does not yield to the OS scheduler and may consume CPU while waiting.
-   !!
-   !! ### Arguments
-   !! - `s`: requested duration in seconds. Non-positive values return immediately.
+   !! Nonpositive/sub-tick durations return immediately. A nonpositive clock
+   !! rate falls back to 1000 ticks/s. The loop does not yield or check cancellation.
    subroutine sleep_spin(s)
       real, intent(in) :: s
       integer(int64) :: rate, t0, t1, ticks
@@ -116,13 +68,7 @@ contains
       end do
    end subroutine sleep_spin
 
-   !> OS-backed sleep for approximately `s` seconds.
-   !!
-   !! This routine delegates to the C shim `fpm_watch_sleep_seconds`, which
-   !! performs platform-native sleeping (Windows `Sleep`, POSIX `nanosleep`).
-   !!
-   !! ### Arguments
-   !! - `s`: requested duration in seconds. Non-positive values return immediately.
+   !> Convert seconds to C double and invoke the OS-sleep shim; nonpositive durations are ignored there.
    subroutine sleep_os(s)
       real, intent(in) :: s
       call fpm_watch_sleep_seconds(real(s, c_double))
