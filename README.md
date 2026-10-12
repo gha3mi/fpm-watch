@@ -14,10 +14,10 @@ graph, with optional dependency watching, OS sleep, and a restart supervisor.
 
 | OS | Compiler | Version | fpm |
 | --- | --- | ---: | :---: |
-| ubuntu 24.04 | `gfortran` | 16.1.0 | 0.13.0 ✅ |
+| ubuntu 24.04 | `gfortran` | 16.2.0 | 0.13.0 ✅ |
 | ubuntu 24.04 | `ifx` | 2026.1.1 | 0.13.0 ✅ |
-| macos 26 | `gfortran` | 16.1.0 | 0.13.0 ✅ |
-| windows 2025 | `gfortran` | 16.1.0 | 0.13.0 ✅ |
+| macos 26 | `gfortran` | 16.2.0 | 0.13.0 ✅ |
+| windows 2025 | `gfortran` | 16.2.0 | 0.13.0 ✅ |
 
 <!-- STATUS:setup-fortran-conda:END -->
 
