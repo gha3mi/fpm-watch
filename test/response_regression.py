@@ -25,11 +25,15 @@ class ResponseRegression(unittest.TestCase):
         self.project = self.root / "project"
         (self.project / "app").mkdir(parents=True)
         (self.project / "src").mkdir()
+        (self.project / "src/fixture.f90").write_text(
+            'module response_fixture\nimplicit none\nend module response_fixture\n'
+        )
         self.manifest = self.project / "fpm.toml"
         self.manifest.write_text('name="response-fixture"\nversion="0.1.0"\n')
         for name in ("first", "second"):
             (self.project / f"app/{name}.f90").write_text(
-                f'program {name}\nimplicit none\nprint *,"RESPONSE_{name}"\nend program {name}\n'
+                f'program {name}\nuse response_fixture\nimplicit none\n'
+                f'print *,"RESPONSE_{name}"\nend program {name}\n'
             )
         self.response = self.root / "args.rsp"
         self.response.write_text('options run\noptions --directory project\n')
@@ -106,7 +110,7 @@ class ResponseRegression(unittest.TestCase):
     def add_test_program(self):
         (self.project / "test").mkdir()
         (self.project / "test/check.f90").write_text(
-            'program check\nimplicit none\nprint *,"RESPONSE_TEST"\nend program check\n'
+            'program check\nuse response_fixture\nimplicit none\nprint *,"RESPONSE_TEST"\nend program check\n'
         )
 
     def test_build_and_test_responses_use_the_native_model_scope(self):
@@ -169,7 +173,7 @@ class ResponseRegression(unittest.TestCase):
         (dependency / "fpm.toml").write_text('name="selected"\n')
         (dependency / "src/selected.f90").write_text('module selected\nimplicit none\nend module\n')
         (self.project / "app/first.f90").write_text(
-            'program first\nuse selected\nimplicit none\nend program\n'
+            'program first\nuse response_fixture\nuse selected\nimplicit none\nend program\n'
         )
         self.manifest.write_text(self.manifest.read_text() +
                                  '[features.special.dependencies]\nselected={path="deps/selected"}\n')

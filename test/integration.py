@@ -494,9 +494,9 @@ class WatchIntegration(unittest.TestCase):
                 directory.mkdir(exist_ok=True)
                 for name in ("first", "second"):
                     (directory / f"{name}.f90").write_text(
-                        f"program {name}\nimplicit none\n"
+                        f"program {name}\nuse watch_fixture, only: offset\nimplicit none\n"
                         + ('#if 0\n#include "../VERSION"\n#endif\n' if name == "first" else "") +
-                        f"print *, 'METADATA_{name}', PACKAGE_VERSION\nend program {name}\n"
+                        f"print *, 'METADATA_{name}', PACKAGE_VERSION + offset\nend program {name}\n"
                     )
                 errors = self.root / "metadata-output.log"
                 with self.watch("--watch-log-format=json", "--watch-debounce=0.2", mode,
@@ -528,7 +528,8 @@ class WatchIntegration(unittest.TestCase):
                 directory.mkdir(exist_ok=True)
                 for name in ("first", "second"):
                     (directory / f"{name}.f90").write_text(
-                        f"program {name}\nimplicit none\nprint *, 'RENAMED_{name}'\nend program {name}\n"
+                        f"program {name}\nuse watch_fixture, only: offset\nimplicit none\n"
+                        f"print *, 'RENAMED_{name}', offset\nend program {name}\n"
                     )
                 errors = self.root / "rename-output.log"
                 with self.watch("--watch-log-format=json", mode, stderr_path=errors) as (process, log):
