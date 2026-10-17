@@ -64,6 +64,8 @@ contains
    !! suppresses non-error records; debug records additionally require debug mode.
    !! `force=true` and errors bypass both filters. Structured output always uses
    !! stdout; only text errors use stderr. `fields` should use the typed constructors.
+   !! Output errors are nonfatal so a disconnected terminal cannot replace a
+   !! command or cancellation status with a Fortran runtime I/O failure.
    subroutine log_event(level, event, message, fields, verbosity, force)
       character(len=*), intent(in) :: level, event, message
       !! Severity, stable event identifier, and human-readable message, respectively.
@@ -73,7 +75,7 @@ contains
       !! Minimum active verbosity for this non-error event; defaults to zero.
       logical, intent(in), optional :: force
       !! Bypass verbosity/debug filters for required protocol events; defaults to false.
-      integer :: unit, detail
+      integer :: unit, detail, io_status
       logical :: required
       character(len=:), allocatable :: line, timestamp
       if (.not. allocated(active_format)) active_format = "text"
@@ -90,8 +92,10 @@ contains
       line = format_log_record(active_format, timestamp, level, event, message, fields)
       unit = output_unit
       if (active_format == "text" .and. level == "error") unit = error_unit
-      write(unit, "(a)") line
-      flush(unit)
+      write(unit, "(a)", iostat=io_status) line
+      if (io_status /= 0) return
+      flush(unit, iostat=io_status)
+      if (io_status /= 0) return
    end subroutine log_event
 
    !> Render text, JSON, or logfmt without logging I/O or reading the clock.

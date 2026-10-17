@@ -199,19 +199,19 @@ survive control bytes and invalid UTF-8 without relying on TOML string encoding.
         <ul class="list-group list-group-flush">
             <li class="list-group-item">
               <ul class="list-inline">
-                  <li class="list-inline-item">tomlf</li>
-                  <li class="list-inline-item"><a href='http://fortranwiki.org/fortran/show/ieee_arithmetic'>ieee_arithmetic</a></li>
-                  <li class="list-inline-item">fpm_error</li>
-                  <li class="list-inline-item">fpm_toml</li>
-                  <li class="list-inline-item"><a href='http://fortranwiki.org/fortran/show/iso_fortran_env'>iso_fortran_env</a></li>
-                  <li class="list-inline-item"><a href='watch_fpm_graph.html'>watch_fpm_graph</a></li>
-                  <li class="list-inline-item"><a href='watch_cmdline.html'>watch_cmdline</a></li>
-                  <li class="list-inline-item"><a href='watch_log.html'>watch_log</a></li>
-                  <li class="list-inline-item"><a href='watch_platform.html'>watch_platform</a></li>
-                  <li class="list-inline-item">fpm_filesystem</li>
-                  <li class="list-inline-item">fpm_strings</li>
-                  <li class="list-inline-item"><a href='watch_types.html'>watch_types</a></li>
                   <li class="list-inline-item">fpm_os</li>
+                  <li class="list-inline-item"><a href='http://fortranwiki.org/fortran/show/ieee_arithmetic'>ieee_arithmetic</a></li>
+                  <li class="list-inline-item"><a href='watch_cmdline.html'>watch_cmdline</a></li>
+                  <li class="list-inline-item"><a href='watch_platform.html'>watch_platform</a></li>
+                  <li class="list-inline-item"><a href='watch_types.html'>watch_types</a></li>
+                  <li class="list-inline-item">fpm_strings</li>
+                  <li class="list-inline-item"><a href='watch_fpm_graph.html'>watch_fpm_graph</a></li>
+                  <li class="list-inline-item">fpm_filesystem</li>
+                  <li class="list-inline-item"><a href='http://fortranwiki.org/fortran/show/iso_fortran_env'>iso_fortran_env</a></li>
+                  <li class="list-inline-item">tomlf</li>
+                  <li class="list-inline-item"><a href='watch_log.html'>watch_log</a></li>
+                  <li class="list-inline-item">fpm_toml</li>
+                  <li class="list-inline-item">fpm_error</li>
               </ul>
             </li>
             <li class="list-group-item">
@@ -1014,7 +1014,7 @@ parameter
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-value~19"></span>
+              <span class="anchor" id="variable-value"></span>
               character(len=*),
             </td>
 <td>intent(in)</td>
@@ -1064,7 +1064,7 @@ parameter
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-cfg~2"></span>
+              <span class="anchor" id="variable-cfg"></span>
               type(<a href='../type/watch_config_t.html'>watch_config_t</a>),
             </td>
 <td>intent(inout)</td>
@@ -1079,7 +1079,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-files~12"></span>
+              <span class="anchor" id="variable-files~3"></span>
               type(string_t),
             </td>
 <td>intent(out),</td>
@@ -1094,7 +1094,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-file_mask~4"></span>
+              <span class="anchor" id="variable-file_mask"></span>
               integer(kind=int64),
             </td>
 <td>intent(out),</td>
@@ -1109,7 +1109,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-roots~5"></span>
+              <span class="anchor" id="variable-roots"></span>
               type(<a href='../type/root_info_t.html'>root_info_t</a>),
             </td>
 <td>intent(out),</td>
@@ -1124,7 +1124,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-manifest_key~2"></span>
+              <span class="anchor" id="variable-manifest_key"></span>
               integer(kind=int64),
             </td>
 <td>intent(out)</td>
@@ -1139,7 +1139,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-build_secs~3"></span>
+              <span class="anchor" id="variable-build_secs~2"></span>
               real,
             </td>
 <td>intent(out)</td>
@@ -1154,7 +1154,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-secs_model~3"></span>
+              <span class="anchor" id="variable-secs_model~2"></span>
               real,
             </td>
 <td>intent(out)</td>
@@ -1169,7 +1169,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-secs_targets~3"></span>
+              <span class="anchor" id="variable-secs_targets~2"></span>
               real,
             </td>
 <td>intent(out)</td>
@@ -1184,7 +1184,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-secs_watch~3"></span>
+              <span class="anchor" id="variable-secs_watch~2"></span>
               real,
             </td>
 <td>intent(out)</td>
@@ -1199,7 +1199,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-error~11"></span>
+              <span class="anchor" id="variable-error"></span>
               type(error_t),
             </td>
 <td>intent(out),</td>
@@ -1239,7 +1239,7 @@ parameter
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-path~13"></span>
+              <span class="anchor" id="variable-path~2"></span>
               character(len=*),
             </td>
 <td>intent(in)</td>
@@ -1254,7 +1254,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-files~15"></span>
+              <span class="anchor" id="variable-files~6"></span>
               type(string_t),
             </td>
 <td>intent(out),</td>
@@ -1269,7 +1269,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-file_mask~7"></span>
+              <span class="anchor" id="variable-file_mask~4"></span>
               integer(kind=int64),
             </td>
 <td>intent(out),</td>
@@ -1284,7 +1284,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-roots~8"></span>
+              <span class="anchor" id="variable-roots~4"></span>
               type(<a href='../type/root_info_t.html'>root_info_t</a>),
             </td>
 <td>intent(out),</td>
@@ -1299,7 +1299,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-manifest_key~5"></span>
+              <span class="anchor" id="variable-manifest_key~4"></span>
               integer(kind=int64),
             </td>
 <td>intent(out)</td>
@@ -1314,7 +1314,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-build_secs~5"></span>
+              <span class="anchor" id="variable-build_secs~4"></span>
               real,
             </td>
 <td>intent(out)</td>
@@ -1329,7 +1329,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-secs_model~5"></span>
+              <span class="anchor" id="variable-secs_model~4"></span>
               real,
             </td>
 <td>intent(out)</td>
@@ -1344,7 +1344,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-secs_targets~5"></span>
+              <span class="anchor" id="variable-secs_targets~4"></span>
               real,
             </td>
 <td>intent(out)</td>
@@ -1359,7 +1359,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-secs_watch~5"></span>
+              <span class="anchor" id="variable-secs_watch~4"></span>
               real,
             </td>
 <td>intent(out)</td>
@@ -1374,7 +1374,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-error~14"></span>
+              <span class="anchor" id="variable-error~4"></span>
               type(error_t),
             </td>
 <td>intent(out),</td>
@@ -1414,7 +1414,7 @@ parameter
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-cfg~3"></span>
+              <span class="anchor" id="variable-cfg~2"></span>
               type(<a href='../type/watch_config_t.html'>watch_config_t</a>),
             </td>
 <td>intent(inout)</td>
@@ -1499,7 +1499,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-valid~3"></span>
+              <span class="anchor" id="variable-valid~2"></span>
               logical,
             </td>
 <td>intent(out)</td>
@@ -1539,7 +1539,7 @@ parameter
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-error~15"></span>
+              <span class="anchor" id="variable-error~5"></span>
               type(error_t),
             </td>
 <td>intent(out),</td>
@@ -1554,7 +1554,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-detail~2"></span>
+              <span class="anchor" id="variable-detail"></span>
               character(len=*),
             </td>
 <td>intent(in)</td>
@@ -1594,7 +1594,7 @@ parameter
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-path~12"></span>
+              <span class="anchor" id="variable-path"></span>
               character(len=*),
             </td>
 <td>intent(in)</td>
@@ -1609,7 +1609,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-files~14"></span>
+              <span class="anchor" id="variable-files~5"></span>
               type(string_t),
             </td>
 <td>intent(in),</td>
@@ -1624,7 +1624,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-file_mask~6"></span>
+              <span class="anchor" id="variable-file_mask~3"></span>
               integer(kind=int64),
             </td>
 <td>intent(in),</td>
@@ -1639,7 +1639,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-roots~7"></span>
+              <span class="anchor" id="variable-roots~3"></span>
               type(<a href='../type/root_info_t.html'>root_info_t</a>),
             </td>
 <td>intent(in),</td>
@@ -1654,7 +1654,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-manifest_key~4"></span>
+              <span class="anchor" id="variable-manifest_key~3"></span>
               integer(kind=int64),
             </td>
 <td>intent(in)</td>
@@ -1699,7 +1699,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-error~13"></span>
+              <span class="anchor" id="variable-error~3"></span>
               type(error_t),
             </td>
 <td>intent(out),</td>
@@ -1742,7 +1742,7 @@ parameter
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2026-10-17T21:22:39.241228+0000             </p>
+ on 2026-10-17T21:52:02.935658+0000             </p>
           </div>
         </div>
         <br>
