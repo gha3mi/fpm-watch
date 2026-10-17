@@ -85,19 +85,34 @@ For forwarded fpm options, use `fpm build --help`, `fpm test --help`, or `fpm ru
 
 ## Configure
 
-Common defaults in `fpm.toml` (times in seconds):
+All supported settings and defaults (times in seconds):
 
 ```toml
 [extra.fpm-watch]
 poll = 0.5
 debounce = 0.2
 rescan = 0.0
+run-on-start = true
+once = false
 deps = false
+include = []
 ignore = []
+fpm-executable = "fpm"
+silent-fpm = false
+log-format = "text"
+verbosity = 0                # -1: quiet; 0: normal; 1–2: verbose
+debug = false
+print-files = false
+output-markers = false
+auto-restart = false
+restart-delay = 1.0
+restart-max = 0              # unlimited
+self = ""                   # auto-detected
 ```
 
 CLI overrides scalars, appends unique filters, and raises verbosity. Quote globs;
 paths use `/`. Metadata bypasses filters. Invalid manifest/response edits pause execution.
+Manifest `print-files=true` also needs `verbosity=2`. Log format stays fixed for the session.
 
 ## Responses and logs
 
