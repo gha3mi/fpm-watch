@@ -11,6 +11,7 @@ import shlex
 import shutil
 import signal
 import subprocess
+import sys
 import tempfile
 import time
 import unittest
@@ -100,7 +101,7 @@ class WatchIntegration(unittest.TestCase):
 
     def once(self, *args):
         return run_captured(
-            [str(WATCHER), "--watch-low-cpu", "--watch-once", *args],
+            [str(WATCHER), "--watch-once", *args],
             cwd=self.project,
         )
 
@@ -126,7 +127,7 @@ class WatchIntegration(unittest.TestCase):
             stream = stack.enter_context(log.open("w"))
             errors = stream if stderr_path is None else stack.enter_context(stderr_path.open("w"))
             process = subprocess.Popen(
-                [str(WATCHER), "--watch-low-cpu", "--watch-no-run-on-start",
+                [str(WATCHER), "--watch-no-run-on-start",
                  "--watch-poll", "0.05", "--watch-debounce", "0.1", *args],
                 cwd=self.project, stdout=stream, stderr=errors,
             )
@@ -280,6 +281,47 @@ class WatchIntegration(unittest.TestCase):
         result = self.once("--watch-log-format=logfmt", "--watch-no-run-on-start", "build")
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual(records(result.stdout, "logfmt")[0]["event"], "watch.ready")
+
+    def test_removed_wait_options_are_rejected(self):
+        for flag in ("--watch-low-cpu", "--watch-low-cpu=false", "--watch-no-low-cpu",
+                     "--watch-feature=stats"):
+            with self.subTest(flag=flag):
+                result = self.once("--watch-log-format=json", flag, "build")
+                self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
+                event = records(result.stdout, "json")[-1]
+                self.assertEqual(event["event"], "cli.error")
+                self.assertIn("unknown watch flag", event["message"])
+
+        result = self.once("run", "first", "--", "--watch-low-cpu")
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertIn("<--watch-low-cpu>", result.stdout)
+
+    def test_nonfinite_delays_retain_defaults(self):
+        self.manifest.write_text(self.manifest_text + '[extra.fpm-watch]\n'
+                                 + 'poll=nan\ndebounce=inf\nrescan=nan\n')
+        for flags in ([], ["--watch-poll=NaN", "--watch-debounce=Inf", "--watch-rescan=NaN"]):
+            with self.subTest(flags=flags):
+                result = self.once(*flags, "--watch-log-format=json", "--watch-verbose",
+                                   "--watch-no-run-on-start", "build")
+                self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+                config = next(event for event in records(result.stdout, "json")
+                              if event["event"] == "watch.configuration")
+                self.assertEqual(config["poll_ms"], 500)
+                self.assertEqual(config["debounce_ms"], 200)
+                self.assertEqual(config["rescan_s"], 0)
+
+    def test_null_numeric_values_retain_defaults(self):
+        for value in ("/", ","):
+            with self.subTest(value=value):
+                result = self.once(f"--watch-poll={value}", f"--watch-debounce={value}",
+                                   f"--watch-restart-delay={value}", f"--watch-restart-max={value}",
+                                   "--watch-log-format=json", "--watch-verbose",
+                                   "--watch-no-run-on-start", "build")
+                self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+                config = next(event for event in records(result.stdout, "json")
+                              if event["event"] == "watch.configuration")
+                self.assertEqual(config["poll_ms"], 500)
+                self.assertEqual(config["debounce_ms"], 200)
 
     def test_structured_live_changes_and_manifest_recovery(self):
         for format in ("json", "logfmt"):
@@ -441,10 +483,215 @@ class WatchIntegration(unittest.TestCase):
         self.assertIn("app/first.f90", result.stdout)
         self.assertIn("app/second.f90", result.stdout)
 
+    def test_version_include_metadata_and_coalesced_edits_run_all_targets(self):
+        self.manifest.write_text('name="watch-fixture"\nversion="VERSION"\n'
+                                 '[preprocess.cpp]\nmacros=["PACKAGE_VERSION={version}"]\n')
+        version = self.project / "VERSION"
+        for mode, coalesced in (("run", False), ("run", True), ("test", False), ("test", True)):
+            with self.subTest(mode=mode, coalesced=coalesced):
+                version.write_text("1\n")
+                directory = self.project / ("app" if mode == "run" else "test")
+                directory.mkdir(exist_ok=True)
+                for name in ("first", "second"):
+                    (directory / f"{name}.f90").write_text(
+                        f"program {name}\nimplicit none\n"
+                        + ('#if 0\n#include "../VERSION"\n#endif\n' if name == "first" else "") +
+                        f"print *, 'METADATA_{name}', PACKAGE_VERSION\nend program {name}\n"
+                    )
+                errors = self.root / "metadata-output.log"
+                with self.watch("--watch-log-format=json", "--watch-debounce=0.2", mode,
+                                stderr_path=errors) as (process, log):
+                    version.write_text("2\n")
+                    if coalesced:
+                        source = directory / "first.f90"
+                        source.write_text(source.read_text() + "! coalesced source edit\n")
+                    text = wait_for(process, log, lambda text: '"event":"command.finished"' in text)
+                    events = records(text, "json")
+                    changed = next(event for event in events if event["event"] == "watch.changed")
+                    self.assertIn("VERSION", changed["paths"])
+                    self.assertEqual(f"{directory.name}/first.f90" in changed["paths"], coalesced)
+                    started = next(event for event in events if event["event"] == "command.started")
+                    self.assertEqual(started["command"], "fpm " + mode)
+                    results = output(errors)
+                    self.assertRegex(results, r"METADATA_first\s+2")
+                    self.assertRegex(results, r"METADATA_second\s+2")
+
     def test_include_change_runs_command(self):
         with self.watch("run", "first") as (process, log):
             (self.project / "include/value.inc").write_text("integer, parameter :: value = 2\n")
             wait_for(process, log, lambda text: re.search(r"WATCH_RESULT\s+2", text))
+
+    def test_renamed_target_uses_the_full_command_after_refresh(self):
+        for mode in ("run", "test"):
+            with self.subTest(mode=mode):
+                directory = self.project / ("app" if mode == "run" else "test")
+                directory.mkdir(exist_ok=True)
+                for name in ("first", "second"):
+                    (directory / f"{name}.f90").write_text(
+                        f"program {name}\nimplicit none\nprint *, 'RENAMED_{name}'\nend program {name}\n"
+                    )
+                errors = self.root / "rename-output.log"
+                with self.watch("--watch-log-format=json", mode, stderr_path=errors) as (process, log):
+                    (directory / "first.f90").rename(directory / "renamed.f90")
+                    text = wait_for(process, log, lambda text: '"event":"command.finished"' in text)
+                    started = next(event for event in records(text, "json") if event["event"] == "command.started")
+                    self.assertEqual(started["command"], "fpm " + mode)
+                    self.assertIn("RENAMED_first", output(errors))
+                    self.assertIn("RENAMED_second", output(errors))
+                    self.assertNotIn("No executables to run", output(errors))
+
+    def test_unchanged_target_mapping_keeps_affected_target_selection(self):
+        errors = self.root / "selection-output.log"
+        with self.watch("--watch-log-format=json", "run", stderr_path=errors) as (process, log):
+            source = self.project / "app/first.f90"
+            source.write_text(source.read_text() + "! source-only edit\n")
+            text = wait_for(process, log, lambda text: '"event":"command.finished"' in text)
+            started = next(event for event in records(text, "json") if event["event"] == "command.started")
+            self.assertNotEqual(started["command"], "fpm run")
+            self.assertIn("first", started["command"])
+            self.assertNotIn("WATCH_SECOND", output(errors))
+            self.assertIn("WATCH_RESULT", output(errors))
+
+    def test_large_same_size_edit_runs_command(self):
+        source = self.project / "src/fixture.f90"
+        padding = "! " + "x" * 97 + "\n"
+        source.write_text(padding * 80 + source.read_text() + padding * 280)
+        with self.watch("run", "first") as (process, log):
+            source.write_text(source.read_text().replace("offset = 0", "offset = 4"))
+            wait_for(process, log, lambda text: re.search(r"WATCH_RESULT\s+5", text))
+
+    def test_cpp_and_nested_include_changes_run_command(self):
+        source = self.project / "app/first.F90"
+        (self.project / "app/first.f90").rename(source)
+        source.write_text(source.read_text().replace("include 'value.inc'", '#include "outer.inc"'))
+        (self.project / "include/outer.inc").write_text("include 'value.inc'\n")
+        self.manifest.write_text(self.manifest_text + "[preprocess.cpp]\n")
+        with self.watch("run", "first") as (process, log):
+            (self.project / "include/value.inc").write_text("integer, parameter :: value = 7\n")
+            wait_for(process, log, lambda text: re.search(r"WATCH_RESULT\s+7", text))
+            (self.project / "include/alternate.inc").write_text("integer, parameter :: value = 8\n")
+            (self.project / "include/outer.inc").write_text("include 'alternate.inc'\n")
+            wait_for(process, log, lambda text: re.search(r"WATCH_RESULT\s+8", text))
+            (self.project / "include/alternate.inc").write_text("integer, parameter :: value = 9\n")
+            # fpm owns include-cache invalidation; verify our detected edit invokes it.
+            wait_for(process, log, lambda text: "Changed include/alternate.inc" in text
+                     and text.count("INFO  Application succeeded") >= 3)
+
+    def test_empty_include_removal_and_recreation(self):
+        empty = self.project / "include/empty.inc"
+        empty.touch()
+        source = self.project / "app/first.f90"
+        source.write_text(source.read_text().replace("include 'value.inc'", "include 'value.inc'\ninclude 'empty.inc'"))
+        with self.watch("run", "first") as (process, log):
+            empty.unlink()
+            wait_for(process, log, lambda text: "Application failed" in text)
+            empty.touch()
+            wait_for(process, log, lambda text: re.search(r"WATCH_RESULT\s+1", text))
+
+    def test_source_edit_refreshes_include_membership(self):
+        source = self.project / "app/first.f90"
+        added = self.project / "include/added.inc"
+        added.write_text("integer, parameter :: value = 3\n")
+        with self.watch("run", "first") as (process, log):
+            source.write_text(source.read_text().replace("value.inc", "added.inc"))
+            wait_for(process, log, lambda text: re.search(r"WATCH_RESULT\s+3", text))
+            added.write_text("integer, parameter :: value = 6\n")
+            wait_for(process, log, lambda text: "Changed include/added.inc" in text
+                     and text.count("INFO  Application succeeded") >= 2)
+
+    def test_edit_during_command_survives_dependency_refresh(self):
+        source = self.project / "app/first.f90"
+        added = self.project / "include/added.inc"
+        added.write_text("integer, parameter :: value = 3\n")
+        marker = self.root / "started"
+        release = self.root / "release"
+        helper = self.root / "command.py"
+        helper.write_text(
+            "from pathlib import Path\nimport time\n"
+            f"marker = Path({str(marker)!r})\nrelease = Path({str(release)!r})\n"
+            "with marker.open('a') as stream:\n    stream.write('started\\n')\n"
+            "deadline = time.monotonic() + 10\n"
+            "while not release.exists() and time.monotonic() < deadline:\n    time.sleep(0.02)\n"
+        )
+        command = self.root / ("command.cmd" if os.name == "nt" else "command.sh")
+        if os.name == "nt":
+            command.write_text("@" + subprocess.list2cmdline([sys.executable, str(helper)]) + "\n")
+        else:
+            command.write_text("#!/bin/sh\nexec " + shlex.join([sys.executable, str(helper)]) + "\n")
+            command.chmod(0o755)
+        with self.watch("--watch-fpm", str(command), "run", "first") as (process, log):
+            source.write_text(source.read_text().replace("value.inc", "added.inc"))
+            wait_for(process, log, lambda text: marker.exists())
+            added.write_text("integer, parameter :: value = 6\n")
+            release.touch()
+            wait_for(process, log, lambda text: marker.read_text().count("started") >= 2
+                     and text.count("INFO  Command succeeded") >= 2)
+            time.sleep(0.25)
+            self.assertEqual(marker.read_text().count("started"), 2, output(log))
+
+    def test_directory_options_use_selected_project_and_configuration(self):
+        self.manifest.write_text(self.manifest_text + '[extra.fpm-watch]\nlog-format="json"\n')
+        # Include a valid but different parent manifest to detect accidental cwd use.
+        (self.root / "fpm.toml").write_text('name="unrelated-parent"\n')
+        for options in (("--directory", "project"), ("-C", "project"),
+                        ("--directory=project",), ("-C=project",)):
+            with self.subTest(options=options):
+                result = run_captured([str(WATCHER), "--watch-once", "--watch-no-run-on-start",
+                                       "--watch-print-files", "run", "first", *options], cwd=self.root)
+                self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+                files = [event["path"] for event in records(result.stdout, "json")
+                         if event["event"] == "watch.file"]
+                self.assertTrue(any(path.endswith("app/first.f90") for path in files))
+                self.assertTrue(all("unrelated" not in path for path in files))
+        (self.root / "fpm.toml").unlink()
+        result = run_captured([str(WATCHER), "--watch-once", "run", "first",
+                               "--directory", "project"], cwd=self.root)
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertRegex(result.stderr, r"WATCH_RESULT\s+1")
+
+    def test_directory_changes_and_stop_file_use_selected_project(self):
+        log = self.root / "directory.log"
+        with log.open("w") as stream:
+            process = subprocess.Popen([str(WATCHER), "--watch-no-run-on-start", "--watch-poll=0.05",
+                                        "--watch-debounce=0.05", "run", "first", "-C", "project"],
+                                       cwd=self.root, stdout=stream, stderr=stream)
+            try:
+                wait_for(process, log, lambda text: "Ctrl+C or touch" in text)
+                (self.project / "include/value.inc").write_text("integer, parameter :: value = 4\n")
+                wait_for(process, log, lambda text: re.search(r"WATCH_RESULT\s+4", text))
+                (self.project / ".fpm-watch.stop").touch()
+                self.assertEqual(process.wait(timeout=10), 0, output(log))
+            finally:
+                if process.poll() is None:
+                    process.terminate()
+                    process.wait(timeout=5)
+
+    @unittest.skipUnless(Path("/proc/self/fd").is_dir(), "descriptor accounting uses Linux procfs")
+    def test_model_refresh_contains_upstream_empty_include_leak(self):
+        self.manifest.write_text(self.manifest_text + "[preprocess.cpp]\n")
+        source = self.project / "app/first.f90"
+        source.write_text(source.read_text().replace("include 'value.inc'", "include 'value.inc'\ninclude 'empty.inc'"))
+        (self.project / "include/empty.inc").touch()
+        with self.watch("--watch-verbose", "build") as (process, log):
+            descriptors = Path(f"/proc/{process.pid}/fd")
+            baseline = len(list(descriptors.iterdir()))
+            for iteration in range(12):
+                self.manifest.write_text(self.manifest_text + f"# refresh {iteration}\n[preprocess.cpp]\n")
+                wait_for(process, log, lambda text: text.count("INFO  Build succeeded") >= iteration + 1)
+                self.assertLessEqual(len(list(descriptors.iterdir())), baseline + 1, output(log))
+
+    def test_model_workspace_cleanup_after_success_and_failure(self):
+        temporary = self.root / "model-temp"
+        temporary.mkdir()
+        env = os.environ | {key: str(temporary) for key in ("TMPDIR", "TMP", "TEMP")}
+        for invalid in (False, True):
+            with self.subTest(invalid=invalid):
+                if invalid:
+                    self.manifest.write_text("name = [\n")
+                result = subprocess.run([str(WATCHER), "--watch-once", "--watch-no-run-on-start", "build"],
+                                        cwd=self.project, env=env, capture_output=True, text=True, timeout=15)
+                self.assertEqual(result.returncode, int(invalid), result.stdout + result.stderr)
+                self.assertEqual(list(temporary.iterdir()), [], result.stdout + result.stderr)
 
     def test_manifest_change_runs_command(self):
         with self.watch("run", "first") as (process, log):
@@ -532,7 +779,7 @@ class WatchIntegration(unittest.TestCase):
     def interrupt_watcher(self, args, ready):
         log = self.root / "interrupt.log"
         with log.open("w") as stream:
-            process = subprocess.Popen([str(WATCHER), "--watch-low-cpu", *args],
+            process = subprocess.Popen([str(WATCHER), *args],
                                        cwd=self.project, stdout=stream, stderr=stream,
                                        start_new_session=True)
             try:

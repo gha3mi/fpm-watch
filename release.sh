@@ -53,7 +53,6 @@ EOF
 
 DRY_RUN=false
 LOCAL_ONLY=false
-INCLUDE_PR_COMMITS=false
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
@@ -88,6 +87,24 @@ should_ignore() {
     return 1
 }
 
+increment_decimal() {
+    local value="$1" result="" digit carry=1 i
+    for ((i=${#value}-1; i>=0; i--)); do
+        digit=${value:i:1}
+        if [[ $carry == 1 ]]; then
+            if [[ $digit == 9 ]]; then
+                digit=0
+            else
+                digit=$((digit + 1))
+                carry=0
+            fi
+        fi
+        result="$digit$result"
+    done
+    if [[ $carry == 1 ]]; then result="1$result"; fi
+    printf '%s' "$result"
+}
+
 echo "🧪 Dry run mode: $DRY_RUN"
 echo "🔧 Local-only mode: $LOCAL_ONLY"
 
@@ -104,39 +121,70 @@ if ! gh auth status &>/dev/null; then
 fi
 
 repo=$(gh repo view --json nameWithOwner -q .nameWithOwner)
-previous_tag=$(git tag --sort=-v:refname | grep '^v' | head -n1)
-previous_tag=${previous_tag:-v0.0.0}
-echo "📌 Previous tag: $previous_tag"
+previous_tag=$(git describe --tags --match 'v[0-9]*' --abbrev=0 HEAD 2>/dev/null || true)
+if [[ -n "$previous_tag" ]]; then
+    commit_range="$previous_tag..HEAD"
+    baseline_version=${previous_tag#v}
+    echo "📌 Previous tag: $previous_tag"
+else
+    commit_range="HEAD"
+    if [[ ! -r VERSION ]]; then
+        echo "❌ No release tag or readable VERSION file; create VERSION with a semantic version." >&2
+        exit 1
+    fi
+    baseline_version=$(<VERSION)
+    baseline_version=${baseline_version%$'\r'}
+    echo "📌 No previous tag; using VERSION: $baseline_version"
+fi
 
-commits=$(git log "$previous_tag"..HEAD --pretty=format:"%s")
+version_pattern='^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(-[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?(\+[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?$'
+if [[ ! $baseline_version =~ $version_pattern ]]; then
+    echo "❌ Invalid release version: $baseline_version; use MAJOR.MINOR.PATCH with optional prerelease/build identifiers." >&2
+    exit 1
+fi
+major=${BASH_REMATCH[1]}
+minor=${BASH_REMATCH[2]}
+patch=${BASH_REMATCH[3]}
+prerelease=${BASH_REMATCH[4]#-}
+if [[ -n $prerelease ]]; then
+    IFS=. read -r -a identifiers <<<"$prerelease"
+    for identifier in "${identifiers[@]}"; do
+        if [[ $identifier =~ ^[0-9]+$ && ${#identifier} -gt 1 && $identifier == 0* ]]; then
+            echo "❌ Invalid release version: numeric prerelease identifiers must not have leading zeros." >&2
+            exit 1
+        fi
+    done
+fi
+
+commits=$(git log "$commit_range" --pretty=format:"%s")
 if [[ -z "$commits" ]]; then
     echo "✅ No commits since last release."
     exit 0
 fi
 
 bump="patch"
-if echo "$commits" | grep -qE "^feat(\(.+\))?!?: "; then bump="minor"; fi
-if echo "$commits" | grep -qE "BREAKING CHANGE|!: "; then bump="major"; fi
+if grep -qE "^feat(\(.+\))?!?: " <<<"$commits"; then bump="minor"; fi
+if grep -qE "BREAKING CHANGE|!: " <<<"$commits"; then bump="major"; fi
 
-IFS=. read -r major minor patch <<<"${previous_tag#v}"
 case "$bump" in
 major)
-    major=$((major + 1))
+    major=$(increment_decimal "$major")
     minor=0
     patch=0
     ;;
 minor)
-    minor=$((minor + 1))
+    minor=$(increment_decimal "$minor")
     patch=0
     ;;
-patch) patch=$((patch + 1)) ;;
+patch)
+    if [[ -z $prerelease ]]; then patch=$(increment_decimal "$patch"); fi
+    ;;
 esac
 next_tag="v$major.$minor.$patch"
 echo "🆕 Next version: $next_tag"
 
 echo "🔍 Fetching commits between $previous_tag and HEAD..."
-compare=$(gh api "/repos/$repo/compare/$previous_tag...HEAD")
-commit_shas=$(echo "$compare" | jq -r '.commits[].sha')
+commit_shas=$(git log "$commit_range" --pretty=format:"%H")
 all_commit_shas=()
 while IFS= read -r sha; do all_commit_shas+=("$sha"); done <<<"$commit_shas"
 
@@ -152,8 +200,13 @@ if ! echo "$raw_prs" | jq empty >/dev/null 2>&1; then
     echo "$raw_prs"
     exit 1
 fi
-mapfile -t all_prs < <(echo "$raw_prs" | jq -c '.[]')
-echo "ℹ️ Retrieved ${#all_prs[@]} PRs"
+all_prs=()
+pr_count=0
+while IFS= read -r pr_json; do
+    all_prs+=("$pr_json")
+    pr_count=$((pr_count + 1))
+done < <(jq -c '.[]' <<<"$raw_prs")
+echo "ℹ️ Retrieved $pr_count PRs"
 
 features=()
 fixes=()
@@ -174,17 +227,17 @@ classify() {
     fi
 }
 
-matched_prs=()
 pr_commit_shas=()
-for pr_json in "${all_prs[@]}"; do
+for pr_json in ${all_prs[@]+"${all_prs[@]}"}; do
     merged_at=$(echo "$pr_json" | jq -r '.merged_at')
     [[ "$merged_at" == "null" ]] && continue
 
     pr_number=$(echo "$pr_json" | jq -r '.number')
-    mapfile -t pr_commits < <(gh api "/repos/$repo/pulls/$pr_number/commits" | jq -r '.[].sha')
+    pr_commits=()
+    while IFS= read -r sha; do pr_commits+=("$sha"); done < <(gh api "/repos/$repo/pulls/$pr_number/commits" | jq -r '.[].sha')
 
     pr_matches_range=false
-    for sha in "${pr_commits[@]}"; do
+    for sha in ${pr_commits[@]+"${pr_commits[@]}"}; do
         if [[ " ${all_commit_shas[*]} " =~ " $sha " ]]; then
             pr_matches_range=true
             break
@@ -201,31 +254,16 @@ for pr_json in "${all_prs[@]}"; do
         continue
     fi
 
-    matched_prs+=("$pr_json")
-    pr_commit_shas+=("${pr_commits[@]}")
+    pr_commit_shas+=(${pr_commits[@]+"${pr_commits[@]}"})
 
     line="* $title ([#${number}](https://github.com/$repo/pull/${number})) by [@$author](https://github.com/$author)"
     classify "$title" "$line"
     contributors+=("$author")
 
-    if [[ "${INCLUDE_PR_COMMITS:-true}" == true ]]; then
-        for sha in "${pr_commits[@]}"; do
-            if [[ " ${all_commit_shas[*]} " =~ " $sha " ]]; then
-                msg=$(git show -s --format="%s" "$sha")
-                if should_ignore "$msg"; then continue; fi
-                commit_author=$(gh api "/repos/$repo/commits/$sha" --jq '.author.login' 2>/dev/null || echo "")
-                author_name=${commit_author:-$(git show -s --format="%an" "$sha")}
-                short_sha=$(git rev-parse --short "$sha")
-                subline="* [#${number}] $msg ([${short_sha}](https://github.com/$repo/commit/$sha)) by [@$author_name](https://github.com/$author_name)"
-                classify "$msg" "$subline"
-                contributors+=("$author_name")
-            fi
-        done
-    fi
 done
 
 for sha in "${all_commit_shas[@]}"; do
-    [[ " ${pr_commit_shas[*]} " =~ " $sha " ]] && continue
+    [[ " ${pr_commit_shas[*]-} " =~ " $sha " ]] && continue
     msg=$(git show -s --format="%s" "$sha")
     if should_ignore "$msg"; then
         echo "⏭️  Ignored commit: $msg"
@@ -241,33 +279,39 @@ for sha in "${all_commit_shas[@]}"; do
     contributors+=("$author")
 done
 
-readarray -t unique_contributors < <(printf "%s\n" "${contributors[@]}" | grep -v '^null$' | sort -u)
+unique_contributors=()
+while IFS= read -r author; do
+    [[ -z "$author" || "$author" == null ]] || unique_contributors+=("$author")
+done < <(printf "%s\n" ${contributors[@]+"${contributors[@]}"} | sort -u)
 
 today=$(date +%F)
-url="https://github.com/$repo/compare/$previous_tag...$next_tag"
+if [[ "$commit_range" == "HEAD" ]]; then
+    url="https://github.com/$repo/commits/$next_tag"
+else
+    url="https://github.com/$repo/compare/$previous_tag...$next_tag"
+fi
 
 changelog_header="## [$next_tag]($url) - $today\n\n"
 changelog_body=""
 changelog_contrib=""
 
 section() {
-    local title="$1"
+    local title="$1" item
     shift
-    local items=("$@")
-    if [[ ${#items[@]} -gt 0 ]]; then
+    if [[ $# -gt 0 ]]; then
         changelog_body+=$'\n'"### $title"$'\n\n'
-        for item in "${items[@]}"; do
+        for item in "$@"; do
             changelog_body+="$item"$'\n'
         done
     fi
 }
 
-section "Features" "${features[@]}"
-section "Fixes" "${fixes[@]}"
-section "Breaking Changes" "${breaking[@]}"
-section "Others" "${others[@]}"
+section "Features" ${features[@]+"${features[@]}"}
+section "Fixes" ${fixes[@]+"${fixes[@]}"}
+section "Breaking Changes" ${breaking[@]+"${breaking[@]}"}
+section "Others" ${others[@]+"${others[@]}"}
 
-if [[ ${#unique_contributors[@]} -gt 0 ]]; then
+if [[ -n ${unique_contributors[*]-} ]]; then
     changelog_contrib+="\n\n### Contributors\n"
     for c in "${unique_contributors[@]}"; do
         changelog_contrib+="- [@$c](https://github.com/$c)\n"
@@ -275,7 +319,11 @@ if [[ ${#unique_contributors[@]} -gt 0 ]]; then
     changelog_contrib+="\n"
 fi
 
-changelog_tail="\n\nFull Changelog: [$previous_tag...$next_tag]($url)\n"
+if [[ "$commit_range" == "HEAD" ]]; then
+    changelog_tail="\n\nFull Changelog: [$next_tag]($url)\n"
+else
+    changelog_tail="\n\nFull Changelog: [$previous_tag...$next_tag]($url)\n"
+fi
 changelog_md="${changelog_header}${changelog_body}${changelog_contrib}${changelog_tail}"
 changelog_release="${changelog_header}${changelog_body}${changelog_tail}"
 
@@ -294,8 +342,7 @@ if [[ -f CHANGELOG.md && $(grep -c "## \[$next_tag\]" CHANGELOG.md) -gt 0 ]]; th
 else
     echo
     read -rp "📄 Write and commit CHANGELOG.md? [y/N] " confirm
-    confirm="${confirm,,}"
-    if [[ "$confirm" == "y" || "$confirm" == "yes" ]]; then
+    if [[ "$confirm" == [yY] || "$confirm" == [yY][eE][sS] ]]; then
         echo -e "$changelog_md\n$(cat CHANGELOG.md 2>/dev/null)" >.CHANGELOG.md && mv .CHANGELOG.md CHANGELOG.md
         git add CHANGELOG.md
         git commit -m "docs: update CHANGELOG for $next_tag"
@@ -307,8 +354,7 @@ fi
 # ✅ STEP 2: Confirm writing VERSION
 echo
 read -rp "📝 Write and commit VERSION file? [y/N] " confirm
-confirm="${confirm,,}"
-if [[ "$confirm" == "y" || "$confirm" == "yes" ]]; then
+if [[ "$confirm" == [yY] || "$confirm" == [yY][eE][sS] ]]; then
     echo "${next_tag#v}" >VERSION
     git add VERSION
     git commit -m "chore: update VERSION to ${next_tag}"
@@ -320,8 +366,7 @@ fi
 if [[ "$LOCAL_ONLY" == false ]]; then
     echo
     read -rp "📤 Push commits to GitHub? [y/N] " confirm
-    confirm="${confirm,,}"
-    if [[ "$confirm" == "y" || "$confirm" == "yes" ]]; then
+    if [[ "$confirm" == [yY] || "$confirm" == [yY][eE][sS] ]]; then
         git push
     else
         echo "⏭️ Skipping git push."
@@ -332,8 +377,7 @@ fi
 if [[ "$LOCAL_ONLY" == false ]]; then
     echo
     read -rp "🏷️  Create and push Git tag $next_tag? [y/N] " confirm
-    confirm="${confirm,,}"
-    if [[ "$confirm" == "y" || "$confirm" == "yes" ]]; then
+    if [[ "$confirm" == [yY] || "$confirm" == [yY][eE][sS] ]]; then
         if ! git rev-parse "$next_tag" >/dev/null 2>&1; then
             git tag "$next_tag"
             git push origin "$next_tag"
@@ -351,8 +395,7 @@ fi
 if [[ "$LOCAL_ONLY" == false ]]; then
     echo
     read -rp "🚀 Create GitHub Release $next_tag? [y/N] " confirm
-    confirm="${confirm,,}"
-    if [[ "$confirm" == "y" || "$confirm" == "yes" ]]; then
+    if [[ "$confirm" == [yY] || "$confirm" == [yY][eE][sS] ]]; then
         gh release create "$next_tag" --title "$next_tag" --notes-file <(echo -e "$changelog_release")
         echo "✅ GitHub Release $next_tag created."
     else

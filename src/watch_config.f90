@@ -3,8 +3,8 @@
 !! Missing or unreadable watcher tables leave existing values unchanged.
 !! Scalar keys replace defaults; manifest lists replace existing arrays.
 !! CLI list options subsequently append unique entries through `push_feature`.
-!! Supervisor defaults are read separately by `get_restart_defaults`.
 module watch_config
+   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
    use watch_types, only: watch_opts_t
    use fpm_strings, only: string_t
    use fpm_filesystem, only: exists
@@ -13,14 +13,13 @@ module watch_config
    use tomlf, only: toml_table, toml_stat, get_value
    implicit none
    private
-   public set_watch_defaults, apply_watch_from_manifest, normalize_watch_opts, push_feature, get_restart_defaults
+   public set_watch_defaults, apply_watch_from_manifest, normalize_watch_opts, push_feature
 
 contains
 
    !> Reset scalar watcher options and ensure list arrays are allocated.
    !!
-   !! Existing include/ignore/plugin arrays are retained. Fresh options receive
-   !! empty arrays; supervisor options have separate defaults.
+   !! Existing include/ignore arrays are retained. Fresh options receive empty arrays.
    subroutine set_watch_defaults(w)
       type(watch_opts_t), intent(inout) :: w
       w%verbosity = 0
@@ -36,11 +35,14 @@ contains
       w%output_markers = .false.
       w%restart_count = 0
       w%watch_deps = .false.
-      w%low_cpu = .false.
       w%once = .false.
       if (.not. allocated(w%ignore)) allocate(w%ignore(0))
       if (.not. allocated(w%include)) allocate(w%include(0))
-      if (.not. allocated(w%enabled_features)) allocate(w%enabled_features(0))
+      w%auto_restart = .false.
+      w%is_child = .false.
+      w%restart_delay = 1.0
+      w%restart_max = 0
+      w%self_exe = ""
    end subroutine set_watch_defaults
 
    !> Normalize timing bounds, verbosity, and the executable name.
@@ -53,6 +55,8 @@ contains
       if (w%poll < 0.05) w%poll = 0.05
       if (w%debounce < 0.0) w%debounce = 0.0
       if (w%rescan < 0.0) w%rescan = 0.0
+      if (w%restart_delay < 0.0) w%restart_delay = 0.0
+      if (w%restart_max < 0) w%restart_max = 0
       if (w%verbosity > 2) w%verbosity = 2
       if (w%verbosity < -1) w%verbosity = -1
       if (.not. allocated(w%fpm_executable)) w%fpm_executable = "fpm"
@@ -62,17 +66,17 @@ contains
    !> Replace recognized options from `[extra.fpm-watch]` and normalize them.
    !!
    !! Missing keys or values that TOML getters cannot read leave existing options
-   !! unchanged. Successfully read lists replace existing arrays. Supervisor keys
-   !! are handled by `get_restart_defaults`; log-format validation belongs to CLI
-   !! configuration assembly.
-   subroutine apply_watch_from_manifest(w)
+   !! unchanged. Successfully read lists replace existing arrays. Log-format validation
+   !! belongs to CLI configuration assembly.
+   subroutine apply_watch_from_manifest(w, manifest)
       type(watch_opts_t), intent(inout) :: w
+      character(len=*), intent(in) :: manifest
 
       type(toml_table), allocatable :: root
       type(toml_table), pointer :: wt
       logical :: ok
 
-      call load_watch_table(root, wt, ok)
+      call load_watch_table(root, wt, ok, manifest)
       if (.not. ok) return
 
       call toml_get_real(wt,    "poll",     w%poll)
@@ -86,7 +90,6 @@ contains
       call toml_get_logical(wt, "run-on-start", w%run_on_start)
 
       call toml_get_logical(wt, "deps",         w%watch_deps)
-      call toml_get_logical(wt, "low-cpu",      w%low_cpu)
       call toml_get_logical(wt, "once",         w%once)
 
       call toml_get_int(wt,     "verbosity", w%verbosity)
@@ -95,63 +98,24 @@ contains
 
       call toml_get_list_strings(wt, "ignore",   w%ignore)
       call toml_get_list_strings(wt, "include",  w%include)
-      call toml_get_list_strings(wt, "features", w%enabled_features)
+      call toml_get_logical(wt, "auto-restart", w%auto_restart)
+      call toml_get_real(wt, "restart-delay", w%restart_delay)
+      call toml_get_int(wt, "restart-max", w%restart_max)
+      call toml_get_string(wt, "self", w%self_exe)
 
       call normalize_watch_opts(w)
    end subroutine apply_watch_from_manifest
 
-   !> Read supervisor defaults from the manifest (when present).
-   !!
-   !! These are used by `watch_restart` and can be configured under
-   !! `[extra.fpm-watch]`.
-   !!
-   !! Keys:
-   !!
-   !! - `auto-restart` (logical)
-   !! - `restart-delay` (real, seconds)
-   !! - `restart-max` (integer, 0 = unlimited)
-   !! - `self` or `self-exe` (string, explicit path to `fpm-watch`)
-   subroutine get_restart_defaults(auto_restart, restart_delay, restart_max, self_exe)
-      logical, intent(out) :: auto_restart
-      real, intent(out) :: restart_delay
-      integer, intent(out) :: restart_max
-      character(len=:), allocatable, intent(out) :: self_exe
-
-      type(toml_table), allocatable :: root
-      type(toml_table), pointer :: wt
-      logical :: ok
-      character(len=:), allocatable :: tmp
-
-      auto_restart  = .false.
-      restart_delay = 1.0
-      restart_max   = 0
-      self_exe      = ""
-
-      call load_watch_table(root, wt, ok)
-      if (.not. ok) return
-
-      call toml_get_logical(wt, "auto-restart",  auto_restart)
-      call toml_get_real(wt,    "restart-delay", restart_delay)
-      call toml_get_int(wt,     "restart-max",   restart_max)
-
-      tmp = ""
-      call toml_get_string(wt, "self", tmp)
-      if (len_trim(tmp) == 0) call toml_get_string(wt, "self-exe", tmp)
-      if (len_trim(tmp) > 0) self_exe = trim(tmp)
-
-      if (restart_delay < 0.0) restart_delay = 0.0
-      if (restart_max < 0) restart_max = 0
-   end subroutine get_restart_defaults
-
-   !> Locate `[extra.fpm-watch]` in the current directory's `fpm.toml`.
+   !> Locate `[extra.fpm-watch]` in the selected project manifest.
    !!
    !! `ok` is false and `wt` is null when the file/table is absent or unreadable.
    !! On success, `wt` points inside `root` and remains valid only while `root`
    !! remains allocated.
-   subroutine load_watch_table(root, wt, ok)
+   subroutine load_watch_table(root, wt, ok, manifest)
       type(toml_table), allocatable, intent(out) :: root
       type(toml_table), pointer, intent(out) :: wt
       logical, intent(out) :: ok
+      character(len=*), intent(in) :: manifest
 
       type(toml_table), pointer :: extra
       type(error_t), allocatable :: err
@@ -161,9 +125,9 @@ contains
       wt => null()
       extra => null()
 
-      if (.not. exists("fpm.toml")) return
+      if (.not. exists(manifest)) return
 
-      call read_package_file(root, "fpm.toml", err)
+      call read_package_file(root, manifest, err)
       if (allocated(err)) return
 
       call get_value(root, "extra", extra, requested=.false., stat=stat)
@@ -177,7 +141,7 @@ contains
       ok = .true.
    end subroutine load_watch_table
 
-   !> Read a TOML real value if present.
+   !> Read a finite TOML real value if present; otherwise retain the existing value.
    subroutine toml_get_real(table, key, v)
       type(toml_table), intent(inout) :: table
       character(len=*), intent(in) :: key
@@ -186,7 +150,9 @@ contains
       integer :: stat
       tmp = v
       call get_value(table, key, tmp, stat=stat)
-      if (stat == toml_stat%success) v = tmp
+      if (stat == toml_stat%success) then
+         if (ieee_is_finite(tmp)) v = tmp
+      end if
    end subroutine toml_get_real
 
    !> Read a TOML integer value if present.
@@ -252,7 +218,7 @@ contains
 
    !> Append a unique, nonempty, right-trimmed string to an allocatable list.
    !!
-   !! Used for fpm features, watcher plugins, target patterns, and filters.
+   !! Used for fpm features, target patterns, and filters.
    !! Comparisons are case-sensitive; leading whitespace is retained.
    subroutine push_feature(features, name)
       type(string_t), allocatable, intent(inout) :: features(:)

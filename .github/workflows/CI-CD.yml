@@ -54,17 +54,24 @@ jobs:
       - name: fpm-watch test
         if: runner.os != 'Windows'
         shell: bash
-        run: ./bin/fpm-watch --watch-low-cpu --watch-once test --profile debug
+        run: ./bin/fpm-watch --watch-once test --profile debug
 
       - name: fpm-watch test
         if: runner.os == 'Windows'
-        run: .\bin\fpm-watch.exe --watch-low-cpu --watch-once test --profile debug
+        run: .\bin\fpm-watch.exe --watch-once test --profile debug
 
       - name: Watcher behavior regressions
         run: python test/integration.py --watcher ./bin/fpm-watch${{ runner.os == 'Windows' && '.exe' || '' }}
 
       - name: Supervisor behavior regressions
         run: python test/platform_regression.py ./bin/fpm-watch${{ runner.os == 'Windows' && '.exe' || '' }}
+
+      - name: Response file regressions
+        run: python test/response_regression.py --watcher ./bin/fpm-watch${{ runner.os == 'Windows' && '.exe' || '' }}
+
+      - name: Release preparation regressions
+        if: runner.os != 'Windows'
+        run: python test/release_regression.py
 
   doc_ford:
     if: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && !contains(github.event.head_commit.message, '[skip ci]') }}

@@ -4,7 +4,7 @@ program graph_check
    use watch_fpm_graph, only: compute_watch_files_from_settings
    use watch_types, only: watch_opts_t, root_info_t
    use watch_filter, only: normalize_path
-   use fpm_command_line, only: fpm_run_settings, get_fpm_env
+   use fpm_command_line, only: fpm_build_settings, fpm_run_settings, fpm_test_settings, get_fpm_env
    use fpm_filesystem, only: mkdir, join_path
    use fpm_os, only: get_current_directory, change_directory
    use fpm_strings, only: string_t
@@ -40,7 +40,11 @@ program graph_check
    options%verbosity = -1
 
    call compute_graph()
+   call expect_file("VERSION", .true.)
+   call expect_file("deps/local/metadata/release.version", .false.)
    call expect_file("app/local.inc", .true.)
+   call expect_file("app/nested.inc", .true.)
+   call expect_file("app/nested.h", .true.)
    call expect_file("include/shared.inc", .true.)
    call expect_file("app/local.h", .true.)
    call expect_file("include/shared.h", .true.)
@@ -58,13 +62,14 @@ program graph_check
    allocate(settings%name(0))
 
    options%include = [string_t("app/*.f90"), string_t("include/*.inc")]
-   options%ignore = [string_t("*/shared.inc")]
+   options%ignore = [string_t("*/shared.inc"), string_t("*VERSION*")]
    call compute_graph()
    call expect_file("app/main.f90", .true.)
    call expect_file("app/helper.c", .false.)
    call expect_file("app/local.inc", .false.)
    call expect_file("include/shared.inc", .false.)
    call expect_file("fpm.toml", .true.)
+   call expect_file("VERSION", .true.)
    deallocate(options%include, options%ignore)
 
    options%watch_deps = .true.
@@ -72,6 +77,12 @@ program graph_check
    call expect_file("deps/local/src/local_dep.f90", .true.)
    call expect_file("deps/local/src/local.inc", .true.)
    call expect_file("deps/local/fpm.toml", .true.)
+   options%include = [string_t("app/*.f90")]
+   options%ignore = [string_t("*VERSION*"), string_t("*/release.version")]
+   call compute_graph()
+   call expect_file("VERSION", .true.)
+   call expect_file("deps/local/metadata/release.version", .true.)
+   deallocate(options%include, options%ignore)
    do iteration = 1, 25
       call compute_graph()
       call expect_file("deps/local/src/local_dep.f90", .true.)
@@ -114,6 +125,34 @@ program graph_check
       manifest_key, build_secs, model_secs, target_secs, watch_secs, error)
    if (.not. allocated(error)) error stop "invalid manifest did not return an error"
    call write_manifest()
+
+   ! CPP model parsing expands INCLUDE paths; collection must recover originals.
+   call write_lines("fpm.toml", [character(len=100) :: &
+      'name = "graph_fixture"', "[dependencies]", 'local_dep = { path = "deps/local" }', &
+      "[preprocess.cpp]"])
+   if (allocated(settings%profile)) deallocate(settings%profile)
+   call compute_graph()
+   call expect_file("app/local.inc", .true.)
+   call expect_file("app/nested.inc", .true.)
+   call expect_file("include/shared.inc", .true.)
+   call write_lines("app/main.f90", [character(len=100) :: &
+      "program main", "implicit none", '#include "cpp.inc"', "print *, cpp_value", "end program main"])
+   call write_lines("app/cpp.inc", [character(len=80) :: '#include "cpp_nested.inc"'])
+   call write_lines("app/cpp_nested.inc", [character(len=80) :: "integer, parameter :: cpp_value = 5"])
+   call compute_graph()
+   call expect_file("app/cpp.inc", .true.)
+   call expect_file("app/cpp_nested.inc", .true.)
+   include_index = find_file("app/cpp_nested.inc")
+   if (masks(include_index) /= roots(1)%mask) error stop "nested CPP include lost its root mask"
+
+   call write_lines("fpm.toml", [character(len=60) :: 'name = "graph_fixture"', 'version = "0.1.0"'])
+   call write_lines("0.1.0", [character(len=20) :: "0.2.0"])
+   call compute_graph()
+   call expect_file("0.1.0", .false.)
+
+   call check_source_closures()
+   call check_shared_includes()
+   call check_global_metadata_overlap()
 
    call change_directory(initial_directory, error)
    call check_error()
@@ -173,18 +212,25 @@ contains
       call mkdir("app", echo=.false.)
       call mkdir("include", echo=.false.)
       call mkdir("deps/local/src", echo=.false.)
+      call mkdir("deps/local/metadata", echo=.false.)
       call mkdir("build/featuredep/src", echo=.false.)
       call mkdir("build/featuredep/include", echo=.false.)
       call write_manifest()
+      call write_lines("VERSION", [character(len=20) :: "0.1.0"])
+      call write_lines("deps/local/metadata/release.version", [character(len=20) :: "0.2.0"])
       call write_main(with_feature=.false.)
-      call write_lines("app/local.inc", [character(len=60) :: "integer, parameter :: local_value = 1"])
+      call write_lines("app/local.inc", [character(len=60) :: "include 'nested.inc'"])
+      call write_lines("app/nested.inc", [character(len=60) :: "integer, parameter :: local_value = 1"])
       call write_lines("include/shared.inc", [character(len=60) :: "integer, parameter :: shared_value = 2"])
       call write_lines("app/helper.c", [character(len=80) :: &
          '#include "local.h"', '#include "shared.h"', &
          "int helper(void) { return LOCAL_VALUE + SHARED_VALUE; }"])
-      call write_lines("app/local.h", [character(len=40) :: "#define LOCAL_VALUE 1"])
+      call write_lines("app/local.h", [character(len=60) :: &
+         "#ifndef LOCAL_H", "#define LOCAL_H", '#include "nested.h"', "#define LOCAL_VALUE 1", "#endif"])
+      call write_lines("app/nested.h", [character(len=60) :: '#include "local.h"'])
       call write_lines("include/shared.h", [character(len=40) :: "#define SHARED_VALUE 2"])
-      call write_lines("deps/local/fpm.toml", [character(len=40) :: 'name = "local_dep"'])
+      call write_lines("deps/local/fpm.toml", [character(len=60) :: &
+         'name = "local_dep"', 'version = "metadata/release.version"'])
       call write_lines("deps/local/src/local_dep.f90", [character(len=60) :: &
          "module local_dep", "implicit none", "include 'local.inc'", "end module local_dep"])
       call write_lines("deps/local/src/local.inc", [character(len=60) :: "integer, parameter :: dep_value = 3"])
@@ -195,10 +241,272 @@ contains
          [character(len=60) :: "integer, parameter :: feature_value = 4"])
    end subroutine create_fixture
 
+   !> Validate owned source graphs, link inputs, submodules, and sibling isolation.
+   subroutine check_source_closures()
+      type(fpm_build_settings) :: build_settings
+      type(fpm_test_settings) :: test_settings
+      integer :: unit
+
+      call mkdir("closure/app/first", echo=.false.)
+      call mkdir("closure/app/second", echo=.false.)
+      call mkdir("closure/src", echo=.false.)
+      call mkdir("closure/include", echo=.false.)
+      call change_directory(join_path(initial_directory, "build/watch-graph-tests/closure"), error)
+      call check_error()
+      call write_lines("fpm.toml", [character(len=60) :: 'name = "source_closure"'])
+      call write_lines("src/parent.f90", [character(len=80) :: &
+         "module parent_module", "implicit none", "interface", "module integer function value()", &
+         "end function value", "end interface", "end module parent_module"])
+      call write_lines("src/child.f90", [character(len=80) :: &
+         "submodule(parent_module) child_module", "implicit none", "contains", &
+         "module procedure value", "value = 9", "end procedure value", "end submodule child_module"])
+      call write_lines("src/unused.f90", [character(len=80) :: &
+         "module unused_module", "implicit none", "end module unused_module"])
+      call write_lines("src/global.c", [character(len=80) :: "int global_helper(void) { return 1; }"])
+      call write_lines("app/first/first.f90", [character(len=80) :: &
+         "program first", "use parent_module", "implicit none", "include 'config.inc'", &
+         "include 'settings.inc'", "include 'future.inc'", "print *, value()", "end program first"])
+      call write_lines("app/first/config.inc", [character(len=1) :: ])
+      call write_lines("include/settings.inc", [character(len=1) :: ])
+      call write_lines("app/second/second.f90", [character(len=80) :: &
+         "program second", "implicit none", "print *, 2", "end program second"])
+      call write_lines("app/first/helper.c", [character(len=80) :: "int first_helper(void) { return 1; }"])
+      call write_lines("app/second/helper.c", [character(len=80) :: "int second_helper(void) { return 2; }"])
+      settings%name = [character(len=6) :: "first"]
+      call compute_graph()
+      call expect_file("src/parent.f90", .true.)
+      call expect_file("src/child.f90", .true.)
+      call expect_file("src/global.c", .true.)
+      call expect_file("src/unused.f90", .false.)
+      call expect_file("app/first/helper.c", .true.)
+      call expect_file("app/second/helper.c", .false.)
+      call expect_file("app/second/second.f90", .false.)
+      call expect_file("app/first/config.inc", .true.)
+      call expect_file("include/settings.inc", .true.)
+      call expect_file("app/first/future.inc", .true.)
+      open(newunit=unit, file="app/first/config.inc", status="old")
+      close(unit, status="delete")
+      open(newunit=unit, file="include/settings.inc", status="old")
+      close(unit, status="delete")
+      call compute_graph()
+      call expect_file("app/first/config.inc", .true.)
+      call expect_file("include/settings.inc", .true.)
+      include_index = find_file("include/settings.inc")
+      if (masks(include_index) /= roots(1)%mask) error stop "missing include lost its root mask"
+      call write_lines("app/first/config.inc", [character(len=1) :: ])
+      call write_lines("include/settings.inc", [character(len=1) :: ])
+      call write_lines("app/first/future.inc", [character(len=1) :: ])
+      call compute_graph()
+      call expect_file("app/first/config.inc", .true.)
+      call expect_file("include/settings.inc", .true.)
+      call expect_file("app/first/future.inc", .true.)
+      do iteration = 1, 100
+         call compute_graph()
+         call expect_file("src/unused.f90", .false.)
+      end do
+      settings%prune = .false.
+      call compute_graph()
+      call expect_file("src/unused.f90", .true.)
+      settings%prune = .true.
+      settings%name = [character(len=6) :: "second"]
+      call compute_graph()
+      call expect_file("src/parent.f90", .false.)
+      call expect_file("src/child.f90", .false.)
+      call expect_file("src/global.c", .true.)
+      call expect_file("app/first/first.f90", .false.)
+      call expect_file("app/first/helper.c", .false.)
+      call expect_file("app/second/helper.c", .true.)
+
+      build_settings = settings%fpm_build_settings
+      call compute_watch_files_from_settings(build_settings, options, files, masks, roots, &
+         manifest_key, build_secs, model_secs, target_secs, watch_secs, error)
+      call check_error()
+      call expect_file("src/unused.f90", .true.)
+      if (size(roots) /= 0) error stop "build mode unexpectedly maps runnable roots"
+
+      call mkdir("test/first", echo=.false.)
+      call mkdir("test/second", echo=.false.)
+      call write_lines("test/first/first_test.f90", [character(len=80) :: &
+         "program first_test", "use parent_module", "implicit none", "print *, value()", "end program first_test"])
+      call write_lines("test/second/second_test.f90", [character(len=80) :: &
+         "program second_test", "implicit none", "print *, 2", "end program second_test"])
+      test_settings%fpm_run_settings%fpm_build_settings = build_settings
+      test_settings%build_tests = .true.
+      test_settings%name = [character(len=10) :: "first_test"]
+      call compute_watch_files_from_settings(test_settings, options, files, masks, roots, &
+         manifest_key, build_secs, model_secs, target_secs, watch_secs, error)
+      call check_error()
+      call expect_file("test/first/first_test.f90", .true.)
+      call expect_file("test/second/second_test.f90", .false.)
+      call expect_file("src/child.f90", .true.)
+      if (size(roots) /= 1) error stop "named test selection did not restrict roots"
+   end subroutine check_source_closures
+
+   !> Keep all 64 root bits across cached nested includes, cycles, and storage growth.
+   subroutine check_shared_includes()
+      type(string_t), allocatable :: metadata_files(:)
+      integer(int64) :: all_roots
+      integer :: i, unit, source_index, private_index
+      character(len=2) :: number
+      character(len=80) :: program_lines(5)
+      character(len=:), allocatable :: source_file, private_file, fixture
+
+      fixture = join_path(initial_directory, "build/watch-graph-tests/shared-includes")
+      call mkdir(join_path(fixture, "app"), echo=.false.)
+      call mkdir(join_path(fixture, "include"), echo=.false.)
+      call change_directory(fixture, error)
+      call check_error()
+      call write_lines("fpm.toml", [character(len=60) :: 'name = "shared_include_graph"'])
+      if (allocated(settings%name)) deallocate(settings%name)
+      allocate(settings%name(0))
+
+      do i = 1, 64
+         write(number, "(i2.2)") i
+         source_file = "app/root" // number // ".f90"
+         if (i == 1) source_file = "app/main.f90"
+         private_file = "private" // number // ".inc"
+         program_lines(1) = "program root" // number
+         program_lines(2) = "implicit none"
+         program_lines(3) = "include 'shared.inc'"
+         program_lines(4) = "include '" // private_file // "'"
+         program_lines(5) = "end program root" // number
+         call write_lines(source_file, program_lines)
+         call write_lines("app/" // private_file, [character(len=1) :: ])
+      end do
+      call write_lines("include/shared.inc", [character(len=60) :: "include 'nested.inc'"])
+      call write_lines("include/nested.inc", [character(len=60) :: '#include "cycle.h"'])
+      call write_lines("include/cycle.h", [character(len=60) :: '#include "shared.inc"'])
+
+      call compute_graph()
+      if (size(roots) /= 64) error stop "shared include graph did not retain all 64 roots"
+      all_roots = 0_int64
+      do i = 1, size(roots)
+         all_roots = ior(all_roots, roots(i)%mask)
+      end do
+      if (popcnt(all_roots) /= 64) error stop "shared include graph lost the high root bit"
+      call expect_mask("app/shared.inc", all_roots)
+      call expect_mask("include/shared.inc", all_roots)
+      call expect_mask("include/nested.inc", all_roots)
+      call expect_mask("include/cycle.h", all_roots)
+      do i = 1, 64
+         write(number, "(i2.2)") i
+         source_file = "app/root" // number // ".f90"
+         if (i == 1) source_file = "app/main.f90"
+         source_index = find_file(source_file)
+         private_index = find_file("app/private" // number // ".inc")
+         if (source_index == 0 .or. private_index == 0) error stop "private include disappeared during cache growth"
+         if (popcnt(masks(source_index)) /= 1) error stop "source root mask was broadened by shared includes"
+         if (masks(private_index) /= masks(source_index)) error stop "private include acquired another root's mask"
+      end do
+
+      ! A new graph must resolve a newly created earlier candidate instead of reusing old edges.
+      call write_lines("app/shared.inc", [character(len=60) :: "include 'shadow.inc'"])
+      call write_lines("app/shadow.inc", [character(len=1) :: ])
+      call compute_graph()
+      call expect_mask("app/shared.inc", all_roots)
+      call expect_mask("app/shadow.inc", all_roots)
+      call expect_file("include/shared.inc", .false.)
+      call expect_file("include/nested.inc", .false.)
+      open(newunit=unit, file="app/shared.inc", status="old")
+      close(unit, status="delete")
+      open(newunit=unit, file="app/shadow.inc", status="old")
+      close(unit, status="delete")
+      call compute_graph()
+      call expect_mask("include/shared.inc", all_roots)
+      call expect_mask("include/cycle.h", all_roots)
+
+      ! Additional metadata survives filters, build exclusion, and absent lookup candidates.
+      call write_lines("build/args.rsp", [character(len=60) :: "run"])
+      metadata_files = [string_t("build/args.rsp"), string_t("build/future.rsp"), &
+         string_t("include/shared.inc"), string_t("build/args.rsp")]
+      options%include = [string_t("app/*.f90")]
+      options%ignore = [string_t("*.rsp"), string_t("*shared.inc")]
+      call compute_watch_files_from_settings(settings, options, files, masks, roots, &
+         manifest_key, build_secs, model_secs, target_secs, watch_secs, error, metadata_files)
+      call check_error()
+      call expect_mask("build/args.rsp", 0_int64)
+      call expect_mask("build/future.rsp", 0_int64)
+      call expect_mask("include/shared.inc", 0_int64)
+      call expect_file("include/nested.inc", .false.)
+      if (count([(normalize_path(files(i)%s) == "build/args.rsp", i=1,size(files))]) /= 1) then
+         error stop "duplicate metadata path was not merged"
+      end if
+      deallocate(options%include, options%ignore)
+   end subroutine check_shared_includes
+
+   !> Global version/response metadata dominates include membership without losing descendant bits.
+   subroutine check_global_metadata_overlap()
+      type(string_t), allocatable :: metadata_files(:)
+      character(len=:), allocatable :: fixture
+      integer(int64) :: all_roots
+      integer :: i, first_index, second_index
+
+      fixture = join_path(initial_directory, "build/watch-graph-tests/metadata-overlap")
+      call mkdir(join_path(fixture, "app"), echo=.false.)
+      call change_directory(fixture, error)
+      call check_error()
+      call write_lines("fpm.toml", [character(len=80) :: &
+         'name = "metadata_overlap_graph"', 'version = "VERSION"', "[preprocess.cpp]"])
+      call write_lines("VERSION", [character(len=60) :: "0.1.0", '#include "nested.inc"'])
+      call write_lines("nested.inc", [character(len=60) :: "integer, parameter :: nested_value = 1"])
+      call write_lines("options.rsp", [character(len=60) :: "options run"])
+      call write_lines("app/main.f90", [character(len=80) :: &
+         "program main", "implicit none", "#if 0", '#include "../VERSION"', &
+         '#include "../options.rsp"', "#endif", "print *, 1", "end program main"])
+      call write_lines("app/second.f90", [character(len=80) :: &
+         "program second", "implicit none", "#if 0", '#include "../VERSION"', &
+         "#endif", "print *, 2", "end program second"])
+      if (allocated(settings%name)) deallocate(settings%name)
+      allocate(settings%name(0))
+      metadata_files = [string_t("options.rsp"), string_t("options.rsp")]
+      call compute_watch_files_from_settings(settings, options, files, masks, roots, &
+         manifest_key, build_secs, model_secs, target_secs, watch_secs, error, metadata_files)
+      call check_error()
+      if (size(roots) /= 2) error stop "metadata overlap fixture did not retain both roots"
+      all_roots = 0_int64
+      do i = 1, size(roots)
+         all_roots = ior(all_roots, roots(i)%mask)
+      end do
+      call expect_mask("VERSION", 0_int64)
+      call expect_mask("options.rsp", 0_int64)
+      call expect_mask("nested.inc", all_roots)
+      first_index = find_file("app/main.f90")
+      second_index = find_file("app/second.f90")
+      if (popcnt(masks(first_index)) /= 1 .or. popcnt(masks(second_index)) /= 1) then
+         error stop "global metadata broadened program membership"
+      end if
+      if (count([(normalize_path(files(i)%s) == "options.rsp", i=1,size(files))]) /= 1) then
+         error stop "duplicate response metadata path was not merged"
+      end if
+
+      options%include = [string_t("app/*.f90")]
+      options%ignore = [string_t("*VERSION*"), string_t("*.rsp"), string_t("*.inc")]
+      call compute_watch_files_from_settings(settings, options, files, masks, roots, &
+         manifest_key, build_secs, model_secs, target_secs, watch_secs, error, metadata_files)
+      call check_error()
+      call expect_mask("VERSION", 0_int64)
+      call expect_mask("options.rsp", 0_int64)
+      call expect_file("nested.inc", .false.)
+      deallocate(options%include, options%ignore)
+   end subroutine check_global_metadata_overlap
+
+   !> Verify that a watched path retains exactly the expected root membership.
+   subroutine expect_mask(path, expected)
+      character(len=*), intent(in) :: path
+      integer(int64), intent(in) :: expected
+      integer :: index
+      call expect_file(path, .true.)
+      index = find_file(path)
+      if (masks(index) /= expected) then
+         write(error_unit, "(a)") "unexpected root mask for " // path
+         error stop 1
+      end if
+   end subroutine expect_mask
+
    !> Write the main manifest with a local dependency and a feature-specific dependency.
    subroutine write_manifest()
       call write_lines("fpm.toml", [character(len=100) :: &
-         'name = "graph_fixture"', "[dependencies]", 'local_dep = { path = "deps/local" }', &
+         'name = "graph_fixture"', 'version = "VERSION"', "[dependencies]", 'local_dep = { path = "deps/local" }', &
          "[features]", 'with_dep.dependencies.feature_dep = { path = "build/featuredep" }', &
          "[profiles]", 'with_dep_profile = ["with_dep"]'])
    end subroutine write_manifest

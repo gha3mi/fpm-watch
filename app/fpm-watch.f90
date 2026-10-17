@@ -12,16 +12,24 @@ program fpm_watch
    use watch_engine,  only: watcher_t
    use watch_types,   only: watch_config_t
    use watch_platform, only: termination_requested
+   use watch_cmdline, only: get_arg
+   use watch_graph_worker, only: run_graph_worker
    implicit none
 
    type(watch_config_t) :: cfg
    type(watcher_t)      :: w
 
-   call parse_cli_config(cfg)
-   call maybe_supervise(cfg%w%log_format)
+   if (get_arg(1) == "--watch-graph-worker") then
+      if (command_argument_count() < 4) stop 2
+      call parse_cli_config(cfg, start_arg=4, log_format=get_arg(3))
+      call run_graph_worker(cfg, get_arg(2))
+   else
+      call parse_cli_config(cfg)
+      call maybe_supervise(cfg)
 
-   call w%init(cfg)
-   call w%run()
-   if (termination_requested()) stop 130
-   if (cfg%w%once .and. w%last_exit /= 0) stop w%last_exit
+      call w%init(cfg)
+      call w%run()
+      if (termination_requested()) stop 130
+      if (cfg%w%once .and. w%last_exit /= 0) stop w%last_exit
+   end if
 end program fpm_watch

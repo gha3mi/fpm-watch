@@ -23,7 +23,7 @@ contains
    !> Emit changed paths and a summary unless quiet mode suppresses them.
    !!
    !! `changed_idx(:changed_count)` contains 1-based indices into `files`.
-   !! The summary includes every valid path; verbosity 1 emits individual records
+   !! Structured summaries include every valid path; verbosity 1 emits individual records
    !! for at most the first eight changed indices.
    subroutine report_changes(files, changed_idx, changed_count, w)
       type(string_t), allocatable, intent(in) :: files(:)
@@ -35,22 +35,26 @@ contains
       character(len=:), allocatable :: message
       if (w%verbosity < 0 .or. changed_count == 0) return
       if (.not. allocated(files)) return
-      allocate(paths(changed_count))
-      n = 0
-      do i = 1, changed_count
-         idx = changed_idx(i)
-         if (idx < 1 .or. idx > size(files)) cycle
-         n = n + 1
-         paths(n) = files(idx)
-      end do
       idx = changed_idx(1)
       message = str(changed_count) // " files changed"
       if (idx >= 1 .and. idx <= size(files)) then
          if (changed_count == 1) message = "Changed " // files(idx)%s
       end if
-      call log_event("info", "watch.changed", message, &
-                     [log_int("file_count", changed_count), log_strings("paths", paths(:n)), &
-                      log_real("debounce_ms", w%debounce * 1000.0)])
+      if (structured_logging()) then
+         allocate(paths(changed_count))
+         n = 0
+         do i = 1, changed_count
+            idx = changed_idx(i)
+            if (idx < 1 .or. idx > size(files)) cycle
+            n = n + 1
+            paths(n) = files(idx)
+         end do
+         call log_event("info", "watch.changed", message, &
+                        [log_int("file_count", changed_count), log_strings("paths", paths(:n)), &
+                         log_real("debounce_ms", w%debounce * 1000.0)])
+      else
+         call log_event("info", "watch.changed", message)
+      end if
       do i = 1, min(changed_count, 8)
          idx = changed_idx(i)
          if (idx < 1 .or. idx > size(files)) cycle
@@ -93,7 +97,8 @@ contains
       call system_clock(count_rate=rate)
       if (rate <= 0_int64) rate = 1000_int64
       call system_clock(t0)
-      call execute_command(trim(cmd), exitstat, silent=w%silent_fpm, stderr=structured_logging())
+      call execute_command(trim(cmd), exitstat, silent=w%silent_fpm, stderr=structured_logging(), &
+                           inherit_workspace=.false.)
       call system_clock(t1)
       secs = real(t1 - t0) / real(rate)
       interrupted = termination_requested()
@@ -132,8 +137,8 @@ contains
    !! `changed_idx(:changed_count)` indexes `file_mask`, whose bits correspond
    !! to `roots`. Combine those bits and quote the matching root names before
    !! the program-argument `--` delimiter. Return `full_cmdline` unchanged for
-   !! build mode, explicit target patterns, unavailable masks/roots, no matched
-   !! names, or an empty command prefix.
+   !! build mode, explicit target patterns, unavailable masks/roots, a changed
+   !! zero-mask file (global metadata), no matched names, or an empty prefix.
    function build_run_command(settings, full_cmdline, cmd_prefix, cmd_rest, roots, file_mask, changed_idx, changed_count) result(cmd)
       use watch_cmdsplice, only: inject_names_into_cmd
       class(fpm_build_settings), intent(in) :: settings
@@ -204,6 +209,10 @@ contains
       do j = 1, changed_count
          idx = changed_idx(j)
          if (idx < 1 .or. idx > size(file_mask)) cycle
+         if (file_mask(idx) == 0_int64) then
+            cmd = trim(full_cmdline)
+            return
+         end if
          hitmask = ior(hitmask, file_mask(idx))
       end do
 

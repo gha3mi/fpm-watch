@@ -8,12 +8,12 @@ module watch_types
    use fpm_command_line, only: fpm_build_settings
    implicit none
    private
-   public watch_opts_t, root_info_t, watch_config_t
+   public watch_opts_t, root_info_t, watch_config_t, watch_snapshot_t
 
    !> Watcher options assembled from defaults, manifest values, and leading CLI flags.
    !!
-   !! Timing fields are seconds. Supervisor options are read separately; `restart_count`
-   !! identifies the child generation used in command cycle IDs.
+   !! Timing fields are seconds. `restart_count` identifies the child generation
+   !! used in command cycle IDs. Watcher and supervisor share these parsed options.
    !! `set_watch_defaults` initializes format/executable strings and list arrays.
    type watch_opts_t
       !> Verbosity level:
@@ -46,16 +46,22 @@ module watch_types
       integer :: restart_count = 0
       !> Also watch dependency project sources (can include paths under build dir).
       logical :: watch_deps = .false.
-      !> Use OS sleep for waiting to minimize idle CPU usage.
-      logical :: low_cpu = .false.
-      !> Ignore globs, applied after include rules; watched manifests bypass filtering.
+      !> Ignore globs, applied after include rules; manifest/version metadata bypass filtering.
       type(string_t), allocatable :: ignore(:)
-      !> Include globs; empty means all eligible files. Watched manifests always remain.
+      !> Include globs; empty means all eligible files. Manifest/version metadata always remain.
       type(string_t), allocatable :: include(:)
-      !> Watcher-plugin names, distinct from fpm build features.
-      type(string_t), allocatable :: enabled_features(:)
       !> Run once (init + optional run-on-start) and exit (CI-friendly).
       logical :: once = .false.
+      !> Restart failed watcher children until success or the configured limit.
+      logical :: auto_restart = .false.
+      !> Internal child marker preventing recursive supervision.
+      logical :: is_child = .false.
+      !> Seconds between failed child exits and the next launch.
+      real :: restart_delay = 1.0
+      !> Maximum restarts after initial launch; zero means unlimited.
+      integer :: restart_max = 0
+      !> Explicit supervisor child executable, otherwise resolved from argv/environment.
+      character(len=:), allocatable :: self_exe
    end type watch_opts_t
 
    !> Executable basename and one root bit used for affected-target selection.
@@ -69,12 +75,25 @@ module watch_types
       integer(int64) :: mask = 0_int64
    end type root_info_t
 
+   !> One aligned watch-list snapshot, including membership and change baselines.
+   type watch_snapshot_t
+      type(string_t), allocatable :: files(:)
+      integer(int64), allocatable :: file_mask(:)
+      type(root_info_t), allocatable :: roots(:)
+      integer(int64), allocatable :: fp_prev(:), fp_now(:)
+      integer, allocatable :: changed_idx(:)
+   end type watch_snapshot_t
+
    !> Fully assembled watcher configuration.
    !!
    !! This record is the primary input to `watcher_t%init()`.
    type watch_config_t
       !> Watcher options.
       type(watch_opts_t) :: w
+      !> Absolute project directory shared by manifest/model/file resolution.
+      character(len=:), allocatable :: project_dir
+      !> Absolute named response-file candidates, retained to detect edits or new overrides.
+      type(string_t), allocatable :: response_files(:)
       !> Full command line string to execute (e.g., `fpm test -- ...`).
       character(len=:), allocatable :: fpm_cmdline
       !> Selected `fpm` subcommand (`build`, `test`, or `run`).

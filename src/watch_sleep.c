@@ -1,58 +1,42 @@
-#ifdef __cplusplus
-extern "C" {
+#ifndef _WIN32
+#ifndef _POSIX_C_SOURCE
+#define _POSIX_C_SOURCE 200809L
+#endif
 #endif
 
-void fpm_watch_sleep_seconds(double s);
+#include <math.h>
 
 #ifdef _WIN32
-  #define WIN32_LEAN_AND_MEAN
-  #include <windows.h>
-  #include <stdint.h>
-
-  void fpm_watch_sleep_seconds(double s) {
-    if (s <= 0.0) return;
-
-    double ms_d = s * 1000.0;
-    uint64_t ms64 = (uint64_t)(ms_d + 0.5);
-
-    if (ms64 > 0xFFFFFFFFULL) ms64 = 0xFFFFFFFFULL;
-    Sleep((DWORD)ms64);
-  }
-
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
 #else
-  #include <time.h>
-  #include <errno.h>
-
-  void fpm_watch_sleep_seconds(double s) {
-    if (s <= 0.0) return;
-
-    struct timespec req, rem;
-
-    time_t sec = (time_t)s;
-    double frac = s - (double)sec;
-    if (frac < 0.0) frac = 0.0;
-
-    long nsec = (long)(frac * 1000000000.0);
-
-    if (nsec < 0) nsec = 0;
-    if (nsec >= 1000000000L) {
-      sec += 1;
-      nsec -= 1000000000L;
-    }
-
-    req.tv_sec = sec;
-    req.tv_nsec = nsec;
-
-    while (nanosleep(&req, &rem) != 0) {
-      if (errno == EINTR) {
-        req = rem;
-        continue;
-      }
-      break;
-    }
-  }
+#include <time.h>
+#include <errno.h>
 #endif
 
 #ifdef __cplusplus
-}
+extern "C"
 #endif
+void fpm_watch_sleep_seconds(double s) {
+  if (!isfinite(s) || s <= 0.0) return;
+
+  while (s > 0.0) {
+    /* Bounded intervals avoid integer overflow and Windows' INFINITE value. */
+    double interval = s > 3600.0 ? 3600.0 : s;
+#ifdef _WIN32
+    double ms_d = interval * 1000.0;
+    DWORD ms = (DWORD)ms_d;
+    if ((double)ms < ms_d) ++ms;
+    Sleep(ms);
+#else
+    struct timespec req, rem;
+    req.tv_sec = (time_t)interval;
+    req.tv_nsec = (long)((interval - (double)req.tv_sec) * 1000000000.0);
+    while (nanosleep(&req, &rem) != 0) {
+      if (errno != EINTR) return;
+      req = rem;
+    }
+#endif
+    s -= interval;
+  }
+}

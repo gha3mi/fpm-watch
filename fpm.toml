@@ -1,6 +1,6 @@
 name        = "fpm-watch"
 description = "fpm plugin for watching source files and automatically rebuilding, testing or running the project on changes"
-version     = "0.1.0"
+version     = "VERSION"
 author      = "Seyed Ali Ghasemi"
 copyright   = "Copyright 2026, Seyed Ali Ghasemi"
 homepage    = "https://github.com/gha3mi/fpm-watch"

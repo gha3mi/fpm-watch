@@ -2,7 +2,8 @@
 program check_log
    use, intrinsic :: iso_fortran_env, only: int64, real64
    use, intrinsic :: ieee_arithmetic, only: ieee_value, ieee_quiet_nan
-   use watch_log, only: format_log_record, log_string, log_strings, log_int, log_real, log_bool, valid_log_format
+   use watch_log, only: format_log_record, log_string, log_strings, log_int, log_real, log_bool, valid_log_format, &
+                        log_field_t, json_quote
    use watch_cmdline, only: get_arg
    use fpm_strings, only: string_t
    use jonquil, only: json_loads, json_value, json_object, json_error, get_value
@@ -15,6 +16,8 @@ program check_log
    real(real64) :: duration
    logical :: flag
    integer :: i, begin, finish
+   type(string_t), allocatable :: paths(:)
+   type(log_field_t) :: path_field
 
    message = 'quotes " \ café ' // achar(92) // achar(9) // achar(10) // achar(13)
    if (get_arg(1) == "--fixture") then
@@ -78,4 +81,34 @@ program check_log
    if (index(record, achar(10)) /= 0 .or. index(record, achar(13)) /= 0) stop 14
    if (.not. valid_log_format("text") .or. .not. valid_log_format("json") .or. .not. valid_log_format("logfmt")) stop 15
    if (valid_log_format("unknown")) stop 16
+
+   !> Large arrays and strings exercise pre-sized serialization with exact output lengths.
+   allocate(paths(4000))
+   do i = 1, size(paths)
+      paths(i)%s = "src/example.f90"
+   end do
+   path_field = log_strings("paths", paths)
+   if (len(path_field%value) /= 1 + size(paths) * 18) error stop "path-array length changed"
+   if (path_field%value(:19) /= '["src/example.f90",') error stop "path-array prefix changed"
+   if (path_field%value(len(path_field%value)-17:) /= '"src/example.f90"]') error stop "path-array suffix changed"
+   record = format_log_record("json", timestamp, "info", "test.large", "many paths", [path_field])
+   call json_loads(object, record, error=error)
+   if (allocated(error)) error stop "large serialized array is invalid JSON"
+   record = format_log_record("logfmt", timestamp, "info", "test.large", "many paths", [path_field])
+   if (record(len(record):) /= '"') error stop "logfmt array has trailing padding"
+   deallocate(paths)
+   allocate(paths(0))
+   path_field = log_strings("paths", paths)
+   if (path_field%value /= "[]") error stop "empty array changed"
+
+   message = repeat("long text ", 10000) // achar(9) // " café"
+   quoted = json_quote(message)
+   record = '{"message":' // quoted // "}"
+   call json_loads(object, record, error=error)
+   if (allocated(error)) error stop "large escaped string is invalid JSON"
+   if (index(quoted, achar(92) // "t") == 0) error stop "tab escape was lost"
+   quoted = json_quote(achar(255))
+   if (index(quoted, achar(92) // "uFFFD") == 0) error stop "invalid UTF-8 replacement was lost"
+   quoted = json_quote(achar(0))
+   if (quoted /= '"' // achar(92) // 'u0000"') error stop "NUL escape was lost"
 end program check_log

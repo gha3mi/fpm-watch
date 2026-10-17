@@ -49,14 +49,14 @@ These match current repo + CI behavior.
 - `fpm-watch test`
 - `fpm-watch run`
 - Everything after `<build|test|run>` is passed to `fpm`, e.g.:
-  - `fpm-watch --watch-low-cpu --watch-auto-restart run --example my_example`
+  - `fpm-watch --watch-auto-restart run --example my_example`
 
 ### CI parity smoke test (important)
 CI uses a one-shot watcher run:
 - macOS/Linux:
-  - `./bin/fpm-watch --watch-low-cpu --watch-once test`
+  - `./bin/fpm-watch --watch-once test`
 - Windows:
-  - `.\bin\fpm-watch.exe --watch-low-cpu --watch-once test`
+  - `.\bin\fpm-watch.exe --watch-once test`
 
 ### Lint (if available locally)
 CI uses Fortitude. If installed:
@@ -75,15 +75,16 @@ Output goes to `doc/`.
     - `watch_cli.f90` — CLI flags + dispatch (`build|test|run`) and option parsing.
     - `watch_config.f90` — defaults + reading `[extra.fpm-watch]` from `fpm.toml`.
     - `watch_engine.f90` — polling loop, debounce, rescan, main orchestration.
+    - `watch_graph_worker.f90` — isolated fpm graph refresh and validated snapshot transfer.
     - `watch_exec.f90` — constructs and runs the effective `fpm` command.
     - `watch_fpm_graph.f90` — fpm model/dependency graph and watch list building.
     - `watch_filter.f90` / `watch_fingerprint.f90` — include/ignore logic + change detection.
     - `watch_restart.f90` — supervisor/auto-restart mode.
     - `watch_log.f90` — logging utilities.
-    - `watch_platform.f90` + `watch_sleep.c` — OS/platform helpers (keep portable).
+    - `watch_platform.f90`, `watch_process*.c`, `watch_sleep.c`, `watch_temp.c` — portable OS helpers.
     - `watch_types.f90`, `watch_util.f90`, `watch_cmdline.f90`, `watch_cmdsplice.f90`, etc. — shared types/utilities.
-- `test/check.f90`
-  - Minimal `fpm test` target.
+- `test/*.f90`, `test/integration.py`, `test/platform_regression.py`, `test/release_regression.py`
+  - Focused unit, watcher, process, and release preparation regressions.
 - `fpm.toml`
   - Dependencies (including `fpm`), and configuration tables:
     - `[extra.fpm-watch]` default options for users
