@@ -2,7 +2,7 @@
 !!
 !! Normalization changes backslashes to `/` and removes leading `./` segments;
 !! it does not canonicalize paths. Build-directory exclusion is applied by the
-!! graph collector. Include/ignore filters always retain watched `fpm.toml` files.
+!! graph collector. Include/ignore filters retain watched manifests and version metadata.
 module watch_filter
    use watch_util, only: starts_with
    use, intrinsic :: iso_fortran_env, only: int64
@@ -103,16 +103,18 @@ contains
    !> Filter normalized paths and optional aligned masks, preserving order.
    !!
    !! Empty/unallocated include lists admit all files; matching ignore globs
-   !! remove included paths. A basename of `fpm.toml` bypasses both filters.
+   !! remove included paths. Manifests and optional marked metadata bypass both filters.
    !! An unallocated file list is left unchanged. If masks are supplied but
    !! unallocated, create zero masks before filtering them with the files.
-   subroutine filter_watch_files(files, include, ignore, masks)
+   subroutine filter_watch_files(files, include, ignore, masks, preserve)
       type(string_t), allocatable, intent(inout) :: files(:)
       !! Normalized input paths, replaced with the retained subset in the same order.
       type(string_t), allocatable, intent(in)    :: include(:), ignore(:)
       !! Include and ignore glob lists, respectively; empty/unallocated lists impose no restriction.
       integer(int64), allocatable, intent(inout), optional :: masks(:)
       !! Aligned file masks; created as zeros if supplied but unallocated, then filtered with files.
+      logical, intent(in), optional :: preserve(:)
+      !! Aligned metadata markers; true entries bypass include/ignore filters.
 
       logical, allocatable :: keep(:)
       type(string_t), allocatable :: out(:)
@@ -125,6 +127,7 @@ contains
       allocate(keep(n))
       do i = 1, n
          keep(i) = should_keep(files(i)%s, include, ignore)
+         if (present(preserve)) keep(i) = keep(i) .or. preserve(i)
       end do
 
       m = count(keep)

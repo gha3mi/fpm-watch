@@ -64,7 +64,7 @@ contains
                      "; features " // features, &
                      [log_string("compiler", compiler), log_string("profile", profile), log_string("build_dir", build_dir), &
                       log_string("features", features), log_bool("prune", settings%prune), log_bool("deps", w%watch_deps), &
-                      log_bool("low_cpu", w%low_cpu), log_bool("silent_fpm", w%silent_fpm), &
+                      log_bool("silent_fpm", w%silent_fpm), &
                       log_bool("run_on_start", w%run_on_start), log_real("poll_ms", w%poll * 1000.0), &
                       log_real("debounce_ms", w%debounce * 1000.0), log_real("rescan_s", w%rescan), &
                       log_strings("ignore", w%ignore), log_strings("include", w%include)], verbosity=1)

@@ -6,13 +6,15 @@
 !! if the watcher itself exits nonzero, as in one-shot mode. Child generations
 !! share the parent's selected log format and use distinct cycle-ID prefixes.
 module watch_restart
-   use watch_time, only: sleep_seconds, set_low_cpu
-   use watch_cmdline, only: get_arg, parse_int, parse_real, quote_arg, starts_with, parse_bool, &
+   use watch_time, only: sleep_seconds
+   use watch_cmdline, only: get_arg, quote_arg, starts_with, &
                             watch_option_takes_value
-   use watch_config, only: get_restart_defaults
-   use watch_platform, only: execute_command
+   use watch_types, only: watch_config_t
+   use watch_platform, only: execute_command, create_temp_directory, remove_temp_directory, set_workspace_root
    use watch_log, only: log_event, log_int, log_real, log_string
    use fpm_strings, only: str
+   use fpm_environment, only: get_env
+   use fpm_error, only: error_t
    use watch_util, only: ftoa
    implicit none
    private
@@ -25,17 +27,11 @@ contains
    !! If auto-restart is enabled and the current process is not marked as a
    !! child (`--watch-child`), this routine runs a supervisor loop and does not
    !! return.
-   subroutine maybe_supervise(log_format)
-      character(len=*), intent(in) :: log_format
-      logical :: auto_restart, is_child
-      real    :: restart_delay
-      integer :: restart_max
-      character(len=:), allocatable :: self_exe
+   subroutine maybe_supervise(cfg)
+      type(watch_config_t), intent(in) :: cfg
 
-      call parse_restart_flags(auto_restart, restart_delay, restart_max, is_child, self_exe)
-
-      if (auto_restart .and. (.not. is_child)) then
-         call supervisor_loop(max(0.0, restart_delay), restart_max, self_exe, log_format)
+      if (cfg%w%auto_restart .and. (.not. cfg%w%is_child)) then
+         call supervisor_loop(cfg%w%restart_delay, cfg%w%restart_max, cfg%w%self_exe, cfg%w%log_format)
          stop 0
       end if
    end subroutine maybe_supervise
@@ -63,7 +59,7 @@ contains
       do
          code = 0
          child_cmd = build_child_command(exe0, log_format, attempt)
-         call execute_command(child_cmd, code, interrupted)
+         call execute_supervised_child(child_cmd, code, interrupted)
 
          if (interrupted) then
             call log_event("info", "supervisor.stopped", "Supervisor interrupted", [log_string("reason", "interrupt")])
@@ -87,6 +83,41 @@ contains
 
       stop 0
    end subroutine supervisor_loop
+
+   !> Own all descendant graph workspaces until the complete child execution ends.
+   !!
+   !! A forced group/job termination can prevent child cleanup. The surviving
+   !! supervisor removes the entire private tree, including nested supervisors'
+   !! workspaces, after execution and restores its inherited workspace selection.
+   subroutine execute_supervised_child(command, code, interrupted)
+      character(len=*), intent(in) :: command
+      integer, intent(out) :: code
+      logical, intent(out) :: interrupted
+      character(len=:), allocatable :: workspace, inherited_root
+      logical :: root_defined
+      integer :: environment_status
+      type(error_t), allocatable :: error
+
+      code = 127
+      interrupted = .false.
+      inherited_root = get_env("FPM_WATCH_WORKSPACE_ROOT")
+      call get_environment_variable("FPM_WATCH_WORKSPACE_ROOT", status=environment_status)
+      root_defined = environment_status == 0
+      call create_temp_directory(workspace, error)
+      if (.not. allocated(error)) call set_workspace_root(workspace, error)
+      if (allocated(error)) then
+         call log_event("error", "supervisor.workspace_failed", error%message)
+         call remove_temp_directory(workspace)
+         stop 127
+      end if
+      call execute_command(command, code, interrupted)
+      call set_workspace_root(inherited_root, error, defined=root_defined)
+      call remove_temp_directory(workspace)
+      if (allocated(error)) then
+         call log_event("error", "supervisor.workspace_failed", error%message)
+         stop 127
+      end if
+   end subroutine execute_supervised_child
 
    !> Serialize child argv with a generation counter and the parent's log format.
    !!
@@ -193,129 +224,5 @@ contains
 
       exe = "fpm-watch"
    end function choose_self_exe
-
-   !> Apply leading restart flags over manifest supervisor defaults.
-   !!
-   !! Stop scanning at the subcommand and skip other value-option arguments.
-   !! Leading low-CPU CLI flags also select the supervisor's waiting backend;
-   !! this routine does not read the manifest's low-cpu setting. A child marker
-   !! prevents recursive supervision. Numeric parse errors retain fallback values.
-   subroutine parse_restart_flags(auto_restart, restart_delay, restart_max, is_child, self_exe)
-      logical, intent(out) :: auto_restart, is_child
-      real,    intent(out) :: restart_delay
-      integer, intent(out) :: restart_max
-      character(len=:), allocatable, intent(out) :: self_exe
-
-      integer :: narg, i
-      character(len=:), allocatable :: a, v
-
-      call get_restart_defaults(auto_restart, restart_delay, restart_max, self_exe)
-      is_child = .false.
-
-      narg = command_argument_count()
-      i = 1
-      do while (i <= narg)
-         a = get_arg(i)
-
-         if (.not. starts_with(a, "--watch-") .and. a /= "-q" .and. a /= "-v" .and. a /= "-vv") exit
-
-         if (a == "--watch-low-cpu") then
-            call set_low_cpu(.true.)
-            i = i + 1
-            cycle
-         end if
-
-         if (a == "--watch-no-low-cpu") then
-            call set_low_cpu(.false.)
-            i = i + 1
-            cycle
-         end if
-
-         if (starts_with(a, "--watch-low-cpu=")) then
-            v = a(len("--watch-low-cpu=")+1:)
-            call set_low_cpu(parse_bool(v, .true.))
-            i = i + 1
-            cycle
-         end if
-
-         if (a == "--watch-auto-restart") then
-            auto_restart = .true.
-            i = i + 1
-            cycle
-         end if
-
-         if (starts_with(a, "--watch-auto-restart=")) then
-            v = a(len("--watch-auto-restart=")+1:)
-            auto_restart = parse_bool(v, .true.)
-            i = i + 1
-            cycle
-         end if
-
-         if (a == "--watch-child" .or. starts_with(a, "--watch-child=")) then
-            is_child = .true.
-            i = i + 1
-            cycle
-         end if
-
-         if (starts_with(a, "--watch-restart-delay=")) then
-            v = a(len("--watch-restart-delay=")+1:)
-            restart_delay = parse_real(v, restart_delay)
-            i = i + 1
-            cycle
-         end if
-
-         if (starts_with(a, "--watch-restart-max=")) then
-            v = a(len("--watch-restart-max=")+1:)
-            restart_max = parse_int(v, restart_max)
-            i = i + 1
-            cycle
-         end if
-
-         if (starts_with(a, "--watch-self=")) then
-            self_exe = trim(a(len("--watch-self=")+1:))
-            i = i + 1
-            cycle
-         end if
-
-         if (a == "--watch-restart-delay") then
-            if (i+1 <= narg) then
-               v = get_arg(i+1)
-               restart_delay = parse_real(v, restart_delay)
-               i = i + 2
-            else
-               i = i + 1
-            end if
-            cycle
-         end if
-
-         if (a == "--watch-restart-max") then
-            if (i+1 <= narg) then
-               v = get_arg(i+1)
-               restart_max = parse_int(v, restart_max)
-               i = i + 2
-            else
-               i = i + 1
-            end if
-            cycle
-         end if
-
-         if (a == "--watch-self") then
-            if (i+1 <= narg) then
-               self_exe = trim(get_arg(i+1))
-               i = i + 2
-            else
-               i = i + 1
-            end if
-            cycle
-         end if
-
-         if (watch_option_takes_value(a)) then
-            i = i + 2
-         else
-            i = i + 1
-         end if
-      end do
-
-   end subroutine parse_restart_flags
 
 end module watch_restart

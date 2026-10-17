@@ -1,9 +1,9 @@
-!> Sample file contents and compare watch-list snapshots.
+!> Stream complete file contents and compare watch-list snapshots.
 !!
-!! Fingerprints mix file size with FNV-style samples of at most three 4096-byte
-!! blocks: head, middle, and tail. Same-size edits outside the sampled regions
-!! can be missed. Fingerprints are change-detection heuristics, not content IDs.
-!! File reads share a reusable module buffer and are intended for serial use.
+!! Every byte contributes to the fingerprint. Missing, empty, and unreadable files
+!! have distinct states; nonempty content uses a 63-bit hash. Hash collisions are
+!! still possible, so fingerprints are change detectors, not content identities.
+!! File reads share a reusable buffer and are intended for serial use.
 module watch_fingerprint
    use, intrinsic :: iso_fortran_env, only: int64
    use fpm_strings, only: string_t
@@ -12,13 +12,15 @@ module watch_fingerprint
    implicit none
    private
    public init_fingerprints, scan_changes, accept_changes, manifest_key_from_files, file_fingerprint, watch_state_changed
+   public preserve_fingerprints
 
    integer(int64), parameter :: FNV_OFFSET = 1469598103934665603_int64
-   integer(int64), parameter :: FNV_PRIME  = 1099511628211_int64
-   integer, parameter :: BLOCK_SIZE = 4096
+   integer(int64), parameter :: MASK32 = 4294967295_int64
+   integer, parameter :: BLOCK_SIZE = 65536
+   integer(int64), parameter :: FILE_MISSING = 0_int64, FILE_EMPTY = 1_int64, FILE_UNREADABLE = 2_int64
 
-   !> Shared 4096-byte scratch buffer; file fingerprinting is not reentrant.
-   character(len=1), allocatable, save :: io_buf(:)
+   !> Shared bounded scratch buffer; file fingerprinting is not reentrant.
+   character(len=BLOCK_SIZE), save :: io_buf
 
 contains
 
@@ -26,12 +28,14 @@ contains
    !!
    !! Unallocated path lists count as empty. Added/removed paths, changed
    !! fingerprints, or missing/mismatched fingerprint arrays for nonempty lists
-   !! report a change. Two empty snapshots compare equal.
+   !! report a change. Two empty snapshots compare equal. Matching path order
+   !! compares in linear time; reordered lists use sorted indices in O(n log n).
    pure logical function watch_state_changed(old_files, old_fp, new_files, new_fp) result(changed)
       type(string_t), allocatable, intent(in) :: old_files(:), new_files(:)
       integer(int64), allocatable, intent(in) :: old_fp(:), new_fp(:)
-      integer :: nold, nnew, i, j
-      logical :: found
+      integer :: nold, nnew, i
+      integer, allocatable :: old_order(:), new_order(:), scratch(:)
+      logical :: aligned
 
       nold = 0
       nnew = 0
@@ -45,18 +49,112 @@ contains
       if (.not. allocated(new_fp)) return
       if (size(old_fp) /= nold .or. size(new_fp) /= nnew) return
 
+      aligned = .true.
       do i = 1, nnew
-         found = .false.
-         do j = 1, nold
-            if (new_files(i)%s /= old_files(j)%s) cycle
-            if (new_fp(i) /= old_fp(j)) return
-            found = .true.
-            exit
-         end do
-         if (.not. found) return
+         if (old_files(i)%s == new_files(i)%s) cycle
+         aligned = .false.
+         exit
+      end do
+      if (aligned) then
+         changed = any(old_fp /= new_fp)
+         return
+      end if
+
+      allocate(old_order(nold), new_order(nnew), scratch(nnew))
+      old_order = [(i, i=1,nold)]
+      new_order = old_order
+      call sort_path_indices(old_files, old_order, scratch, 1, nold)
+      call sort_path_indices(new_files, new_order, scratch, 1, nnew)
+      do i = 1, nnew
+         if (old_files(old_order(i))%s /= new_files(new_order(i))%s) return
+         if (old_fp(old_order(i)) /= new_fp(new_order(i))) return
       end do
       changed = .false.
    end function watch_state_changed
+
+   !> Preserve accepted baselines by path while retaining initial values for new paths.
+   !!
+   !! Both snapshots contain unique paths. Missing or malformed fingerprint arrays
+   !! leave the new baseline unchanged. File ordering and membership may differ;
+   !! matching order copies directly, otherwise sorted indices support a linear merge.
+   pure subroutine preserve_fingerprints(old_files, old_fp, new_files, new_fp)
+      type(string_t), allocatable, intent(in) :: old_files(:), new_files(:)
+      integer(int64), allocatable, intent(in) :: old_fp(:)
+      integer(int64), allocatable, intent(inout) :: new_fp(:)
+      integer, allocatable :: old_order(:), new_order(:), scratch(:)
+      integer :: nold, nnew, i, j
+      logical :: aligned
+
+      if (.not. allocated(old_files)) return
+      if (.not. allocated(new_files)) return
+      if (.not. allocated(old_fp)) return
+      if (.not. allocated(new_fp)) return
+      nold = size(old_files)
+      nnew = size(new_files)
+      if (nold == 0 .or. nnew == 0) return
+      if (size(old_fp) /= nold .or. size(new_fp) /= nnew) return
+      aligned = nold == nnew
+      if (aligned) then
+         do i = 1, nnew
+            if (old_files(i)%s == new_files(i)%s) cycle
+            aligned = .false.
+            exit
+         end do
+      end if
+      if (aligned) then
+         new_fp = old_fp
+         return
+      end if
+
+      allocate(old_order(nold), new_order(nnew), scratch(max(nold, nnew)))
+      old_order = [(i, i=1,nold)]
+      new_order = [(i, i=1,nnew)]
+      call sort_path_indices(old_files, old_order, scratch, 1, nold)
+      call sort_path_indices(new_files, new_order, scratch, 1, nnew)
+      i = 1
+      j = 1
+      do while (i <= nold .and. j <= nnew)
+         if (old_files(old_order(i))%s < new_files(new_order(j))%s) then
+            i = i + 1
+         else if (old_files(old_order(i))%s > new_files(new_order(j))%s) then
+            j = j + 1
+         else
+            new_fp(new_order(j)) = old_fp(old_order(i))
+            i = i + 1
+            j = j + 1
+         end if
+      end do
+   end subroutine preserve_fingerprints
+
+   !> Stable merge sort of path indices; the file storage itself remains unchanged.
+   pure recursive subroutine sort_path_indices(files, order, scratch, first, last)
+      type(string_t), intent(in) :: files(:)
+      integer, intent(inout) :: order(:), scratch(:)
+      integer, intent(in) :: first, last
+      integer :: middle, left, right, out
+      if (first >= last) return
+      middle = first + (last - first) / 2
+      call sort_path_indices(files, order, scratch, first, middle)
+      call sort_path_indices(files, order, scratch, middle + 1, last)
+      left = first
+      right = middle + 1
+      do out = first, last
+         if (left > middle) then
+            scratch(out) = order(right)
+            right = right + 1
+         else if (right > last) then
+            scratch(out) = order(left)
+            left = left + 1
+         else if (files(order(left))%s <= files(order(right))%s) then
+            scratch(out) = order(left)
+            left = left + 1
+         else
+            scratch(out) = order(right)
+            right = right + 1
+         end if
+      end do
+      order(first:last) = scratch(first:last)
+   end subroutine sort_path_indices
 
    !> Initialize fingerprint arrays for a watch list.
    !!
@@ -91,7 +189,7 @@ contains
       fp_now = fp_prev
    end subroutine init_fingerprints
 
-   !> Resample files and return 1-based indices differing from the accepted baseline.
+   !> Hash files and return 1-based indices differing from the accepted baseline.
    !!
    !! `fp_prev`, `fp_now`, and `changed_idx` must have space for every file.
    !! Only `changed_idx(:changed_count)` is defined by this scan; `fp_prev`
@@ -118,11 +216,12 @@ contains
       end do
    end subroutine scan_changes
 
-   !> Copy sampled fingerprints into the baseline for valid changed indices.
+   !> Copy computed fingerprints into the baseline for valid changed indices.
    !!
-   !! The engine accepts ordinary edits after command completion even if fpm
-   !! failed, and accepts failed manifest-refresh samples while retaining a retry
-   !! flag. Invalid indices are skipped; both fingerprint arrays must be aligned.
+   !! The engine accepts detected edits before graph refresh and command execution.
+   !! Surviving paths retain those baselines through every refresh, so later edits
+   !! remain detectable even while commands run. Invalid indices are skipped;
+   !! both fingerprint arrays must be aligned.
    subroutine accept_changes(fp_prev, fp_now, changed_idx, changed_count)
       integer(int64), intent(inout) :: fp_prev(:)
       integer(int64), intent(in)    :: fp_now(:)
@@ -139,8 +238,8 @@ contains
    !!
    !! Includes build directory, toolchain, profile, compile/link flags, pruning,
    !! build-tests, and fpm features. File and feature ordering affects the key.
-   !! The engine compares keys for plugin notifications after successful manifest
-   !! refreshes; this key does not trigger the refresh itself.
+   !! The engine includes this key in refresh diagnostics; watched file changes
+   !! trigger graph refreshes independently of the key.
    integer(int64) function manifest_key_from_files(settings, files) result(k)
       class(fpm_build_settings), intent(in) :: settings
       type(string_t), allocatable, intent(in) :: files(:)
@@ -191,7 +290,7 @@ contains
    contains
 
       !> Mix a right-trimmed, allocated, nonempty string into the current hash state.
-      subroutine mix_alloc(h, s)
+      pure subroutine mix_alloc(h, s)
          integer(int64), intent(inout) :: h
          character(len=:), allocatable, intent(in) :: s
          if (.not. allocated(s)) return
@@ -201,81 +300,57 @@ contains
 
    end function manifest_key_from_files
 
-   !> Mix file size with up to three sampled blocks of at most 4096 bytes each.
+   !> Hash every byte using bounded reads, reserving distinct non-content states.
    !!
-   !! Missing files, failed size inquiries, and nonpositive sizes return zero.
-   !! If opening fails, return a size-only value mixed with the initial hash;
-   !! failed block reads contribute nothing. Larger files sample head, middle,
-   !! and tail, which may overlap. Uses the shared module scratch buffer.
+   !! Missing files return zero, empty files one, and inquiry/open/read failures
+   !! two. Successful nonempty hashes are negative and cannot equal those states.
+   !! A size change during reading is treated as unreadable until the next poll.
    integer(int64) function file_fingerprint(path) result(fp)
       character(len=*), intent(in) :: path
-      !! File path to sample; trailing blanks are removed before inquiry/open.
       logical :: ex
-      integer(int64) :: sz, h, n64, pos_mid, pos_end, pos_max
-      integer :: u, ios, n
+      integer(int64) :: sz, final_size, remaining, h
+      integer :: u, ios, n, i
 
-      inquire(file=trim(path), exist=ex, size=sz, iostat=ios)
-      if (ios /= 0 .or. .not. ex) then
-         fp = 0_int64
+      fp = FILE_UNREADABLE
+      inquire(file=trim(path), exist=ex, iostat=ios)
+      if (ios /= 0) return
+      if (.not. ex) then
+         fp = FILE_MISSING
          return
       end if
-      if (sz <= 0_int64) then
-         fp = 0_int64
-         return
-      end if
-
-      n64 = min(sz, int(BLOCK_SIZE, int64))
-      n = int(n64)
-
       open(newunit=u, file=trim(path), access="stream", form="unformatted", action="read", status="old", iostat=ios)
-      if (ios /= 0) then
-         fp = ieor(ishft(sz, 1), FNV_OFFSET)
+      if (ios /= 0) return
+      sz = -1_int64
+      inquire(unit=u, size=sz, iostat=ios)
+      if (ios /= 0 .or. sz < 0_int64) then
+         close(u)
          return
       end if
-
-      if (.not. allocated(io_buf)) allocate(io_buf(BLOCK_SIZE))
-
+      remaining = sz
       h = FNV_OFFSET
-      call hash_block(u, 1_int64, n, h)
-
-      if (sz > n64) then
-         pos_max = max(1_int64, sz - n64 + 1_int64)
-
-         pos_mid = sz / 2_int64 - n64 / 2_int64
-         if (pos_mid < 1_int64) pos_mid = 1_int64
-         if (pos_mid > pos_max) pos_mid = pos_max
-
-         pos_end = pos_max
-
-         call hash_block(u, pos_mid, n, h)
-         call hash_block(u, pos_end, n, h)
+      do while (remaining > 0_int64)
+         n = int(min(remaining, int(BLOCK_SIZE, int64)))
+         read(u, iostat=ios) io_buf(:n)
+         if (ios /= 0) exit
+         do i = 1, n
+            call fnv1a_mix_i64(h, int(iachar(io_buf(i:i)), int64))
+         end do
+         remaining = remaining - int(n, int64)
+      end do
+      if (remaining == 0_int64) then
+         inquire(unit=u, size=final_size, iostat=ios)
+         if (ios == 0) then
+            if (final_size == sz) then
+               fp = ibset(h, bit_size(h) - 1)
+               if (sz == 0_int64) fp = FILE_EMPTY
+            end if
+         end if
       end if
-
       close(u)
-
-      fp = ieor(ishft(sz, 1), h)
    end function file_fingerprint
 
-   !> Mix bytes from a 1-based stream position; skip the block if its read fails.
-   subroutine hash_block(u, pos, n, h)
-      integer, intent(in) :: u
-      integer(int64), intent(in) :: pos
-      integer, intent(in) :: n
-      integer(int64), intent(inout) :: h
-
-      integer :: ios, i
-
-      if (n <= 0) return
-      read(u, pos=pos, iostat=ios) io_buf(1:n)
-      if (ios == 0) then
-         do i = 1, n
-            call fnv1a_mix_i64(h, int(iachar(io_buf(i)), int64))
-         end do
-      end if
-   end subroutine hash_block
-
    !> Mix each byte of a right-trimmed string using XOR and the FNV prime.
-   subroutine fnv1a_mix_str(h, s)
+   pure subroutine fnv1a_mix_str(h, s)
       integer(int64), intent(inout) :: h
       character(len=*), intent(in)  :: s
       integer :: i
@@ -284,12 +359,20 @@ contains
       end do
    end subroutine fnv1a_mix_str
 
-   !> XOR one integer into the hash state, then multiply by the FNV prime.
-   subroutine fnv1a_mix_i64(h, x)
+   !> Mix with the FNV prime modulo 2**64 using bounded 32-bit limbs.
+   !!
+   !! The prime is 2**40 + 435. Limb products fit signed int64, avoiding
+   !! undefined signed overflow while preserving the intended bit pattern.
+   pure subroutine fnv1a_mix_i64(h, x)
       integer(int64), intent(inout) :: h
       integer(int64), intent(in)    :: x
+      integer(int64) :: low, high, product
       h = ieor(h, x)
-      h = h * FNV_PRIME
+      low = iand(h, MASK32)
+      high = iand(shiftr(h, 32), MASK32)
+      product = low * 435_int64
+      high = high * 435_int64 + low * 256_int64 + shiftr(product, 32)
+      h = ior(shiftl(iand(high, MASK32), 32), iand(product, MASK32))
    end subroutine fnv1a_mix_i64
 
 end module watch_fingerprint

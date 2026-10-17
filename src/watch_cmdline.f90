@@ -5,11 +5,12 @@
 !! backslash rules. Platform selection comes from `watch_platform:is_windows`
 !! unless a quoting caller supplies an explicit override.
 module watch_cmdline
+   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
    use watch_util, only: starts_with
    use watch_platform, only: is_windows_os => is_windows
    implicit none
    private
-   public get_arg, join_argv, parse_int, parse_real, needs_quotes, quote_arg, is_windows_os, starts_with
+   public get_arg, join_argv, parse_int, parse_real, quote_arg, is_windows_os, starts_with
    public watch_option_takes_value, parse_bool
 
 contains
@@ -55,7 +56,7 @@ contains
       character(len=*), intent(in) :: a
       select case (a)
        case ("--watch-restart-delay", "--watch-restart-max", "--watch-self", &
-             "--watch-rescan", "--watch-ignore", "--watch-include", "--watch-feature", &
+             "--watch-rescan", "--watch-ignore", "--watch-include", &
              "--watch-poll", "--watch-debounce", "--watch-log-format", "--watch-fpm")
          takes_value = .true.
        case default
@@ -98,17 +99,6 @@ contains
          s = s // quote_arg(a)
       end do
    end function join_argv
-
-
-   !> Test whether a token is empty or contains bytes outside the shell-safe set.
-   !!
-   !! Retained as a query helper; `quote_arg` quotes tokens regardless of this result.
-   pure logical function needs_quotes(a) result(q)
-      character(len=*), intent(in) :: a
-      character(len=*), parameter :: safe = &
-         "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_@+=:,./-"
-      q = len(a) == 0 .or. verify(a, safe) /= 0
-   end function needs_quotes
 
    !> Serialize one complete argv token, preserving whitespace and empty arguments.
    !!
@@ -175,17 +165,20 @@ contains
       character(len=*), intent(in) :: s
       integer, intent(in) :: default
       integer :: ios
+      v = default
       read(s, *, iostat=ios) v
       if (ios /= 0) v = default
    end function parse_int
 
-   !> Read a real with list-directed input; return `default` if the read fails.
+   !> Read a finite real; return `default` if the read fails or yields NaN/infinity.
    pure real function parse_real(s, default) result(v)
       character(len=*), intent(in) :: s
       real, intent(in) :: default
       integer :: ios
+      v = default
       read(s, *, iostat=ios) v
       if (ios /= 0) v = default
+      if (.not. ieee_is_finite(v)) v = default
    end function parse_real
 
 end module watch_cmdline

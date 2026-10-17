@@ -103,27 +103,54 @@ contains
    pure function format_log_record(format, timestamp, level, event, message, fields) result(line)
       character(len=*), intent(in) :: format, timestamp, level, event, message
       type(log_field_t), intent(in), optional :: fields(:)
-      character(len=:), allocatable :: line, label
-      integer :: i
+      character(len=:), allocatable :: line, label, prefix
+      integer :: i, total, position
       select case (format)
        case ("json")
-         line = '{"timestamp":' // json_quote(timestamp) // ',"level":' // json_quote(level) // &
-                ',"event":' // json_quote(event) // ',"message":' // json_quote(message)
+         prefix = '{"timestamp":' // json_quote(timestamp) // ',"level":' // json_quote(level) // &
+                  ',"event":' // json_quote(event) // ',"message":' // json_quote(message)
+         total = len(prefix) + 1
          if (present(fields)) then
             do i = 1, size(fields)
-               line = line // "," // json_quote(fields(i)%key) // ":" // fields(i)%value
+               total = total + 4 + escaped_length(fields(i)%key, .true.) + len(fields(i)%value)
             end do
          end if
-         line = line // "}"
-       case ("logfmt")
-         line = "timestamp=" // timestamp // " level=" // level // " event=" // event // &
-                " msg=" // json_quote(message)
+         allocate(character(len=total) :: line)
+         position = 1
+         call put_text(line, position, prefix)
          if (present(fields)) then
             do i = 1, size(fields)
+               call put_text(line, position, ",")
+               call put_json_string(line, position, fields(i)%key)
+               call put_text(line, position, ":")
+               call put_text(line, position, fields(i)%value)
+            end do
+         end if
+         call put_text(line, position, "}")
+       case ("logfmt")
+         prefix = "timestamp=" // timestamp // " level=" // level // " event=" // event // &
+                  " msg=" // json_quote(message)
+         total = len(prefix)
+         if (present(fields)) then
+            do i = 1, size(fields)
+               total = total + 2 + len(fields(i)%key)
                if (fields(i)%value(1:1) == "[") then
-                  line = line // " " // fields(i)%key // "=" // json_quote(fields(i)%value)
+                  total = total + 2 + escaped_length(fields(i)%value, .true.)
                else
-                  line = line // " " // fields(i)%key // "=" // fields(i)%value
+                  total = total + len(fields(i)%value)
+               end if
+            end do
+         end if
+         allocate(character(len=total) :: line)
+         position = 1
+         call put_text(line, position, prefix)
+         if (present(fields)) then
+            do i = 1, size(fields)
+               call put_text(line, position, " " // fields(i)%key // "=")
+               if (fields(i)%value(1:1) == "[") then
+                  call put_json_string(line, position, fields(i)%value)
+               else
+                  call put_text(line, position, fields(i)%value)
                end if
             end do
          end if
@@ -146,7 +173,11 @@ contains
    pure function json_quote(value) result(quoted)
       character(len=*), intent(in) :: value
       character(len=:), allocatable :: quoted
-      quoted = '"' // escape_text(value, .true.) // '"'
+      integer :: position, total
+      total = escaped_length(value, .true.) + 2
+      allocate(character(len=total) :: quoted)
+      position = 1
+      call put_json_string(quoted, position, value)
    end function json_quote
 
    !> Escape control bytes so a message stays on one physical line.
@@ -157,47 +188,121 @@ contains
       character(len=*), intent(in) :: value
       logical, intent(in) :: delimiters
       character(len=:), allocatable :: escaped
-      character(len=4) :: hex
-      integer :: i, code, width
-      escaped = ""
+      integer :: position, total
+      total = escaped_length(value, delimiters)
+      allocate(character(len=total) :: escaped)
+      position = 1
+      call put_escaped(escaped, position, value, delimiters)
+   end function escape_text
+
+   !> Count escaped bytes using the same encoder as the output pass.
+   pure integer function escaped_length(value, delimiters) result(length)
+      character(len=*), intent(in) :: value
+      logical, intent(in) :: delimiters
+      character(len=6) :: piece
+      integer :: i, consumed, written
+      length = 0
       i = 1
       do while (i <= len(value))
-         code = iachar(value(i:i))
-         select case (code)
-          case (34, 92)
-            if (delimiters) escaped = escaped // achar(92)
-            escaped = escaped // value(i:i)
-          case (8)
-            escaped = escaped // achar(92) // "b"
-          case (9)
-            escaped = escaped // achar(92) // "t"
-          case (10)
-            escaped = escaped // achar(92) // "n"
-          case (12)
-            escaped = escaped // achar(92) // "f"
-          case (13)
-            escaped = escaped // achar(92) // "r"
-          case (0:7, 11, 14:31)
-            write(hex, "(z4.4)") code
-            escaped = escaped // achar(92) // "u" // hex
-          case (128:255)
-            if (delimiters) then
-               width = utf8_width(value, i)
-               if (width == 0) then
-                  escaped = escaped // achar(92) // "uFFFD"
-               else
-                  escaped = escaped // value(i:i+width-1)
-                  i = i + width - 1
-               end if
-            else
-               escaped = escaped // value(i:i)
-            end if
-          case default
-            escaped = escaped // value(i:i)
-         end select
-         i = i + 1
+         call escape_piece(value, i, delimiters, piece, consumed, written)
+         length = length + written
+         i = i + consumed
       end do
-   end function escape_text
+   end function escaped_length
+
+   !> Append bytes into an already sized buffer without reallocating it.
+   pure subroutine put_text(buffer, position, value)
+      !> Caller-owned capacity and untouched bytes must remain unchanged while appending.
+      ! allow(C072)
+      character(len=*), intent(inout) :: buffer
+      integer, intent(inout) :: position
+      character(len=*), intent(in) :: value
+      buffer(position:position + len(value) - 1) = value
+      position = position + len(value)
+   end subroutine put_text
+
+   !> Append one quoted JSON string to an already sized buffer.
+   pure subroutine put_json_string(buffer, position, value)
+      !> Caller-owned capacity and untouched bytes must remain unchanged while appending.
+      ! allow(C072)
+      character(len=*), intent(inout) :: buffer
+      integer, intent(inout) :: position
+      character(len=*), intent(in) :: value
+      call put_text(buffer, position, '"')
+      call put_escaped(buffer, position, value, .true.)
+      call put_text(buffer, position, '"')
+   end subroutine put_json_string
+
+   !> Append escaped bytes in one pass using bounded six-byte fragments.
+   pure subroutine put_escaped(buffer, position, value, delimiters)
+      !> Caller-owned capacity and untouched bytes must remain unchanged while appending.
+      ! allow(C072)
+      character(len=*), intent(inout) :: buffer
+      integer, intent(inout) :: position
+      character(len=*), intent(in) :: value
+      logical, intent(in) :: delimiters
+      character(len=6) :: piece
+      integer :: i, consumed, written
+      i = 1
+      do while (i <= len(value))
+         call escape_piece(value, i, delimiters, piece, consumed, written)
+         call put_text(buffer, position, piece(:written))
+         i = i + consumed
+      end do
+   end subroutine put_escaped
+
+   !> Encode one ASCII byte or UTF-8 sequence and report consumed/output lengths.
+   pure subroutine escape_piece(value, position, delimiters, piece, consumed, written)
+      character(len=*), intent(in) :: value
+      integer, intent(in) :: position
+      logical, intent(in) :: delimiters
+      character(len=6), intent(out) :: piece
+      integer, intent(out) :: consumed, written
+      character(len=4) :: hex
+      integer :: code, width
+      code = iachar(value(position:position))
+      consumed = 1
+      written = 1
+      piece = value(position:position)
+      select case (code)
+       case (34, 92)
+         if (delimiters) then
+            piece = achar(92) // value(position:position)
+            written = 2
+         end if
+       case (8, 9, 10, 12, 13)
+         select case (code)
+          case (8)
+            piece = achar(92) // "b"
+          case (9)
+            piece = achar(92) // "t"
+          case (10)
+            piece = achar(92) // "n"
+          case (12)
+            piece = achar(92) // "f"
+          case default
+            piece = achar(92) // "r"
+         end select
+         written = 2
+       case (0:7, 11, 14:31)
+         write(hex, "(z4.4)") code
+         piece = achar(92) // "u" // hex
+         written = 6
+       case (128:255)
+         if (.not. delimiters) return
+         width = utf8_width(value, position)
+         if (width == 0) then
+            piece = achar(92) // "uFFFD"
+            written = 6
+         else
+            piece = value(position:position + width - 1)
+            consumed = width
+            written = width
+         end if
+       case default
+         continue
+      end select
+   end subroutine escape_piece
 
    !> Validate a multibyte UTF-8 sequence at a valid 1-based byte position.
    !!
@@ -245,14 +350,20 @@ contains
       character(len=*), intent(in) :: key
       type(string_t), intent(in) :: values(:)
       type(log_field_t) :: field
-      integer :: i
+      integer :: i, total, position
       field%key = key
-      field%value = "["
+      total = 2 + max(0, size(values) - 1)
       do i = 1, size(values)
-         if (i > 1) field%value = field%value // ","
-         field%value = field%value // json_quote(values(i)%s)
+         total = total + 2 + escaped_length(values(i)%s, .true.)
       end do
-      field%value = field%value // "]"
+      allocate(character(len=total) :: field%value)
+      position = 1
+      call put_text(field%value, position, "[")
+      do i = 1, size(values)
+         if (i > 1) call put_text(field%value, position, ",")
+         call put_json_string(field%value, position, values(i)%s)
+      end do
+      call put_text(field%value, position, "]")
    end function log_strings
 
    !> Construct a default-integer attribute.

@@ -1,0 +1,1752 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="Documentation for fpm-watch">
+    <meta name="author" content="Seyed Ali Ghasemi" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>watch_graph_worker &ndash; fpm-watch</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">fpm-watch </a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/types.html">Derived Types</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <div class="row">
+    <h1>watch_graph_worker
+      <small>Module</small>
+      
+    </h1>
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+            <li class="list-inline-item" id="meta-license"><i class="fa fa-legal"></i> <a rel="license" href="https://opensource.org/licenses/MIT">MIT</a></li>
+
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title=" 7.6% of total for modules and submodules.">315 statements</a>
+            </li>
+
+            <li class="list-inline-item" id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/watch_graph_worker.f90"> Source File</a>
+            </li>
+        </ul>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+                <li class="breadcrumb-item"><a href='../sourcefile/watch_graph_worker.f90.html'>watch_graph_worker.f90</a></li>
+            <li class="breadcrumb-item active" aria-current="page">watch_graph_worker</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
+  </script>
+
+  </div>
+
+  <div class="row">
+    <div class="col-md-3">
+        <div id="sidebar">
+      <h3>Contents</h3>
+  
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#vars-0"
+         aria-expanded="false" aria-controls="vars-0">
+         <h4 class="card-header bg-primary text-white">Variables</h4>
+      </a>
+      <div id="vars-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../module/watch_graph_worker.html#variable-response_version">RESPONSE_VERSION</a>
+        </div>
+      </div>
+    </div>
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#funcs-0"
+         aria-expanded="false" aria-controls="funcs-0">
+         <h4 class="card-header bg-primary text-white">Functions</h4>
+      </a>
+      <div id="funcs-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../module/watch_graph_worker.html#proc-encode_bytes">encode_bytes</a>
+        </div>
+      </div>
+    </div>
+
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#subs-0"
+         aria-expanded="false" aria-controls="subs-0">
+         <h4 class="card-header bg-primary text-white">Subroutines</h4>
+      </a>
+      <div id="subs-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../module/watch_graph_worker.html#proc-compute_watch_snapshot">compute_watch_snapshot</a>
+            <a class="list-group-item" href="../module/watch_graph_worker.html#proc-read_graph_response">read_graph_response</a>
+            <a class="list-group-item" href="../module/watch_graph_worker.html#proc-run_graph_worker">run_graph_worker</a>
+            <a class="list-group-item" href="../module/watch_graph_worker.html#proc-decode_bytes">decode_bytes</a>
+            <a class="list-group-item" href="../module/watch_graph_worker.html#proc-invalid_response">invalid_response</a>
+            <a class="list-group-item" href="../module/watch_graph_worker.html#proc-write_graph_response">write_graph_response</a>
+        </div>
+      </div>
+    </div>
+
+  
+  
+  
+  
+  
+  
+  
+
+
+  </div>
+
+    </div>
+
+    <div class="col-md-9" id='text'>
+      <p>Isolate fpm model construction in a short-lived worker process.</p>
+<p>fpm owns resources that cannot all be released through its public model API.
+Each refresh therefore runs in the actual watcher executable and returns one
+validated TOML snapshot. A private workspace also contains fpm probe files;
+the parent removes the whole workspace after success, failure, or cancellation. Byte strings use hexadecimal encoding so native paths
+survive control bytes and invalid UTF-8 without relying on TOML string encoding.</p>
+<br>          <div class="card mb-4">
+      <h3 class="card-header card-title bg-light">Uses</h3>
+      <div class="card-body">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <ul class="list-inline">
+                  <li class="list-inline-item">tomlf</li>
+                  <li class="list-inline-item"><a href='http://fortranwiki.org/fortran/show/ieee_arithmetic'>ieee_arithmetic</a></li>
+                  <li class="list-inline-item">fpm_error</li>
+                  <li class="list-inline-item">fpm_toml</li>
+                  <li class="list-inline-item"><a href='http://fortranwiki.org/fortran/show/iso_fortran_env'>iso_fortran_env</a></li>
+                  <li class="list-inline-item"><a href='watch_fpm_graph.html'>watch_fpm_graph</a></li>
+                  <li class="list-inline-item"><a href='watch_cmdline.html'>watch_cmdline</a></li>
+                  <li class="list-inline-item"><a href='watch_log.html'>watch_log</a></li>
+                  <li class="list-inline-item"><a href='watch_platform.html'>watch_platform</a></li>
+                  <li class="list-inline-item">fpm_filesystem</li>
+                  <li class="list-inline-item">fpm_strings</li>
+                  <li class="list-inline-item"><a href='watch_types.html'>watch_types</a></li>
+                  <li class="list-inline-item">fpm_os</li>
+              </ul>
+            </li>
+            <li class="list-group-item">
+              <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: module~~watch_graph_worker~~UsesGraph Pages: 1 -->
+<svg id="modulewatch_graph_workerUsesGraph" width="641pt" height="683pt"
+ viewBox="0.00 0.00 641.00 683.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="module~~watch_graph_worker~~UsesGraph" class="graph" transform="scale(0.77009 0.77009) rotate(0) translate(4 883.33)">
+<title>module~~watch_graph_worker~~UsesGraph</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-883.33 828.37,-883.33 828.37,4 -4,4"/>
+<!-- module~watch_graph_worker -->
+<g id="module~~watch_graph_worker~~UsesGraph_node1" class="node">
+<title>module~watch_graph_worker</title>
+<polygon fill="none" stroke="black" points="824.37,-755.13 702.6,-755.13 702.6,-730.86 824.37,-730.86 824.37,-755.13"/>
+<text xml:space="preserve" text-anchor="middle" x="763.48" y="-739.39" font-family="Helvetica,sans-Serif" font-size="10.50">watch_graph_worker</text>
+</g>
+<!-- fpm_error -->
+<g id="module~~watch_graph_worker~~UsesGraph_node2" class="node">
+<title>fpm_error</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="349.93,-677.13 285.91,-677.13 285.91,-652.86 349.93,-652.86 349.93,-677.13"/>
+<text xml:space="preserve" text-anchor="middle" x="317.92" y="-661.39" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">fpm_error</text>
+</g>
+<!-- module~watch_graph_worker&#45;&gt;fpm_error -->
+<g id="module~~watch_graph_worker~~UsesGraph_edge1" class="edge">
+<title>module~watch_graph_worker&#45;&gt;fpm_error</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M612.59,-722.99C574.45,-714.22 563.71,-725.33 524.58,-725.99 472.13,-726.89 456.61,-741.7 406.56,-725.99 381.04,-717.99 356.45,-699.63 339.85,-685.13"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="342.37,-682.7 332.61,-678.58 337.68,-687.89 342.37,-682.7"/>
+</g>
+<!-- fpm_filesystem -->
+<g id="module~~watch_graph_worker~~UsesGraph_node3" class="node">
+<title>fpm_filesystem</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="363.81,-103.13 272.04,-103.13 272.04,-78.86 363.81,-78.86 363.81,-103.13"/>
+<text xml:space="preserve" text-anchor="middle" x="317.92" y="-87.39" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">fpm_filesystem</text>
+</g>
+<!-- module~watch_graph_worker&#45;&gt;fpm_filesystem -->
+<g id="module~~watch_graph_worker~~UsesGraph_edge2" class="edge">
+<title>module~watch_graph_worker&#45;&gt;fpm_filesystem</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M464.57,-12.99C438.55,-23.08 431.41,-24.3 406.56,-36.99 385.81,-47.59 363.46,-61.41 346.52,-72.41"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="344.93,-69.27 338.49,-77.68 348.77,-75.12 344.93,-69.27"/>
+</g>
+<!-- fpm_os -->
+<g id="module~~watch_graph_worker~~UsesGraph_node4" class="node">
+<title>fpm_os</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="640.59,-817.13 586.59,-817.13 586.59,-792.86 640.59,-792.86 640.59,-817.13"/>
+<text xml:space="preserve" text-anchor="middle" x="613.59" y="-801.39" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">fpm_os</text>
+</g>
+<!-- module~watch_graph_worker&#45;&gt;fpm_os -->
+<g id="module~~watch_graph_worker~~UsesGraph_edge3" class="edge">
+<title>module~watch_graph_worker&#45;&gt;fpm_os</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M733.6,-755.53C714.6,-763.72 689.17,-774.61 666.6,-783.99 661.63,-786.06 656.39,-788.21 651.22,-790.31"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="650.18,-786.96 642.23,-793.95 652.81,-793.44 650.18,-786.96"/>
+</g>
+<!-- fpm_strings -->
+<g id="module~~watch_graph_worker~~UsesGraph_node5" class="node">
+<title>fpm_strings</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="94.77,-311.13 21.75,-311.13 21.75,-286.86 94.77,-286.86 94.77,-311.13"/>
+<text xml:space="preserve" text-anchor="middle" x="58.26" y="-295.39" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">fpm_strings</text>
+</g>
+<!-- module~watch_graph_worker&#45;&gt;fpm_strings -->
+<g id="module~~watch_graph_worker~~UsesGraph_edge4" class="edge">
+<title>module~watch_graph_worker&#45;&gt;fpm_strings</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M612.59,-862.99C453.61,-907.06 368.03,-861.07 265.29,-731.99 156.22,-594.97 87.28,-390.75 66.17,-322.3"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="69.58,-321.48 63.32,-312.93 62.88,-323.52 69.58,-321.48"/>
+</g>
+<!-- fpm_toml -->
+<g id="module~~watch_graph_worker~~UsesGraph_node6" class="node">
+<title>fpm_toml</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="496.45,-717.13 434.68,-717.13 434.68,-692.86 496.45,-692.86 496.45,-717.13"/>
+<text xml:space="preserve" text-anchor="middle" x="465.57" y="-701.39" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">fpm_toml</text>
+</g>
+<!-- module~watch_graph_worker&#45;&gt;fpm_toml -->
+<g id="module~~watch_graph_worker~~UsesGraph_edge5" class="edge">
+<title>module~watch_graph_worker&#45;&gt;fpm_toml</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M612.59,-722.99C577.76,-714.98 537.38,-710.35 507.92,-707.8"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="508.57,-704.34 498.32,-707.01 508,-711.31 508.57,-704.34"/>
+</g>
+<!-- ieee_arithmetic -->
+<g id="module~~watch_graph_worker~~UsesGraph_node7" class="node">
+<title>ieee_arithmetic</title>
+<g id="a_module~~watch_graph_worker~~UsesGraph_node7"><a xlink:href="http://fortranwiki.org/fortran/show/ieee_arithmetic" xlink:title="ieee_arithmetic">
+<polygon fill="#337ab7" stroke="#337ab7" points="512.95,-835.13 418.18,-835.13 418.18,-810.86 512.95,-810.86 512.95,-835.13"/>
+<text xml:space="preserve" text-anchor="middle" x="465.57" y="-819.39" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">ieee_arithmetic</text>
+</a>
+</g>
+</g>
+<!-- module~watch_graph_worker&#45;&gt;ieee_arithmetic -->
+<g id="module~~watch_graph_worker~~UsesGraph_edge6" class="edge">
+<title>module~watch_graph_worker&#45;&gt;ieee_arithmetic</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M753.18,-755.58C732.19,-782.65 678,-845.42 614.59,-862.99"/>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M612.59,-862.99C593.08,-868.4 544.17,-852.81 508.31,-839.54"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="509.65,-836.31 499.06,-836.06 507.19,-842.86 509.65,-836.31"/>
+</g>
+<!-- iso_fortran_env -->
+<g id="module~~watch_graph_worker~~UsesGraph_node8" class="node">
+<title>iso_fortran_env</title>
+<g id="a_module~~watch_graph_worker~~UsesGraph_node8"><a xlink:href="http://fortranwiki.org/fortran/show/iso_fortran_env" xlink:title="iso_fortran_env">
+<polygon fill="#337ab7" stroke="#337ab7" points="104.89,-269.13 11.62,-269.13 11.62,-244.86 104.89,-244.86 104.89,-269.13"/>
+<text xml:space="preserve" text-anchor="middle" x="58.26" y="-253.39" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">iso_fortran_env</text>
+</a>
+</g>
+</g>
+<!-- module~watch_graph_worker&#45;&gt;iso_fortran_env -->
+<g id="module~~watch_graph_worker~~UsesGraph_edge7" class="edge">
+<title>module~watch_graph_worker&#45;&gt;iso_fortran_env</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M762.81,-730.6C765.02,-625.87 769.73,104.5 466.57,-12.99"/>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M464.57,-12.99C401.7,-28.41 382.18,0.77 318.92,-12.99"/>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M316.92,-12.99C260.18,-25.34 244.45,-26.26 191.9,-50.99"/>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M189.9,-50.99C173.04,-58.93 165.65,-56.76 152.52,-69.99 104.91,-117.96 77.21,-195.14 65.65,-233.61"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="62.35,-232.42 62.94,-243 69.08,-234.36 62.35,-232.42"/>
+</g>
+<!-- module~watch_cmdline -->
+<g id="module~~watch_graph_worker~~UsesGraph_node9" class="node">
+<title>module~watch_cmdline</title>
+<g id="a_module~~watch_graph_worker~~UsesGraph_node9"><a xlink:href="../module/watch_cmdline.html" xlink:title="watch_cmdline">
+<polygon fill="#337ab7" stroke="#337ab7" points="659.1,-775.13 568.08,-775.13 568.08,-750.86 659.1,-750.86 659.1,-775.13"/>
+<text xml:space="preserve" text-anchor="middle" x="613.59" y="-759.39" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">watch_cmdline</text>
+</a>
+</g>
+</g>
+<!-- module~watch_graph_worker&#45;&gt;module~watch_cmdline -->
+<g id="module~~watch_graph_worker~~UsesGraph_edge8" class="edge">
+<title>module~watch_graph_worker&#45;&gt;module~watch_cmdline</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M702.33,-751.13C691.76,-752.56 680.8,-754.04 670.35,-755.45"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="670.2,-751.94 660.76,-756.75 671.14,-758.88 670.2,-751.94"/>
+</g>
+<!-- module~watch_fpm_graph -->
+<g id="module~~watch_graph_worker~~UsesGraph_node10" class="node">
+<title>module~watch_fpm_graph</title>
+<g id="a_module~~watch_graph_worker~~UsesGraph_node10"><a xlink:href="../module/watch_fpm_graph.html" xlink:title="watch_fpm_graph">
+<polygon fill="#337ab7" stroke="#337ab7" points="666.6,-411.13 560.58,-411.13 560.58,-386.86 666.6,-386.86 666.6,-411.13"/>
+<text xml:space="preserve" text-anchor="middle" x="613.59" y="-395.39" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">watch_fpm_graph</text>
+</a>
+</g>
+</g>
+<!-- module~watch_graph_worker&#45;&gt;module~watch_fpm_graph -->
+<g id="module~~watch_graph_worker~~UsesGraph_edge9" class="edge">
+<title>module~watch_graph_worker&#45;&gt;module~watch_fpm_graph</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M757.22,-730.75C735.53,-680.29 652.85,-487.97 624.33,-421.64"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="627.71,-420.64 620.54,-412.84 621.28,-423.41 627.71,-420.64"/>
+</g>
+<!-- module~watch_log -->
+<g id="module~~watch_graph_worker~~UsesGraph_node11" class="node">
+<title>module~watch_log</title>
+<g id="a_module~~watch_graph_worker~~UsesGraph_node11"><a xlink:href="../module/watch_log.html" xlink:title="watch_log">
+<polygon fill="#337ab7" stroke="#337ab7" points="350.31,-351.13 285.54,-351.13 285.54,-326.86 350.31,-326.86 350.31,-351.13"/>
+<text xml:space="preserve" text-anchor="middle" x="317.92" y="-335.39" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">watch_log</text>
+</a>
+</g>
+</g>
+<!-- module~watch_graph_worker&#45;&gt;module~watch_log -->
+<g id="module~~watch_graph_worker~~UsesGraph_edge10" class="edge">
+<title>module~watch_graph_worker&#45;&gt;module~watch_log</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M464.57,-12.99C438.55,-23.08 425.18,-16.21 406.56,-36.99 368.74,-79.21 334.61,-251.65 323.07,-315.27"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="319.65,-314.52 321.34,-324.98 326.54,-315.75 319.65,-314.52"/>
+</g>
+<!-- module~watch_platform -->
+<g id="module~~watch_graph_worker~~UsesGraph_node12" class="node">
+<title>module~watch_platform</title>
+<g id="a_module~~watch_graph_worker~~UsesGraph_node12"><a xlink:href="../module/watch_platform.html" xlink:title="watch_platform">
+<polygon fill="#337ab7" stroke="#337ab7" points="512.58,-595.13 418.56,-595.13 418.56,-570.86 512.58,-570.86 512.58,-595.13"/>
+<text xml:space="preserve" text-anchor="middle" x="465.57" y="-579.39" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">watch_platform</text>
+</a>
+</g>
+</g>
+<!-- module~watch_graph_worker&#45;&gt;module~watch_platform -->
+<g id="module~~watch_graph_worker~~UsesGraph_edge11" class="edge">
+<title>module~watch_graph_worker&#45;&gt;module~watch_platform</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M702.31,-737.39C675.28,-734.22 643.12,-729.56 614.59,-722.99"/>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M612.59,-722.99C604.28,-721.08 524.46,-641.42 486.48,-603.13"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="489.21,-600.92 479.69,-596.28 484.24,-605.85 489.21,-600.92"/>
+</g>
+<!-- module~watch_types -->
+<g id="module~~watch_graph_worker~~UsesGraph_node13" class="node">
+<title>module~watch_types</title>
+<g id="a_module~~watch_graph_worker~~UsesGraph_node13"><a xlink:href="../module/watch_types.html" xlink:title="watch_types">
+<polygon fill="#337ab7" stroke="#337ab7" points="229.29,-103.13 152.52,-103.13 152.52,-78.86 229.29,-78.86 229.29,-103.13"/>
+<text xml:space="preserve" text-anchor="middle" x="190.9" y="-87.39" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">watch_types</text>
+</a>
+</g>
+</g>
+<!-- module~watch_graph_worker&#45;&gt;module~watch_types -->
+<g id="module~~watch_graph_worker~~UsesGraph_edge12" class="edge">
+<title>module~watch_graph_worker&#45;&gt;module~watch_types</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M316.92,-12.99C306.15,-15.34 253.14,-49.93 219.7,-72.25"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="218.05,-69.14 211.69,-77.62 221.95,-74.96 218.05,-69.14"/>
+</g>
+<!-- tomlf -->
+<g id="module~~watch_graph_worker~~UsesGraph_node14" class="node">
+<title>tomlf</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="492.57,-675.13 438.57,-675.13 438.57,-650.86 492.57,-650.86 492.57,-675.13"/>
+<text xml:space="preserve" text-anchor="middle" x="465.57" y="-659.39" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">tomlf</text>
+</g>
+<!-- module~watch_graph_worker&#45;&gt;tomlf -->
+<g id="module~~watch_graph_worker~~UsesGraph_edge13" class="edge">
+<title>module~watch_graph_worker&#45;&gt;tomlf</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M612.59,-722.99C570.9,-713.4 564.28,-699.95 524.58,-683.99 517.86,-681.29 510.65,-678.55 503.67,-675.99"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="505.01,-672.75 494.42,-672.64 502.63,-679.33 505.01,-672.75"/>
+</g>
+<!-- module~watch_cmdline&#45;&gt;ieee_arithmetic -->
+<g id="module~~watch_graph_worker~~UsesGraph_edge14" class="edge">
+<title>module~watch_cmdline&#45;&gt;ieee_arithmetic</title>
+<path fill="none" stroke="#00c4ff" stroke-dasharray="5,2" d="M581.22,-775.6C574.41,-778.36 567.25,-781.26 560.58,-783.99 543.01,-791.19 523.62,-799.21 507.04,-806.1"/>
+<polygon fill="#00c4ff" stroke="#00c4ff" points="505.89,-802.79 498,-809.87 508.57,-809.26 505.89,-802.79"/>
+</g>
+<!-- module~watch_cmdline&#45;&gt;module~watch_platform -->
+<g id="module~~watch_graph_worker~~UsesGraph_edge15" class="edge">
+<title>module~watch_cmdline&#45;&gt;module~watch_platform</title>
+<path fill="none" stroke="#00c4ff" stroke-dasharray="5,2" d="M578.16,-750.36C571.7,-746.8 565.45,-742.39 560.58,-736.99 530.31,-703.49 548.93,-680.02 524.58,-641.99 515.26,-627.44 501.88,-613.53 490.33,-602.88"/>
+<polygon fill="#00c4ff" stroke="#00c4ff" points="492.86,-600.45 483.07,-596.41 488.21,-605.68 492.86,-600.45"/>
+</g>
+<!-- module~watch_util -->
+<g id="module~~watch_graph_worker~~UsesGraph_node27" class="node">
+<title>module~watch_util</title>
+<g id="a_module~~watch_graph_worker~~UsesGraph_node27"><a xlink:href="../module/watch_util.html" xlink:title="watch_util">
+<polygon fill="#337ab7" stroke="#337ab7" points="223.29,-390.13 158.52,-390.13 158.52,-365.86 223.29,-365.86 223.29,-390.13"/>
+<text xml:space="preserve" text-anchor="middle" x="190.9" y="-374.39" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">watch_util</text>
+</a>
+</g>
+</g>
+<!-- module~watch_cmdline&#45;&gt;module~watch_util -->
+<g id="module~~watch_graph_worker~~UsesGraph_edge16" class="edge">
+<title>module~watch_cmdline&#45;&gt;module~watch_util</title>
+<path fill="none" stroke="#00c4ff" stroke-dasharray="5,2" d="M567.77,-768.28C492.28,-774.39 340.66,-774.11 265.29,-685.99 228.11,-642.52 202.88,-466.16 194.74,-401.72"/>
+<polygon fill="#00c4ff" stroke="#00c4ff" points="198.23,-401.39 193.53,-391.9 191.28,-402.25 198.23,-401.39"/>
+</g>
+<!-- module~watch_fpm_graph&#45;&gt;fpm_error -->
+<g id="module~~watch_graph_worker~~UsesGraph_edge20" class="edge">
+<title>module~watch_fpm_graph&#45;&gt;fpm_error</title>
+<path fill="none" stroke="#004eff" stroke-dasharray="5,2" d="M610.94,-411.49C605.55,-447.11 585.22,-550.07 524.58,-603.99 518.33,-609.55 419.7,-637.31 361.34,-653.4"/>
+<polygon fill="#004eff" stroke="#004eff" points="360.42,-650.03 351.7,-656.05 362.27,-656.78 360.42,-650.03"/>
+</g>
+<!-- module~watch_fpm_graph&#45;&gt;fpm_filesystem -->
+<g id="module~~watch_graph_worker~~UsesGraph_edge21" class="edge">
+<title>module~watch_fpm_graph&#45;&gt;fpm_filesystem</title>
+<path fill="none" stroke="#004eff" stroke-dasharray="5,2" d="M464.57,-50.99C445.84,-41.9 394.29,-59.48 357.86,-74.15"/>
+<polygon fill="#004eff" stroke="#004eff" points="356.88,-70.76 348.95,-77.8 359.53,-77.24 356.88,-70.76"/>
+</g>
+<!-- module~watch_fpm_graph&#45;&gt;fpm_strings -->
+<g id="module~~watch_graph_worker~~UsesGraph_edge26" class="edge">
+<title>module~watch_fpm_graph&#45;&gt;fpm_strings</title>
+<path fill="none" stroke="#004eff" stroke-dasharray="5,2" d="M607.24,-411.28C595.77,-436.22 566.4,-493.06 524.58,-523.99 502.77,-540.13 492.34,-534.5 466.57,-542.99"/>
+<path fill="none" stroke="#004eff" stroke-dasharray="5,2" d="M464.57,-542.99C435.6,-552.54 293.33,-503.56 152.52,-398.99 121.64,-376.06 92.49,-342.1 75.25,-320.26"/>
+<polygon fill="#004eff" stroke="#004eff" points="78.23,-318.39 69.34,-312.63 72.7,-322.67 78.23,-318.39"/>
+</g>
+<!-- module~watch_fpm_graph&#45;&gt;fpm_toml -->
+<g id="module~~watch_graph_worker~~UsesGraph_edge28" class="edge">
+<title>module~watch_fpm_graph&#45;&gt;fpm_toml</title>
+<path fill="none" stroke="#004eff" stroke-dasharray="5,2" d="M612.48,-411.46C611.4,-455.11 601.94,-602.84 524.58,-683.99 519.73,-689.08 513.55,-692.94 507.05,-695.87"/>
+<polygon fill="#004eff" stroke="#004eff" points="506.26,-692.42 498.12,-699.21 508.72,-698.98 506.26,-692.42"/>
+</g>
+<!-- module~watch_fpm_graph&#45;&gt;iso_fortran_env -->
+<g id="module~~watch_graph_worker~~UsesGraph_edge31" class="edge">
+<title>module~watch_fpm_graph&#45;&gt;iso_fortran_env</title>
+<path fill="none" stroke="#004eff" stroke-dasharray="5,2" d="M464.57,-50.99C440.16,-39.14 429.11,-54.91 406.56,-69.99 386.12,-83.66 392.9,-101.72 370.56,-111.99 328.05,-131.54 307.8,-131.54 265.29,-111.99 226.76,-94.27 230.68,-33.8 191.9,-50.99"/>
+</g>
+<!-- module~watch_fpm_graph&#45;&gt;module~watch_log -->
+<g id="module~~watch_graph_worker~~UsesGraph_edge33" class="edge">
+<title>module~watch_fpm_graph&#45;&gt;module~watch_log</title>
+<path fill="none" stroke="#004eff" stroke-dasharray="5,2" d="M560.22,-391.78C532.4,-387.96 497.63,-383.2 466.57,-378.99"/>
+<path fill="none" stroke="#004eff" stroke-dasharray="5,2" d="M464.57,-378.99C429.24,-374.21 390.36,-363.23 361.66,-353.98"/>
+<polygon fill="#004eff" stroke="#004eff" points="362.84,-350.68 352.24,-350.88 360.65,-357.33 362.84,-350.68"/>
+</g>
+<!-- module~watch_fpm_graph&#45;&gt;module~watch_platform -->
+<g id="module~~watch_graph_worker~~UsesGraph_edge34" class="edge">
+<title>module~watch_fpm_graph&#45;&gt;module~watch_platform</title>
+<path fill="none" stroke="#004eff" stroke-dasharray="5,2" d="M608.74,-411.4C599.1,-440.54 571.33,-514.13 524.58,-556.99 521.33,-559.97 517.69,-562.65 513.85,-565.06"/>
+<polygon fill="#004eff" stroke="#004eff" points="512.41,-561.85 505.34,-569.74 515.79,-567.98 512.41,-561.85"/>
+</g>
+<!-- module~watch_fpm_graph&#45;&gt;module~watch_types -->
+<g id="module~~watch_graph_worker~~UsesGraph_edge35" class="edge">
+<title>module~watch_fpm_graph&#45;&gt;module~watch_types</title>
+<path fill="none" stroke="#004eff" stroke-dasharray="5,2" d="M602.21,-386.5C586.93,-368.85 556.69,-336.71 524.58,-317.99 476.97,-290.24 454.47,-307.22 406.56,-279.99 323.83,-232.98 244.67,-150.44 210.1,-111.91"/>
+<polygon fill="#004eff" stroke="#004eff" points="212.92,-109.82 203.67,-104.67 207.69,-114.47 212.92,-109.82"/>
+</g>
+<!-- module~watch_fpm_graph&#45;&gt;tomlf -->
+<g id="module~~watch_graph_worker~~UsesGraph_edge37" class="edge">
+<title>module~watch_fpm_graph&#45;&gt;tomlf</title>
+<path fill="none" stroke="#004eff" stroke-dasharray="5,2" d="M611.34,-411.62C606.86,-450.32 588.37,-568.77 524.58,-636.99 518.78,-643.2 511.22,-648.03 503.48,-651.74"/>
+<polygon fill="#004eff" stroke="#004eff" points="502.24,-648.46 494.37,-655.55 504.94,-654.92 502.24,-648.46"/>
+</g>
+<!-- fpm -->
+<g id="module~~watch_graph_worker~~UsesGraph_node15" class="node">
+<title>fpm</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="492.57,-271.13 438.57,-271.13 438.57,-246.86 492.57,-246.86 492.57,-271.13"/>
+<text xml:space="preserve" text-anchor="middle" x="465.57" y="-255.39" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">fpm</text>
+</g>
+<!-- module~watch_fpm_graph&#45;&gt;fpm -->
+<g id="module~~watch_graph_worker~~UsesGraph_edge17" class="edge">
+<title>module~watch_fpm_graph&#45;&gt;fpm</title>
+<path fill="none" stroke="#004eff" stroke-dasharray="5,2" d="M605.7,-386.39C592.62,-363.46 562.09,-314.55 524.58,-284.99 518.22,-279.98 510.73,-275.7 503.29,-272.15"/>
+<polygon fill="#004eff" stroke="#004eff" points="504.88,-269.03 494.32,-268.22 502.08,-275.44 504.88,-269.03"/>
+</g>
+<!-- fpm_command_line -->
+<g id="module~~watch_graph_worker~~UsesGraph_node16" class="node">
+<title>fpm_command_line</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="116.52,-64.13 0,-64.13 0,-39.86 116.52,-39.86 116.52,-64.13"/>
+<text xml:space="preserve" text-anchor="middle" x="58.26" y="-48.39" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">fpm_command_line</text>
+</g>
+<!-- module~watch_fpm_graph&#45;&gt;fpm_command_line -->
+<g id="module~~watch_graph_worker~~UsesGraph_edge18" class="edge">
+<title>module~watch_fpm_graph&#45;&gt;fpm_command_line</title>
+<path fill="none" stroke="#004eff" stroke-dasharray="5,2" d="M613.17,-386.58C614.72,-338.74 613.79,-164.26 524.58,-69.99 505.93,-50.29 490.83,-63.14 466.57,-50.99"/>
+<path fill="none" stroke="#004eff" stroke-dasharray="5,2" d="M464.57,-50.99C402.51,-19.9 221.71,-31.46 152.52,-36.99 144.54,-37.63 136.21,-38.57 127.96,-39.67"/>
+<polygon fill="#004eff" stroke="#004eff" points="127.7,-36.18 118.29,-41.05 128.69,-43.11 127.7,-36.18"/>
+</g>
+<!-- fpm_dependency -->
+<g id="module~~watch_graph_worker~~UsesGraph_node17" class="node">
+<title>fpm_dependency</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="517.45,-229.13 413.68,-229.13 413.68,-204.86 517.45,-204.86 517.45,-229.13"/>
+<text xml:space="preserve" text-anchor="middle" x="465.57" y="-213.39" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">fpm_dependency</text>
+</g>
+<!-- module~watch_fpm_graph&#45;&gt;fpm_dependency -->
+<g id="module~~watch_graph_worker~~UsesGraph_edge19" class="edge">
+<title>module~watch_fpm_graph&#45;&gt;fpm_dependency</title>
+<path fill="none" stroke="#004eff" stroke-dasharray="5,2" d="M609.15,-386.56C600.24,-356.66 573.67,-280.09 524.58,-237.99 523.51,-237.07 522.39,-236.19 521.23,-235.34"/>
+<polygon fill="#004eff" stroke="#004eff" points="523.44,-232.59 513.08,-230.37 519.79,-238.57 523.44,-232.59"/>
+</g>
+<!-- fpm_manifest -->
+<g id="module~~watch_graph_worker~~UsesGraph_node19" class="node">
+<title>fpm_manifest</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="507.7,-187.13 423.43,-187.13 423.43,-162.86 507.7,-162.86 507.7,-187.13"/>
+<text xml:space="preserve" text-anchor="middle" x="465.57" y="-171.39" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">fpm_manifest</text>
+</g>
+<!-- module~watch_fpm_graph&#45;&gt;fpm_manifest -->
+<g id="module~~watch_graph_worker~~UsesGraph_edge22" class="edge">
+<title>module~watch_fpm_graph&#45;&gt;fpm_manifest</title>
+<path fill="none" stroke="#004eff" stroke-dasharray="5,2" d="M610.69,-386.54C604.72,-351.49 583.07,-250.98 524.58,-195.99 522.5,-194.03 520.22,-192.26 517.81,-190.64"/>
+<polygon fill="#004eff" stroke="#004eff" points="519.75,-187.72 509.31,-185.93 516.35,-193.84 519.75,-187.72"/>
+</g>
+<!-- fpm_model -->
+<g id="module~~watch_graph_worker~~UsesGraph_node20" class="node">
+<title>fpm_model</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="501.33,-145.13 429.81,-145.13 429.81,-120.86 501.33,-120.86 501.33,-145.13"/>
+<text xml:space="preserve" text-anchor="middle" x="465.57" y="-129.39" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">fpm_model</text>
+</g>
+<!-- module~watch_fpm_graph&#45;&gt;fpm_model -->
+<g id="module~~watch_graph_worker~~UsesGraph_edge23" class="edge">
+<title>module~watch_fpm_graph&#45;&gt;fpm_model</title>
+<path fill="none" stroke="#004eff" stroke-dasharray="5,2" d="M611.75,-386.63C608.42,-347.08 592.73,-222.31 524.58,-153.99 520.95,-150.35 516.64,-147.34 512.04,-144.85"/>
+<polygon fill="#004eff" stroke="#004eff" points="513.58,-141.7 503.02,-140.8 510.71,-148.09 513.58,-141.7"/>
+</g>
+<!-- fpm_source_parsing -->
+<g id="module~~watch_graph_worker~~UsesGraph_node21" class="node">
+<title>fpm_source_parsing</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="524.58,-103.13 406.56,-103.13 406.56,-78.86 524.58,-78.86 524.58,-103.13"/>
+<text xml:space="preserve" text-anchor="middle" x="465.57" y="-87.39" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">fpm_source_parsing</text>
+</g>
+<!-- module~watch_fpm_graph&#45;&gt;fpm_source_parsing -->
+<g id="module~~watch_graph_worker~~UsesGraph_edge24" class="edge">
+<title>module~watch_fpm_graph&#45;&gt;fpm_source_parsing</title>
+<path fill="none" stroke="#004eff" stroke-dasharray="5,2" d="M612.51,-386.44C611.53,-342.49 602.35,-193.74 524.58,-111.99 523.98,-111.37 523.37,-110.76 522.74,-110.17"/>
+<polygon fill="#004eff" stroke="#004eff" points="524.98,-107.48 514.85,-104.38 520.84,-113.12 524.98,-107.48"/>
+</g>
+<!-- fpm_sources -->
+<g id="module~~watch_graph_worker~~UsesGraph_node22" class="node">
+<title>fpm_sources</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="504.7,-515.13 426.43,-515.13 426.43,-490.86 504.7,-490.86 504.7,-515.13"/>
+<text xml:space="preserve" text-anchor="middle" x="465.57" y="-499.39" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">fpm_sources</text>
+</g>
+<!-- module~watch_fpm_graph&#45;&gt;fpm_sources -->
+<g id="module~~watch_graph_worker~~UsesGraph_edge25" class="edge">
+<title>module~watch_fpm_graph&#45;&gt;fpm_sources</title>
+<path fill="none" stroke="#004eff" stroke-dasharray="5,2" d="M602.44,-411.36C587.21,-429.19 556.78,-462.18 524.58,-481.99 521.66,-483.79 518.57,-485.46 515.39,-487.02"/>
+<polygon fill="#004eff" stroke="#004eff" points="514.17,-483.73 506.44,-490.97 517,-490.13 514.17,-483.73"/>
+</g>
+<!-- fpm_targets -->
+<g id="module~~watch_graph_worker~~UsesGraph_node23" class="node">
+<title>fpm_targets</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="503.2,-473.13 427.93,-473.13 427.93,-448.86 503.2,-448.86 503.2,-473.13"/>
+<text xml:space="preserve" text-anchor="middle" x="465.57" y="-457.39" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">fpm_targets</text>
+</g>
+<!-- module~watch_fpm_graph&#45;&gt;fpm_targets -->
+<g id="module~~watch_graph_worker~~UsesGraph_edge27" class="edge">
+<title>module~watch_fpm_graph&#45;&gt;fpm_targets</title>
+<path fill="none" stroke="#004eff" stroke-dasharray="5,2" d="M587.05,-411.62C569.63,-420.06 545.92,-431.18 524.58,-439.99 521.01,-441.47 517.29,-442.95 513.54,-444.39"/>
+<polygon fill="#004eff" stroke="#004eff" points="512.51,-441.04 504.38,-447.84 514.97,-447.59 512.51,-441.04"/>
+</g>
+<!-- fpm_versioning -->
+<g id="module~~watch_graph_worker~~UsesGraph_node24" class="node">
+<title>fpm_versioning</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="512.2,-431.13 418.93,-431.13 418.93,-406.86 512.2,-406.86 512.2,-431.13"/>
+<text xml:space="preserve" text-anchor="middle" x="465.57" y="-415.39" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">fpm_versioning</text>
+</g>
+<!-- module~watch_fpm_graph&#45;&gt;fpm_versioning -->
+<g id="module~~watch_graph_worker~~UsesGraph_edge29" class="edge">
+<title>module~watch_fpm_graph&#45;&gt;fpm_versioning</title>
+<path fill="none" stroke="#004eff" stroke-dasharray="5,2" d="M560.29,-406.16C548.5,-407.77 535.94,-409.49 523.96,-411.13"/>
+<polygon fill="#004eff" stroke="#004eff" points="523.63,-407.64 514.2,-412.47 524.58,-414.58 523.63,-407.64"/>
+</g>
+<!-- iso_c_binding -->
+<g id="module~~watch_graph_worker~~UsesGraph_node25" class="node">
+<title>iso_c_binding</title>
+<g id="a_module~~watch_graph_worker~~UsesGraph_node25"><a xlink:href="http://fortranwiki.org/fortran/show/iso_c_binding" xlink:title="iso_c_binding">
+<polygon fill="#337ab7" stroke="#337ab7" points="359.31,-555.13 276.54,-555.13 276.54,-530.86 359.31,-530.86 359.31,-555.13"/>
+<text xml:space="preserve" text-anchor="middle" x="317.92" y="-539.39" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">iso_c_binding</text>
+</a>
+</g>
+</g>
+<!-- module~watch_fpm_graph&#45;&gt;iso_c_binding -->
+<g id="module~~watch_graph_worker~~UsesGraph_edge30" class="edge">
+<title>module~watch_fpm_graph&#45;&gt;iso_c_binding</title>
+<path fill="none" stroke="#004eff" stroke-dasharray="5,2" d="M464.57,-542.99C434.6,-552.87 399.24,-553.12 370.86,-550.78"/>
+<polygon fill="#004eff" stroke="#004eff" points="371.36,-547.31 361.07,-549.83 370.68,-554.28 371.36,-547.31"/>
+</g>
+<!-- module~watch_filter -->
+<g id="module~~watch_graph_worker~~UsesGraph_node26" class="node">
+<title>module~watch_filter</title>
+<g id="a_module~~watch_graph_worker~~UsesGraph_node26"><a xlink:href="../module/watch_filter.html" xlink:title="watch_filter">
+<polygon fill="#337ab7" stroke="#337ab7" points="502.08,-351.13 429.06,-351.13 429.06,-326.86 502.08,-326.86 502.08,-351.13"/>
+<text xml:space="preserve" text-anchor="middle" x="465.57" y="-335.39" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">watch_filter</text>
+</a>
+</g>
+</g>
+<!-- module~watch_fpm_graph&#45;&gt;module~watch_filter -->
+<g id="module~~watch_graph_worker~~UsesGraph_edge32" class="edge">
+<title>module~watch_fpm_graph&#45;&gt;module~watch_filter</title>
+<path fill="none" stroke="#004eff" stroke-dasharray="5,2" d="M581.98,-386.41C560.37,-377.53 531.17,-365.54 507.55,-355.83"/>
+<polygon fill="#004eff" stroke="#004eff" points="509.12,-352.69 498.54,-352.13 506.46,-359.17 509.12,-352.69"/>
+</g>
+<!-- module~watch_fpm_graph&#45;&gt;module~watch_util -->
+<g id="module~~watch_graph_worker~~UsesGraph_edge36" class="edge">
+<title>module~watch_fpm_graph&#45;&gt;module~watch_util</title>
+<path fill="none" stroke="#004eff" stroke-dasharray="5,2" d="M464.57,-378.99C400.42,-370.31 383.53,-374.89 318.92,-378.99"/>
+</g>
+<!-- module~watch_log&#45;&gt;fpm_strings -->
+<g id="module~~watch_graph_worker~~UsesGraph_edge38" class="edge">
+<title>module~watch_log&#45;&gt;fpm_strings</title>
+<path fill="none" stroke="#2700ff" stroke-dasharray="5,2" d="M189.9,-336.99C161.8,-330.79 130.85,-321.89 106.14,-314.25"/>
+<polygon fill="#2700ff" stroke="#2700ff" points="107.29,-310.95 96.7,-311.3 105.2,-317.63 107.29,-310.95"/>
+</g>
+<!-- module~watch_log&#45;&gt;iso_fortran_env -->
+<g id="module~~watch_graph_worker~~UsesGraph_edge39" class="edge">
+<title>module~watch_log&#45;&gt;iso_fortran_env</title>
+<path fill="none" stroke="#2700ff" stroke-dasharray="5,2" d="M285.18,-341.95C259.66,-343.51 223.07,-343.87 191.9,-336.99"/>
+<path fill="none" stroke="#2700ff" stroke-dasharray="5,2" d="M189.9,-336.99C149.04,-327.98 151.95,-300.27 116.52,-277.99 114.52,-276.74 112.44,-275.54 110.3,-274.4"/>
+<polygon fill="#2700ff" stroke="#2700ff" points="111.91,-271.29 101.37,-270.16 108.9,-277.61 111.91,-271.29"/>
+</g>
+<!-- module~watch_log&#45;&gt;module~watch_types -->
+<g id="module~~watch_graph_worker~~UsesGraph_edge40" class="edge">
+<title>module~watch_log&#45;&gt;module~watch_types</title>
+<path fill="none" stroke="#2700ff" stroke-dasharray="5,2" d="M305.02,-326.6C293.68,-314.28 276.68,-294.46 265.29,-274.99 233.47,-220.58 209.6,-149.77 198.6,-113.93"/>
+<polygon fill="#2700ff" stroke="#2700ff" points="202.04,-113.21 195.81,-104.64 195.34,-115.22 202.04,-113.21"/>
+</g>
+<!-- module~watch_log&#45;&gt;module~watch_util -->
+<g id="module~~watch_graph_worker~~UsesGraph_edge41" class="edge">
+<title>module~watch_log&#45;&gt;module~watch_util</title>
+<path fill="none" stroke="#2700ff" stroke-dasharray="5,2" d="M285.05,-348.94C269.62,-353.75 250.89,-359.59 234.27,-364.78"/>
+<polygon fill="#2700ff" stroke="#2700ff" points="233.67,-361.3 225.16,-367.62 235.75,-367.98 233.67,-361.3"/>
+</g>
+<!-- module~watch_platform&#45;&gt;fpm_error -->
+<g id="module~~watch_graph_worker~~UsesGraph_edge43" class="edge">
+<title>module~watch_platform&#45;&gt;fpm_error</title>
+<path fill="none" stroke="#9c00ff" stroke-dasharray="5,2" d="M431.28,-595.52C422.9,-599.31 414.14,-603.85 406.56,-608.99 388.1,-621.53 389.24,-631.79 370.56,-643.99 367.44,-646.03 364.09,-647.93 360.65,-649.69"/>
+<polygon fill="#9c00ff" stroke="#9c00ff" points="359.18,-646.51 351.58,-653.89 362.12,-652.86 359.18,-646.51"/>
+</g>
+<!-- module~watch_platform&#45;&gt;iso_fortran_env -->
+<g id="module~~watch_graph_worker~~UsesGraph_edge45" class="edge">
+<title>module~watch_platform&#45;&gt;iso_fortran_env</title>
+<path fill="none" stroke="#9c00ff" stroke-dasharray="5,2" d="M418.07,-589.21C375.36,-592.57 311.83,-591.46 265.29,-563.99 188.79,-518.85 190.7,-479.19 152.52,-398.99 128.4,-348.33 154.94,-318.88 116.52,-277.99 115.81,-277.23 115.06,-276.5 114.29,-275.8"/>
+<polygon fill="#9c00ff" stroke="#9c00ff" points="116.56,-273.12 106.41,-270.09 112.46,-278.79 116.56,-273.12"/>
+</g>
+<!-- module~watch_platform&#45;&gt;module~watch_log -->
+<g id="module~~watch_graph_worker~~UsesGraph_edge46" class="edge">
+<title>module~watch_platform&#45;&gt;module~watch_log</title>
+<path fill="none" stroke="#9c00ff" stroke-dasharray="5,2" d="M423,-570.42C416.74,-566.94 410.93,-562.54 406.56,-556.99 352.82,-488.8 422.74,-434.38 370.56,-364.99 367.71,-361.2 364.15,-357.93 360.25,-355.1"/>
+<polygon fill="#9c00ff" stroke="#9c00ff" points="362.33,-352.27 351.96,-350.09 358.71,-358.26 362.33,-352.27"/>
+</g>
+<!-- fpm_environment -->
+<g id="module~~watch_graph_worker~~UsesGraph_node18" class="node">
+<title>fpm_environment</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="370.56,-635.13 265.29,-635.13 265.29,-610.86 370.56,-610.86 370.56,-635.13"/>
+<text xml:space="preserve" text-anchor="middle" x="317.92" y="-619.39" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">fpm_environment</text>
+</g>
+<!-- module~watch_platform&#45;&gt;fpm_environment -->
+<g id="module~~watch_graph_worker~~UsesGraph_edge42" class="edge">
+<title>module~watch_platform&#45;&gt;fpm_environment</title>
+<path fill="none" stroke="#9c00ff" stroke-dasharray="5,2" d="M418.89,-595.54C405.13,-599.32 389.86,-603.51 375.48,-607.46"/>
+<polygon fill="#9c00ff" stroke="#9c00ff" points="374.87,-604 366.16,-610.02 376.73,-610.75 374.87,-604"/>
+</g>
+<!-- module~watch_platform&#45;&gt;iso_c_binding -->
+<g id="module~~watch_graph_worker~~UsesGraph_edge44" class="edge">
+<title>module~watch_platform&#45;&gt;iso_c_binding</title>
+<path fill="none" stroke="#9c00ff" stroke-dasharray="5,2" d="M418.89,-570.45C403.43,-566.2 386.08,-561.43 370.22,-557.08"/>
+<polygon fill="#9c00ff" stroke="#9c00ff" points="371.55,-553.82 360.98,-554.54 369.69,-560.57 371.55,-553.82"/>
+</g>
+<!-- module~watch_types&#45;&gt;fpm_strings -->
+<g id="module~~watch_graph_worker~~UsesGraph_edge48" class="edge">
+<title>module~watch_types&#45;&gt;fpm_strings</title>
+<path fill="none" stroke="#ff00eb" stroke-dasharray="5,2" d="M188.54,-103.38C184.26,-136.41 168.14,-227.52 116.52,-277.99 113.29,-281.15 109.55,-283.84 105.55,-286.13"/>
+<polygon fill="#ff00eb" stroke="#ff00eb" points="104.14,-282.92 96.61,-290.38 107.15,-289.24 104.14,-282.92"/>
+</g>
+<!-- module~watch_types&#45;&gt;iso_fortran_env -->
+<g id="module~~watch_graph_worker~~UsesGraph_edge49" class="edge">
+<title>module~watch_types&#45;&gt;iso_fortran_env</title>
+<path fill="none" stroke="#ff00eb" stroke-dasharray="5,2" d="M180.09,-103.47C157.95,-131.59 103.96,-200.2 76.26,-235.39"/>
+<polygon fill="#ff00eb" stroke="#ff00eb" points="73.56,-233.16 70.13,-243.18 79.06,-237.49 73.56,-233.16"/>
+</g>
+<!-- module~watch_types&#45;&gt;fpm_command_line -->
+<g id="module~~watch_graph_worker~~UsesGraph_edge47" class="edge">
+<title>module~watch_types&#45;&gt;fpm_command_line</title>
+<path fill="none" stroke="#ff00eb" stroke-dasharray="5,2" d="M152.12,-79.71C139.75,-76.02 125.78,-71.85 112.5,-67.88"/>
+<polygon fill="#ff00eb" stroke="#ff00eb" points="113.58,-64.56 103,-65.05 111.58,-71.26 113.58,-64.56"/>
+</g>
+<!-- module~watch_filter&#45;&gt;fpm_filesystem -->
+<g id="module~~watch_graph_worker~~UsesGraph_edge50" class="edge">
+<title>module~watch_filter&#45;&gt;fpm_filesystem</title>
+<path fill="none" stroke="#ff00eb" stroke-dasharray="5,2" d="M449.53,-326.36C436.87,-315.15 418.91,-297.83 406.56,-279.99 368.48,-224.99 339.67,-150.79 326.62,-113.86"/>
+<polygon fill="#ff00eb" stroke="#ff00eb" points="330.02,-112.98 323.44,-104.68 323.41,-115.27 330.02,-112.98"/>
+</g>
+<!-- module~watch_filter&#45;&gt;fpm_strings -->
+<g id="module~~watch_graph_worker~~UsesGraph_edge51" class="edge">
+<title>module~watch_filter&#45;&gt;fpm_strings</title>
+<path fill="none" stroke="#ff00eb" stroke-dasharray="5,2" d="M189.9,-298.99C162.28,-296.82 131.28,-296.72 106.4,-297.21"/>
+<polygon fill="#ff00eb" stroke="#ff00eb" points="106.51,-293.71 96.6,-297.45 106.68,-300.71 106.51,-293.71"/>
+</g>
+<!-- module~watch_filter&#45;&gt;iso_fortran_env -->
+<g id="module~~watch_graph_worker~~UsesGraph_edge52" class="edge">
+<title>module~watch_filter&#45;&gt;iso_fortran_env</title>
+<path fill="none" stroke="#ff00eb" stroke-dasharray="5,2" d="M428.6,-329.95C411.16,-325.82 389.87,-321.17 370.56,-317.99 291.77,-305.05 271.51,-305.26 191.9,-298.99"/>
+<path fill="none" stroke="#ff00eb" stroke-dasharray="5,2" d="M189.9,-298.99C173.15,-296.86 134.88,-284.2 104.07,-273.34"/>
+<polygon fill="#ff00eb" stroke="#ff00eb" points="105.55,-270.15 94.95,-270.1 103.2,-276.74 105.55,-270.15"/>
+</g>
+<!-- module~watch_filter&#45;&gt;module~watch_util -->
+<g id="module~~watch_graph_worker~~UsesGraph_edge53" class="edge">
+<title>module~watch_filter&#45;&gt;module~watch_util</title>
+<path fill="none" stroke="#ff00eb" stroke-dasharray="5,2" d="M433.39,-351.56C404.32,-362.3 359.49,-376.42 318.92,-378.99"/>
+<path fill="none" stroke="#ff00eb" stroke-dasharray="5,2" d="M316.92,-378.99C289.65,-380.72 258.97,-380.51 234.82,-379.85"/>
+<polygon fill="#ff00eb" stroke="#ff00eb" points="235.16,-376.36 225.05,-379.54 234.94,-383.35 235.16,-376.36"/>
+</g>
+<!-- module~watch_util&#45;&gt;fpm_strings -->
+<g id="module~~watch_graph_worker~~UsesGraph_edge54" class="edge">
+<title>module~watch_util&#45;&gt;fpm_strings</title>
+<path fill="none" stroke="#ff0075" stroke-dasharray="5,2" d="M169.2,-365.47C147.8,-352.53 114.15,-332.18 89.71,-317.41"/>
+<polygon fill="#ff0075" stroke="#ff0075" points="91.53,-314.41 81.16,-312.24 87.91,-320.4 91.53,-314.41"/>
+</g>
+</g>
+</svg>
+</div>                <script>
+                  var panmodulewatch_graph_workerUsesGraph = svgPanZoom('#modulewatch_graph_workerUsesGraph',
+                    {zoomEnabled: true, controlIconsEnabled: true, fit: true, center: true,}
+                  );
+                </script>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#UsesGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="UsesGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="511pt" height="32pt"
+ viewBox="0.00 0.00 511.00 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 28.27)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-28.27 506.88,-28.27 506.88,4 -4,4"/>
+<!-- Module -->
+<g id="node1" class="node">
+<title>Module</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="54,-24.27 0,-24.27 0,0 54,0 54,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="27" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Module</text>
+</g>
+<!-- Submodule -->
+<g id="node2" class="node">
+<title>Submodule</title>
+<polygon fill="#5bc0de" stroke="#5bc0de" points="144.13,-24.27 71.87,-24.27 71.87,0 144.13,0 144.13,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="108" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Submodule</text>
+</g>
+<!-- Subroutine -->
+<g id="node3" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="231.63,-24.27 162.37,-24.27 162.37,0 231.63,0 231.63,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="197" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node4" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="306.26,-24.27 249.74,-24.27 249.74,0 306.26,0 306.26,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="278" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Program -->
+<g id="node5" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="381.26,-24.27 324.74,-24.27 324.74,0 381.26,0 381.26,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="353" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node6" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="502.88,-24.27 399.12,-24.27 399.12,0 502.88,0 502.88,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="451" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a submodule to the (sub)module which it is
+descended from. Dashed arrows point from a module or program unit to 
+modules which it uses.
+</p>
+ Where possible, edges connecting nodes are
+given different colours to make them easier to distinguish in
+large graphs.</div>
+            </div>
+          </div>
+        </div>
+            </li>
+        </ul>
+      </div>
+    </div>
+
+          <div class="card">
+      <h3 class="card-header card-title bg-light">Used by</h3>
+      <div class="card-body">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: module~~watch_graph_worker~~UsedByGraph Pages: 1 -->
+<svg id="modulewatch_graph_workerUsedByGraph" width="251pt" height="32pt"
+ viewBox="0.00 0.00 251.00 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="module~~watch_graph_worker~~UsedByGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 28.27)">
+<title>module~~watch_graph_worker~~UsedByGraph</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-28.27 246.79,-28.27 246.79,4 -4,4"/>
+<!-- module~watch_graph_worker -->
+<g id="module~~watch_graph_worker~~UsedByGraph_node1" class="node">
+<title>module~watch_graph_worker</title>
+<polygon fill="none" stroke="black" points="121.77,-24.27 0,-24.27 0,0 121.77,0 121.77,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="60.89" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50">watch_graph_worker</text>
+</g>
+<!-- module~watch_engine -->
+<g id="module~~watch_graph_worker~~UsedByGraph_node2" class="node">
+<title>module~watch_engine</title>
+<g id="a_module~~watch_graph_worker~~UsedByGraph_node2"><a xlink:href="../module/watch_engine.html" xlink:title="watch_engine">
+<polygon fill="#337ab7" stroke="#337ab7" points="242.79,-24.27 157.77,-24.27 157.77,0 242.79,0 242.79,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="200.28" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">watch_engine</text>
+</a>
+</g>
+</g>
+<!-- module~watch_engine&#45;&gt;module~watch_graph_worker -->
+<g id="module~~watch_graph_worker~~UsedByGraph_edge1" class="edge">
+<title>module~watch_engine&#45;&gt;module~watch_graph_worker</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M157.31,-12.13C149.75,-12.13 141.67,-12.13 133.54,-12.13"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="133.57,-8.64 123.57,-12.14 133.57,-15.64 133.57,-8.64"/>
+</g>
+</g>
+</svg>
+</div>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#UsedByGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="UsedByGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="511pt" height="32pt"
+ viewBox="0.00 0.00 511.00 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 28.27)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-28.27 506.88,-28.27 506.88,4 -4,4"/>
+<!-- Module -->
+<g id="node1" class="node">
+<title>Module</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="54,-24.27 0,-24.27 0,0 54,0 54,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="27" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Module</text>
+</g>
+<!-- Submodule -->
+<g id="node2" class="node">
+<title>Submodule</title>
+<polygon fill="#5bc0de" stroke="#5bc0de" points="144.13,-24.27 71.87,-24.27 71.87,0 144.13,0 144.13,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="108" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Submodule</text>
+</g>
+<!-- Subroutine -->
+<g id="node3" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="231.63,-24.27 162.37,-24.27 162.37,0 231.63,0 231.63,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="197" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node4" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="306.26,-24.27 249.74,-24.27 249.74,0 306.26,0 306.26,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="278" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Program -->
+<g id="node5" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="381.26,-24.27 324.74,-24.27 324.74,0 381.26,0 381.26,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="353" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node6" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="502.88,-24.27 399.12,-24.27 399.12,0 502.88,0 502.88,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="451" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a submodule to the (sub)module which it is
+descended from. Dashed arrows point from a module or program unit to 
+modules which it uses.
+</p>
+ Where possible, edges connecting nodes are
+given different colours to make them easier to distinguish in
+large graphs.</div>
+            </div>
+          </div>
+        </div>
+            </li>
+        </ul>
+      </div>
+    </div>
+
+      <br>
+
+
+        <section>
+          <h2>Variables</h2>
+            <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Visibility</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+<th></th><th scope="col">Initial</th>        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-response_version"></span>
+              integer,
+            </td>
+              <td>private,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>RESPONSE_VERSION</strong></td>
+<td> =</td>
+                <td>1</td>
+            <td>
+                
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+        </section>
+        <br>
+
+
+
+
+
+        <section>
+          <h2>Functions</h2>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-encode_bytes"></span> <h3>private pure function <a href='../proc/encode_bytes.html'>encode_bytes</a>(value) result(encoded)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Encode arbitrary native bytes in portable ASCII TOML strings.</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-value~19"></span>
+              character(len=*),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>value</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <h4>
+    Return Value
+    <small>character(len=:), allocatable</small>
+    </h4>
+    
+
+    </div>
+  </div>
+
+        </section>
+        <br>
+
+        <section>
+          <h2>Subroutines</h2>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-compute_watch_snapshot"></span> <h3>public  subroutine <a href='../proc/compute_watch_snapshot.html'>compute_watch_snapshot</a>(cfg, files, file_mask, roots, manifest_key, build_secs, secs_model, secs_targets, secs_watch, error)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Launch the watcher itself with original argv and accept only a complete response.</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-cfg~2"></span>
+              type(<a href='../type/watch_config_t.html'>watch_config_t</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>cfg</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-files~12"></span>
+              type(string_t),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>files</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-file_mask~4"></span>
+              integer(kind=int64),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>file_mask</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-roots~5"></span>
+              type(<a href='../type/root_info_t.html'>root_info_t</a>),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>roots</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-manifest_key~2"></span>
+              integer(kind=int64),
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>manifest_key</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-build_secs~3"></span>
+              real,
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>build_secs</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-secs_model~3"></span>
+              real,
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>secs_model</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-secs_targets~3"></span>
+              real,
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>secs_targets</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-secs_watch~3"></span>
+              real,
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>secs_watch</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-error~11"></span>
+              type(error_t),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>error</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-read_graph_response"></span> <h3>public  subroutine <a href='../proc/read_graph_response.html'>read_graph_response</a>(path, files, file_mask, roots, manifest_key, build_secs, secs_model, secs_targets, secs_watch, error)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Validate version, fields, alignment, masks, paths, and timings before accepting a response.</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-path~13"></span>
+              character(len=*),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>path</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-files~15"></span>
+              type(string_t),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>files</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-file_mask~7"></span>
+              integer(kind=int64),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>file_mask</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-roots~8"></span>
+              type(<a href='../type/root_info_t.html'>root_info_t</a>),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>roots</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-manifest_key~5"></span>
+              integer(kind=int64),
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>manifest_key</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-build_secs~5"></span>
+              real,
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>build_secs</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-secs_model~5"></span>
+              real,
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>secs_model</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-secs_targets~5"></span>
+              real,
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>secs_targets</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-secs_watch~5"></span>
+              real,
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>secs_watch</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-error~14"></span>
+              type(error_t),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>error</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-run_graph_worker"></span> <h3>public  subroutine <a href='../proc/run_graph_worker.html'>run_graph_worker</a>(cfg, response_path)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Change to the selected project, compute its graph, and write a worker response.</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-cfg~3"></span>
+              type(<a href='../type/watch_config_t.html'>watch_config_t</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>cfg</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-response_path~2"></span>
+              character(len=*),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>response_path</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-decode_bytes"></span> <h3>private pure subroutine <a href='../proc/decode_bytes.html'>decode_bytes</a>(encoded, decoded, valid)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Decode hexadecimal byte strings, rejecting malformed data and embedded NULs.</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-encoded~3"></span>
+              character(len=*),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>encoded</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-decoded~2"></span>
+              character(len=:),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>decoded</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-valid~3"></span>
+              logical,
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>valid</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-invalid_response"></span> <h3>private  subroutine <a href='../proc/invalid_response.html'>invalid_response</a>(error, detail)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Report malformed worker data without accepting a partial snapshot.</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-error~15"></span>
+              type(error_t),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>error</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-detail~2"></span>
+              character(len=*),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>detail</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-write_graph_response"></span> <h3>private  subroutine <a href='../proc/write_graph_response.html'>write_graph_response</a>(path, files, file_mask, roots, manifest_key, timings, graph_error, error)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Write one versioned TOML response using fpm's TOML dependency.</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-path~12"></span>
+              character(len=*),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>path</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-files~14"></span>
+              type(string_t),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>files</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-file_mask~6"></span>
+              integer(kind=int64),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>file_mask</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-roots~7"></span>
+              type(<a href='../type/root_info_t.html'>root_info_t</a>),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>roots</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-manifest_key~4"></span>
+              integer(kind=int64),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>manifest_key</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-timings"></span>
+              real,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>timings</strong>(4)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-graph_error"></span>
+              type(error_t),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>graph_error</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-error~13"></span>
+              type(error_t),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>error</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+        </section>
+        <br>
+
+
+
+    </div>
+  </div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              fpm-watch
+ was developed by Seyed Ali Ghasemi<br>              &copy; 2026 <a rel="license" href="https://opensource.org/licenses/MIT">MIT</a>
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+ on 2026-10-17T21:22:39.241228+0000             </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>

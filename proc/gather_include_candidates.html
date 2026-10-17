@@ -1,0 +1,1037 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="Documentation for fpm-watch">
+    <meta name="author" content="Seyed Ali Ghasemi" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>gather_include_candidates &ndash; fpm-watch</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">fpm-watch </a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/types.html">Derived Types</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <div class="row">
+    <h1>gather_include_candidates
+      <small>Subroutine</small>
+      
+    </h1>
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+            <li class="list-inline-item" id="meta-license"><i class="fa fa-legal"></i> <a rel="license" href="https://opensource.org/licenses/MIT">MIT</a></li>
+
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title=" 0.7% of total for procedures.">30 statements</a>
+            </li>
+
+            <li class="list-inline-item" id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/watch_fpm_graph.f90"> Source File</a>
+            </li>
+        </ul>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+                <li class="breadcrumb-item"><a href='../sourcefile/watch_fpm_graph.f90.html'>watch_fpm_graph.f90</a></li>
+                <li class="breadcrumb-item"><a href='../module/watch_fpm_graph.html'>watch_fpm_graph</a></li>
+            <li class="breadcrumb-item active" aria-current="page">gather_include_candidates</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
+  </script>
+
+  </div>
+  
+  <div class="row">
+    <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
+      <div id="sidebar">
+      <h3>Contents</h3>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    <div class="card card-primary">
+      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
+      <div class="list-group">
+        <a class="list-group-item" href="../proc/gather_include_candidates.html#src">gather_include_candidates</a>
+      </div>
+    </div>
+
+
+  </div>
+
+    </div>
+    
+    <div class="col-md-9" id='text'>
+    <h2>private recursive subroutine gather_include_candidates(source_index, source_file, include_name, mask, collected, build_dir, include_dirs, watch_deps, dep_dirs)  
+</h2>
+    
+
+    <p>Retain searched include candidates through the first existing match.</p>
+<p>Missing search locations remain watched so creation, deletion, and
+recreation preserve the same path and root mask. Search beside the source,
+then fpm include directories, then the invocation directory. Candidates
+following an existing match cannot currently affect resolution and are omitted.</p>
+
+
+    <h3>Arguments</h3>
+        <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-source_index"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>source_index</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-source_file"></span>
+              character(len=*),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>source_file</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-include_name"></span>
+              character(len=*),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>include_name</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-mask~4"></span>
+              integer(kind=int64),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>mask</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-collected~5"></span>
+              type(<a href='../type/file_collection_t.html'>file_collection_t</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>collected</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-build_dir~3"></span>
+              character(len=*),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>build_dir</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-include_dirs~2"></span>
+              type(string_t),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>include_dirs</strong>(:)</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-watch_deps~3"></span>
+              logical,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>watch_deps</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-dep_dirs~5"></span>
+              type(string_t),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>dep_dirs</strong>(:)</td>
+            <td>
+                
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <br>
+    <div class="card">
+      <div class="card-header">
+  <h3 class="card-title">Calls</h3>
+      </div>
+      <div class="card-body">
+  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: proc~~gather_include_candidates~~CallsGraph Pages: 1 -->
+<svg id="procgather_include_candidatesCallsGraph" width="641pt" height="300pt"
+ viewBox="0.00 0.00 641.00 300.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~gather_include_candidates~~CallsGraph" class="graph" transform="scale(0.669368 0.669368) rotate(0) translate(4 444.11)">
+<title>proc~~gather_include_candidates~~CallsGraph</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-444.11 953.62,-444.11 953.62,4 -4,4"/>
+<!-- proc~gather_include_candidates -->
+<g id="proc~~gather_include_candidates~~CallsGraph_node1" class="node">
+<title>proc~gather_include_candidates</title>
+<polygon fill="none" stroke="black" points="154.77,-269.79 0,-269.79 0,-245.52 154.77,-245.52 154.77,-269.79"/>
+<text xml:space="preserve" text-anchor="middle" x="77.38" y="-254.05" font-family="Helvetica,sans-Serif" font-size="10.50">gather_include_candidates</text>
+</g>
+<!-- canon_path -->
+<g id="proc~~gather_include_candidates~~CallsGraph_node2" class="node">
+<title>canon_path</title>
+<polygon fill="#777777" stroke="#777777" points="662.58,-417.79 588.81,-417.79 588.81,-393.52 662.58,-393.52 662.58,-417.79"/>
+<text xml:space="preserve" text-anchor="middle" x="625.69" y="-402.05" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">canon_path</text>
+</g>
+<!-- proc~gather_include_candidates&#45;&gt;canon_path -->
+<g id="proc~~gather_include_candidates~~CallsGraph_edge1" class="edge">
+<title>proc~gather_include_candidates&#45;&gt;canon_path</title>
+<path fill="none" stroke="#ff0000" d="M83.45,-269.86C96.3,-299 133.28,-372.3 190.77,-400.65 318.55,-463.66 494.33,-436.31 577.47,-417.71"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="578.13,-421.15 587.09,-415.5 576.56,-414.33 578.13,-421.15"/>
+</g>
+<!-- dirname -->
+<g id="proc~~gather_include_candidates~~CallsGraph_node3" class="node">
+<title>dirname</title>
+<polygon fill="#777777" stroke="#777777" points="286.29,-391.79 229.77,-391.79 229.77,-367.52 286.29,-367.52 286.29,-391.79"/>
+<text xml:space="preserve" text-anchor="middle" x="258.03" y="-376.05" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">dirname</text>
+</g>
+<!-- proc~gather_include_candidates&#45;&gt;dirname -->
+<g id="proc~~gather_include_candidates~~CallsGraph_edge2" class="edge">
+<title>proc~gather_include_candidates&#45;&gt;dirname</title>
+<path fill="none" stroke="#ff0000" d="M90.13,-270.07C109.5,-289.97 150.06,-329.23 190.77,-353.65 199.38,-358.82 209.19,-363.32 218.58,-367.06"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="217.3,-370.32 227.89,-370.57 219.77,-363.77 217.3,-370.32"/>
+</g>
+<!-- exists -->
+<g id="proc~~gather_include_candidates~~CallsGraph_node4" class="node">
+<title>exists</title>
+<polygon fill="#777777" stroke="#777777" points="652.69,-362.79 598.69,-362.79 598.69,-338.52 652.69,-338.52 652.69,-362.79"/>
+<text xml:space="preserve" text-anchor="middle" x="625.69" y="-347.05" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">exists</text>
+</g>
+<!-- proc~gather_include_candidates&#45;&gt;exists -->
+<g id="proc~~gather_include_candidates~~CallsGraph_edge3" class="edge">
+<title>proc~gather_include_candidates&#45;&gt;exists</title>
+<path fill="none" stroke="#ff0000" d="M95.2,-270.26C116.29,-285.28 154.12,-309.72 190.77,-320.65 332.09,-362.82 510.34,-358.11 586.91,-353.5"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="587.05,-357 596.8,-352.87 586.6,-350.02 587.05,-357"/>
+</g>
+<!-- is_absolute_path -->
+<g id="proc~~gather_include_candidates~~CallsGraph_node5" class="node">
+<title>is_absolute_path</title>
+<polygon fill="#777777" stroke="#777777" points="308.04,-311.79 208.02,-311.79 208.02,-287.52 308.04,-287.52 308.04,-311.79"/>
+<text xml:space="preserve" text-anchor="middle" x="258.03" y="-296.05" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">is_absolute_path</text>
+</g>
+<!-- proc~gather_include_candidates&#45;&gt;is_absolute_path -->
+<g id="proc~~gather_include_candidates~~CallsGraph_edge4" class="edge">
+<title>proc~gather_include_candidates&#45;&gt;is_absolute_path</title>
+<path fill="none" stroke="#ff0000" d="M131.98,-270.25C152.37,-275.05 175.73,-280.54 196.7,-285.47"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="195.73,-288.84 206.26,-287.72 197.33,-282.02 195.73,-288.84"/>
+</g>
+<!-- join_path -->
+<g id="proc~~gather_include_candidates~~CallsGraph_node6" class="node">
+<title>join_path</title>
+<polygon fill="#777777" stroke="#777777" points="288.16,-269.79 227.89,-269.79 227.89,-245.52 288.16,-245.52 288.16,-269.79"/>
+<text xml:space="preserve" text-anchor="middle" x="258.03" y="-254.05" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">join_path</text>
+</g>
+<!-- proc~gather_include_candidates&#45;&gt;join_path -->
+<g id="proc~~gather_include_candidates~~CallsGraph_edge5" class="edge">
+<title>proc~gather_include_candidates&#45;&gt;join_path</title>
+<path fill="none" stroke="#ff0000" d="M155.18,-257.65C176.28,-257.65 198.34,-257.65 216.5,-257.65"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="216.32,-261.15 226.32,-257.65 216.32,-254.15 216.32,-261.15"/>
+</g>
+<!-- proc~append_include_edge -->
+<g id="proc~~gather_include_candidates~~CallsGraph_node7" class="node">
+<title>proc~append_include_edge</title>
+<g id="a_proc~~gather_include_candidates~~CallsGraph_node7"><a xlink:href="../proc/append_include_edge.html" xlink:title="append_include_edge">
+<polygon fill="#d9534f" stroke="#d9534f" points="322.29,-227.79 193.77,-227.79 193.77,-203.52 322.29,-203.52 322.29,-227.79"/>
+<text xml:space="preserve" text-anchor="middle" x="258.03" y="-212.05" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">append_include_edge</text>
+</a>
+</g>
+</g>
+<!-- proc~gather_include_candidates&#45;&gt;proc~append_include_edge -->
+<g id="proc~~gather_include_candidates~~CallsGraph_edge6" class="edge">
+<title>proc~gather_include_candidates&#45;&gt;proc~append_include_edge</title>
+<path fill="none" stroke="#ff0000" d="M131.98,-245.05C150.97,-240.59 172.54,-235.52 192.36,-230.86"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="193.06,-234.29 202,-228.59 191.46,-227.47 193.06,-234.29"/>
+</g>
+<!-- proc~gather_include_closure -->
+<g id="proc~~gather_include_candidates~~CallsGraph_node8" class="node">
+<title>proc~gather_include_closure</title>
+<g id="a_proc~~gather_include_candidates~~CallsGraph_node8"><a xlink:href="../proc/gather_include_closure.html" xlink:title="gather_include_closure">
+<polygon fill="#d9534f" stroke="#d9534f" points="325.29,-185.79 190.77,-185.79 190.77,-161.52 325.29,-161.52 325.29,-185.79"/>
+<text xml:space="preserve" text-anchor="middle" x="258.03" y="-170.05" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">gather_include_closure</text>
+</a>
+</g>
+</g>
+<!-- proc~gather_include_candidates&#45;&gt;proc~gather_include_closure -->
+<g id="proc~~gather_include_candidates~~CallsGraph_edge7" class="edge">
+<title>proc~gather_include_candidates&#45;&gt;proc~gather_include_closure</title>
+<path fill="none" stroke="#ff0000" d="M89.48,-245.04C107.44,-230.24 144.51,-207.09 180.28,-190.38"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="181.26,-193.78 188.94,-186.47 178.38,-187.4 181.26,-193.78"/>
+</g>
+<!-- proc~normalize_path -->
+<g id="proc~~gather_include_candidates~~CallsGraph_node9" class="node">
+<title>proc~normalize_path</title>
+<g id="a_proc~~gather_include_candidates~~CallsGraph_node9"><a xlink:href="../proc/normalize_path.html" xlink:title="normalize_path">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="826.35,-158.79 732.33,-158.79 732.33,-134.52 826.35,-134.52 826.35,-158.79"/>
+<text xml:space="preserve" text-anchor="middle" x="779.34" y="-143.05" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">normalize_path</text>
+</a>
+</g>
+</g>
+<!-- proc~gather_include_candidates&#45;&gt;proc~normalize_path -->
+<g id="proc~~gather_include_candidates~~CallsGraph_edge8" class="edge">
+<title>proc~gather_include_candidates&#45;&gt;proc~normalize_path</title>
+<path fill="none" stroke="#ff0000" d="M87.9,-245.19C120.41,-203.82 232.23,-71.34 361.29,-29.65 493.4,13.02 547.89,11.36 673.08,-48.65 710.31,-66.5 743.37,-102.19 762.1,-125.21"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="759.34,-127.36 768.29,-133.03 764.83,-123.02 759.34,-127.36"/>
+</g>
+<!-- proc~gather_include_closure&#45;&gt;proc~gather_include_candidates -->
+<g id="proc~~gather_include_candidates~~CallsGraph_edge13" class="edge">
+<title>proc~gather_include_closure&#45;&gt;proc~gather_include_candidates</title>
+<path fill="none" stroke="#7f00ff" d="M237.8,-186.18C224.37,-191.37 206.16,-196.98 190.77,-203.65 166.54,-214.15 140.76,-228.37 120.01,-239.75"/>
+<polygon fill="#7f00ff" stroke="#7f00ff" points="118.38,-236.66 111.28,-244.52 121.73,-242.8 118.38,-236.66"/>
+</g>
+<!-- proc~gather_include_closure&#45;&gt;proc~normalize_path -->
+<g id="proc~~gather_include_candidates~~CallsGraph_edge15" class="edge">
+<title>proc~gather_include_closure&#45;&gt;proc~normalize_path</title>
+<path fill="none" stroke="#7f00ff" d="M265.05,-161.17C278.26,-135.44 312.52,-77.05 361.29,-54.65 498.08,8.16 680.2,-86.51 749.72,-128.39"/>
+<polygon fill="#7f00ff" stroke="#7f00ff" points="747.49,-131.13 757.85,-133.37 751.15,-125.16 747.49,-131.13"/>
+</g>
+<!-- include_dependencies -->
+<g id="proc~~gather_include_candidates~~CallsGraph_node10" class="node">
+<title>include_dependencies</title>
+<polygon fill="#777777" stroke="#777777" points="517.18,-209.79 386.41,-209.79 386.41,-185.52 517.18,-185.52 517.18,-209.79"/>
+<text xml:space="preserve" text-anchor="middle" x="451.8" y="-194.05" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">include_dependencies</text>
+</g>
+<!-- proc~gather_include_closure&#45;&gt;include_dependencies -->
+<g id="proc~~gather_include_candidates~~CallsGraph_edge9" class="edge">
+<title>proc~gather_include_closure&#45;&gt;include_dependencies</title>
+<path fill="none" stroke="#7f00ff" d="M325.56,-181.98C341.47,-183.97 358.57,-186.11 374.87,-188.15"/>
+<polygon fill="#7f00ff" stroke="#7f00ff" points="374.14,-191.59 384.5,-189.36 375.01,-184.64 374.14,-191.59"/>
+</g>
+<!-- parse_c_source -->
+<g id="proc~~gather_include_candidates~~CallsGraph_node11" class="node">
+<title>parse_c_source</title>
+<polygon fill="#777777" stroke="#777777" points="498.43,-129.79 405.16,-129.79 405.16,-105.52 498.43,-105.52 498.43,-129.79"/>
+<text xml:space="preserve" text-anchor="middle" x="451.8" y="-114.05" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">parse_c_source</text>
+</g>
+<!-- proc~gather_include_closure&#45;&gt;parse_c_source -->
+<g id="proc~~gather_include_candidates~~CallsGraph_edge10" class="edge">
+<title>proc~gather_include_closure&#45;&gt;parse_c_source</title>
+<path fill="none" stroke="#7f00ff" d="M301.81,-161.07C320.13,-155.7 341.75,-149.36 361.29,-143.65 372.71,-140.32 384.95,-136.76 396.6,-133.37"/>
+<polygon fill="#7f00ff" stroke="#7f00ff" points="397.46,-136.77 406.09,-130.61 395.51,-130.04 397.46,-136.77"/>
+</g>
+<!-- parse_f_source -->
+<g id="proc~~gather_include_candidates~~CallsGraph_node12" class="node">
+<title>parse_f_source</title>
+<polygon fill="#777777" stroke="#777777" points="497.31,-87.79 406.29,-87.79 406.29,-63.52 497.31,-63.52 497.31,-87.79"/>
+<text xml:space="preserve" text-anchor="middle" x="451.8" y="-72.05" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">parse_f_source</text>
+</g>
+<!-- proc~gather_include_closure&#45;&gt;parse_f_source -->
+<g id="proc~~gather_include_candidates~~CallsGraph_edge11" class="edge">
+<title>proc~gather_include_closure&#45;&gt;parse_f_source</title>
+<path fill="none" stroke="#7f00ff" d="M271.75,-161.24C290.02,-144.1 325.46,-113.43 361.29,-96.65 371.7,-91.78 383.33,-87.99 394.68,-85.05"/>
+<polygon fill="#7f00ff" stroke="#7f00ff" points="395.48,-88.46 404.4,-82.74 393.86,-81.65 395.48,-88.46"/>
+</g>
+<!-- proc~collection_add -->
+<g id="proc~~gather_include_candidates~~CallsGraph_node13" class="node">
+<title>proc~collection_add</title>
+<g id="a_proc~~gather_include_candidates~~CallsGraph_node13"><a xlink:href="../proc/collection_add.html" xlink:title="file_collection_t%collection_add">
+<polygon fill="#d9534f" stroke="#d9534f" points="542.31,-311.79 361.29,-311.79 361.29,-287.52 542.31,-287.52 542.31,-311.79"/>
+<text xml:space="preserve" text-anchor="middle" x="451.8" y="-296.05" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">file_collection_t%collection_add</text>
+</a>
+</g>
+</g>
+<!-- proc~gather_include_closure&#45;&gt;proc~collection_add -->
+<g id="proc~~gather_include_candidates~~CallsGraph_edge12" class="edge">
+<title>proc~gather_include_closure&#45;&gt;proc~collection_add</title>
+<path fill="none" stroke="#7f00ff" d="M312.98,-186.18C317.43,-188.53 321.62,-191.33 325.29,-194.65 355.38,-221.93 330.18,-252.54 361.29,-278.65 362.39,-279.58 363.52,-280.46 364.69,-281.31"/>
+<polygon fill="#7f00ff" stroke="#7f00ff" points="362.48,-284.06 372.83,-286.3 366.14,-278.09 362.48,-284.06"/>
+</g>
+<!-- proc~is_in_dep_dirs -->
+<g id="proc~~gather_include_candidates~~CallsGraph_node14" class="node">
+<title>proc~is_in_dep_dirs</title>
+<g id="a_proc~~gather_include_candidates~~CallsGraph_node14"><a xlink:href="../proc/is_in_dep_dirs.html" xlink:title="is_in_dep_dirs">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="668.2,-160.79 583.18,-160.79 583.18,-136.52 668.2,-136.52 668.2,-160.79"/>
+<text xml:space="preserve" text-anchor="middle" x="625.69" y="-145.05" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">is_in_dep_dirs</text>
+</a>
+</g>
+</g>
+<!-- proc~gather_include_closure&#45;&gt;proc~is_in_dep_dirs -->
+<g id="proc~~gather_include_candidates~~CallsGraph_edge14" class="edge">
+<title>proc~gather_include_closure&#45;&gt;proc~is_in_dep_dirs</title>
+<path fill="none" stroke="#7f00ff" d="M325.67,-169.1C396.31,-164.27 506.46,-156.74 571.51,-152.29"/>
+<polygon fill="#7f00ff" stroke="#7f00ff" points="571.47,-155.8 581.21,-151.63 570.99,-148.82 571.47,-155.8"/>
+</g>
+<!-- proc~propagate_include_mask -->
+<g id="proc~~gather_include_candidates~~CallsGraph_node15" class="node">
+<title>proc~propagate_include_mask</title>
+<g id="a_proc~~gather_include_candidates~~CallsGraph_node15"><a xlink:href="../proc/propagate_include_mask.html" xlink:title="propagate_include_mask">
+<polygon fill="#d9534f" stroke="#d9534f" points="523.93,-251.79 379.66,-251.79 379.66,-227.52 523.93,-227.52 523.93,-251.79"/>
+<text xml:space="preserve" text-anchor="middle" x="451.8" y="-236.05" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">propagate_include_mask</text>
+</a>
+</g>
+</g>
+<!-- proc~gather_include_closure&#45;&gt;proc~propagate_include_mask -->
+<g id="proc~~gather_include_candidates~~CallsGraph_edge16" class="edge">
+<title>proc~gather_include_closure&#45;&gt;proc~propagate_include_mask</title>
+<path fill="none" stroke="#7f00ff" d="M304.6,-186.22C311.65,-188.7 318.76,-191.52 325.29,-194.65 342.63,-202.97 343.65,-211 361.29,-218.65 365.37,-220.42 369.63,-222.06 373.97,-223.57"/>
+<polygon fill="#7f00ff" stroke="#7f00ff" points="372.87,-226.89 383.46,-226.59 375,-220.22 372.87,-226.89"/>
+</g>
+<!-- proc~collection_add&#45;&gt;canon_path -->
+<g id="proc~~gather_include_candidates~~CallsGraph_edge17" class="edge">
+<title>proc~collection_add&#45;&gt;canon_path</title>
+<path fill="none" stroke="#00ffff" d="M473.19,-312.23C503.3,-330.8 559.84,-365.66 594.69,-387.15"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="592.69,-390.03 603.04,-392.3 596.36,-384.07 592.69,-390.03"/>
+</g>
+<!-- proc~collection_add&#45;&gt;exists -->
+<g id="proc~~gather_include_candidates~~CallsGraph_edge18" class="edge">
+<title>proc~collection_add&#45;&gt;exists</title>
+<path fill="none" stroke="#00ffff" d="M496.54,-312.24C511.11,-316.47 527.42,-321.23 542.31,-325.65 557.12,-330.05 573.4,-334.97 587.55,-339.28"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="586.34,-342.57 596.93,-342.14 588.38,-335.87 586.34,-342.57"/>
+</g>
+<!-- proc~collection_add&#45;&gt;proc~normalize_path -->
+<g id="proc~~gather_include_candidates~~CallsGraph_edge23" class="edge">
+<title>proc~collection_add&#45;&gt;proc~normalize_path</title>
+<path fill="none" stroke="#00ffff" d="M528.8,-287.02C533.61,-284.67 538.17,-281.91 542.31,-278.65 570.13,-256.79 551.23,-230.42 578.31,-207.65 600.06,-189.37 669.98,-170.64 721.05,-158.84"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="721.5,-162.33 730.48,-156.7 719.95,-155.5 721.5,-162.33"/>
+</g>
+<!-- proc~collection_add&#45;&gt;proc~is_in_dep_dirs -->
+<g id="proc~~gather_include_candidates~~CallsGraph_edge22" class="edge">
+<title>proc~collection_add&#45;&gt;proc~is_in_dep_dirs</title>
+<path fill="none" stroke="#00ffff" d="M530.18,-287.18C534.54,-284.79 538.64,-281.97 542.31,-278.65 578.63,-245.89 546.93,-212.17 578.31,-174.65 580.42,-172.13 582.84,-169.81 585.45,-167.67"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="587.37,-170.6 593.58,-162.02 583.37,-164.85 587.37,-170.6"/>
+</g>
+<!-- proc~collection_grow -->
+<g id="proc~~gather_include_candidates~~CallsGraph_node16" class="node">
+<title>proc~collection_grow</title>
+<g id="a_proc~~gather_include_candidates~~CallsGraph_node16"><a xlink:href="../proc/collection_grow.html" xlink:title="collection_grow">
+<polygon fill="#d9534f" stroke="#d9534f" points="672.7,-320.79 578.68,-320.79 578.68,-296.52 672.7,-296.52 672.7,-320.79"/>
+<text xml:space="preserve" text-anchor="middle" x="625.69" y="-305.05" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">collection_grow</text>
+</a>
+</g>
+</g>
+<!-- proc~collection_add&#45;&gt;proc~collection_grow -->
+<g id="proc~~gather_include_candidates~~CallsGraph_edge19" class="edge">
+<title>proc~collection_add&#45;&gt;proc~collection_grow</title>
+<path fill="none" stroke="#00ffff" d="M542.77,-304.36C551.07,-304.8 559.32,-305.23 567.2,-305.64"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="566.78,-309.12 576.95,-306.15 567.15,-302.13 566.78,-309.12"/>
+</g>
+<!-- proc~collection_slot -->
+<g id="proc~~gather_include_candidates~~CallsGraph_node17" class="node">
+<title>proc~collection_slot</title>
+<g id="a_proc~~gather_include_candidates~~CallsGraph_node17"><a xlink:href="../proc/collection_slot.html" xlink:title="collection_slot">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="822.98,-302.79 735.71,-302.79 735.71,-278.52 822.98,-278.52 822.98,-302.79"/>
+<text xml:space="preserve" text-anchor="middle" x="779.34" y="-287.05" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">collection_slot</text>
+</a>
+</g>
+</g>
+<!-- proc~collection_add&#45;&gt;proc~collection_slot -->
+<g id="proc~~gather_include_candidates~~CallsGraph_edge20" class="edge">
+<title>proc~collection_add&#45;&gt;proc~collection_slot</title>
+<path fill="none" stroke="#00ffff" d="M542.54,-290.03C554.55,-289.04 566.72,-288.21 578.31,-287.65 620.38,-285.65 630.96,-287.05 673.08,-287.65 689.71,-287.89 707.82,-288.34 724.26,-288.82"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="723.71,-292.3 733.81,-289.1 723.92,-285.3 723.71,-292.3"/>
+</g>
+<!-- proc~is_ignored_path -->
+<g id="proc~~gather_include_candidates~~CallsGraph_node18" class="node">
+<title>proc~is_ignored_path</title>
+<g id="a_proc~~gather_include_candidates~~CallsGraph_node18"><a xlink:href="../proc/is_ignored_path.html" xlink:title="is_ignored_path">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="673.08,-240.79 578.31,-240.79 578.31,-216.52 673.08,-216.52 673.08,-240.79"/>
+<text xml:space="preserve" text-anchor="middle" x="625.69" y="-225.05" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">is_ignored_path</text>
+</a>
+</g>
+</g>
+<!-- proc~collection_add&#45;&gt;proc~is_ignored_path -->
+<g id="proc~~gather_include_candidates~~CallsGraph_edge21" class="edge">
+<title>proc~collection_add&#45;&gt;proc~is_ignored_path</title>
+<path fill="none" stroke="#00ffff" d="M518.7,-287.05C526.8,-284.67 534.84,-281.89 542.31,-278.65 559.95,-271 561.91,-264.69 578.31,-254.65 582.59,-252.03 587.14,-249.35 591.66,-246.76"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="593.07,-249.98 600.05,-242.01 589.62,-243.89 593.07,-249.98"/>
+</g>
+<!-- proc~is_in_dep_dirs&#45;&gt;proc~normalize_path -->
+<g id="proc~~gather_include_candidates~~CallsGraph_edge24" class="edge">
+<title>proc~is_in_dep_dirs&#45;&gt;proc~normalize_path</title>
+<path fill="none" stroke="#0000ff" d="M668.53,-148.1C684.64,-147.89 703.33,-147.64 720.68,-147.41"/>
+<polygon fill="#0000ff" stroke="#0000ff" points="720.37,-150.92 730.32,-147.29 720.28,-143.92 720.37,-150.92"/>
+</g>
+<!-- proc~starts_with -->
+<g id="proc~~gather_include_candidates~~CallsGraph_node19" class="node">
+<title>proc~starts_with</title>
+<g id="a_proc~~gather_include_candidates~~CallsGraph_node19"><a xlink:href="../proc/starts_with.html" xlink:title="starts_with">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="813.23,-200.79 745.46,-200.79 745.46,-176.52 813.23,-176.52 813.23,-200.79"/>
+<text xml:space="preserve" text-anchor="middle" x="779.34" y="-185.05" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">starts_with</text>
+</a>
+</g>
+</g>
+<!-- proc~is_in_dep_dirs&#45;&gt;proc~starts_with -->
+<g id="proc~~gather_include_candidates~~CallsGraph_edge25" class="edge">
+<title>proc~is_in_dep_dirs&#45;&gt;proc~starts_with</title>
+<path fill="none" stroke="#0000ff" d="M668.53,-159.69C688.95,-165.07 713.51,-171.55 734.22,-177.02"/>
+<polygon fill="#0000ff" stroke="#0000ff" points="733.25,-180.38 743.82,-179.55 735.04,-173.61 733.25,-180.38"/>
+</g>
+<!-- proc~propagate_include_mask&#45;&gt;proc~propagate_include_mask -->
+<g id="proc~~gather_include_candidates~~CallsGraph_edge26" class="edge">
+<title>proc~propagate_include_mask&#45;&gt;proc~propagate_include_mask</title>
+<path fill="none" stroke="#ff00ff" d="M422.71,-252.03C413.23,-260.93 422.93,-269.79 451.8,-269.79 467.59,-269.79 477.64,-267.14 481.96,-263.28"/>
+<polygon fill="#ff00ff" stroke="#ff00ff" points="485.47,-263.17 481.04,-253.54 478.5,-263.83 485.47,-263.17"/>
+</g>
+<!-- proc~collection_grow&#45;&gt;proc~collection_slot -->
+<g id="proc~~gather_include_candidates~~CallsGraph_edge27" class="edge">
+<title>proc~collection_grow&#45;&gt;proc~collection_slot</title>
+<path fill="none" stroke="#ff0000" d="M673.02,-303.15C689.15,-301.24 707.4,-299.07 724.12,-297.09"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="724.38,-300.58 733.9,-295.93 723.56,-293.63 724.38,-300.58"/>
+</g>
+<!-- fnv_1a -->
+<g id="proc~~gather_include_candidates~~CallsGraph_node20" class="node">
+<title>fnv_1a</title>
+<polygon fill="#777777" stroke="#777777" points="944.61,-302.79 890.61,-302.79 890.61,-278.52 944.61,-278.52 944.61,-302.79"/>
+<text xml:space="preserve" text-anchor="middle" x="917.61" y="-287.05" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">fnv_1a</text>
+</g>
+<!-- proc~collection_slot&#45;&gt;fnv_1a -->
+<g id="proc~~gather_include_candidates~~CallsGraph_edge28" class="edge">
+<title>proc~collection_slot&#45;&gt;fnv_1a</title>
+<path fill="none" stroke="#7fff00" d="M823.46,-290.65C841.32,-290.65 861.85,-290.65 879.09,-290.65"/>
+<polygon fill="#7fff00" stroke="#7fff00" points="878.9,-294.15 888.9,-290.65 878.9,-287.15 878.9,-294.15"/>
+</g>
+<!-- proc~is_ignored_path&#45;&gt;proc~normalize_path -->
+<g id="proc~~gather_include_candidates~~CallsGraph_edge30" class="edge">
+<title>proc~is_ignored_path&#45;&gt;proc~normalize_path</title>
+<path fill="none" stroke="#00ffff" d="M651.99,-216.03C659.05,-212.1 666.57,-207.51 673.08,-202.65 690.96,-189.31 689.86,-178.99 709.08,-167.65 712.93,-165.38 717.04,-163.34 721.27,-161.5"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="722.49,-164.78 730.55,-157.9 719.96,-158.26 722.49,-164.78"/>
+</g>
+<!-- proc~is_ignored_path&#45;&gt;proc~starts_with -->
+<g id="proc~~gather_include_candidates~~CallsGraph_edge31" class="edge">
+<title>proc~is_ignored_path&#45;&gt;proc~starts_with</title>
+<path fill="none" stroke="#00ffff" d="M673.43,-216.32C692.69,-211.24 714.9,-205.39 733.92,-200.37"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="734.75,-203.77 743.53,-197.84 732.96,-197 734.75,-203.77"/>
+</g>
+<!-- proc~contains_path_fragment -->
+<g id="proc~~gather_include_candidates~~CallsGraph_node21" class="node">
+<title>proc~contains_path_fragment</title>
+<g id="a_proc~~gather_include_candidates~~CallsGraph_node21"><a xlink:href="../proc/contains_path_fragment.html" xlink:title="contains_path_fragment">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="849.6,-242.79 709.08,-242.79 709.08,-218.52 849.6,-218.52 849.6,-242.79"/>
+<text xml:space="preserve" text-anchor="middle" x="779.34" y="-227.05" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">contains_path_fragment</text>
+</a>
+</g>
+</g>
+<!-- proc~is_ignored_path&#45;&gt;proc~contains_path_fragment -->
+<g id="proc~~gather_include_candidates~~CallsGraph_edge29" class="edge">
+<title>proc~is_ignored_path&#45;&gt;proc~contains_path_fragment</title>
+<path fill="none" stroke="#00ffff" d="M673.43,-229.27C681,-229.37 689.03,-229.47 697.14,-229.58"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="697.06,-233.08 707.11,-229.71 697.15,-226.08 697.06,-233.08"/>
+</g>
+<!-- proc~ends_with -->
+<g id="proc~~gather_include_candidates~~CallsGraph_node22" class="node">
+<title>proc~ends_with</title>
+<g id="a_proc~~gather_include_candidates~~CallsGraph_node22"><a xlink:href="../proc/ends_with.html" xlink:title="ends_with">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="949.62,-242.79 885.6,-242.79 885.6,-218.52 949.62,-218.52 949.62,-242.79"/>
+<text xml:space="preserve" text-anchor="middle" x="917.61" y="-227.05" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">ends_with</text>
+</a>
+</g>
+</g>
+<!-- proc~contains_path_fragment&#45;&gt;proc~ends_with -->
+<g id="proc~~gather_include_candidates~~CallsGraph_edge32" class="edge">
+<title>proc~contains_path_fragment&#45;&gt;proc~ends_with</title>
+<path fill="none" stroke="#00ffff" d="M850.07,-230.65C858.15,-230.65 866.2,-230.65 873.76,-230.65"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="873.67,-234.15 883.67,-230.65 873.67,-227.15 873.67,-234.15"/>
+</g>
+</g>
+</svg>
+</div>                <script>
+                  var panprocgather_include_candidatesCallsGraph = svgPanZoom('#procgather_include_candidatesCallsGraph',
+                    {zoomEnabled: true, controlIconsEnabled: true, fit: true, center: true,}
+                  );
+                </script>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#CallsGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="CallsGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="641pt" height="28pt"
+ viewBox="0.00 0.00 641.00 28.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.873868 0.873868) rotate(0) translate(4 28.27)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-28.27 729.52,-28.27 729.52,4 -4,4"/>
+<!-- Subroutine -->
+<g id="node1" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="69.27,-24.27 0,-24.27 0,0 69.27,0 69.27,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="34.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node2" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="143.89,-24.27 87.38,-24.27 87.38,0 143.89,0 143.89,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="115.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node3" class="node">
+<title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="221.39,-24.27 161.88,-24.27 161.88,0 221.39,0 221.39,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="191.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Type Bound Procedure -->
+<g id="node4" class="node">
+<title>Type Bound Procedure</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="368.27,-24.27 239,-24.27 239,0 368.27,0 368.27,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="303.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type Bound Procedure</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node5" class="node">
+<title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="529.39,-24.27 385.88,-24.27 385.88,0 529.39,0 529.39,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="457.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node6" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="603.89,-24.27 547.38,-24.27 547.38,0 603.89,0 603.89,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="575.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node7" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="725.52,-24.27 621.75,-24.27 621.75,0 725.52,0 725.52,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="673.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.
+</p>
+ Where possible, edges connecting nodes are
+given different colours to make them easier to distinguish in
+large graphs.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+  <h3 class="card-title">Called by</h3>
+      </div>
+      <div class="card-body">
+  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: proc~~gather_include_candidates~~CalledByGraph Pages: 1 -->
+<svg id="procgather_include_candidatesCalledByGraph" width="641pt" height="67pt"
+ viewBox="0.00 0.00 641.00 67.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~gather_include_candidates~~CalledByGraph" class="graph" transform="scale(0.899548 0.899548) rotate(0) translate(4 70.27)">
+<title>proc~~gather_include_candidates~~CalledByGraph</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-70.27 708.58,-70.27 708.58,4 -4,4"/>
+<!-- proc~gather_include_candidates -->
+<g id="proc~~gather_include_candidates~~CalledByGraph_node1" class="node">
+<title>proc~gather_include_candidates</title>
+<polygon fill="none" stroke="black" points="534.06,-66.27 379.29,-66.27 379.29,-42 534.06,-42 534.06,-66.27"/>
+<text xml:space="preserve" text-anchor="middle" x="456.68" y="-50.53" font-family="Helvetica,sans-Serif" font-size="10.50">gather_include_candidates</text>
+</g>
+<!-- proc~gather_include_closure -->
+<g id="proc~~gather_include_candidates~~CalledByGraph_node2" class="node">
+<title>proc~gather_include_closure</title>
+<g id="a_proc~~gather_include_candidates~~CalledByGraph_node2"><a xlink:href="../proc/gather_include_closure.html" xlink:title="gather_include_closure">
+<polygon fill="#d9534f" stroke="#d9534f" points="704.58,-66.27 570.06,-66.27 570.06,-42 704.58,-42 704.58,-66.27"/>
+<text xml:space="preserve" text-anchor="middle" x="637.32" y="-50.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">gather_include_closure</text>
+</a>
+</g>
+</g>
+<!-- proc~gather_include_candidates&#45;&gt;proc~gather_include_closure -->
+<g id="proc~~gather_include_candidates~~CalledByGraph_edge3" class="edge">
+<title>proc~gather_include_candidates&#45;&gt;proc~gather_include_closure</title>
+<path fill="none" stroke="#ff0000" d="M534.47,-47.44C542.35,-47.37 550.36,-47.37 558.26,-47.43"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="558.15,-50.93 568.19,-47.56 558.24,-43.93 558.15,-50.93"/>
+</g>
+<!-- proc~gather_include_closure&#45;&gt;proc~gather_include_candidates -->
+<g id="proc~~gather_include_candidates~~CalledByGraph_edge1" class="edge">
+<title>proc~gather_include_closure&#45;&gt;proc~gather_include_candidates</title>
+<path fill="none" stroke="#ff0000" d="M569.7,-60.69C561.9,-60.83 553.85,-60.89 545.8,-60.88"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="546,-57.39 535.99,-60.83 545.97,-64.39 546,-57.39"/>
+</g>
+<!-- proc~gather_files_with_mask -->
+<g id="proc~~gather_include_candidates~~CalledByGraph_node3" class="node">
+<title>proc~gather_files_with_mask</title>
+<g id="a_proc~~gather_include_candidates~~CalledByGraph_node3"><a xlink:href="../proc/gather_files_with_mask.html" xlink:title="gather_files_with_mask">
+<polygon fill="#d9534f" stroke="#d9534f" points="523.94,-24.27 389.42,-24.27 389.42,0 523.94,0 523.94,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="456.68" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">gather_files_with_mask</text>
+</a>
+</g>
+</g>
+<!-- proc~gather_files_with_mask&#45;&gt;proc~gather_include_closure -->
+<g id="proc~~gather_include_candidates~~CalledByGraph_edge2" class="edge">
+<title>proc~gather_files_with_mask&#45;&gt;proc~gather_include_closure</title>
+<path fill="none" stroke="#ff0000" d="M511.27,-24.74C530.26,-29.2 551.83,-34.27 571.65,-38.93"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="570.75,-42.31 581.29,-41.2 572.35,-35.5 570.75,-42.31"/>
+</g>
+<!-- proc~compute_watch_files_from_settings -->
+<g id="proc~~gather_include_candidates~~CalledByGraph_node4" class="node">
+<title>proc~compute_watch_files_from_settings</title>
+<g id="a_proc~~gather_include_candidates~~CalledByGraph_node4"><a xlink:href="../proc/compute_watch_files_from_settings.html" xlink:title="compute_watch_files_from_settings">
+<polygon fill="#d9534f" stroke="#d9534f" points="343.29,-24.27 144.27,-24.27 144.27,0 343.29,0 343.29,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="243.78" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">compute_watch_files_from_settings</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_watch_files_from_settings&#45;&gt;proc~gather_files_with_mask -->
+<g id="proc~~gather_include_candidates~~CalledByGraph_edge4" class="edge">
+<title>proc~compute_watch_files_from_settings&#45;&gt;proc~gather_files_with_mask</title>
+<path fill="none" stroke="#ff0000" d="M343.74,-12.13C355.18,-12.13 366.72,-12.13 377.82,-12.13"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="377.7,-15.64 387.7,-12.14 377.7,-8.64 377.7,-15.64"/>
+</g>
+<!-- proc~run_graph_worker -->
+<g id="proc~~gather_include_candidates~~CalledByGraph_node5" class="node">
+<title>proc~run_graph_worker</title>
+<g id="a_proc~~gather_include_candidates~~CalledByGraph_node5"><a xlink:href="../proc/run_graph_worker.html" xlink:title="run_graph_worker">
+<polygon fill="#d9534f" stroke="#d9534f" points="108.27,-24.27 0,-24.27 0,0 108.27,0 108.27,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="54.13" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">run_graph_worker</text>
+</a>
+</g>
+</g>
+<!-- proc~run_graph_worker&#45;&gt;proc~compute_watch_files_from_settings -->
+<g id="proc~~gather_include_candidates~~CalledByGraph_edge5" class="edge">
+<title>proc~run_graph_worker&#45;&gt;proc~compute_watch_files_from_settings</title>
+<path fill="none" stroke="#ff0000" d="M108.66,-12.13C116.33,-12.13 124.44,-12.13 132.73,-12.13"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="132.6,-15.64 142.6,-12.14 132.6,-8.64 132.6,-15.64"/>
+</g>
+</g>
+</svg>
+</div>                <script>
+                  var panprocgather_include_candidatesCalledByGraph = svgPanZoom('#procgather_include_candidatesCalledByGraph',
+                    {zoomEnabled: true, controlIconsEnabled: true, fit: true, center: true,}
+                  );
+                </script>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#CalledByGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="CalledByGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="641pt" height="28pt"
+ viewBox="0.00 0.00 641.00 28.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.873868 0.873868) rotate(0) translate(4 28.27)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-28.27 729.52,-28.27 729.52,4 -4,4"/>
+<!-- Subroutine -->
+<g id="node1" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="69.27,-24.27 0,-24.27 0,0 69.27,0 69.27,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="34.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node2" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="143.89,-24.27 87.38,-24.27 87.38,0 143.89,0 143.89,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="115.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node3" class="node">
+<title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="221.39,-24.27 161.88,-24.27 161.88,0 221.39,0 221.39,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="191.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Type Bound Procedure -->
+<g id="node4" class="node">
+<title>Type Bound Procedure</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="368.27,-24.27 239,-24.27 239,0 368.27,0 368.27,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="303.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type Bound Procedure</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node5" class="node">
+<title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="529.39,-24.27 385.88,-24.27 385.88,0 529.39,0 529.39,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="457.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node6" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="603.89,-24.27 547.38,-24.27 547.38,0 603.89,0 603.89,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="575.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node7" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="725.52,-24.27 621.75,-24.27 621.75,0 725.52,0 725.52,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="673.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.
+</p>
+ Where possible, edges connecting nodes are
+given different colours to make them easier to distinguish in
+large graphs.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+
+
+    
+    
+
+    
+    
+
+
+
+    
+    <section>
+    <h2><span class="anchor" id="src"></span>Source Code</h2>
+    <div class="hl codehilite"><pre><span></span><span class="w">   </span><span class="k">recursive subroutine </span><span class="n">gather_include_candidates</span><span class="p">(</span><span class="n">source_index</span><span class="p">,</span><span class="w"> </span><span class="n">source_file</span><span class="p">,</span><span class="w"> </span><span class="n">include_name</span><span class="p">,</span><span class="w"> </span><span class="n">mask</span><span class="p">,</span><span class="w"> </span><span class="n">collected</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="w">      </span><span class="n">build_dir</span><span class="p">,</span><span class="w"> </span><span class="n">include_dirs</span><span class="p">,</span><span class="w"> </span><span class="n">watch_deps</span><span class="p">,</span><span class="w"> </span><span class="n">dep_dirs</span><span class="p">)</span>
+<span class="w">      </span><span class="kt">integer</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">source_index</span>
+<span class="w">      </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">source_file</span><span class="p">,</span><span class="w"> </span><span class="n">include_name</span><span class="p">,</span><span class="w"> </span><span class="n">build_dir</span>
+<span class="w">      </span><span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">mask</span>
+<span class="w">      </span><span class="k">type</span><span class="p">(</span><span class="n">file_collection_t</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">collected</span>
+<span class="w">      </span><span class="k">type</span><span class="p">(</span><span class="n">string_t</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">include_dirs</span><span class="p">(:),</span><span class="w"> </span><span class="n">dep_dirs</span><span class="p">(:)</span>
+<span class="w">      </span><span class="kt">logical</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">watch_deps</span>
+<span class="w">      </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">candidate</span>
+<span class="w">      </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">child</span>
+
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">len_trim</span><span class="p">(</span><span class="n">include_name</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">return</span>
+<span class="k">      if</span><span class="w"> </span><span class="p">(</span><span class="n">is_absolute_path</span><span class="p">(</span><span class="n">include_name</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
+<span class="k">         call </span><span class="n">gather_include_closure</span><span class="p">(</span><span class="n">normalize_path</span><span class="p">(</span><span class="n">canon_path</span><span class="p">(</span><span class="n">include_name</span><span class="p">)),</span><span class="w"> </span><span class="n">mask</span><span class="p">,</span><span class="w"> </span><span class="n">collected</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="w">            </span><span class="n">build_dir</span><span class="p">,</span><span class="w"> </span><span class="n">include_dirs</span><span class="p">,</span><span class="w"> </span><span class="n">watch_deps</span><span class="p">,</span><span class="w"> </span><span class="n">dep_dirs</span><span class="p">,</span><span class="w"> </span><span class="n">child</span><span class="p">)</span>
+<span class="w">         </span><span class="k">call </span><span class="n">append_include_edge</span><span class="p">(</span><span class="n">collected</span><span class="p">%</span><span class="n">includes</span><span class="p">(</span><span class="n">source_index</span><span class="p">),</span><span class="w"> </span><span class="n">child</span><span class="p">)</span>
+<span class="w">         </span><span class="k">return</span>
+<span class="k">      end if</span>
+
+<span class="k">      </span><span class="n">candidate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">normalize_path</span><span class="p">(</span><span class="n">canon_path</span><span class="p">(</span><span class="n">join_path</span><span class="p">(</span><span class="n">dirname</span><span class="p">(</span><span class="n">source_file</span><span class="p">),</span><span class="w"> </span><span class="n">include_name</span><span class="p">)))</span>
+<span class="w">      </span><span class="k">call </span><span class="n">gather_include_closure</span><span class="p">(</span><span class="n">candidate</span><span class="p">,</span><span class="w"> </span><span class="n">mask</span><span class="p">,</span><span class="w"> </span><span class="n">collected</span><span class="p">,</span><span class="w"> </span><span class="n">build_dir</span><span class="p">,</span><span class="w"> </span><span class="n">include_dirs</span><span class="p">,</span><span class="w"> </span><span class="n">watch_deps</span><span class="p">,</span><span class="w"> </span><span class="n">dep_dirs</span><span class="p">,</span><span class="w"> </span><span class="n">child</span><span class="p">)</span>
+<span class="w">      </span><span class="k">call </span><span class="n">append_include_edge</span><span class="p">(</span><span class="n">collected</span><span class="p">%</span><span class="n">includes</span><span class="p">(</span><span class="n">source_index</span><span class="p">),</span><span class="w"> </span><span class="n">child</span><span class="p">)</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">exists</span><span class="p">(</span><span class="n">candidate</span><span class="p">))</span><span class="w"> </span><span class="k">return</span>
+<span class="k">      if</span><span class="w"> </span><span class="p">(</span><span class="nb">allocated</span><span class="p">(</span><span class="n">include_dirs</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
+<span class="k">         do </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="p">(</span><span class="n">include_dirs</span><span class="p">)</span>
+<span class="w">            </span><span class="n">candidate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">normalize_path</span><span class="p">(</span><span class="n">canon_path</span><span class="p">(</span><span class="n">join_path</span><span class="p">(</span><span class="n">include_dirs</span><span class="p">(</span><span class="n">i</span><span class="p">)%</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="n">include_name</span><span class="p">)))</span>
+<span class="w">            </span><span class="k">call </span><span class="n">gather_include_closure</span><span class="p">(</span><span class="n">candidate</span><span class="p">,</span><span class="w"> </span><span class="n">mask</span><span class="p">,</span><span class="w"> </span><span class="n">collected</span><span class="p">,</span><span class="w"> </span><span class="n">build_dir</span><span class="p">,</span><span class="w"> </span><span class="n">include_dirs</span><span class="p">,</span><span class="w"> </span><span class="n">watch_deps</span><span class="p">,</span><span class="w"> </span><span class="n">dep_dirs</span><span class="p">,</span><span class="w"> </span><span class="n">child</span><span class="p">)</span>
+<span class="w">            </span><span class="k">call </span><span class="n">append_include_edge</span><span class="p">(</span><span class="n">collected</span><span class="p">%</span><span class="n">includes</span><span class="p">(</span><span class="n">source_index</span><span class="p">),</span><span class="w"> </span><span class="n">child</span><span class="p">)</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">exists</span><span class="p">(</span><span class="n">candidate</span><span class="p">))</span><span class="w"> </span><span class="k">return</span>
+<span class="k">         end do</span>
+<span class="k">      end if</span>
+<span class="k">      call </span><span class="n">gather_include_closure</span><span class="p">(</span><span class="n">normalize_path</span><span class="p">(</span><span class="n">canon_path</span><span class="p">(</span><span class="n">include_name</span><span class="p">)),</span><span class="w"> </span><span class="n">mask</span><span class="p">,</span><span class="w"> </span><span class="n">collected</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="w">         </span><span class="n">build_dir</span><span class="p">,</span><span class="w"> </span><span class="n">include_dirs</span><span class="p">,</span><span class="w"> </span><span class="n">watch_deps</span><span class="p">,</span><span class="w"> </span><span class="n">dep_dirs</span><span class="p">,</span><span class="w"> </span><span class="n">child</span><span class="p">)</span>
+<span class="w">      </span><span class="k">call </span><span class="n">append_include_edge</span><span class="p">(</span><span class="n">collected</span><span class="p">%</span><span class="n">includes</span><span class="p">(</span><span class="n">source_index</span><span class="p">),</span><span class="w"> </span><span class="n">child</span><span class="p">)</span>
+<span class="w">   </span><span class="k">end subroutine </span><span class="n">gather_include_candidates</span>
+</pre></div>
+
+    </section>
+    <br>
+    
+    </div>
+  </div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              fpm-watch
+ was developed by Seyed Ali Ghasemi<br>              &copy; 2026 <a rel="license" href="https://opensource.org/licenses/MIT">MIT</a>
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+ on 2026-10-17T21:22:39.241228+0000             </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>

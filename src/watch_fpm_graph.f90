@@ -1,8 +1,9 @@
 !> Build watch lists from fpm's manifest, model, and target graph.
 !!
-!! Build mode visits all returned targets. Run mode selects application or
-!! example closures by name; test mode visits all test executable closures.
-!! Sources, resolved includes, and manifests form a unique normalized path list.
+!! Build mode watches every model source. Run/test mode selects named executable
+!! source closures. Link-only sources are conservatively retained because fpm
+!! does not expose its linker graph independently of its pruning allocator.
+!! Sources, include candidates, manifests, and version files form one normalized path list.
 !! Optional dependency watching includes dependency paths under the build tree.
 !! Up to 64 run/test roots receive bitmasks for later affected-target selection.
 module watch_fpm_graph
@@ -15,16 +16,45 @@ module watch_fpm_graph
    use watch_util, only: ftoa, trim_or_empty
    use fpm,              only: build_model
    use fpm_manifest,     only: package_config_t, get_package_data
-   use fpm_model,        only: fpm_model_t, FPM_SCOPE_APP, FPM_SCOPE_TEST, FPM_SCOPE_EXAMPLE
-   use fpm_targets,      only: build_target_ptr, targets_from_sources, add_target_ptr
+   use fpm_model,        only: fpm_model_t, srcfile_t, FPM_SCOPE_APP, FPM_SCOPE_TEST, FPM_SCOPE_EXAMPLE, &
+                              FPM_SCOPE_LIB, FPM_SCOPE_DEP, FPM_UNIT_PROGRAM, FPM_UNIT_SUBMODULE, &
+                              FPM_UNIT_SUBPROGRAM, FPM_UNIT_CSOURCE, FPM_UNIT_CPPSOURCE
+   use fpm_targets,      only: build_target_ptr, new_target, resolve_module_dependencies, add_dependency, FPM_TARGET_OBJECT
+   use fpm_sources,      only: get_exe_name_with_suffix
+   use fpm_source_parsing, only: parse_f_source, parse_c_source
    use fpm_filesystem,   only: basename, exists, join_path, dirname, canon_path, is_absolute_path
-   use fpm_strings,      only: string_t, glob, str
+   use fpm_strings,      only: string_t, glob, str, fnv_1a, operator(.in.)
    use fpm_error,        only: error_t
+   use fpm_toml,         only: read_package_file, get_value
+   use fpm_versioning,   only: version_t, new_version
+   use tomlf,            only: toml_table
    use fpm_dependency,   only: dependency_tree_t
    use fpm_command_line, only: fpm_build_settings, fpm_run_settings, fpm_test_settings
    implicit none
    private
    public compute_watch_files_from_settings
+
+   !> Include edges parsed once per unique path during one graph construction.
+   type include_edges_t
+      integer, allocatable :: children(:)
+      integer :: count = 0
+      logical :: parsed = .false.
+   end type include_edges_t
+
+   !> Shared growable path/mask collection with indexed, cached include edges.
+   type file_collection_t
+      type(string_t), allocatable :: paths(:)
+      !> Internal root bits also drive include propagation and cycle detection.
+      integer(int64), allocatable :: masks(:)
+      !> Global metadata bypasses filters and exports a zero mask regardless of internal root bits.
+      logical, allocatable :: protected(:)
+      type(include_edges_t), allocatable :: includes(:)
+      integer, allocatable :: slots(:)
+      integer :: count = 0
+   contains
+      procedure :: add => collection_add
+      procedure :: finish => collection_finish
+   end type file_collection_t
 
 contains
 
@@ -32,17 +62,20 @@ contains
    !!
    !! `settings` may be updated by fpm model construction. `files` contains
    !! unique normalized paths; aligned `file_mask` entries map files to `roots`.
-   !! Run selects named applications/examples; test collects all test roots.
+   !! Run/test select named roots; unselected library modules are omitted unless
+   !! reached through fpm module dependencies or submodule implementations. With
+   !! pruning disabled or separate library outputs, retain whole library inputs.
    !! Mapping is disabled when there are no roots or more than 64, yielding
    !! empty `roots` and zero file masks while retaining the selected closure.
    !!
    !! `manifest_key` is always zero here; the engine computes it after refresh.
    !! Timing outputs are seconds: `build_secs` sums model, target, and collection
-   !! time, excluding manifest reading. On manifest/model/target failure, return
+   !! time, excluding manifest reading. Build watches all model files conservatively;
+   !! it does not reproduce fpm pruning. On manifest/model/target failure, return
    !! allocated `error` if supplied, otherwise log the stage and exit with status 1.
    !! Watch-list outputs are only usable after a successful return.
    subroutine compute_watch_files_from_settings(settings, w, files, file_mask, roots, &
-      manifest_key, build_secs, secs_model, secs_targets, secs_watch, error)
+      manifest_key, build_secs, secs_model, secs_targets, secs_watch, error, metadata_files)
       class(fpm_build_settings), intent(inout) :: settings
       !! Typed build/run/test settings; fpm may update these while constructing its model.
       type(watch_opts_t), intent(in) :: w
@@ -61,6 +94,8 @@ contains
       !! Separate stage durations in seconds, respectively model, targets, and file collection.
       type(error_t), allocatable, intent(out), optional :: error
       !! Allocated for manifest/model/target failure; omitted error output makes those failures fatal.
+      type(string_t), allocatable, intent(in), optional :: metadata_files(:)
+      !! Additional protected metadata paths, including missing lookup candidates.
 
       type(package_config_t), allocatable :: package
       type(fpm_model_t),       allocatable :: model
@@ -68,12 +103,14 @@ contains
       type(error_t), allocatable :: err
 
       logical, allocatable :: keep(:)
-      logical, allocatable :: visited(:)
+      logical, allocatable :: visited(:), metadata(:)
       integer(int64), allocatable :: target_mask(:)
 
       type(string_t), allocatable :: dep_dirs(:)
+      type(file_collection_t) :: collected
 
       integer :: i, r, nroots
+      logical :: whole_libraries
       integer(int64) :: rate, t0, t1, tw0, tw1
       integer :: n_before, n_after
       integer(c_int) :: saved_output
@@ -117,7 +154,9 @@ contains
 
       call system_clock(t0)
       call begin_raw_output(structured_logging(), saved_output)
-      call targets_from_sources(targets, model, settings%prune, package%library, err)
+      whole_libraries = .not. settings%prune
+      if (allocated(package%library)) whole_libraries = whole_libraries .or. .not. package%library%monolithic()
+      call build_watch_targets(model, whole_libraries, targets, err)
       call end_raw_output(saved_output)
       call system_clock(t1)
       secs_targets = real(t1 - t0) / real(rate)
@@ -135,9 +174,7 @@ contains
 
       select type (s => settings)
        type is (fpm_test_settings)
-         do i = 1, size(targets)
-            if (targets(i)%ptr%is_executable_target(FPM_SCOPE_TEST)) keep(i) = .true.
-         end do
+         call select_names_or_all(targets, FPM_SCOPE_TEST, s%name, keep)
        type is (fpm_run_settings)
          if (s%example) then
             call select_names_or_all(targets, FPM_SCOPE_EXAMPLE, s%name, keep)
@@ -181,23 +218,34 @@ contains
          end if
       end if
 
-      call gather_files_with_mask(targets, visited, target_mask, files, file_mask, &
+      call gather_files_with_mask(targets, visited, target_mask, collected, &
          trim_or_empty(settings%build_dir), model, w%watch_deps, dep_dirs)
 
-      call push_file_with_mask(files, file_mask, "fpm.toml", trim_or_empty(settings%build_dir), 0_int64, dep_dirs)
+      call collect_manifest_metadata(collected, "fpm.toml", trim_or_empty(settings%build_dir), dep_dirs)
 
       if (w%watch_deps) then
          do i = 1, size(dep_dirs)
             if (len_trim(dep_dirs(i)%s) == 0) cycle
-            call push_file_with_mask(files, file_mask, join_path(dep_dirs(i)%s, "fpm.toml"), &
-               trim_or_empty(settings%build_dir), 0_int64, dep_dirs)
+            call collect_manifest_metadata(collected, join_path(dep_dirs(i)%s, "fpm.toml"), &
+               trim_or_empty(settings%build_dir), dep_dirs)
          end do
       end if
+
+      if (present(metadata_files)) then
+         if (allocated(metadata_files)) then
+            do i = 1, size(metadata_files)
+               call collected%add(metadata_files(i)%s, trim_or_empty(settings%build_dir), 0_int64, &
+                  dep_dirs, preserve=.true., allow_missing=.true.)
+            end do
+         end if
+      end if
+
+      call collected%finish(files, file_mask, metadata)
 
       n_before = 0
       if (allocated(files)) n_before = size(files)
 
-      call filter_watch_files(files, w%include, w%ignore, file_mask)
+      call filter_watch_files(files, w%include, w%ignore, file_mask, preserve=metadata)
 
       n_after = 0
       if (allocated(files)) n_after = size(files)
@@ -266,46 +314,92 @@ contains
       end if
    end subroutine handle_graph_error
 
-   !> Release the uniquely owned target objects and their shared dependency references.
+   !> Own one fpm target per model source and delegate USE resolution to fpm.
    !!
-   !! fpm returns pointer wrappers without finalizers. Collect every reachable node
-   !! while all pointers remain valid, then remove the dependency references before
-   !! deallocating each target and its allocatable source/command data exactly once.
-   !! Nodes already discarded without remaining references by fpm's pruning routine
-   !! cannot be recovered through the returned target graph.
+   !! No fpm pruning routine is called: its discarded pointer allocations cannot
+   !! be recovered by callers. These nodes serve watch membership only. Every
+   !! allocation stays in `targets`, including on dependency-resolution errors.
+   subroutine build_watch_targets(model, whole_libraries, targets, error)
+      type(fpm_model_t), intent(in) :: model
+      logical, intent(in) :: whole_libraries
+      type(build_target_ptr), allocatable, intent(out) :: targets(:)
+      type(error_t), allocatable, intent(out) :: error
+      integer :: i, j, k, n
+      character(len=:), allocatable :: output
+
+      n = 0
+      do i = 1, size(model%packages)
+         n = n + size(model%packages(i)%sources)
+      end do
+      allocate(targets(n))
+      k = 0
+      do i = 1, size(model%packages)
+         do j = 1, size(model%packages(i)%sources)
+            k = k + 1
+            output = model%packages(i)%sources(j)%file_name
+            if (model%packages(i)%sources(j)%unit_type == FPM_UNIT_PROGRAM) then
+               output = get_exe_name_with_suffix(model%packages(i)%sources(j))
+            end if
+            targets(k) = new_target(model%packages(i)%name, FPM_TARGET_OBJECT, &
+               output_name=output, source=model%packages(i)%sources(j))
+            targets(k)%ptr%schedule = k
+         end do
+      end do
+      call resolve_module_dependencies(targets, model%external_modules, error)
+      if (allocated(error)) return
+
+      ! Implementations and sources without module symbols cannot be narrowed by
+      ! USE resolution. Retain library link inputs and inputs beside each program.
+      do i = 1, size(targets)
+         associate(source => targets(i)%ptr%source)
+            if (whole_libraries .and. any(source%unit_scope == [FPM_SCOPE_LIB, FPM_SCOPE_DEP])) then
+               do j = 1, size(targets)
+                  if (targets(j)%ptr%source%unit_type == FPM_UNIT_PROGRAM) then
+                     call add_dependency(targets(j)%ptr, targets(i)%ptr)
+                  end if
+               end do
+            end if
+            if (source%unit_type == FPM_UNIT_SUBMODULE) then
+               do j = 1, size(targets)
+                  do k = 1, size(source%parent_modules)
+                     if (source%parent_modules(k)%s .in. targets(j)%ptr%source%modules_provided) then
+                        call add_dependency(targets(j)%ptr, targets(i)%ptr)
+                     end if
+                  end do
+               end do
+            else if (any(source%unit_type == [FPM_UNIT_SUBPROGRAM, FPM_UNIT_CSOURCE, FPM_UNIT_CPPSOURCE])) then
+               do j = 1, size(targets)
+                  if (targets(j)%ptr%source%unit_type /= FPM_UNIT_PROGRAM) cycle
+                  if (any(source%unit_scope == [FPM_SCOPE_LIB, FPM_SCOPE_DEP]) .or. &
+                      (source%unit_scope == targets(j)%ptr%source%unit_scope .and. &
+                       starts_with(dirname(source%file_name), dirname(targets(j)%ptr%source%file_name)))) then
+                     call add_dependency(targets(j)%ptr, targets(i)%ptr)
+                  end if
+               end do
+            end if
+         end associate
+      end do
+   end subroutine build_watch_targets
+
+   !> Release every owned source node once, independent of shared dependency edges.
    subroutine release_targets(targets)
       type(build_target_ptr), allocatable, intent(inout) :: targets(:)
-      type(build_target_ptr), allocatable :: owned(:)
-      integer :: i, j
-
+      integer :: i
       if (.not. allocated(targets)) return
-      allocate(owned(0))
       do i = 1, size(targets)
-         if (.not. associated(targets(i)%ptr)) cycle
-         if (find_ptr_index(targets(i)%ptr, owned) > 0) cycle
-         call add_target_ptr(owned, targets(i))
+         if (associated(targets(i)%ptr)) deallocate(targets(i)%ptr)
       end do
-
-      i = 1
-      do while (i <= size(owned))
-         if (allocated(owned(i)%ptr%dependencies)) then
-            do j = 1, size(owned(i)%ptr%dependencies)
-               if (.not. associated(owned(i)%ptr%dependencies(j)%ptr)) cycle
-               if (find_ptr_index(owned(i)%ptr%dependencies(j)%ptr, owned) > 0) cycle
-               call add_target_ptr(owned, owned(i)%ptr%dependencies(j))
-            end do
-         end if
-         i = i + 1
-      end do
-
       deallocate(targets)
-      do i = 1, size(owned)
-         if (allocated(owned(i)%ptr%dependencies)) deallocate(owned(i)%ptr%dependencies)
-      end do
-      do i = 1, size(owned)
-         deallocate(owned(i)%ptr)
-      end do
    end subroutine release_targets
+
+   !> Check program membership directly on fpm's source metadata.
+   pure logical function is_program_in_scope(target, scope) result(is_program)
+      type(build_target_ptr), intent(in) :: target
+      integer, intent(in) :: scope
+      is_program = .false.
+      if (.not. allocated(target%ptr%source)) return
+      is_program = target%ptr%source%unit_type == FPM_UNIT_PROGRAM .and. target%ptr%source%unit_scope == scope
+   end function is_program_in_scope
 
    !> Return whether the settings correspond to `fpm run` or `fpm test`.
    logical function is_run_or_test(settings)
@@ -319,238 +413,293 @@ contains
       end select
    end function is_run_or_test
 
-   !> Collect visited source targets and resolved includes with aligned root masks.
-   !!
-   !! `visited` aligns with `targets`; an absent/unallocated `target_mask` yields
-   !! zero masks. When dependency watching is disabled, skip foreign-package
-   !! sources and includes inside dependency directories. Duplicate paths merge
-   !! masks; only existing paths passing build-directory checks are retained.
-   subroutine gather_files_with_mask(targets, visited, target_mask, files, file_mask, build_dir, model, watch_deps, dep_dirs)
+   !> Collect selected source/include closures into the shared path/mask collection.
+   subroutine gather_files_with_mask(targets, visited, target_mask, collected, build_dir, model, watch_deps, dep_dirs)
       type(build_target_ptr), intent(in) :: targets(:)
       logical, intent(in) :: visited(:)
-      integer(int64), allocatable, intent(in), optional :: target_mask(:)
-      type(string_t), allocatable, intent(out) :: files(:)
-      integer(int64), allocatable, intent(out) :: file_mask(:)
+      integer(int64), allocatable, intent(in) :: target_mask(:)
+      type(file_collection_t), intent(inout) :: collected
       character(len=*), intent(in) :: build_dir
       type(fpm_model_t), intent(in) :: model
       logical, intent(in) :: watch_deps
       type(string_t), allocatable, intent(in) :: dep_dirs(:)
-
-      type(string_t), allocatable :: buf(:)
-      integer(int64), allocatable :: mbuf(:)
-      integer :: n, cap
-      integer :: i, j
-      integer(int64) :: m
-      character(len=:), allocatable :: include_file
-
-      n = 0
-      cap = 256
-      allocate(buf(cap), mbuf(cap))
+      integer :: i
+      integer(int64) :: mask
 
       do i = 1, size(targets)
          if (.not. visited(i)) cycle
-         if (.not. allocated(targets(i)%ptr%source)) cycle
          if (.not. watch_deps) then
-            if (allocated(targets(i)%ptr%package_name)) then
-               if (targets(i)%ptr%package_name /= model%package_name) cycle
-            end if
+            if (targets(i)%ptr%package_name /= model%package_name) cycle
          end if
-
-         m = 0_int64
-         if (present(target_mask)) then
-            if (allocated(target_mask)) m = target_mask(i)
-         end if
-
-         call vec_push_unique(buf, mbuf, n, cap, targets(i)%ptr%source%file_name, build_dir, m, dep_dirs)
-
-         if (allocated(targets(i)%ptr%source%include_dependencies)) then
-            do j = 1, size(targets(i)%ptr%source%include_dependencies)
-               include_file = resolve_include_file(targets(i)%ptr%source%file_name, &
-                  targets(i)%ptr%source%include_dependencies(j)%s, model%include_dirs)
-               if (len_trim(include_file) == 0) cycle
-               if (.not. watch_deps) then
-                  if (is_in_dep_dirs(include_file, dep_dirs)) cycle
-               end if
-               call vec_push_unique(buf, mbuf, n, cap, include_file, build_dir, m, dep_dirs)
-            end do
-         end if
+         mask = 0_int64
+         if (allocated(target_mask)) mask = target_mask(i)
+         call gather_include_closure(targets(i)%ptr%source%file_name, mask, collected, &
+            build_dir, model%include_dirs, watch_deps, dep_dirs)
       end do
-
-      call finalize_vec(buf, mbuf, n, files, file_mask)
-
-   contains
-
-      !> Transfer the populated buffer prefix into exact-size aligned file/mask arrays and release buffers.
-      subroutine finalize_vec(buf, mbuf, n, files, file_mask)
-         type(string_t), allocatable, intent(inout) :: buf(:)
-         integer(int64), allocatable, intent(inout) :: mbuf(:)
-         integer, intent(in) :: n
-         type(string_t), allocatable, intent(out) :: files(:)
-         integer(int64), allocatable, intent(out) :: file_mask(:)
-         integer :: k
-
-         if (n <= 0) then
-            allocate(files(0), file_mask(0))
-            deallocate(buf, mbuf)
-            return
-         end if
-
-         allocate(files(n), file_mask(n))
-         do k = 1, n
-            call move_alloc(buf(k)%s, files(k)%s)
-            file_mask(k) = mbuf(k)
-         end do
-         deallocate(buf, mbuf)
-      end subroutine finalize_vec
-
    end subroutine gather_files_with_mask
 
-   !> Resolve an include path, returning a normalized canonical path or an empty string.
+   !> Recover original and nested includes through fpm's public source parsers.
    !!
-   !! Existing absolute paths are accepted directly. Relative names are searched
-   !! beside the source, then in fpm include directories in order, then relative
-   !! to the current working directory. The first existing candidate wins.
-   function resolve_include_file(source_file, include_name, include_dirs) result(path)
-      character(len=*), intent(in) :: source_file, include_name
-      type(string_t), allocatable, intent(in) :: include_dirs(:)
-      character(len=:), allocatable :: path, candidate
+   !! The Fortran parser is deliberately called without preprocessing: fpm's
+   !! CPP-enabled model parser expands and discards the original include paths.
+   !! The C parser supplies quoted CPP directives, including in Fortran sources.
+   !! Parse both languages once per path so mixed include trees remain complete.
+   !! Later roots propagate their bits through cached edges without rereading files.
+   !! Merging bits before recursion terminates cycles and shared subtrees.
+   recursive subroutine gather_include_closure(path, mask, collected, build_dir, include_dirs, watch_deps, dep_dirs, path_index)
+      character(len=*), intent(in) :: path, build_dir
+      integer(int64), intent(in) :: mask
+      type(file_collection_t), intent(inout) :: collected
+      type(string_t), allocatable, intent(in) :: include_dirs(:), dep_dirs(:)
+      logical, intent(in) :: watch_deps
+      integer, intent(out), optional :: path_index
+      type(srcfile_t) :: parsed
+      type(error_t), allocatable :: parse_error
+      logical :: changed
+      integer :: language, i, io_status, index
+      integer(int64) :: file_size
+
+      if (present(path_index)) path_index = 0
+      if (.not. watch_deps) then
+         if (is_in_dep_dirs(normalize_path(path), dep_dirs)) return
+      end if
+      call collected%add(path, build_dir, mask, dep_dirs, changed, allow_missing=.true., path_index=index)
+      if (present(path_index)) path_index = index
+      if (.not. changed) return
+      if (collected%includes(index)%parsed) then
+         do i = 1, collected%includes(index)%count
+            call propagate_include_mask(collected%includes(index)%children(i), mask, collected)
+         end do
+         return
+      end if
+      collected%includes(index)%parsed = .true.
+      ! fpm's text reader leaves its unit open for an empty file. Empty files
+      ! have no includes, so retain them in the watch set without parsing them.
+      inquire(file=path, size=file_size, iostat=io_status)
+      if (io_status /= 0) return
+      if (file_size <= 0_int64) return
+      do language = 1, 2
+         if (language == 1) then
+            parsed = parse_f_source(path, parse_error)
+         else
+            parsed = parse_c_source(path, parse_error)
+         end if
+         if (.not. allocated(parsed%include_dependencies)) cycle
+         do i = 1, size(parsed%include_dependencies)
+            call gather_include_candidates(index, path, parsed%include_dependencies(i)%s, mask, collected, &
+               build_dir, include_dirs, watch_deps, dep_dirs)
+         end do
+      end do
+   end subroutine gather_include_closure
+
+   !> Propagate new root bits over cached edges without path lookup or file I/O.
+   recursive subroutine propagate_include_mask(index, mask, collected)
+      integer, intent(in) :: index
+      integer(int64), intent(in) :: mask
+      type(file_collection_t), intent(inout) :: collected
       integer :: i
 
-      path = ""
-      if (len_trim(include_name) == 0) return
+      if (ior(collected%masks(index), mask) == collected%masks(index)) return
+      collected%masks(index) = ior(collected%masks(index), mask)
+      do i = 1, collected%includes(index)%count
+         call propagate_include_mask(collected%includes(index)%children(i), mask, collected)
+      end do
+   end subroutine propagate_include_mask
 
+   !> Append one resolved candidate edge with amortized linear storage growth.
+   subroutine append_include_edge(edges, child)
+      type(include_edges_t), intent(inout) :: edges
+      integer, intent(in) :: child
+      integer, allocatable :: grown(:)
+      integer :: capacity
+
+      if (child == 0) return
+      if (.not. allocated(edges%children)) allocate(edges%children(4))
+      if (edges%count == size(edges%children)) then
+         capacity = 2 * size(edges%children)
+         allocate(grown(capacity))
+         grown(:edges%count) = edges%children(:edges%count)
+         call move_alloc(grown, edges%children)
+      end if
+      edges%count = edges%count + 1
+      edges%children(edges%count) = child
+   end subroutine append_include_edge
+
+   !> Retain searched include candidates through the first existing match.
+   !!
+   !! Missing search locations remain watched so creation, deletion, and
+   !! recreation preserve the same path and root mask. Search beside the source,
+   !! then fpm include directories, then the invocation directory. Candidates
+   !! following an existing match cannot currently affect resolution and are omitted.
+   recursive subroutine gather_include_candidates(source_index, source_file, include_name, mask, collected, &
+      build_dir, include_dirs, watch_deps, dep_dirs)
+      integer, intent(in) :: source_index
+      character(len=*), intent(in) :: source_file, include_name, build_dir
+      integer(int64), intent(in) :: mask
+      type(file_collection_t), intent(inout) :: collected
+      type(string_t), allocatable, intent(in) :: include_dirs(:), dep_dirs(:)
+      logical, intent(in) :: watch_deps
+      character(len=:), allocatable :: candidate
+      integer :: i, child
+
+      if (len_trim(include_name) == 0) return
       if (is_absolute_path(include_name)) then
-         if (exists(include_name)) path = normalize_path(canon_path(include_name))
+         call gather_include_closure(normalize_path(canon_path(include_name)), mask, collected, &
+            build_dir, include_dirs, watch_deps, dep_dirs, child)
+         call append_include_edge(collected%includes(source_index), child)
          return
       end if
 
       candidate = normalize_path(canon_path(join_path(dirname(source_file), include_name)))
-      if (exists(candidate)) then
-         path = candidate
-         return
-      end if
-
+      call gather_include_closure(candidate, mask, collected, build_dir, include_dirs, watch_deps, dep_dirs, child)
+      call append_include_edge(collected%includes(source_index), child)
+      if (exists(candidate)) return
       if (allocated(include_dirs)) then
          do i = 1, size(include_dirs)
             candidate = normalize_path(canon_path(join_path(include_dirs(i)%s, include_name)))
-            if (.not. exists(candidate)) cycle
-            path = candidate
-            return
+            call gather_include_closure(candidate, mask, collected, build_dir, include_dirs, watch_deps, dep_dirs, child)
+            call append_include_edge(collected%includes(source_index), child)
+            if (exists(candidate)) return
          end do
       end if
+      call gather_include_closure(normalize_path(canon_path(include_name)), mask, collected, &
+         build_dir, include_dirs, watch_deps, dep_dirs, child)
+      call append_include_edge(collected%includes(source_index), child)
+   end subroutine gather_include_candidates
 
-      ! Some compilers also search the invocation directory for Fortran INCLUDE.
-      if (exists(include_name)) path = normalize_path(canon_path(include_name))
-   end function resolve_include_file
-
-   !> Append an existing eligible path to aligned arrays, merging mask bits for duplicates.
-   subroutine push_file_with_mask(files, file_mask, path, build_dir, mask, dep_dirs)
-      type(string_t), allocatable, intent(inout) :: files(:)
-      integer(int64), allocatable, intent(inout) :: file_mask(:)
-      character(len=*), intent(in) :: path
-      character(len=*), intent(in) :: build_dir
-      integer(int64), intent(in) :: mask
-      type(string_t), allocatable, intent(in), optional :: dep_dirs(:)
-
-      type(string_t), allocatable :: buf(:)
-      integer(int64), allocatable :: mbuf(:)
-      integer :: n, cap, i
-
-      if (.not. allocated(files)) then
-         n = 0
-         cap = 8
-         allocate(buf(cap), mbuf(cap))
-      else
-         n = size(files)
-         cap = max(8, n)
-         allocate(buf(cap), mbuf(cap))
-         do i = 1, n
-            buf(i)%s = files(i)%s
-            mbuf(i) = file_mask(i)
-         end do
-      end if
-
-      if (present(dep_dirs)) then
-         call vec_push_unique(buf, mbuf, n, cap, path, build_dir, mask, dep_dirs)
-      else
-         call vec_push_unique(buf, mbuf, n, cap, path, build_dir, mask)
-      end if
-
-      call finalize_vec(buf, mbuf, n, files, file_mask)
-
-   contains
-
-      !> Transfer the populated buffer prefix into exact-size aligned file/mask arrays and release buffers.
-      subroutine finalize_vec(buf, mbuf, n, files, file_mask)
-         type(string_t), allocatable, intent(inout) :: buf(:)
-         integer(int64), allocatable, intent(inout) :: mbuf(:)
-         integer, intent(in) :: n
-         type(string_t), allocatable, intent(inout) :: files(:)
-         integer(int64), allocatable, intent(inout) :: file_mask(:)
-         type(string_t), allocatable :: out(:)
-         integer(int64), allocatable :: outm(:)
-         integer :: k
-
-         if (allocated(files)) deallocate(files)
-         if (allocated(file_mask)) deallocate(file_mask)
-
-         if (n <= 0) then
-            allocate(files(0), file_mask(0))
-            deallocate(buf, mbuf)
-            return
-         end if
-
-         allocate(out(n), outm(n))
-         do k = 1, n
-            call move_alloc(buf(k)%s, out(k)%s)
-            outm(k) = mbuf(k)
-         end do
-         deallocate(buf, mbuf)
-         call move_alloc(out, files)
-         call move_alloc(outm, file_mask)
-      end subroutine finalize_vec
-
-   end subroutine push_file_with_mask
-
-   !> Add a normalized existing path to a growable buffer, merging duplicate masks.
+   !> Watch each manifest and its fpm-supported version file as protected metadata.
    !!
-   !! Exclude build-directory paths unless supplied dependency directories contain
-   !! the path. `n` counts populated entries; `cap` and both buffers grow together.
-   subroutine vec_push_unique(buf, mbuf, n, cap, path, build_dir, mask, dep_dirs)
-      type(string_t), allocatable, intent(inout) :: buf(:)
-      integer(int64), allocatable, intent(inout) :: mbuf(:)
-      integer, intent(inout) :: n, cap
-      character(len=*), intent(in) :: path
-      character(len=*), intent(in) :: build_dir
+   !! Let fpm parse both TOML and version strings. A version entry names a file
+   !! only if fpm rejects it as a literal version and the relative file exists.
+   subroutine collect_manifest_metadata(collected, manifest, build_dir, dep_dirs)
+      type(file_collection_t), intent(inout) :: collected
+      character(len=*), intent(in) :: manifest, build_dir
+      type(string_t), allocatable, intent(in) :: dep_dirs(:)
+      type(toml_table), allocatable :: table
+      type(version_t) :: version
+      type(error_t), allocatable :: error
+      character(len=:), allocatable :: value, version_file
+
+      call collected%add(manifest, build_dir, 0_int64, dep_dirs, preserve=.true.)
+      call read_package_file(table, manifest, error)
+      if (allocated(error)) return
+      call get_value(table, "version", value, "0")
+      call new_version(version, value, error)
+      if (.not. allocated(error)) return
+      version_file = join_path(dirname(manifest), value)
+      if (exists(version_file)) call collected%add(version_file, build_dir, 0_int64, dep_dirs, preserve=.true.)
+   end subroutine collect_manifest_metadata
+
+   !> Insert an eligible path and merge root bits; include candidates may be missing.
+   subroutine collection_add(self, path, build_dir, mask, dep_dirs, changed, preserve, allow_missing, path_index)
+      class(file_collection_t), intent(inout) :: self
+      character(len=*), intent(in) :: path, build_dir
       integer(int64), intent(in) :: mask
-      type(string_t), allocatable, intent(in), optional :: dep_dirs(:)
+      type(string_t), allocatable, intent(in) :: dep_dirs(:)
+      logical, intent(out), optional :: changed
+      logical, intent(in), optional :: preserve, allow_missing
+      integer, intent(out), optional :: path_index
+      logical :: protected, keep_missing
+      character(len=:), allocatable :: normalized
+      integer :: slot, index
 
-      character(len=:), allocatable :: p
-      integer :: i
-
-      p = normalize_path(path)
-      if (len_trim(p) == 0) return
-
-      if (is_ignored_path(p, build_dir)) then
-         if (.not. present(dep_dirs)) return
-         if (.not. is_in_dep_dirs(p, dep_dirs)) return
+      if (present(changed)) changed = .false.
+      if (present(path_index)) path_index = 0
+      protected = .false.
+      if (present(preserve)) protected = preserve
+      keep_missing = .false.
+      if (present(allow_missing)) keep_missing = allow_missing
+      normalized = normalize_path(canon_path(path))
+      if (len_trim(normalized) == 0) return
+      if (.not. protected .and. is_ignored_path(normalized, build_dir)) then
+         if (.not. is_in_dep_dirs(normalized, dep_dirs)) return
       end if
+      if (.not. keep_missing) then
+         if (.not. exists(normalized)) return
+      end if
+      if (.not. allocated(self%paths)) call collection_grow(self)
+      if (self%count * 2 >= size(self%slots)) call collection_grow(self)
+      slot = collection_slot(self, normalized)
+      index = self%slots(slot)
+      if (index > 0) then
+         if (present(path_index)) path_index = index
+         if (present(changed)) changed = ior(self%masks(index), mask) /= self%masks(index)
+         self%masks(index) = ior(self%masks(index), mask)
+         self%protected(index) = self%protected(index) .or. protected
+         return
+      end if
+      self%count = self%count + 1
+      self%slots(slot) = self%count
+      self%paths(self%count)%s = normalized
+      self%masks(self%count) = mask
+      self%protected(self%count) = protected
+      if (present(path_index)) path_index = self%count
+      if (present(changed)) changed = .true.
+   end subroutine collection_add
 
-      if (.not. exists(p)) return
-
-      do i = 1, n
-         if (buf(i)%s == p) then
-            mbuf(i) = ior(mbuf(i), mask)
-            return
-         end if
+   !> Find a path's matching or empty open-addressed slot.
+   integer function collection_slot(self, path) result(slot)
+      class(file_collection_t), intent(in) :: self
+      character(len=*), intent(in) :: path
+      slot = int(iand(fnv_1a(path), int(size(self%slots)-1, int64))) + 1
+      do while (self%slots(slot) /= 0)
+         if (self%paths(self%slots(slot))%s == path) return
+         slot = modulo(slot, size(self%slots)) + 1
       end do
+   end function collection_slot
 
-      if (n >= cap) call vec_grow(buf, mbuf, cap)
+   !> Double collection storage and rebuild the path index at a load below one half.
+   subroutine collection_grow(self)
+      class(file_collection_t), intent(inout) :: self
+      type(string_t), allocatable :: paths(:)
+      integer(int64), allocatable :: masks(:)
+      logical, allocatable :: protected(:)
+      type(include_edges_t), allocatable :: includes(:)
+      integer :: capacity, i, slot
+      capacity = 128
+      if (allocated(self%paths)) capacity = 2 * size(self%paths)
+      allocate(paths(capacity), masks(capacity), protected(capacity), includes(capacity))
+      do i = 1, self%count
+         call move_alloc(self%paths(i)%s, paths(i)%s)
+         masks(i) = self%masks(i)
+         protected(i) = self%protected(i)
+         includes(i)%count = self%includes(i)%count
+         includes(i)%parsed = self%includes(i)%parsed
+         call move_alloc(self%includes(i)%children, includes(i)%children)
+      end do
+      call move_alloc(protected, self%protected)
+      call move_alloc(paths, self%paths)
+      call move_alloc(masks, self%masks)
+      call move_alloc(includes, self%includes)
+      if (allocated(self%slots)) deallocate(self%slots)
+      allocate(self%slots(2*capacity), source=0)
+      do i = 1, self%count
+         slot = collection_slot(self, self%paths(i)%s)
+         self%slots(slot) = i
+      end do
+   end subroutine collection_grow
 
-      n = n + 1
-      buf(n)%s = p
-      mbuf(n) = mask
-   end subroutine vec_push_unique
+   !> Transfer aligned arrays, exporting global metadata independently of include membership.
+   !!
+   !! Keep internal root bits until traversal is complete so metadata can also
+   !! propagate include dependencies and terminate cycles. Its exported zero mask
+   !! makes any metadata change select the full command, even after later propagation.
+   subroutine collection_finish(self, files, masks, protected)
+      class(file_collection_t), intent(inout) :: self
+      type(string_t), allocatable, intent(out) :: files(:)
+      integer(int64), allocatable, intent(out) :: masks(:)
+      logical, allocatable, intent(out) :: protected(:)
+      integer :: i
+      allocate(files(self%count), masks(self%count), protected(self%count))
+      do i = 1, self%count
+         call move_alloc(self%paths(i)%s, files(i)%s)
+         masks(i) = self%masks(i)
+         if (self%protected(i)) masks(i) = 0_int64
+         protected(i) = self%protected(i)
+      end do
+      if (allocated(self%paths)) deallocate(self%paths, self%masks, self%slots, self%protected, self%includes)
+      self%count = 0
+   end subroutine collection_finish
 
    !> Test a normalized path against nonempty normalized dependency-directory prefixes.
    pure logical function is_in_dep_dirs(p, dep_dirs) result(ok)
@@ -576,27 +725,6 @@ contains
          end if
       end do
    end function is_in_dep_dirs
-
-   !> Grow both file/mask buffers to at least 16 or 1.5 times the current capacity.
-   subroutine vec_grow(buf, mbuf, cap)
-      type(string_t), allocatable, intent(inout) :: buf(:)
-      integer(int64), allocatable, intent(inout) :: mbuf(:)
-      integer, intent(inout) :: cap
-
-      type(string_t), allocatable :: nb(:)
-      integer(int64), allocatable :: nm(:)
-      integer :: newcap, i
-
-      newcap = max(16, cap + cap/2)
-      allocate(nb(newcap), nm(newcap))
-      do i = 1, cap
-         nb(i)%s = buf(i)%s
-         nm(i) = mbuf(i)
-      end do
-      call move_alloc(nb, buf)
-      call move_alloc(nm, mbuf)
-      cap = newcap
-   end subroutine vec_grow
 
    !> Mark executable targets in `scope` matching names without clearing existing marks.
    !!
@@ -626,13 +754,13 @@ contains
 
       if (.not. any_name) then
          do i = 1, size(targets)
-            if (targets(i)%ptr%is_executable_target(scope)) keep(i) = .true.
+            if (is_program_in_scope(targets(i), scope)) keep(i) = .true.
          end do
          return
       end if
 
       do i = 1, size(targets)
-         if (.not. targets(i)%ptr%is_executable_target(scope)) cycle
+         if (.not. is_program_in_scope(targets(i), scope)) cycle
          outbase_full = basename(targets(i)%ptr%output_file)
          outbase_stem = basename(targets(i)%ptr%output_file, suffix=.false.)
          do j = 1, size(names)
@@ -687,19 +815,17 @@ contains
       end if
    end subroutine dfs_mark_bool
 
-   !> Return the first 1-based index associated with target pointer `p`, or zero if absent.
+   !> Recover a watcher-owned node index from its stable ID in constant time.
    integer function find_ptr_index(p, all) result(idx)
       use fpm_targets, only: build_target_t
       type(build_target_t), pointer, intent(in) :: p
       type(build_target_ptr), intent(in) :: all(:)
-      integer :: i
-      idx = 0
-      do i = 1, size(all)
-         if (associated(all(i)%ptr, p)) then
-            idx = i
-            return
-         end if
-      end do
+      idx = p%schedule
+      if (idx < 1 .or. idx > size(all)) then
+         idx = 0
+      else if (.not. associated(all(idx)%ptr, p)) then
+         idx = 0
+      end if
    end function find_ptr_index
 
 end module watch_fpm_graph

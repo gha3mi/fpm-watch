@@ -89,7 +89,7 @@
 
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
-                 title=" 6.1% of total for modules and submodules.">206 statements</a>
+                 title=" 7.0% of total for modules and submodules.">289 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -131,8 +131,11 @@
       <div id="vars-0" class="collapse">
         <div class="list-group list-group-flush">
             <a class="list-group-item" href="../module/watch_fingerprint.html#variable-block_size">BLOCK_SIZE</a>
+            <a class="list-group-item" href="../module/watch_fingerprint.html#variable-file_empty">FILE_EMPTY</a>
+            <a class="list-group-item" href="../module/watch_fingerprint.html#variable-file_missing">FILE_MISSING</a>
+            <a class="list-group-item" href="../module/watch_fingerprint.html#variable-file_unreadable">FILE_UNREADABLE</a>
             <a class="list-group-item" href="../module/watch_fingerprint.html#variable-fnv_offset">FNV_OFFSET</a>
-            <a class="list-group-item" href="../module/watch_fingerprint.html#variable-fnv_prime">FNV_PRIME</a>
+            <a class="list-group-item" href="../module/watch_fingerprint.html#variable-mask32">MASK32</a>
             <a class="list-group-item" href="../module/watch_fingerprint.html#variable-io_buf">io_buf</a>
         </div>
       </div>
@@ -170,10 +173,11 @@
         <div class="list-group list-group-flush">
             <a class="list-group-item" href="../module/watch_fingerprint.html#proc-accept_changes">accept_changes</a>
             <a class="list-group-item" href="../module/watch_fingerprint.html#proc-init_fingerprints">init_fingerprints</a>
+            <a class="list-group-item" href="../module/watch_fingerprint.html#proc-preserve_fingerprints">preserve_fingerprints</a>
             <a class="list-group-item" href="../module/watch_fingerprint.html#proc-scan_changes">scan_changes</a>
             <a class="list-group-item" href="../module/watch_fingerprint.html#proc-fnv1a_mix_i64">fnv1a_mix_i64</a>
             <a class="list-group-item" href="../module/watch_fingerprint.html#proc-fnv1a_mix_str">fnv1a_mix_str</a>
-            <a class="list-group-item" href="../module/watch_fingerprint.html#proc-hash_block">hash_block</a>
+            <a class="list-group-item" href="../module/watch_fingerprint.html#proc-sort_path_indices">sort_path_indices</a>
         </div>
       </div>
     </div>
@@ -192,11 +196,11 @@
     </div>
 
     <div class="col-md-9" id='text'>
-      <p>Sample file contents and compare watch-list snapshots.</p>
-<p>Fingerprints mix file size with FNV-style samples of at most three 4096-byte
-blocks: head, middle, and tail. Same-size edits outside the sampled regions
-can be missed. Fingerprints are change-detection heuristics, not content IDs.
-File reads share a reusable module buffer and are intended for serial use.</p>
+      <p>Stream complete file contents and compare watch-list snapshots.</p>
+<p>Every byte contributes to the fingerprint. Missing, empty, and unreadable files
+have distinct states; nonempty content uses a 63-bit hash. Hash collisions are
+still possible, so fingerprints are change detectors, not content identities.
+File reads share a reusable buffer and are intended for serial use.</p>
 <br>          <div class="card mb-4">
       <h3 class="card-header card-title bg-light">Uses</h3>
       <div class="card-body">
@@ -500,7 +504,58 @@ parameter
             <td>::</td>
             <td><strong>BLOCK_SIZE</strong></td>
 <td> =</td>
-                <td>4096</td>
+                <td>65536</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-file_empty"></span>
+              integer(kind=int64),
+            </td>
+              <td>private,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>FILE_EMPTY</strong></td>
+<td> =</td>
+                <td>1_int64</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-file_missing"></span>
+              integer(kind=int64),
+            </td>
+              <td>private,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>FILE_MISSING</strong></td>
+<td> =</td>
+                <td>0_int64</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-file_unreadable"></span>
+              integer(kind=int64),
+            </td>
+              <td>private,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>FILE_UNREADABLE</strong></td>
+<td> =</td>
+                <td>2_int64</td>
             <td>
                 
             </td>
@@ -524,7 +579,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-fnv_prime"></span>
+              <span class="anchor" id="variable-mask32"></span>
               integer(kind=int64),
             </td>
               <td>private,</td>
@@ -532,9 +587,9 @@ parameter
 parameter               
             </td>
             <td>::</td>
-            <td><strong>FNV_PRIME</strong></td>
+            <td><strong>MASK32</strong></td>
 <td> =</td>
-                <td>1099511628211_int64</td>
+                <td>4294967295_int64</td>
             <td>
                 
             </td>
@@ -542,18 +597,18 @@ parameter
         <tr>
             <td>
               <span class="anchor" id="variable-io_buf"></span>
-              character(len=1),
+              character(len=BLOCK_SIZE),
             </td>
               <td>private,</td>
             <td>
-              allocatable, save
+              save
             </td>
             <td>::</td>
-            <td><strong>io_buf</strong>(:)</td>
+            <td><strong>io_buf</strong></td>
                 <td></td>
                 <td></td>
             <td>
-                <p>Shared 4096-byte scratch buffer; file fingerprinting is not reentrant.</p>
+                <p>Shared bounded scratch buffer; file fingerprinting is not reentrant.</p>
             </td>
         </tr>
     </tbody>
@@ -573,7 +628,7 @@ parameter
 </h3></div>
     <div class="card-body">
           
-  <p>Mix file size with up to three sampled blocks of at most 4096 bytes each.</p><a href="../proc/file_fingerprint.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+  <p>Hash every byte using bounded reads, reserving distinct non-content states.</p><a href="../proc/file_fingerprint.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -598,7 +653,7 @@ parameter
             <td>::</td>
             <td><strong>path</strong></td>
             <td>
-<p>File path to sample; trailing blanks are removed before inquiry/open.</p>
+
             </td>
         </tr>
     </tbody>
@@ -633,7 +688,7 @@ parameter
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-settings~11"></span>
+              <span class="anchor" id="variable-settings~3"></span>
               class(fpm_build_settings),
             </td>
 <td>intent(in)</td>
@@ -648,7 +703,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-files~15"></span>
+              <span class="anchor" id="variable-files~6"></span>
               type(string_t),
             </td>
 <td>intent(in),</td>
@@ -679,6 +734,271 @@ parameter
     <div class="card-body">
           
   <p>Compare unique path/fingerprint snapshots independently of file ordering.</p><a href="../proc/watch_state_changed.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-old_files"></span>
+              type(string_t),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>old_files</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-old_fp"></span>
+              integer(kind=int64),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>old_fp</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-new_files"></span>
+              type(string_t),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>new_files</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-new_fp"></span>
+              integer(kind=int64),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>new_fp</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <h4>
+    Return Value
+    <small>logical</small>
+    </h4>
+    
+
+    </div>
+  </div>
+
+        </section>
+        <br>
+
+        <section>
+          <h2>Subroutines</h2>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-accept_changes"></span> <h3>public  subroutine <a href='../proc/accept_changes.html'>accept_changes</a>(fp_prev, fp_now, changed_idx, changed_count)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Copy computed fingerprints into the baseline for valid changed indices.</p><a href="../proc/accept_changes.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-fp_prev~3"></span>
+              integer(kind=int64),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>fp_prev</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-fp_now~3"></span>
+              integer(kind=int64),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>fp_now</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-changed_idx~3"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>changed_idx</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-changed_count~2"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>changed_count</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-init_fingerprints"></span> <h3>public  subroutine <a href='../proc/init_fingerprints.html'>init_fingerprints</a>(files, fp_prev, fp_now, changed_idx)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Initialize fingerprint arrays for a watch list.</p><a href="../proc/init_fingerprints.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-files~4"></span>
+              type(string_t),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>files</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-fp_prev"></span>
+              integer(kind=int64),
+            </td>
+<td>intent(inout),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>fp_prev</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-fp_now"></span>
+              integer(kind=int64),
+            </td>
+<td>intent(inout),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>fp_now</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-changed_idx"></span>
+              integer,
+            </td>
+<td>intent(inout),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>changed_idx</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-preserve_fingerprints"></span> <h3>public pure subroutine <a href='../proc/preserve_fingerprints.html'>preserve_fingerprints</a>(old_files, old_fp, new_files, new_fp)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Preserve accepted baselines by path while retaining initial values for new paths.</p><a href="../proc/preserve_fingerprints.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -738,10 +1058,10 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-new_fp"></span>
+              <span class="anchor" id="variable-new_fp~2"></span>
               integer(kind=int64),
             </td>
-<td>intent(in),</td>
+<td>intent(inout),</td>
               <td></td>            <td>
               allocatable
             </td>
@@ -754,26 +1074,16 @@ parameter
     </tbody>
   </table>
 
-    <h4>
-    Return Value
-    <small>logical</small>
-    </h4>
-    
 
     </div>
   </div>
 
-        </section>
-        <br>
-
-        <section>
-          <h2>Subroutines</h2>
               <div class="card">
-    <div class="card-header codesum"><span class="anchor" id="proc-accept_changes"></span> <h3>public  subroutine <a href='../proc/accept_changes.html'>accept_changes</a>(fp_prev, fp_now, changed_idx, changed_count)  
+    <div class="card-header codesum"><span class="anchor" id="proc-scan_changes"></span> <h3>public  subroutine <a href='../proc/scan_changes.html'>scan_changes</a>(files, fp_prev, fp_now, changed_idx, changed_count)  
 </h3></div>
     <div class="card-body">
           
-  <p>Copy sampled fingerprints into the baseline for valid changed indices.</p><a href="../proc/accept_changes.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+  <p>Hash files and return 1-based indices differing from the accepted baseline.</p><a href="../proc/scan_changes.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -788,92 +1098,7 @@ parameter
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-fp_prev~4"></span>
-              integer(kind=int64),
-            </td>
-<td>intent(inout)</td>
-              <td></td>            <td>
-              
-            </td>
-            <td>::</td>
-            <td><strong>fp_prev</strong>(:)</td>
-            <td>
-
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-fp_now~4"></span>
-              integer(kind=int64),
-            </td>
-<td>intent(in)</td>
-              <td></td>            <td>
-              
-            </td>
-            <td>::</td>
-            <td><strong>fp_now</strong>(:)</td>
-            <td>
-
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-changed_idx~7"></span>
-              integer,
-            </td>
-<td>intent(in)</td>
-              <td></td>            <td>
-              
-            </td>
-            <td>::</td>
-            <td><strong>changed_idx</strong>(:)</td>
-            <td>
-
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-changed_count~6"></span>
-              integer,
-            </td>
-<td>intent(in)</td>
-              <td></td>            <td>
-              
-            </td>
-            <td>::</td>
-            <td><strong>changed_count</strong></td>
-            <td>
-
-            </td>
-        </tr>
-    </tbody>
-  </table>
-
-
-    </div>
-  </div>
-
-              <div class="card">
-    <div class="card-header codesum"><span class="anchor" id="proc-init_fingerprints"></span> <h3>public  subroutine <a href='../proc/init_fingerprints.html'>init_fingerprints</a>(files, fp_prev, fp_now, changed_idx)  
-</h3></div>
-    <div class="card-body">
-          
-  <p>Initialize fingerprint arrays for a watch list.</p><a href="../proc/init_fingerprints.html" class="pull-right"><emph>Read more&hellip;</emph></a>
-
-  <h4>Arguments</h4>
-      <table class="table table-striped varlist">
-    <thead>
-      <tr>
-        <th scope="col">Type</th>
-<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
-        <th scope="col"></th>
-        <th scope="col">Name</th>
-        <th scope="col"></th>
-    </thead>
-    <tbody>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-files~13"></span>
+              <span class="anchor" id="variable-files~5"></span>
               type(string_t),
             </td>
 <td>intent(in),</td>
@@ -891,91 +1116,6 @@ parameter
               <span class="anchor" id="variable-fp_prev~2"></span>
               integer(kind=int64),
             </td>
-<td>intent(inout),</td>
-              <td></td>            <td>
-              allocatable
-            </td>
-            <td>::</td>
-            <td><strong>fp_prev</strong>(:)</td>
-            <td>
-
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-fp_now~2"></span>
-              integer(kind=int64),
-            </td>
-<td>intent(inout),</td>
-              <td></td>            <td>
-              allocatable
-            </td>
-            <td>::</td>
-            <td><strong>fp_now</strong>(:)</td>
-            <td>
-
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-changed_idx~5"></span>
-              integer,
-            </td>
-<td>intent(inout),</td>
-              <td></td>            <td>
-              allocatable
-            </td>
-            <td>::</td>
-            <td><strong>changed_idx</strong>(:)</td>
-            <td>
-
-            </td>
-        </tr>
-    </tbody>
-  </table>
-
-
-    </div>
-  </div>
-
-              <div class="card">
-    <div class="card-header codesum"><span class="anchor" id="proc-scan_changes"></span> <h3>public  subroutine <a href='../proc/scan_changes.html'>scan_changes</a>(files, fp_prev, fp_now, changed_idx, changed_count)  
-</h3></div>
-    <div class="card-body">
-          
-  <p>Resample files and return 1-based indices differing from the accepted baseline.</p><a href="../proc/scan_changes.html" class="pull-right"><emph>Read more&hellip;</emph></a>
-
-  <h4>Arguments</h4>
-      <table class="table table-striped varlist">
-    <thead>
-      <tr>
-        <th scope="col">Type</th>
-<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
-        <th scope="col"></th>
-        <th scope="col">Name</th>
-        <th scope="col"></th>
-    </thead>
-    <tbody>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-files~14"></span>
-              type(string_t),
-            </td>
-<td>intent(in),</td>
-              <td></td>            <td>
-              allocatable
-            </td>
-            <td>::</td>
-            <td><strong>files</strong>(:)</td>
-            <td>
-
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-fp_prev~3"></span>
-              integer(kind=int64),
-            </td>
 <td>intent(in)</td>
               <td></td>            <td>
               
@@ -988,7 +1128,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-fp_now~3"></span>
+              <span class="anchor" id="variable-fp_now~2"></span>
               integer(kind=int64),
             </td>
 <td>intent(inout)</td>
@@ -1003,7 +1143,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-changed_idx~6"></span>
+              <span class="anchor" id="variable-changed_idx~2"></span>
               integer,
             </td>
 <td>intent(inout)</td>
@@ -1018,7 +1158,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-changed_count~5"></span>
+              <span class="anchor" id="variable-changed_count"></span>
               integer,
             </td>
 <td>intent(out)</td>
@@ -1039,11 +1179,11 @@ parameter
   </div>
 
               <div class="card">
-    <div class="card-header codesum"><span class="anchor" id="proc-fnv1a_mix_i64"></span> <h3>private  subroutine <a href='../proc/fnv1a_mix_i64.html'>fnv1a_mix_i64</a>(h, x)  
+    <div class="card-header codesum"><span class="anchor" id="proc-fnv1a_mix_i64"></span> <h3>private pure subroutine <a href='../proc/fnv1a_mix_i64.html'>fnv1a_mix_i64</a>(h, x)  
 </h3></div>
     <div class="card-body">
           
-  <p>XOR one integer into the hash state, then multiply by the FNV prime.</p>
+  <p>Mix with the FNV prime modulo 2**64 using bounded 32-bit limbs.</p><a href="../proc/fnv1a_mix_i64.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -1058,7 +1198,7 @@ parameter
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-h~5"></span>
+              <span class="anchor" id="variable-h~4"></span>
               integer(kind=int64),
             </td>
 <td>intent(inout)</td>
@@ -1094,7 +1234,7 @@ parameter
   </div>
 
               <div class="card">
-    <div class="card-header codesum"><span class="anchor" id="proc-fnv1a_mix_str"></span> <h3>private  subroutine <a href='../proc/fnv1a_mix_str.html'>fnv1a_mix_str</a>(h, s)  
+    <div class="card-header codesum"><span class="anchor" id="proc-fnv1a_mix_str"></span> <h3>private pure subroutine <a href='../proc/fnv1a_mix_str.html'>fnv1a_mix_str</a>(h, s)  
 </h3></div>
     <div class="card-body">
           
@@ -1113,7 +1253,7 @@ parameter
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-h~4"></span>
+              <span class="anchor" id="variable-h~3"></span>
               integer(kind=int64),
             </td>
 <td>intent(inout)</td>
@@ -1128,7 +1268,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-s~13"></span>
+              <span class="anchor" id="variable-s~2"></span>
               character(len=*),
             </td>
 <td>intent(in)</td>
@@ -1149,11 +1289,11 @@ parameter
   </div>
 
               <div class="card">
-    <div class="card-header codesum"><span class="anchor" id="proc-hash_block"></span> <h3>private  subroutine <a href='../proc/hash_block.html'>hash_block</a>(u, pos, n, h)  
+    <div class="card-header codesum"><span class="anchor" id="proc-sort_path_indices"></span> <h3>private pure recursive subroutine <a href='../proc/sort_path_indices.html'>sort_path_indices</a>(files, order, scratch, first, last)  
 </h3></div>
     <div class="card-body">
           
-  <p>Mix bytes from a 1-based stream position; skip the block if its read fails.</p>
+  <p>Stable merge sort of path indices; the file storage itself remains unchanged.</p>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -1168,60 +1308,75 @@ parameter
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-u~2"></span>
+              <span class="anchor" id="variable-files~3"></span>
+              type(string_t),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>files</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-order"></span>
               integer,
-            </td>
-<td>intent(in)</td>
-              <td></td>            <td>
-              
-            </td>
-            <td>::</td>
-            <td><strong>u</strong></td>
-            <td>
-
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-pos~4"></span>
-              integer(kind=int64),
-            </td>
-<td>intent(in)</td>
-              <td></td>            <td>
-              
-            </td>
-            <td>::</td>
-            <td><strong>pos</strong></td>
-            <td>
-
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-n~20"></span>
-              integer,
-            </td>
-<td>intent(in)</td>
-              <td></td>            <td>
-              
-            </td>
-            <td>::</td>
-            <td><strong>n</strong></td>
-            <td>
-
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-h~3"></span>
-              integer(kind=int64),
             </td>
 <td>intent(inout)</td>
               <td></td>            <td>
               
             </td>
             <td>::</td>
-            <td><strong>h</strong></td>
+            <td><strong>order</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-scratch~3"></span>
+              integer,
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>scratch</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-first"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>first</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-last"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>last</strong></td>
             <td>
 
             </td>
@@ -1256,7 +1411,7 @@ parameter
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2026-10-12T14:52:15.896174+0000             </p>
+ on 2026-10-17T21:22:39.241228+0000             </p>
           </div>
         </div>
         <br>

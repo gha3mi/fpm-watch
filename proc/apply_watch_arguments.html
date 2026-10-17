@@ -1,0 +1,1103 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="Documentation for fpm-watch">
+    <meta name="author" content="Seyed Ali Ghasemi" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>apply_watch_arguments &ndash; fpm-watch</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">fpm-watch </a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/types.html">Derived Types</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <div class="row">
+    <h1>apply_watch_arguments
+      <small>Subroutine</small>
+      
+    </h1>
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+            <li class="list-inline-item" id="meta-license"><i class="fa fa-legal"></i> <a rel="license" href="https://opensource.org/licenses/MIT">MIT</a></li>
+
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title=" 0.9% of total for procedures.">37 statements</a>
+            </li>
+
+            <li class="list-inline-item" id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/watch_cli.f90"> Source File</a>
+            </li>
+        </ul>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+                <li class="breadcrumb-item"><a href='../sourcefile/watch_cli.f90.html'>watch_cli.f90</a></li>
+                <li class="breadcrumb-item"><a href='../module/watch_cli.html'>watch_cli</a></li>
+            <li class="breadcrumb-item active" aria-current="page">apply_watch_arguments</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
+  </script>
+
+  </div>
+  
+  <div class="row">
+    <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
+      <div id="sidebar">
+      <h3>Contents</h3>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    <div class="card card-primary">
+      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
+      <div class="list-group">
+        <a class="list-group-item" href="../proc/apply_watch_arguments.html#src">apply_watch_arguments</a>
+      </div>
+    </div>
+
+
+  </div>
+
+    </div>
+    
+    <div class="col-md-9" id='text'>
+    <h2>private  subroutine apply_watch_arguments(w, first_arg, subcmd_pos, log_format)  
+</h2>
+    
+
+    <p>Apply leading watcher flags and configure logging before fpm argument parsing.</p>
+<p>Called first with built-in defaults so response errors honor explicit log
+formats, then with project manifest defaults to retain normal precedence.
+Optional <code>log_format</code> pins the accepted format during a configuration refresh.</p>
+
+
+    <h3>Arguments</h3>
+        <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-w~8"></span>
+              type(<a href='../type/watch_opts_t.html'>watch_opts_t</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>w</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-first_arg~5"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>first_arg</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-subcmd_pos~2"></span>
+              integer,
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>subcmd_pos</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-log_format~3"></span>
+              character(len=*),
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>log_format</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <br>
+    <div class="card">
+      <div class="card-header">
+  <h3 class="card-title">Calls</h3>
+      </div>
+      <div class="card-body">
+  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: proc~~apply_watch_arguments~~CallsGraph Pages: 1 -->
+<svg id="procapply_watch_argumentsCallsGraph" width="641pt" height="253pt"
+ viewBox="0.00 0.00 641.00 253.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~apply_watch_arguments~~CallsGraph" class="graph" transform="scale(0.476598 0.476598) rotate(0) translate(4 526.39)">
+<title>proc~~apply_watch_arguments~~CallsGraph</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-526.39 1340.95,-526.39 1340.95,4 -4,4"/>
+<!-- proc~apply_watch_arguments -->
+<g id="proc~~apply_watch_arguments~~CallsGraph_node1" class="node">
+<title>proc~apply_watch_arguments</title>
+<polygon fill="none" stroke="black" points="140.52,-360.27 0,-360.27 0,-336 140.52,-336 140.52,-360.27"/>
+<text xml:space="preserve" text-anchor="middle" x="70.26" y="-344.53" font-family="Helvetica,sans-Serif" font-size="10.50">apply_watch_arguments</text>
+</g>
+<!-- proc~apply_watch_flag -->
+<g id="proc~~apply_watch_arguments~~CallsGraph_node2" class="node">
+<title>proc~apply_watch_flag</title>
+<g id="a_proc~~apply_watch_arguments~~CallsGraph_node2"><a xlink:href="../proc/apply_watch_flag.html" xlink:title="apply_watch_flag">
+<polygon fill="#d9534f" stroke="#d9534f" points="279.54,-297.27 176.52,-297.27 176.52,-273 279.54,-273 279.54,-297.27"/>
+<text xml:space="preserve" text-anchor="middle" x="228.03" y="-281.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">apply_watch_flag</text>
+</a>
+</g>
+</g>
+<!-- proc~apply_watch_arguments&#45;&gt;proc~apply_watch_flag -->
+<g id="proc~~apply_watch_arguments~~CallsGraph_edge1" class="edge">
+<title>proc~apply_watch_arguments&#45;&gt;proc~apply_watch_flag</title>
+<path fill="none" stroke="#ff0000" d="M102.41,-335.54C126.29,-325.88 159.46,-312.46 185.58,-301.9"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="186.57,-305.27 194.53,-298.28 183.95,-298.78 186.57,-305.27"/>
+</g>
+<!-- proc~configure_logging -->
+<g id="proc~~apply_watch_arguments~~CallsGraph_node3" class="node">
+<title>proc~configure_logging</title>
+<g id="a_proc~~apply_watch_arguments~~CallsGraph_node3"><a xlink:href="../proc/configure_logging.html" xlink:title="configure_logging">
+<polygon fill="#d9534f" stroke="#d9534f" points="444.06,-486.27 337.29,-486.27 337.29,-462 444.06,-462 444.06,-486.27"/>
+<text xml:space="preserve" text-anchor="middle" x="390.68" y="-470.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">configure_logging</text>
+</a>
+</g>
+</g>
+<!-- proc~apply_watch_arguments&#45;&gt;proc~configure_logging -->
+<g id="proc~~apply_watch_arguments~~CallsGraph_edge2" class="edge">
+<title>proc~apply_watch_arguments&#45;&gt;proc~configure_logging</title>
+<path fill="none" stroke="#ff0000" d="M90,-360.69C110.55,-374.04 144.83,-395.14 176.52,-409.13 235.8,-435.32 253.46,-434.52 315.54,-453.13 321.39,-454.89 327.5,-456.68 333.61,-458.45"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="332.49,-461.77 343.07,-461.17 334.43,-455.04 332.49,-461.77"/>
+</g>
+<!-- proc~get_arg -->
+<g id="proc~~apply_watch_arguments~~CallsGraph_node4" class="node">
+<title>proc~get_arg</title>
+<g id="a_proc~~apply_watch_arguments~~CallsGraph_node4"><a xlink:href="../proc/get_arg.html" xlink:title="get_arg">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="417.68,-444.27 363.68,-444.27 363.68,-420 417.68,-420 417.68,-444.27"/>
+<text xml:space="preserve" text-anchor="middle" x="390.68" y="-428.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">get_arg</text>
+</a>
+</g>
+</g>
+<!-- proc~apply_watch_arguments&#45;&gt;proc~get_arg -->
+<g id="proc~~apply_watch_arguments~~CallsGraph_edge3" class="edge">
+<title>proc~apply_watch_arguments&#45;&gt;proc~get_arg</title>
+<path fill="none" stroke="#ff0000" d="M106.09,-360.64C126.47,-367.73 152.79,-376.48 176.52,-383.13 237.34,-400.2 309.13,-415.78 351.94,-424.59"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="351.24,-428.02 361.74,-426.59 352.64,-421.16 351.24,-428.02"/>
+</g>
+<!-- proc~is_watch_flag -->
+<g id="proc~~apply_watch_arguments~~CallsGraph_node5" class="node">
+<title>proc~is_watch_flag</title>
+<g id="a_proc~~apply_watch_arguments~~CallsGraph_node5"><a xlink:href="../proc/is_watch_flag.html" xlink:title="is_watch_flag">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="269.04,-57.27 187.02,-57.27 187.02,-33 269.04,-33 269.04,-57.27"/>
+<text xml:space="preserve" text-anchor="middle" x="228.03" y="-41.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">is_watch_flag</text>
+</a>
+</g>
+</g>
+<!-- proc~apply_watch_arguments&#45;&gt;proc~is_watch_flag -->
+<g id="proc~~apply_watch_arguments~~CallsGraph_edge4" class="edge">
+<title>proc~apply_watch_arguments&#45;&gt;proc~is_watch_flag</title>
+<path fill="none" stroke="#ff0000" d="M77.75,-335.5C101.66,-289 184.94,-127 215.6,-67.38"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="218.53,-69.33 219.99,-58.83 212.3,-66.13 218.53,-69.33"/>
+</g>
+<!-- proc~usage_and_stop -->
+<g id="proc~~apply_watch_arguments~~CallsGraph_node6" class="node">
+<title>proc~usage_and_stop</title>
+<g id="a_proc~~apply_watch_arguments~~CallsGraph_node6"><a xlink:href="../proc/usage_and_stop.html" xlink:title="usage_and_stop">
+<polygon fill="#d9534f" stroke="#d9534f" points="439.19,-402.27 342.17,-402.27 342.17,-378 439.19,-378 439.19,-402.27"/>
+<text xml:space="preserve" text-anchor="middle" x="390.68" y="-386.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">usage_and_stop</text>
+</a>
+</g>
+</g>
+<!-- proc~apply_watch_arguments&#45;&gt;proc~usage_and_stop -->
+<g id="proc~~apply_watch_arguments~~CallsGraph_edge5" class="edge">
+<title>proc~apply_watch_arguments&#45;&gt;proc~usage_and_stop</title>
+<path fill="none" stroke="#ff0000" d="M140.9,-357.41C152.78,-358.99 165.01,-360.61 176.52,-362.13 228.55,-369.01 287.73,-376.78 330.51,-382.39"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="329.97,-385.85 340.34,-383.68 330.88,-378.91 329.97,-385.85"/>
+</g>
+<!-- proc~usage_and_stop_ok -->
+<g id="proc~~apply_watch_arguments~~CallsGraph_node7" class="node">
+<title>proc~usage_and_stop_ok</title>
+<g id="a_proc~~apply_watch_arguments~~CallsGraph_node7"><a xlink:href="../proc/usage_and_stop_ok.html" xlink:title="usage_and_stop_ok">
+<polygon fill="#d9534f" stroke="#d9534f" points="448.19,-360.27 333.17,-360.27 333.17,-336 448.19,-336 448.19,-360.27"/>
+<text xml:space="preserve" text-anchor="middle" x="390.68" y="-344.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">usage_and_stop_ok</text>
+</a>
+</g>
+</g>
+<!-- proc~apply_watch_arguments&#45;&gt;proc~usage_and_stop_ok -->
+<g id="proc~~apply_watch_arguments~~CallsGraph_edge6" class="edge">
+<title>proc~apply_watch_arguments&#45;&gt;proc~usage_and_stop_ok</title>
+<path fill="none" stroke="#ff0000" d="M140.74,-348.13C194.36,-348.13 268.13,-348.13 321.43,-348.13"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="321.31,-351.64 331.31,-348.14 321.31,-344.64 321.31,-351.64"/>
+</g>
+<!-- proc~valid_log_format -->
+<g id="proc~~apply_watch_arguments~~CallsGraph_node8" class="node">
+<title>proc~valid_log_format</title>
+<g id="a_proc~~apply_watch_arguments~~CallsGraph_node8"><a xlink:href="../proc/valid_log_format.html" xlink:title="valid_log_format">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="440.69,-66.27 340.67,-66.27 340.67,-42 440.69,-42 440.69,-66.27"/>
+<text xml:space="preserve" text-anchor="middle" x="390.68" y="-50.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">valid_log_format</text>
+</a>
+</g>
+</g>
+<!-- proc~apply_watch_arguments&#45;&gt;proc~valid_log_format -->
+<g id="proc~~apply_watch_arguments~~CallsGraph_edge7" class="edge">
+<title>proc~apply_watch_arguments&#45;&gt;proc~valid_log_format</title>
+<path fill="none" stroke="#ff0000" d="M78.75,-335.55C105.23,-292.23 199.03,-147.93 315.54,-75.13 320.05,-72.32 324.95,-69.86 330.01,-67.74"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="330.98,-71.11 339.13,-64.34 328.53,-64.55 330.98,-71.11"/>
+</g>
+<!-- proc~apply_watch_flag&#45;&gt;proc~configure_logging -->
+<g id="proc~~apply_watch_arguments~~CallsGraph_edge8" class="edge">
+<title>proc~apply_watch_flag&#45;&gt;proc~configure_logging</title>
+<path fill="none" stroke="#ff0000" d="M231.76,-297.41C239.32,-328.44 263.49,-410.55 315.54,-453.13 318.99,-455.96 322.81,-458.41 326.83,-460.52"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="325.22,-463.64 335.77,-464.52 328.07,-457.25 325.22,-463.64"/>
+</g>
+<!-- proc~apply_watch_flag&#45;&gt;proc~get_arg -->
+<g id="proc~~apply_watch_arguments~~CallsGraph_edge9" class="edge">
+<title>proc~apply_watch_flag&#45;&gt;proc~get_arg</title>
+<path fill="none" stroke="#ff0000" d="M234.1,-297.66C245.02,-323.06 273.29,-380.81 315.54,-411.13 326.27,-418.84 339.76,-423.72 352.28,-426.82"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="351.4,-430.21 361.91,-428.87 352.86,-423.37 351.4,-430.21"/>
+</g>
+<!-- proc~apply_watch_flag&#45;&gt;proc~usage_and_stop -->
+<g id="proc~~apply_watch_arguments~~CallsGraph_edge15" class="edge">
+<title>proc~apply_watch_flag&#45;&gt;proc~usage_and_stop</title>
+<path fill="none" stroke="#ff0000" d="M238.5,-297.66C253.06,-316.05 282.72,-350.2 315.54,-369.13 320.48,-371.99 325.84,-374.47 331.33,-376.63"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="329.96,-379.86 340.55,-379.89 332.29,-373.26 329.96,-379.86"/>
+</g>
+<!-- proc~apply_watch_flag&#45;&gt;proc~usage_and_stop_ok -->
+<g id="proc~~apply_watch_arguments~~CallsGraph_edge16" class="edge">
+<title>proc~apply_watch_flag&#45;&gt;proc~usage_and_stop_ok</title>
+<path fill="none" stroke="#ff0000" d="M252.04,-297.68C269.19,-306.7 293.39,-318.69 315.54,-327.13 320.17,-328.9 325,-330.59 329.89,-332.19"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="328.59,-335.45 339.18,-335.11 330.69,-328.77 328.59,-335.45"/>
+</g>
+<!-- proc~apply_watch_flag&#45;&gt;proc~valid_log_format -->
+<g id="proc~~apply_watch_arguments~~CallsGraph_edge17" class="edge">
+<title>proc~apply_watch_flag&#45;&gt;proc~valid_log_format</title>
+<path fill="none" stroke="#ff0000" d="M238.69,-272.67C249.93,-257.65 268.36,-231.27 279.54,-206.13 304.08,-150.97 273.01,-118 315.54,-75.13 319.67,-70.97 324.57,-67.61 329.84,-64.91"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="331.09,-68.18 338.95,-61.08 328.38,-61.73 331.09,-68.18"/>
+</g>
+<!-- proc~normalize_watch_opts -->
+<g id="proc~~apply_watch_arguments~~CallsGraph_node10" class="node">
+<title>proc~normalize_watch_opts</title>
+<g id="a_proc~~apply_watch_arguments~~CallsGraph_node10"><a xlink:href="../proc/normalize_watch_opts.html" xlink:title="normalize_watch_opts">
+<polygon fill="#d9534f" stroke="#d9534f" points="455.31,-318.27 326.04,-318.27 326.04,-294 455.31,-294 455.31,-318.27"/>
+<text xml:space="preserve" text-anchor="middle" x="390.68" y="-302.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">normalize_watch_opts</text>
+</a>
+</g>
+</g>
+<!-- proc~apply_watch_flag&#45;&gt;proc~normalize_watch_opts -->
+<g id="proc~~apply_watch_arguments~~CallsGraph_edge10" class="edge">
+<title>proc~apply_watch_flag&#45;&gt;proc~normalize_watch_opts</title>
+<path fill="none" stroke="#ff0000" d="M279.86,-291.78C290.87,-293.22 302.73,-294.77 314.45,-296.3"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="313.74,-299.74 324.11,-297.56 314.64,-292.8 313.74,-299.74"/>
+</g>
+<!-- proc~parse_bool -->
+<g id="proc~~apply_watch_arguments~~CallsGraph_node11" class="node">
+<title>proc~parse_bool</title>
+<g id="a_proc~~apply_watch_arguments~~CallsGraph_node11"><a xlink:href="../proc/parse_bool.html" xlink:title="parse_bool">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="425.69,-276.27 355.67,-276.27 355.67,-252 425.69,-252 425.69,-276.27"/>
+<text xml:space="preserve" text-anchor="middle" x="390.68" y="-260.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">parse_bool</text>
+</a>
+</g>
+</g>
+<!-- proc~apply_watch_flag&#45;&gt;proc~parse_bool -->
+<g id="proc~~apply_watch_arguments~~CallsGraph_edge11" class="edge">
+<title>proc~apply_watch_flag&#45;&gt;proc~parse_bool</title>
+<path fill="none" stroke="#ff0000" d="M279.86,-278.49C300.45,-275.8 324.05,-272.71 344.08,-270.1"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="344.45,-273.58 353.91,-268.81 343.54,-266.64 344.45,-273.58"/>
+</g>
+<!-- proc~parse_int -->
+<g id="proc~~apply_watch_arguments~~CallsGraph_node12" class="node">
+<title>proc~parse_int</title>
+<g id="a_proc~~apply_watch_arguments~~CallsGraph_node12"><a xlink:href="../proc/parse_int.html" xlink:title="parse_int">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="420.81,-234.27 360.54,-234.27 360.54,-210 420.81,-210 420.81,-234.27"/>
+<text xml:space="preserve" text-anchor="middle" x="390.68" y="-218.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">parse_int</text>
+</a>
+</g>
+</g>
+<!-- proc~apply_watch_flag&#45;&gt;proc~parse_int -->
+<g id="proc~~apply_watch_arguments~~CallsGraph_edge12" class="edge">
+<title>proc~apply_watch_flag&#45;&gt;proc~parse_int</title>
+<path fill="none" stroke="#ff0000" d="M252.04,-272.59C269.19,-263.57 293.39,-251.58 315.54,-243.13 326.21,-239.07 338.01,-235.38 348.99,-232.27"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="349.88,-235.66 358.6,-229.64 348.03,-228.9 349.88,-235.66"/>
+</g>
+<!-- proc~parse_real -->
+<g id="proc~~apply_watch_arguments~~CallsGraph_node13" class="node">
+<title>proc~parse_real</title>
+<g id="a_proc~~apply_watch_arguments~~CallsGraph_node13"><a xlink:href="../proc/parse_real.html" xlink:title="parse_real">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="424.19,-192.27 357.17,-192.27 357.17,-168 424.19,-168 424.19,-192.27"/>
+<text xml:space="preserve" text-anchor="middle" x="390.68" y="-176.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">parse_real</text>
+</a>
+</g>
+</g>
+<!-- proc~apply_watch_flag&#45;&gt;proc~parse_real -->
+<g id="proc~~apply_watch_arguments~~CallsGraph_edge13" class="edge">
+<title>proc~apply_watch_flag&#45;&gt;proc~parse_real</title>
+<path fill="none" stroke="#ff0000" d="M238.5,-272.61C253.06,-254.22 282.72,-220.07 315.54,-201.13 324.81,-195.78 335.54,-191.73 345.9,-188.67"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="346.68,-192.09 355.44,-186.14 344.88,-185.32 346.68,-192.09"/>
+</g>
+<!-- proc~push_feature -->
+<g id="proc~~apply_watch_arguments~~CallsGraph_node14" class="node">
+<title>proc~push_feature</title>
+<g id="a_proc~~apply_watch_arguments~~CallsGraph_node14"><a xlink:href="../proc/push_feature.html" xlink:title="push_feature">
+<polygon fill="#d9534f" stroke="#d9534f" points="430.94,-150.27 350.42,-150.27 350.42,-126 430.94,-126 430.94,-150.27"/>
+<text xml:space="preserve" text-anchor="middle" x="390.68" y="-134.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">push_feature</text>
+</a>
+</g>
+</g>
+<!-- proc~apply_watch_flag&#45;&gt;proc~push_feature -->
+<g id="proc~~apply_watch_arguments~~CallsGraph_edge14" class="edge">
+<title>proc~apply_watch_flag&#45;&gt;proc~push_feature</title>
+<path fill="none" stroke="#ff0000" d="M236.93,-272.63C256.14,-242.35 304.55,-167.03 315.54,-159.13 322.57,-154.09 330.77,-150.25 339.12,-147.34"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="340.08,-150.71 348.63,-144.45 338.04,-144.01 340.08,-150.71"/>
+</g>
+<!-- proc~watch_option_takes_value -->
+<g id="proc~~apply_watch_arguments~~CallsGraph_node18" class="node">
+<title>proc~watch_option_takes_value</title>
+<g id="a_proc~~apply_watch_arguments~~CallsGraph_node18"><a xlink:href="../proc/watch_option_takes_value.html" xlink:title="watch_option_takes_value">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="465.81,-108.27 315.54,-108.27 315.54,-84 465.81,-84 465.81,-108.27"/>
+<text xml:space="preserve" text-anchor="middle" x="390.68" y="-92.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">watch_option_takes_value</text>
+</a>
+</g>
+</g>
+<!-- proc~apply_watch_flag&#45;&gt;proc~watch_option_takes_value -->
+<g id="proc~~apply_watch_arguments~~CallsGraph_edge18" class="edge">
+<title>proc~apply_watch_flag&#45;&gt;proc~watch_option_takes_value</title>
+<path fill="none" stroke="#ff0000" d="M238,-272.7C248.74,-257.49 266.84,-230.73 279.54,-206.13 299.12,-168.22 283.78,-145.63 315.54,-117.13 316.46,-116.31 317.41,-115.51 318.39,-114.75"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="320.03,-117.86 326.55,-109.51 316.25,-111.97 320.03,-117.86"/>
+</g>
+<!-- proc~starts_with -->
+<g id="proc~~apply_watch_arguments~~CallsGraph_node15" class="node">
+<title>proc~starts_with</title>
+<g id="a_proc~~apply_watch_arguments~~CallsGraph_node15"><a xlink:href="../proc/starts_with.html" xlink:title="starts_with">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="424.56,-24.27 356.79,-24.27 356.79,0 424.56,0 424.56,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="390.68" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">starts_with</text>
+</a>
+</g>
+</g>
+<!-- proc~is_watch_flag&#45;&gt;proc~starts_with -->
+<g id="proc~~apply_watch_arguments~~CallsGraph_edge19" class="edge">
+<title>proc~is_watch_flag&#45;&gt;proc~starts_with</title>
+<path fill="none" stroke="#00ff91" d="M269.15,-36.89C292.31,-32.14 321.48,-26.14 345.32,-21.25"/>
+<polygon fill="#00ff91" stroke="#00ff91" points="345.98,-24.69 355.07,-19.24 344.57,-17.83 345.98,-24.69"/>
+</g>
+<!-- proc~log_event -->
+<g id="proc~~apply_watch_arguments~~CallsGraph_node9" class="node">
+<title>proc~log_event</title>
+<g id="a_proc~~apply_watch_arguments~~CallsGraph_node9"><a xlink:href="../proc/log_event.html" xlink:title="log_event">
+<polygon fill="#d9534f" stroke="#d9534f" points="588.71,-444.27 525.44,-444.27 525.44,-420 588.71,-420 588.71,-444.27"/>
+<text xml:space="preserve" text-anchor="middle" x="557.07" y="-428.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">log_event</text>
+</a>
+</g>
+</g>
+<!-- proc~usage_and_stop&#45;&gt;proc~log_event -->
+<g id="proc~~apply_watch_arguments~~CallsGraph_edge20" class="edge">
+<title>proc~usage_and_stop&#45;&gt;proc~log_event</title>
+<path fill="none" stroke="#0091ff" d="M439.67,-402.4C463.34,-408.44 491.62,-415.67 514.38,-421.48"/>
+<polygon fill="#0091ff" stroke="#0091ff" points="513.37,-424.84 523.93,-423.92 515.1,-418.06 513.37,-424.84"/>
+</g>
+<!-- proc~structured_logging -->
+<g id="proc~~apply_watch_arguments~~CallsGraph_node16" class="node">
+<title>proc~structured_logging</title>
+<g id="a_proc~~apply_watch_arguments~~CallsGraph_node16"><a xlink:href="../proc/structured_logging.html" xlink:title="structured_logging">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="612.33,-402.27 501.81,-402.27 501.81,-378 612.33,-378 612.33,-402.27"/>
+<text xml:space="preserve" text-anchor="middle" x="557.07" y="-386.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">structured_logging</text>
+</a>
+</g>
+</g>
+<!-- proc~usage_and_stop&#45;&gt;proc~structured_logging -->
+<g id="proc~~apply_watch_arguments~~CallsGraph_edge21" class="edge">
+<title>proc~usage_and_stop&#45;&gt;proc~structured_logging</title>
+<path fill="none" stroke="#0091ff" d="M439.67,-390.13C455.38,-390.13 473.11,-390.13 489.92,-390.13"/>
+<polygon fill="#0091ff" stroke="#0091ff" points="489.85,-393.64 499.85,-390.14 489.85,-386.64 489.85,-393.64"/>
+</g>
+<!-- proc~usage_print_only -->
+<g id="proc~~apply_watch_arguments~~CallsGraph_node17" class="node">
+<title>proc~usage_print_only</title>
+<g id="a_proc~~apply_watch_arguments~~CallsGraph_node17"><a xlink:href="../proc/usage_print_only.html" xlink:title="usage_print_only">
+<polygon fill="#d9534f" stroke="#d9534f" points="607.83,-360.27 506.31,-360.27 506.31,-336 607.83,-336 607.83,-360.27"/>
+<text xml:space="preserve" text-anchor="middle" x="557.07" y="-344.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">usage_print_only</text>
+</a>
+</g>
+</g>
+<!-- proc~usage_and_stop_ok&#45;&gt;proc~usage_print_only -->
+<g id="proc~~apply_watch_arguments~~CallsGraph_edge22" class="edge">
+<title>proc~usage_and_stop_ok&#45;&gt;proc~usage_print_only</title>
+<path fill="none" stroke="#4800ff" d="M448.25,-348.13C463.2,-348.13 479.41,-348.13 494.6,-348.13"/>
+<polygon fill="#4800ff" stroke="#4800ff" points="494.48,-351.64 504.48,-348.14 494.48,-344.64 494.48,-351.64"/>
+</g>
+<!-- proc~format_log_record -->
+<g id="proc~~apply_watch_arguments~~CallsGraph_node19" class="node">
+<title>proc~format_log_record</title>
+<g id="a_proc~~apply_watch_arguments~~CallsGraph_node19"><a xlink:href="../proc/format_log_record.html" xlink:title="format_log_record">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="757.35,-465.27 648.33,-465.27 648.33,-441 757.35,-441 757.35,-465.27"/>
+<text xml:space="preserve" text-anchor="middle" x="702.84" y="-449.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">format_log_record</text>
+</a>
+</g>
+</g>
+<!-- proc~log_event&#45;&gt;proc~format_log_record -->
+<g id="proc~~apply_watch_arguments~~CallsGraph_edge23" class="edge">
+<title>proc~log_event&#45;&gt;proc~format_log_record</title>
+<path fill="none" stroke="#ff0000" d="M588.91,-436.64C602.86,-438.68 619.9,-441.17 636.47,-443.59"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="635.93,-447.05 646.33,-445.03 636.95,-440.12 635.93,-447.05"/>
+</g>
+<!-- proc~log_timestamp -->
+<g id="proc~~apply_watch_arguments~~CallsGraph_node20" class="node">
+<title>proc~log_timestamp</title>
+<g id="a_proc~~apply_watch_arguments~~CallsGraph_node20"><a xlink:href="../proc/log_timestamp.html" xlink:title="log_timestamp">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="747.98,-423.27 657.71,-423.27 657.71,-399 747.98,-399 747.98,-423.27"/>
+<text xml:space="preserve" text-anchor="middle" x="702.84" y="-407.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">log_timestamp</text>
+</a>
+</g>
+</g>
+<!-- proc~log_event&#45;&gt;proc~log_timestamp -->
+<g id="proc~~apply_watch_arguments~~CallsGraph_edge24" class="edge">
+<title>proc~log_event&#45;&gt;proc~log_timestamp</title>
+<path fill="none" stroke="#ff0000" d="M588.91,-427.63C605.6,-425.19 626.73,-422.11 646.19,-419.26"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="646.52,-422.75 655.91,-417.84 645.51,-415.83 646.52,-422.75"/>
+</g>
+<!-- proc~lower_ascii -->
+<g id="proc~~apply_watch_arguments~~CallsGraph_node21" class="node">
+<title>proc~lower_ascii</title>
+<g id="a_proc~~apply_watch_arguments~~CallsGraph_node21"><a xlink:href="../proc/lower_ascii.html" xlink:title="lower_ascii">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="592.08,-276.27 522.06,-276.27 522.06,-252 592.08,-252 592.08,-276.27"/>
+<text xml:space="preserve" text-anchor="middle" x="557.07" y="-260.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">lower_ascii</text>
+</a>
+</g>
+</g>
+<!-- proc~parse_bool&#45;&gt;proc~lower_ascii -->
+<g id="proc~~apply_watch_arguments~~CallsGraph_edge25" class="edge">
+<title>proc~parse_bool&#45;&gt;proc~lower_ascii</title>
+<path fill="none" stroke="#cbff00" d="M426.14,-264.13C450.58,-264.13 483.64,-264.13 510.29,-264.13"/>
+<polygon fill="#cbff00" stroke="#cbff00" points="510.14,-267.64 520.14,-264.14 510.14,-260.64 510.14,-267.64"/>
+</g>
+<!-- proc~escape_text -->
+<g id="proc~~apply_watch_arguments~~CallsGraph_node22" class="node">
+<title>proc~escape_text</title>
+<g id="a_proc~~apply_watch_arguments~~CallsGraph_node22"><a xlink:href="../proc/escape_text.html" xlink:title="escape_text">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="867.87,-507.27 793.35,-507.27 793.35,-483 867.87,-483 867.87,-507.27"/>
+<text xml:space="preserve" text-anchor="middle" x="830.61" y="-491.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">escape_text</text>
+</a>
+</g>
+</g>
+<!-- proc~format_log_record&#45;&gt;proc~escape_text -->
+<g id="proc~~apply_watch_arguments~~CallsGraph_edge26" class="edge">
+<title>proc~format_log_record&#45;&gt;proc~escape_text</title>
+<path fill="none" stroke="#ff0000" d="M741.58,-465.74C754.48,-470.05 769.07,-474.92 782.62,-479.44"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="781.17,-482.65 791.76,-482.5 783.39,-476.01 781.17,-482.65"/>
+</g>
+<!-- proc~escaped_length -->
+<g id="proc~~apply_watch_arguments~~CallsGraph_node23" class="node">
+<title>proc~escaped_length</title>
+<g id="a_proc~~apply_watch_arguments~~CallsGraph_node23"><a xlink:href="../proc/escaped_length.html" xlink:title="escaped_length">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="999.39,-507.27 903.87,-507.27 903.87,-483 999.39,-483 999.39,-507.27"/>
+<text xml:space="preserve" text-anchor="middle" x="951.63" y="-491.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">escaped_length</text>
+</a>
+</g>
+</g>
+<!-- proc~format_log_record&#45;&gt;proc~escaped_length -->
+<g id="proc~~apply_watch_arguments~~CallsGraph_edge27" class="edge">
+<title>proc~format_log_record&#45;&gt;proc~escaped_length</title>
+<path fill="none" stroke="#ff0000" d="M716.08,-465.58C732.15,-480.93 762.01,-506.21 793.35,-516.13 830.59,-527.93 874.82,-520.21 906.88,-510.99"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="907.69,-514.4 916.23,-508.13 905.65,-507.7 907.69,-514.4"/>
+</g>
+<!-- proc~json_quote -->
+<g id="proc~~apply_watch_arguments~~CallsGraph_node24" class="node">
+<title>proc~json_quote</title>
+<g id="a_proc~~apply_watch_arguments~~CallsGraph_node24"><a xlink:href="../proc/json_quote.html" xlink:title="json_quote">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="865.25,-465.27 795.98,-465.27 795.98,-441 865.25,-441 865.25,-465.27"/>
+<text xml:space="preserve" text-anchor="middle" x="830.61" y="-449.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">json_quote</text>
+</a>
+</g>
+</g>
+<!-- proc~format_log_record&#45;&gt;proc~json_quote -->
+<g id="proc~~apply_watch_arguments~~CallsGraph_edge28" class="edge">
+<title>proc~format_log_record&#45;&gt;proc~json_quote</title>
+<path fill="none" stroke="#ff0000" d="M757.54,-453.13C766.45,-453.13 775.6,-453.13 784.28,-453.13"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="784.22,-456.64 794.22,-453.14 784.22,-449.64 784.22,-456.64"/>
+</g>
+<!-- proc~put_json_string -->
+<g id="proc~~apply_watch_arguments~~CallsGraph_node25" class="node">
+<title>proc~put_json_string</title>
+<g id="a_proc~~apply_watch_arguments~~CallsGraph_node25"><a xlink:href="../proc/put_json_string.html" xlink:title="put_json_string">
+<polygon fill="#d9534f" stroke="#d9534f" points="997.14,-427.27 906.12,-427.27 906.12,-403 997.14,-403 997.14,-427.27"/>
+<text xml:space="preserve" text-anchor="middle" x="951.63" y="-411.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">put_json_string</text>
+</a>
+</g>
+</g>
+<!-- proc~format_log_record&#45;&gt;proc~put_json_string -->
+<g id="proc~~apply_watch_arguments~~CallsGraph_edge29" class="edge">
+<title>proc~format_log_record&#45;&gt;proc~put_json_string</title>
+<path fill="none" stroke="#ff0000" d="M752.4,-440.6C765.61,-437.5 779.98,-434.42 793.35,-432.13 826.72,-426.44 864.41,-422.29 894.53,-419.51"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="894.53,-423.03 904.18,-418.65 893.9,-416.06 894.53,-423.03"/>
+</g>
+<!-- proc~put_text -->
+<g id="proc~~apply_watch_arguments~~CallsGraph_node26" class="node">
+<title>proc~put_text</title>
+<g id="a_proc~~apply_watch_arguments~~CallsGraph_node26"><a xlink:href="../proc/put_text.html" xlink:title="put_text">
+<polygon fill="#d9534f" stroke="#d9534f" points="1219.55,-427.27 1165.55,-427.27 1165.55,-403 1219.55,-403 1219.55,-427.27"/>
+<text xml:space="preserve" text-anchor="middle" x="1192.55" y="-411.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">put_text</text>
+</a>
+</g>
+</g>
+<!-- proc~format_log_record&#45;&gt;proc~put_text -->
+<g id="proc~~apply_watch_arguments~~CallsGraph_edge30" class="edge">
+<title>proc~format_log_record&#45;&gt;proc~put_text</title>
+<path fill="none" stroke="#ff0000" d="M736.03,-440.51C761.38,-430.58 792.59,-418.36 793.35,-418.13 881.61,-391.48 907.33,-389.12 999.39,-394.13 1053.29,-397.07 1115.32,-404.61 1153.99,-409.81"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="1153.32,-413.25 1163.7,-411.13 1154.27,-406.31 1153.32,-413.25"/>
+</g>
+<!-- proc~escape_text&#45;&gt;proc~escaped_length -->
+<g id="proc~~apply_watch_arguments~~CallsGraph_edge31" class="edge">
+<title>proc~escape_text&#45;&gt;proc~escaped_length</title>
+<path fill="none" stroke="#ff0000" d="M868.29,-495.13C875.9,-495.13 884.11,-495.13 892.28,-495.13"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="892.23,-498.64 902.23,-495.14 892.23,-491.64 892.23,-498.64"/>
+</g>
+<!-- proc~put_escaped -->
+<g id="proc~~apply_watch_arguments~~CallsGraph_node28" class="node">
+<title>proc~put_escaped</title>
+<g id="a_proc~~apply_watch_arguments~~CallsGraph_node28"><a xlink:href="../proc/put_escaped.html" xlink:title="put_escaped">
+<polygon fill="#d9534f" stroke="#d9534f" points="1114.41,-467.27 1035.39,-467.27 1035.39,-443 1114.41,-443 1114.41,-467.27"/>
+<text xml:space="preserve" text-anchor="middle" x="1074.9" y="-451.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">put_escaped</text>
+</a>
+</g>
+</g>
+<!-- proc~escape_text&#45;&gt;proc~put_escaped -->
+<g id="proc~~apply_watch_arguments~~CallsGraph_edge32" class="edge">
+<title>proc~escape_text&#45;&gt;proc~put_escaped</title>
+<path fill="none" stroke="#ff0000" d="M868.07,-483.22C879.44,-479.86 892.08,-476.49 903.87,-474.13 943.91,-466.14 989.97,-461.25 1024.05,-458.44"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="1023.92,-461.96 1033.61,-457.69 1023.36,-454.99 1023.92,-461.96"/>
+</g>
+<!-- proc~escape_piece -->
+<g id="proc~~apply_watch_arguments~~CallsGraph_node27" class="node">
+<title>proc~escape_piece</title>
+<g id="a_proc~~apply_watch_arguments~~CallsGraph_node27"><a xlink:href="../proc/escape_piece.html" xlink:title="escape_piece">
+<polygon fill="#d9534f" stroke="#d9534f" points="1234.68,-488.27 1150.41,-488.27 1150.41,-464 1234.68,-464 1234.68,-488.27"/>
+<text xml:space="preserve" text-anchor="middle" x="1192.55" y="-472.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">escape_piece</text>
+</a>
+</g>
+</g>
+<!-- proc~escaped_length&#45;&gt;proc~escape_piece -->
+<g id="proc~~apply_watch_arguments~~CallsGraph_edge33" class="edge">
+<title>proc~escaped_length&#45;&gt;proc~escape_piece</title>
+<path fill="none" stroke="#cbff00" d="M999.83,-491.38C1039.86,-488.2 1097.22,-483.64 1138.76,-480.33"/>
+<polygon fill="#cbff00" stroke="#cbff00" points="1138.83,-483.84 1148.52,-479.56 1138.27,-476.86 1138.83,-483.84"/>
+</g>
+<!-- proc~json_quote&#45;&gt;proc~escaped_length -->
+<g id="proc~~apply_watch_arguments~~CallsGraph_edge34" class="edge">
+<title>proc~json_quote&#45;&gt;proc~escaped_length</title>
+<path fill="none" stroke="#00ff66" d="M865.72,-465.17C877.74,-469.41 891.46,-474.26 904.32,-478.79"/>
+<polygon fill="#00ff66" stroke="#00ff66" points="902.84,-481.98 913.43,-482.01 905.17,-475.38 902.84,-481.98"/>
+</g>
+<!-- proc~json_quote&#45;&gt;proc~put_json_string -->
+<g id="proc~~apply_watch_arguments~~CallsGraph_edge35" class="edge">
+<title>proc~json_quote&#45;&gt;proc~put_json_string</title>
+<path fill="none" stroke="#00ff66" d="M865.72,-442.25C876.44,-438.82 888.52,-434.97 900.13,-431.26"/>
+<polygon fill="#00ff66" stroke="#00ff66" points="901.15,-434.61 909.61,-428.23 899.02,-427.94 901.15,-434.61"/>
+</g>
+<!-- proc~put_json_string&#45;&gt;proc~put_text -->
+<g id="proc~~apply_watch_arguments~~CallsGraph_edge37" class="edge">
+<title>proc~put_json_string&#45;&gt;proc~put_text</title>
+<path fill="none" stroke="#0066ff" d="M997.57,-415.13C1042.69,-415.13 1111.44,-415.13 1153.82,-415.13"/>
+<polygon fill="#0066ff" stroke="#0066ff" points="1153.78,-418.64 1163.78,-415.14 1153.78,-411.64 1153.78,-418.64"/>
+</g>
+<!-- proc~put_json_string&#45;&gt;proc~put_escaped -->
+<g id="proc~~apply_watch_arguments~~CallsGraph_edge36" class="edge">
+<title>proc~put_json_string&#45;&gt;proc~put_escaped</title>
+<path fill="none" stroke="#0066ff" d="M990.67,-427.68C1001.62,-431.29 1013.71,-435.28 1025.21,-439.08"/>
+<polygon fill="#0066ff" stroke="#0066ff" points="1023.97,-442.35 1034.56,-442.16 1026.16,-435.7 1023.97,-442.35"/>
+</g>
+<!-- proc~utf8_width -->
+<g id="proc~~apply_watch_arguments~~CallsGraph_node29" class="node">
+<title>proc~utf8_width</title>
+<g id="a_proc~~apply_watch_arguments~~CallsGraph_node29"><a xlink:href="../proc/utf8_width.html" xlink:title="utf8_width">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="1336.95,-488.27 1270.68,-488.27 1270.68,-464 1336.95,-464 1336.95,-488.27"/>
+<text xml:space="preserve" text-anchor="middle" x="1303.82" y="-472.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">utf8_width</text>
+</a>
+</g>
+</g>
+<!-- proc~escape_piece&#45;&gt;proc~utf8_width -->
+<g id="proc~~apply_watch_arguments~~CallsGraph_edge38" class="edge">
+<title>proc~escape_piece&#45;&gt;proc~utf8_width</title>
+<path fill="none" stroke="#ff0000" d="M1235.17,-476.13C1243.03,-476.13 1251.27,-476.13 1259.19,-476.13"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="1258.97,-479.64 1268.97,-476.14 1258.97,-472.64 1258.97,-479.64"/>
+</g>
+<!-- proc~put_escaped&#45;&gt;proc~put_text -->
+<g id="proc~~apply_watch_arguments~~CallsGraph_edge40" class="edge">
+<title>proc~put_escaped&#45;&gt;proc~put_text</title>
+<path fill="none" stroke="#00ffff" d="M1112.17,-442.59C1125.63,-437.93 1140.9,-432.65 1154.43,-427.97"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="1155.57,-431.28 1163.88,-424.71 1153.28,-424.67 1155.57,-431.28"/>
+</g>
+<!-- proc~put_escaped&#45;&gt;proc~escape_piece -->
+<g id="proc~~apply_watch_arguments~~CallsGraph_edge39" class="edge">
+<title>proc~put_escaped&#45;&gt;proc~escape_piece</title>
+<path fill="none" stroke="#00ffff" d="M1114.73,-462.19C1122.58,-463.61 1130.95,-465.13 1139.18,-466.63"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="1138.29,-470.02 1148.75,-468.36 1139.54,-463.13 1138.29,-470.02"/>
+</g>
+</g>
+</svg>
+</div>                <script>
+                  var panprocapply_watch_argumentsCallsGraph = svgPanZoom('#procapply_watch_argumentsCallsGraph',
+                    {zoomEnabled: true, controlIconsEnabled: true, fit: true, center: true,}
+                  );
+                </script>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#CallsGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="CallsGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="641pt" height="28pt"
+ viewBox="0.00 0.00 641.00 28.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.873868 0.873868) rotate(0) translate(4 28.27)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-28.27 729.52,-28.27 729.52,4 -4,4"/>
+<!-- Subroutine -->
+<g id="node1" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="69.27,-24.27 0,-24.27 0,0 69.27,0 69.27,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="34.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node2" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="143.89,-24.27 87.38,-24.27 87.38,0 143.89,0 143.89,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="115.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node3" class="node">
+<title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="221.39,-24.27 161.88,-24.27 161.88,0 221.39,0 221.39,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="191.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Type Bound Procedure -->
+<g id="node4" class="node">
+<title>Type Bound Procedure</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="368.27,-24.27 239,-24.27 239,0 368.27,0 368.27,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="303.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type Bound Procedure</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node5" class="node">
+<title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="529.39,-24.27 385.88,-24.27 385.88,0 529.39,0 529.39,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="457.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node6" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="603.89,-24.27 547.38,-24.27 547.38,0 603.89,0 603.89,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="575.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node7" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="725.52,-24.27 621.75,-24.27 621.75,0 725.52,0 725.52,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="673.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.
+</p>
+ Where possible, edges connecting nodes are
+given different colours to make them easier to distinguish in
+large graphs.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+  <h3 class="card-title">Called by</h3>
+      </div>
+      <div class="card-body">
+  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: proc~~apply_watch_arguments~~CalledByGraph Pages: 1 -->
+<svg id="procapply_watch_argumentsCalledByGraph" width="641pt" height="46pt"
+ viewBox="0.00 0.00 641.00 46.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~apply_watch_arguments~~CalledByGraph" class="graph" transform="scale(0.875265 0.875265) rotate(0) translate(4 48.27)">
+<title>proc~~apply_watch_arguments~~CalledByGraph</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-48.27 728.35,-48.27 728.35,4 -4,4"/>
+<!-- proc~apply_watch_arguments -->
+<g id="proc~~apply_watch_arguments~~CalledByGraph_node1" class="node">
+<title>proc~apply_watch_arguments</title>
+<polygon fill="none" stroke="black" points="724.35,-44.27 583.83,-44.27 583.83,-20 724.35,-20 724.35,-44.27"/>
+<text xml:space="preserve" text-anchor="middle" x="654.09" y="-28.53" font-family="Helvetica,sans-Serif" font-size="10.50">apply_watch_arguments</text>
+</g>
+<!-- proc~parse_cli -->
+<g id="proc~~apply_watch_arguments~~CalledByGraph_node2" class="node">
+<title>proc~parse_cli</title>
+<g id="a_proc~~apply_watch_arguments~~CalledByGraph_node2"><a xlink:href="../proc/parse_cli.html" xlink:title="parse_cli">
+<polygon fill="#d9534f" stroke="#d9534f" points="547.83,-24.27 489.06,-24.27 489.06,0 547.83,0 547.83,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="518.44" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">parse_cli</text>
+</a>
+</g>
+</g>
+<!-- proc~parse_cli&#45;&gt;proc~apply_watch_arguments -->
+<g id="proc~~apply_watch_arguments~~CalledByGraph_edge1" class="edge">
+<title>proc~parse_cli&#45;&gt;proc~apply_watch_arguments</title>
+<path fill="none" stroke="#ff0000" d="M548.12,-16.43C555.42,-17.52 563.64,-18.75 572.19,-20.03"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="571.65,-23.49 582.05,-21.5 572.68,-16.56 571.65,-23.49"/>
+</g>
+<!-- proc~parse_cli_config -->
+<g id="proc~~apply_watch_arguments~~CalledByGraph_node3" class="node">
+<title>proc~parse_cli_config</title>
+<g id="a_proc~~apply_watch_arguments~~CalledByGraph_node3"><a xlink:href="../proc/parse_cli_config.html" xlink:title="parse_cli_config">
+<polygon fill="#d9534f" stroke="#d9534f" points="453.06,-44.27 356.04,-44.27 356.04,-20 453.06,-20 453.06,-44.27"/>
+<text xml:space="preserve" text-anchor="middle" x="404.55" y="-28.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">parse_cli_config</text>
+</a>
+</g>
+</g>
+<!-- proc~parse_cli_config&#45;&gt;proc~apply_watch_arguments -->
+<g id="proc~~apply_watch_arguments~~CalledByGraph_edge2" class="edge">
+<title>proc~parse_cli_config&#45;&gt;proc~apply_watch_arguments</title>
+<path fill="none" stroke="#ff0000" d="M453.24,-32.8C464.96,-32.94 477.46,-33.07 489.06,-33.13 516.22,-33.3 545.91,-33.2 572.48,-33.01"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="572.17,-36.52 582.14,-32.94 572.11,-29.52 572.17,-36.52"/>
+</g>
+<!-- proc~parse_cli_config&#45;&gt;proc~parse_cli -->
+<g id="proc~~apply_watch_arguments~~CalledByGraph_edge3" class="edge">
+<title>proc~parse_cli_config&#45;&gt;proc~parse_cli</title>
+<path fill="none" stroke="#ff0000" d="M453.33,-23.6C461.39,-22.15 469.68,-20.67 477.52,-19.27"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="477.87,-22.76 487.1,-17.56 476.64,-15.87 477.87,-22.76"/>
+</g>
+<!-- proc~handle_manifest_change -->
+<g id="proc~~apply_watch_arguments~~CalledByGraph_node4" class="node">
+<title>proc~handle_manifest_change</title>
+<g id="a_proc~~apply_watch_arguments~~CalledByGraph_node4"><a xlink:href="../proc/handle_manifest_change.html" xlink:title="handle_manifest_change">
+<polygon fill="#d9534f" stroke="#d9534f" points="320.04,-44.27 175.02,-44.27 175.02,-20 320.04,-20 320.04,-44.27"/>
+<text xml:space="preserve" text-anchor="middle" x="247.53" y="-28.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">handle_manifest_change</text>
+</a>
+</g>
+</g>
+<!-- proc~handle_manifest_change&#45;&gt;proc~parse_cli_config -->
+<g id="proc~~apply_watch_arguments~~CalledByGraph_edge4" class="edge">
+<title>proc~handle_manifest_change&#45;&gt;proc~parse_cli_config</title>
+<path fill="none" stroke="#00ffff" d="M320.14,-32.13C328.24,-32.13 336.43,-32.13 344.35,-32.13"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="344.2,-35.64 354.2,-32.14 344.2,-28.64 344.2,-35.64"/>
+</g>
+<!-- proc~watcher_run -->
+<g id="proc~~apply_watch_arguments~~CalledByGraph_node5" class="node">
+<title>proc~watcher_run</title>
+<g id="a_proc~~apply_watch_arguments~~CalledByGraph_node5"><a xlink:href="../proc/watcher_run.html" xlink:title="watcher_t%watcher_run">
+<polygon fill="#d9534f" stroke="#d9534f" points="139.02,-44.27 0,-44.27 0,-20 139.02,-20 139.02,-44.27"/>
+<text xml:space="preserve" text-anchor="middle" x="69.51" y="-28.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">watcher_t%watcher_run</text>
+</a>
+</g>
+</g>
+<!-- proc~watcher_run&#45;&gt;proc~handle_manifest_change -->
+<g id="proc~~apply_watch_arguments~~CalledByGraph_edge5" class="edge">
+<title>proc~watcher_run&#45;&gt;proc~handle_manifest_change</title>
+<path fill="none" stroke="#ff0000" d="M139.32,-32.13C147.18,-32.13 155.26,-32.13 163.29,-32.13"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="163.06,-35.64 173.06,-32.14 163.06,-28.64 163.06,-35.64"/>
+</g>
+</g>
+</svg>
+</div>                <script>
+                  var panprocapply_watch_argumentsCalledByGraph = svgPanZoom('#procapply_watch_argumentsCalledByGraph',
+                    {zoomEnabled: true, controlIconsEnabled: true, fit: true, center: true,}
+                  );
+                </script>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#CalledByGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="CalledByGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="641pt" height="28pt"
+ viewBox="0.00 0.00 641.00 28.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.873868 0.873868) rotate(0) translate(4 28.27)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-28.27 729.52,-28.27 729.52,4 -4,4"/>
+<!-- Subroutine -->
+<g id="node1" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="69.27,-24.27 0,-24.27 0,0 69.27,0 69.27,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="34.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node2" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="143.89,-24.27 87.38,-24.27 87.38,0 143.89,0 143.89,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="115.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node3" class="node">
+<title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="221.39,-24.27 161.88,-24.27 161.88,0 221.39,0 221.39,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="191.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Type Bound Procedure -->
+<g id="node4" class="node">
+<title>Type Bound Procedure</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="368.27,-24.27 239,-24.27 239,0 368.27,0 368.27,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="303.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type Bound Procedure</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node5" class="node">
+<title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="529.39,-24.27 385.88,-24.27 385.88,0 529.39,0 529.39,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="457.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node6" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="603.89,-24.27 547.38,-24.27 547.38,0 603.89,0 603.89,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="575.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node7" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="725.52,-24.27 621.75,-24.27 621.75,0 725.52,0 725.52,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="673.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.
+</p>
+ Where possible, edges connecting nodes are
+given different colours to make them easier to distinguish in
+large graphs.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+
+
+    
+    
+
+    
+    
+
+
+
+    
+    <section>
+    <h2><span class="anchor" id="src"></span>Source Code</h2>
+    <div class="hl codehilite"><pre><span></span><span class="w">   </span><span class="k">subroutine </span><span class="n">apply_watch_arguments</span><span class="p">(</span><span class="n">w</span><span class="p">,</span><span class="w"> </span><span class="n">first_arg</span><span class="p">,</span><span class="w"> </span><span class="n">subcmd_pos</span><span class="p">,</span><span class="w"> </span><span class="n">log_format</span><span class="p">)</span>
+<span class="w">      </span><span class="k">type</span><span class="p">(</span><span class="n">watch_opts_t</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">w</span>
+<span class="w">      </span><span class="kt">integer</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">first_arg</span>
+<span class="w">      </span><span class="kt">integer</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">subcmd_pos</span>
+<span class="w">      </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="w"> </span><span class="k">optional</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">log_format</span>
+<span class="w">      </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">arg</span>
+<span class="w">      </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">narg</span><span class="p">,</span><span class="w"> </span><span class="n">i</span>
+
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">log_format</span><span class="p">))</span><span class="w"> </span><span class="n">w</span><span class="p">%</span><span class="n">log_format</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">log_format</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">valid_log_format</span><span class="p">(</span><span class="n">w</span><span class="p">%</span><span class="n">log_format</span><span class="p">))</span><span class="w"> </span><span class="k">call </span><span class="n">configure_logging</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+<span class="w">      </span><span class="n">narg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">command_argument_count</span><span class="p">()</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">narg</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">first_arg</span><span class="p">)</span><span class="w"> </span><span class="k">call </span><span class="n">usage_and_stop</span><span class="p">(</span><span class="s2">"missing fpm subcommand (build/test/run)"</span><span class="p">)</span>
+<span class="w">      </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">first_arg</span>
+<span class="w">      </span><span class="k">do while</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">narg</span><span class="p">)</span>
+<span class="w">         </span><span class="n">arg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_arg</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+<span class="w">         </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">is_watch_flag</span><span class="p">(</span><span class="n">arg</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
+<span class="k">            call </span><span class="n">apply_watch_flag</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">narg</span><span class="p">,</span><span class="w"> </span><span class="n">w</span><span class="p">)</span>
+<span class="w">         </span><span class="k">else if</span><span class="w"> </span><span class="p">(</span><span class="n">arg</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">"-q"</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">            </span><span class="n">w</span><span class="p">%</span><span class="n">verbosity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span>
+<span class="w">         </span><span class="k">else if</span><span class="w"> </span><span class="p">(</span><span class="n">arg</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">"-v"</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">            </span><span class="n">w</span><span class="p">%</span><span class="n">verbosity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">max</span><span class="p">(</span><span class="n">w</span><span class="p">%</span><span class="n">verbosity</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
+<span class="w">         </span><span class="k">else if</span><span class="w"> </span><span class="p">(</span><span class="n">arg</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">"-vv"</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">            </span><span class="n">w</span><span class="p">%</span><span class="n">verbosity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">max</span><span class="p">(</span><span class="n">w</span><span class="p">%</span><span class="n">verbosity</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span>
+<span class="w">         </span><span class="k">else</span>
+<span class="k">            exit</span>
+<span class="k">         end if</span>
+<span class="k">         </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">      </span><span class="k">end do</span>
+
+<span class="k">      if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">log_format</span><span class="p">))</span><span class="w"> </span><span class="n">w</span><span class="p">%</span><span class="n">log_format</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">log_format</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="n">valid_log_format</span><span class="p">(</span><span class="n">w</span><span class="p">%</span><span class="n">log_format</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
+<span class="k">         call </span><span class="n">usage_and_stop</span><span class="p">(</span><span class="s2">"invalid log-format: "</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="n">w</span><span class="p">%</span><span class="n">log_format</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="s2">"; use text, json, or logfmt"</span><span class="p">)</span>
+<span class="w">      </span><span class="k">end if</span>
+<span class="k">      call </span><span class="n">configure_logging</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">narg</span><span class="p">)</span><span class="w"> </span><span class="k">call </span><span class="n">usage_and_stop</span><span class="p">(</span><span class="s2">"missing fpm subcommand (build/test/run)"</span><span class="p">)</span>
+<span class="w">      </span><span class="n">arg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_arg</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">arg</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">"--help"</span><span class="w"> </span><span class="p">.</span><span class="nb">or</span><span class="p">.</span><span class="w"> </span><span class="n">arg</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">"-h"</span><span class="p">)</span><span class="w"> </span><span class="k">call </span><span class="n">usage_and_stop_ok</span><span class="p">()</span>
+<span class="w">      </span><span class="n">subcmd_pos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span>
+<span class="w">   </span><span class="k">end subroutine </span><span class="n">apply_watch_arguments</span>
+</pre></div>
+
+    </section>
+    <br>
+    
+    </div>
+  </div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              fpm-watch
+ was developed by Seyed Ali Ghasemi<br>              &copy; 2026 <a rel="license" href="https://opensource.org/licenses/MIT">MIT</a>
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+ on 2026-10-17T21:22:39.241228+0000             </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>

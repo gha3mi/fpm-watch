@@ -1,0 +1,488 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="Documentation for fpm-watch">
+    <meta name="author" content="Seyed Ali Ghasemi" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>fpm_watch_create_temp_directory &ndash; fpm-watch</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">fpm-watch </a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/types.html">Derived Types</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <div class="row">
+    <h1>fpm_watch_create_temp_directory
+      <small>Interface</small>
+      
+    </h1>
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+            <li class="list-inline-item" id="meta-license"><i class="fa fa-legal"></i> <a rel="license" href="https://opensource.org/licenses/MIT">MIT</a></li>
+
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title=" 1.2% of total for procedures.">48 statements</a>
+            </li>
+
+            <li class="list-inline-item" id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/watch_platform.f90"> Source File</a>
+            </li>
+        </ul>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+                <li class="breadcrumb-item"><a href='../sourcefile/watch_platform.f90.html'>watch_platform.f90</a></li>
+                <li class="breadcrumb-item"><a href='../module/watch_platform.html'>watch_platform</a></li>
+            <li class="breadcrumb-item active" aria-current="page">fpm_watch_create_temp_directory</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
+  </script>
+
+  </div>
+  
+  <div class="row">
+    <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
+      <div id="sidebar">
+      <h3>Contents</h3>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+    <em>None</em>
+
+  </div>
+
+    </div>
+    
+    <div class="col-md-9" id='text'>
+      <h2>interface</h2>
+      
+      <br>
+    <div class="card">
+      <div class="card-header">
+  <h3 class="card-title">Called by</h3>
+      </div>
+      <div class="card-body">
+  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: interface~~fpm_watch_create_temp_directory~~CalledByGraph Pages: 1 -->
+<svg id="interfacefpm_watch_create_temp_directoryCalledByGraph" width="641pt" height="83pt"
+ viewBox="0.00 0.00 641.00 83.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="interface~~fpm_watch_create_temp_directory~~CalledByGraph" class="graph" transform="scale(0.610116 0.610116) rotate(0) translate(4 132.34)">
+<title>interface~~fpm_watch_create_temp_directory~~CalledByGraph</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-132.34 1046.62,-132.34 1046.62,4 -4,4"/>
+<!-- interface~fpm_watch_create_temp_directory -->
+<g id="interface~~fpm_watch_create_temp_directory~~CalledByGraph_node1" class="node">
+<title>interface~fpm_watch_create_temp_directory</title>
+<polygon fill="none" stroke="black" points="1042.62,-61.27 848.85,-61.27 848.85,-37 1042.62,-37 1042.62,-61.27"/>
+<text xml:space="preserve" text-anchor="middle" x="945.74" y="-45.53" font-family="Helvetica,sans-Serif" font-size="10.50">fpm_watch_create_temp_directory</text>
+</g>
+<!-- proc~create_temp_directory -->
+<g id="interface~~fpm_watch_create_temp_directory~~CalledByGraph_node2" class="node">
+<title>proc~create_temp_directory</title>
+<g id="a_interface~~fpm_watch_create_temp_directory~~CalledByGraph_node2"><a xlink:href="../proc/create_temp_directory.html" xlink:title="create_temp_directory">
+<polygon fill="#d9534f" stroke="#d9534f" points="812.85,-61.27 682.08,-61.27 682.08,-37 812.85,-37 812.85,-61.27"/>
+<text xml:space="preserve" text-anchor="middle" x="747.47" y="-45.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">create_temp_directory</text>
+</a>
+</g>
+</g>
+<!-- proc~create_temp_directory&#45;&gt;interface~fpm_watch_create_temp_directory -->
+<g id="interface~~fpm_watch_create_temp_directory~~CalledByGraph_edge1" class="edge">
+<title>proc~create_temp_directory&#45;&gt;interface~fpm_watch_create_temp_directory</title>
+<path fill="none" stroke="#ff0000" d="M813.28,-49.13C820.94,-49.13 828.91,-49.13 836.97,-49.13"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="836.89,-52.64 846.89,-49.14 836.89,-45.64 836.89,-52.64"/>
+</g>
+<!-- proc~compute_watch_snapshot -->
+<g id="interface~~fpm_watch_create_temp_directory~~CalledByGraph_node3" class="node">
+<title>proc~compute_watch_snapshot</title>
+<g id="a_interface~~fpm_watch_create_temp_directory~~CalledByGraph_node3"><a xlink:href="../proc/compute_watch_snapshot.html" xlink:title="compute_watch_snapshot">
+<polygon fill="#d9534f" stroke="#d9534f" points="646.08,-84.27 497.31,-84.27 497.31,-60 646.08,-60 646.08,-84.27"/>
+<text xml:space="preserve" text-anchor="middle" x="571.7" y="-68.54" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">compute_watch_snapshot</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_watch_snapshot&#45;&gt;proc~create_temp_directory -->
+<g id="interface~~fpm_watch_create_temp_directory~~CalledByGraph_edge2" class="edge">
+<title>proc~compute_watch_snapshot&#45;&gt;proc~create_temp_directory</title>
+<path fill="none" stroke="#ff0000" d="M646.39,-62.38C654.37,-61.32 662.51,-60.25 670.52,-59.19"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="670.78,-62.68 680.23,-57.9 669.86,-55.74 670.78,-62.68"/>
+</g>
+<!-- proc~execute_supervised_child -->
+<g id="interface~~fpm_watch_create_temp_directory~~CalledByGraph_node4" class="node">
+<title>proc~execute_supervised_child</title>
+<g id="a_interface~~fpm_watch_create_temp_directory~~CalledByGraph_node4"><a xlink:href="../proc/execute_supervised_child.html" xlink:title="execute_supervised_child">
+<polygon fill="#d9534f" stroke="#d9534f" points="645.33,-40.27 498.06,-40.27 498.06,-16 645.33,-16 645.33,-40.27"/>
+<text xml:space="preserve" text-anchor="middle" x="571.7" y="-24.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">execute_supervised_child</text>
+</a>
+</g>
+</g>
+<!-- proc~execute_supervised_child&#45;&gt;proc~create_temp_directory -->
+<g id="interface~~fpm_watch_create_temp_directory~~CalledByGraph_edge3" class="edge">
+<title>proc~execute_supervised_child&#45;&gt;proc~create_temp_directory</title>
+<path fill="none" stroke="#ff0000" d="M645.63,-36.95C653.87,-37.95 662.28,-38.96 670.55,-39.96"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="669.87,-43.4 680.22,-41.13 670.71,-36.45 669.87,-43.4"/>
+</g>
+<!-- proc~rebuild_watch_list -->
+<g id="interface~~fpm_watch_create_temp_directory~~CalledByGraph_node5" class="node">
+<title>proc~rebuild_watch_list</title>
+<g id="a_interface~~fpm_watch_create_temp_directory~~CalledByGraph_node5"><a xlink:href="../proc/rebuild_watch_list.html" xlink:title="rebuild_watch_list">
+<polygon fill="#d9534f" stroke="#d9534f" points="461.31,-87.27 356.04,-87.27 356.04,-63 461.31,-63 461.31,-87.27"/>
+<text xml:space="preserve" text-anchor="middle" x="408.68" y="-71.54" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rebuild_watch_list</text>
+</a>
+</g>
+</g>
+<!-- proc~rebuild_watch_list&#45;&gt;proc~compute_watch_snapshot -->
+<g id="interface~~fpm_watch_create_temp_directory~~CalledByGraph_edge4" class="edge">
+<title>proc~rebuild_watch_list&#45;&gt;proc~compute_watch_snapshot</title>
+<path fill="none" stroke="#ff0000" d="M461.51,-74.17C469.28,-74.02 477.47,-73.87 485.72,-73.72"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="485.52,-77.22 495.46,-73.54 485.39,-70.22 485.52,-77.22"/>
+</g>
+<!-- proc~supervisor_loop -->
+<g id="interface~~fpm_watch_create_temp_directory~~CalledByGraph_node6" class="node">
+<title>proc~supervisor_loop</title>
+<g id="a_interface~~fpm_watch_create_temp_directory~~CalledByGraph_node6"><a xlink:href="../proc/supervisor_loop.html" xlink:title="supervisor_loop">
+<polygon fill="#d9534f" stroke="#d9534f" points="456.44,-35.27 360.92,-35.27 360.92,-11 456.44,-11 456.44,-35.27"/>
+<text xml:space="preserve" text-anchor="middle" x="408.68" y="-19.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">supervisor_loop</text>
+</a>
+</g>
+</g>
+<!-- proc~supervisor_loop&#45;&gt;proc~execute_supervised_child -->
+<g id="interface~~fpm_watch_create_temp_directory~~CalledByGraph_edge5" class="edge">
+<title>proc~supervisor_loop&#45;&gt;proc~execute_supervised_child</title>
+<path fill="none" stroke="#00ffff" d="M456.68,-24.59C465.99,-24.88 476.02,-25.2 486.14,-25.51"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="485.95,-29.01 496.06,-25.82 486.17,-22.01 485.95,-29.01"/>
+</g>
+<!-- proc~handle_manifest_change -->
+<g id="interface~~fpm_watch_create_temp_directory~~CalledByGraph_node7" class="node">
+<title>proc~handle_manifest_change</title>
+<g id="a_interface~~fpm_watch_create_temp_directory~~CalledByGraph_node7"><a xlink:href="../proc/handle_manifest_change.html" xlink:title="handle_manifest_change">
+<polygon fill="#d9534f" stroke="#d9534f" points="320.04,-108.27 175.02,-108.27 175.02,-84 320.04,-84 320.04,-108.27"/>
+<text xml:space="preserve" text-anchor="middle" x="247.53" y="-92.54" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">handle_manifest_change</text>
+</a>
+</g>
+</g>
+<!-- proc~handle_manifest_change&#45;&gt;proc~rebuild_watch_list -->
+<g id="interface~~fpm_watch_create_temp_directory~~CalledByGraph_edge6" class="edge">
+<title>proc~handle_manifest_change&#45;&gt;proc~rebuild_watch_list</title>
+<path fill="none" stroke="#ff0000" d="M320.19,-86.68C328.38,-85.6 336.67,-84.5 344.74,-83.44"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="344.98,-86.94 354.44,-82.16 344.07,-80 344.98,-86.94"/>
+</g>
+<!-- proc~maybe_supervise -->
+<g id="interface~~fpm_watch_create_temp_directory~~CalledByGraph_node8" class="node">
+<title>proc~maybe_supervise</title>
+<g id="a_interface~~fpm_watch_create_temp_directory~~CalledByGraph_node8"><a xlink:href="../proc/maybe_supervise.html" xlink:title="maybe_supervise">
+<polygon fill="#d9534f" stroke="#d9534f" points="299.79,-24.27 195.27,-24.27 195.27,0 299.79,0 299.79,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="247.53" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">maybe_supervise</text>
+</a>
+</g>
+</g>
+<!-- proc~maybe_supervise&#45;&gt;proc~supervisor_loop -->
+<g id="interface~~fpm_watch_create_temp_directory~~CalledByGraph_edge9" class="edge">
+<title>proc~maybe_supervise&#45;&gt;proc~supervisor_loop</title>
+<path fill="none" stroke="#00ffff" d="M300.2,-15.71C315.83,-16.79 333.1,-17.98 349.15,-19.09"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="348.84,-22.58 359.06,-19.77 349.33,-15.59 348.84,-22.58"/>
+</g>
+<!-- proc~watcher_init -->
+<g id="interface~~fpm_watch_create_temp_directory~~CalledByGraph_node9" class="node">
+<title>proc~watcher_init</title>
+<g id="a_interface~~fpm_watch_create_temp_directory~~CalledByGraph_node9"><a xlink:href="../proc/watcher_init.html" xlink:title="watcher_t%watcher_init">
+<polygon fill="#d9534f" stroke="#d9534f" points="316.29,-66.27 178.77,-66.27 178.77,-42 316.29,-42 316.29,-66.27"/>
+<text xml:space="preserve" text-anchor="middle" x="247.53" y="-50.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">watcher_t%watcher_init</text>
+</a>
+</g>
+</g>
+<!-- proc~watcher_init&#45;&gt;proc~rebuild_watch_list -->
+<g id="interface~~fpm_watch_create_temp_directory~~CalledByGraph_edge7" class="edge">
+<title>proc~watcher_init&#45;&gt;proc~rebuild_watch_list</title>
+<path fill="none" stroke="#ff0000" d="M316.48,-63.1C325.85,-64.34 335.44,-65.6 344.72,-66.83"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="343.96,-70.26 354.34,-68.1 344.88,-63.32 343.96,-70.26"/>
+</g>
+<!-- proc~watcher_run -->
+<g id="interface~~fpm_watch_create_temp_directory~~CalledByGraph_node10" class="node">
+<title>proc~watcher_run</title>
+<g id="a_interface~~fpm_watch_create_temp_directory~~CalledByGraph_node10"><a xlink:href="../proc/watcher_run.html" xlink:title="watcher_t%watcher_run">
+<polygon fill="#d9534f" stroke="#d9534f" points="139.02,-128.27 0,-128.27 0,-104 139.02,-104 139.02,-128.27"/>
+<text xml:space="preserve" text-anchor="middle" x="69.51" y="-112.54" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">watcher_t%watcher_run</text>
+</a>
+</g>
+</g>
+<!-- proc~watcher_run&#45;&gt;proc~rebuild_watch_list -->
+<g id="interface~~fpm_watch_create_temp_directory~~CalledByGraph_edge8" class="edge">
+<title>proc~watcher_run&#45;&gt;proc~rebuild_watch_list</title>
+<path fill="none" stroke="#ff0000" d="M139.47,-124.69C190.09,-128.97 260.16,-130.74 320.04,-117.14 340.61,-112.46 362,-102.33 378.49,-93.19"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="379.84,-96.46 386.77,-88.44 376.35,-90.38 379.84,-96.46"/>
+</g>
+<!-- proc~watcher_run&#45;&gt;proc~handle_manifest_change -->
+<g id="interface~~fpm_watch_create_temp_directory~~CalledByGraph_edge10" class="edge">
+<title>proc~watcher_run&#45;&gt;proc~handle_manifest_change</title>
+<path fill="none" stroke="#ff0000" d="M139.32,-108.32C147.18,-107.42 155.26,-106.5 163.29,-105.59"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="163.53,-109.09 173.07,-104.48 162.74,-102.13 163.53,-109.09"/>
+</g>
+</g>
+</svg>
+</div>                <script>
+                  var paninterfacefpm_watch_create_temp_directoryCalledByGraph = svgPanZoom('#interfacefpm_watch_create_temp_directoryCalledByGraph',
+                    {zoomEnabled: true, controlIconsEnabled: true, fit: true, center: true,}
+                  );
+                </script>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#CalledByGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="CalledByGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="641pt" height="28pt"
+ viewBox="0.00 0.00 641.00 28.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.873868 0.873868) rotate(0) translate(4 28.27)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-28.27 729.52,-28.27 729.52,4 -4,4"/>
+<!-- Subroutine -->
+<g id="node1" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="69.27,-24.27 0,-24.27 0,0 69.27,0 69.27,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="34.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node2" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="143.89,-24.27 87.38,-24.27 87.38,0 143.89,0 143.89,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="115.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node3" class="node">
+<title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="221.39,-24.27 161.88,-24.27 161.88,0 221.39,0 221.39,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="191.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Type Bound Procedure -->
+<g id="node4" class="node">
+<title>Type Bound Procedure</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="368.27,-24.27 239,-24.27 239,0 368.27,0 368.27,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="303.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type Bound Procedure</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node5" class="node">
+<title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="529.39,-24.27 385.88,-24.27 385.88,0 529.39,0 529.39,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="457.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node6" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="603.89,-24.27 547.38,-24.27 547.38,0 603.89,0 603.89,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="575.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node7" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="725.52,-24.27 621.75,-24.27 621.75,0 725.52,0 725.52,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="673.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.
+</p>
+ Where possible, edges connecting nodes are
+given different colours to make them easier to distinguish in
+large graphs.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+      <h2>private  function fpm_watch_create_temp_directory(path, capacity) result(error) bind(C, name="fpm_watch_create_temp_directory"))  
+</h2>
+
+    
+
+    <h3>Arguments</h3>
+        <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-path~14"></span>
+              character(kind=c_char, len=1),
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>path</strong>(*)</td>
+            <td>
+                <p>The C helper writes at most the caller-provided capacity, including NUL.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-capacity~3"></span>
+              integer(kind=c_size_t),
+            </td>
+<td></td>
+              <td></td>            <td>
+              value
+            </td>
+            <td>::</td>
+            <td><strong>capacity</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+      <h3>Return Value <span class="anchor" id="variable-error~18"></span><small>integer(kind=c_int)</small></h3>
+    
+    <h3>Description</h3>
+    <p>Reserve a uniquely named private temporary directory; return an OS error or zero.</p>
+    <br>
+
+ </div>
+</div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              fpm-watch
+ was developed by Seyed Ali Ghasemi<br>              &copy; 2026 <a rel="license" href="https://opensource.org/licenses/MIT">MIT</a>
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+ on 2026-10-17T21:22:39.241228+0000             </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>

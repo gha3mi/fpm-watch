@@ -1,0 +1,675 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="Documentation for fpm-watch">
+    <meta name="author" content="Seyed Ali Ghasemi" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>response_candidates &ndash; fpm-watch</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">fpm-watch </a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/types.html">Derived Types</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <div class="row">
+    <h1>response_candidates
+      <small>Subroutine</small>
+      
+    </h1>
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+            <li class="list-inline-item" id="meta-license"><i class="fa fa-legal"></i> <a rel="license" href="https://opensource.org/licenses/MIT">MIT</a></li>
+
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title=" 0.7% of total for procedures.">29 statements</a>
+            </li>
+
+            <li class="list-inline-item" id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/watch_cli.f90"> Source File</a>
+            </li>
+        </ul>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+                <li class="breadcrumb-item"><a href='../sourcefile/watch_cli.f90.html'>watch_cli.f90</a></li>
+                <li class="breadcrumb-item"><a href='../module/watch_cli.html'>watch_cli</a></li>
+            <li class="breadcrumb-item active" aria-current="page">response_candidates</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
+  </script>
+
+  </div>
+  
+  <div class="row">
+    <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
+      <div id="sidebar">
+      <h3>Contents</h3>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    <div class="card card-primary">
+      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
+      <div class="list-group">
+        <a class="list-group-item" href="../proc/response_candidates.html#src">response_candidates</a>
+      </div>
+    </div>
+
+
+  </div>
+
+    </div>
+    
+    <div class="col-md-9" id='text'>
+    <h2>private  subroutine response_candidates(argument, candidates, error)  
+</h2>
+    
+
+    <p>Enumerate documented named-file locations without interpreting option values.</p>
+
+
+    <h3>Arguments</h3>
+        <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-argument"></span>
+              character(len=*),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>argument</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-candidates~2"></span>
+              type(string_t),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>candidates</strong>(:)</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-error~7"></span>
+              type(error_t),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>error</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <br>
+    <div class="card">
+      <div class="card-header">
+  <h3 class="card-title">Calls</h3>
+      </div>
+      <div class="card-body">
+  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: proc~~response_candidates~~CallsGraph Pages: 1 -->
+<svg id="procresponse_candidatesCallsGraph" width="292pt" height="326pt"
+ viewBox="0.00 0.00 292.00 326.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~response_candidates~~CallsGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 322.27)">
+<title>proc~~response_candidates~~CallsGraph</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-322.27 288.04,-322.27 288.04,4 -4,4"/>
+<!-- proc~response_candidates -->
+<g id="proc~~response_candidates~~CallsGraph_node1" class="node">
+<title>proc~response_candidates</title>
+<polygon fill="none" stroke="black" points="123.27,-171.27 0,-171.27 0,-147 123.27,-147 123.27,-171.27"/>
+<text xml:space="preserve" text-anchor="middle" x="61.63" y="-155.53" font-family="Helvetica,sans-Serif" font-size="10.50">response_candidates</text>
+</g>
+<!-- canon_path -->
+<g id="proc~~response_candidates~~CallsGraph_node2" class="node">
+<title>canon_path</title>
+<polygon fill="#777777" stroke="#777777" points="258.54,-318.27 184.77,-318.27 184.77,-294 258.54,-294 258.54,-318.27"/>
+<text xml:space="preserve" text-anchor="middle" x="221.65" y="-302.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">canon_path</text>
+</g>
+<!-- proc~response_candidates&#45;&gt;canon_path -->
+<g id="proc~~response_candidates~~CallsGraph_edge1" class="edge">
+<title>proc~response_candidates&#45;&gt;canon_path</title>
+<path fill="none" stroke="#ff0000" d="M68.84,-171.46C82.06,-196.5 115.39,-253.6 159.27,-285.13 163.72,-288.34 168.7,-291.08 173.85,-293.42"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="172.53,-296.66 183.12,-297.13 175.13,-290.16 172.53,-296.66"/>
+</g>
+<!-- fatal_error -->
+<g id="proc~~response_candidates~~CallsGraph_node3" class="node">
+<title>fatal_error</title>
+<polygon fill="#777777" stroke="#777777" points="255.16,-276.27 188.14,-276.27 188.14,-252 255.16,-252 255.16,-276.27"/>
+<text xml:space="preserve" text-anchor="middle" x="221.65" y="-260.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">fatal_error</text>
+</g>
+<!-- proc~response_candidates&#45;&gt;fatal_error -->
+<g id="proc~~response_candidates~~CallsGraph_edge2" class="edge">
+<title>proc~response_candidates&#45;&gt;fatal_error</title>
+<path fill="none" stroke="#ff0000" d="M73.96,-171.67C90.91,-189.75 124.6,-223.16 159.27,-243.13 164.9,-246.38 171.1,-249.22 177.34,-251.69"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="175.76,-254.84 186.35,-254.96 178.15,-248.26 175.76,-254.84"/>
+</g>
+<!-- get_current_directory -->
+<g id="proc~~response_candidates~~CallsGraph_node4" class="node">
+<title>get_current_directory</title>
+<polygon fill="#777777" stroke="#777777" points="284.04,-234.27 159.27,-234.27 159.27,-210 284.04,-210 284.04,-234.27"/>
+<text xml:space="preserve" text-anchor="middle" x="221.65" y="-218.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">get_current_directory</text>
+</g>
+<!-- proc~response_candidates&#45;&gt;get_current_directory -->
+<g id="proc~~response_candidates~~CallsGraph_edge3" class="edge">
+<title>proc~response_candidates&#45;&gt;get_current_directory</title>
+<path fill="none" stroke="#ff0000" d="M89.88,-171.68C109.11,-180.35 135.56,-191.94 159.27,-201.13 163.35,-202.72 167.6,-204.3 171.88,-205.85"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="170.48,-209.07 181.07,-209.11 172.82,-202.47 170.48,-209.07"/>
+</g>
+<!-- get_env -->
+<g id="proc~~response_candidates~~CallsGraph_node5" class="node">
+<title>get_env</title>
+<polygon fill="#777777" stroke="#777777" points="248.65,-192.27 194.65,-192.27 194.65,-168 248.65,-168 248.65,-192.27"/>
+<text xml:space="preserve" text-anchor="middle" x="221.65" y="-176.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">get_env</text>
+</g>
+<!-- proc~response_candidates&#45;&gt;get_env -->
+<g id="proc~~response_candidates~~CallsGraph_edge4" class="edge">
+<title>proc~response_candidates&#45;&gt;get_env</title>
+<path fill="none" stroke="#ff0000" d="M123.73,-167.25C143.72,-169.91 165.34,-172.78 183.07,-175.14"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="182.5,-178.6 192.88,-176.44 183.42,-171.66 182.5,-178.6"/>
+</g>
+<!-- is_absolute_path -->
+<g id="proc~~response_candidates~~CallsGraph_node6" class="node">
+<title>is_absolute_path</title>
+<polygon fill="#777777" stroke="#777777" points="271.66,-150.27 171.64,-150.27 171.64,-126 271.66,-126 271.66,-150.27"/>
+<text xml:space="preserve" text-anchor="middle" x="221.65" y="-134.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">is_absolute_path</text>
+</g>
+<!-- proc~response_candidates&#45;&gt;is_absolute_path -->
+<g id="proc~~response_candidates~~CallsGraph_edge5" class="edge">
+<title>proc~response_candidates&#45;&gt;is_absolute_path</title>
+<path fill="none" stroke="#ff0000" d="M123.73,-151.02C135.71,-149.42 148.27,-147.76 160.22,-146.17"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="160.51,-149.66 169.96,-144.87 159.59,-142.72 160.51,-149.66"/>
+</g>
+<!-- join_path -->
+<g id="proc~~response_candidates~~CallsGraph_node7" class="node">
+<title>join_path</title>
+<polygon fill="#777777" stroke="#777777" points="251.79,-108.27 191.52,-108.27 191.52,-84 251.79,-84 251.79,-108.27"/>
+<text xml:space="preserve" text-anchor="middle" x="221.65" y="-92.54" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">join_path</text>
+</g>
+<!-- proc~response_candidates&#45;&gt;join_path -->
+<g id="proc~~response_candidates~~CallsGraph_edge6" class="edge">
+<title>proc~response_candidates&#45;&gt;join_path</title>
+<path fill="none" stroke="#ff0000" d="M89.88,-146.59C109.11,-137.92 135.56,-126.33 159.27,-117.14 166.02,-114.52 173.26,-111.89 180.31,-109.42"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="181.38,-112.75 189.7,-106.19 179.11,-106.13 181.38,-112.75"/>
+</g>
+<!-- proc~push_feature -->
+<g id="proc~~response_candidates~~CallsGraph_node8" class="node">
+<title>proc~push_feature</title>
+<g id="a_proc~~response_candidates~~CallsGraph_node8"><a xlink:href="../proc/push_feature.html" xlink:title="push_feature">
+<polygon fill="#d9534f" stroke="#d9534f" points="261.91,-66.27 181.39,-66.27 181.39,-42 261.91,-42 261.91,-66.27"/>
+<text xml:space="preserve" text-anchor="middle" x="221.65" y="-50.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">push_feature</text>
+</a>
+</g>
+</g>
+<!-- proc~response_candidates&#45;&gt;proc~push_feature -->
+<g id="proc~~response_candidates~~CallsGraph_edge7" class="edge">
+<title>proc~response_candidates&#45;&gt;proc~push_feature</title>
+<path fill="none" stroke="#ff0000" d="M73.96,-146.6C90.91,-128.52 124.6,-95.11 159.27,-75.14 162.85,-73.07 166.66,-71.17 170.56,-69.43"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="171.68,-72.75 179.62,-65.74 169.04,-66.27 171.68,-72.75"/>
+</g>
+<!-- split -->
+<g id="proc~~response_candidates~~CallsGraph_node9" class="node">
+<title>split</title>
+<polygon fill="#777777" stroke="#777777" points="248.65,-24.27 194.65,-24.27 194.65,0 248.65,0 248.65,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="221.65" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">split</text>
+</g>
+<!-- proc~response_candidates&#45;&gt;split -->
+<g id="proc~~response_candidates~~CallsGraph_edge8" class="edge">
+<title>proc~response_candidates&#45;&gt;split</title>
+<path fill="none" stroke="#ff0000" d="M68.84,-146.81C82.06,-121.77 115.39,-64.67 159.27,-33.13 166.46,-27.97 175.01,-24 183.42,-20.97"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="184.36,-24.35 192.83,-17.98 182.23,-17.68 184.36,-24.35"/>
+</g>
+</g>
+</svg>
+</div>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#CallsGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="CallsGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="641pt" height="28pt"
+ viewBox="0.00 0.00 641.00 28.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.873868 0.873868) rotate(0) translate(4 28.27)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-28.27 729.52,-28.27 729.52,4 -4,4"/>
+<!-- Subroutine -->
+<g id="node1" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="69.27,-24.27 0,-24.27 0,0 69.27,0 69.27,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="34.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node2" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="143.89,-24.27 87.38,-24.27 87.38,0 143.89,0 143.89,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="115.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node3" class="node">
+<title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="221.39,-24.27 161.88,-24.27 161.88,0 221.39,0 221.39,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="191.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Type Bound Procedure -->
+<g id="node4" class="node">
+<title>Type Bound Procedure</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="368.27,-24.27 239,-24.27 239,0 368.27,0 368.27,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="303.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type Bound Procedure</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node5" class="node">
+<title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="529.39,-24.27 385.88,-24.27 385.88,0 529.39,0 529.39,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="457.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node6" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="603.89,-24.27 547.38,-24.27 547.38,0 603.89,0 603.89,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="575.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node7" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="725.52,-24.27 621.75,-24.27 621.75,0 725.52,0 725.52,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="673.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.
+</p>
+ Where possible, edges connecting nodes are
+given different colours to make them easier to distinguish in
+large graphs.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+  <h3 class="card-title">Called by</h3>
+      </div>
+      <div class="card-body">
+  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: proc~~response_candidates~~CalledByGraph Pages: 1 -->
+<svg id="procresponse_candidatesCalledByGraph" width="641pt" height="26pt"
+ viewBox="0.00 0.00 641.00 26.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~response_candidates~~CalledByGraph" class="graph" transform="scale(0.794694 0.794694) rotate(0) translate(4 28.27)">
+<title>proc~~response_candidates~~CalledByGraph</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-28.27 802.6,-28.27 802.6,4 -4,4"/>
+<!-- proc~response_candidates -->
+<g id="proc~~response_candidates~~CalledByGraph_node1" class="node">
+<title>proc~response_candidates</title>
+<polygon fill="none" stroke="black" points="798.6,-24.27 675.33,-24.27 675.33,0 798.6,0 798.6,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="736.96" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50">response_candidates</text>
+</g>
+<!-- proc~prepare_response_options -->
+<g id="proc~~response_candidates~~CalledByGraph_node2" class="node">
+<title>proc~prepare_response_options</title>
+<g id="a_proc~~response_candidates~~CalledByGraph_node2"><a xlink:href="../proc/prepare_response_options.html" xlink:title="prepare_response_options">
+<polygon fill="#d9534f" stroke="#d9534f" points="639.33,-24.27 489.06,-24.27 489.06,0 639.33,0 639.33,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="564.19" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">prepare_response_options</text>
+</a>
+</g>
+</g>
+<!-- proc~prepare_response_options&#45;&gt;proc~response_candidates -->
+<g id="proc~~response_candidates~~CalledByGraph_edge1" class="edge">
+<title>proc~prepare_response_options&#45;&gt;proc~response_candidates</title>
+<path fill="none" stroke="#ff0000" d="M639.6,-12.13C647.51,-12.13 655.55,-12.13 663.44,-12.13"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="663.34,-15.64 673.34,-12.14 663.34,-8.64 663.34,-15.64"/>
+</g>
+<!-- proc~parse_cli_config -->
+<g id="proc~~response_candidates~~CalledByGraph_node3" class="node">
+<title>proc~parse_cli_config</title>
+<g id="a_proc~~response_candidates~~CalledByGraph_node3"><a xlink:href="../proc/parse_cli_config.html" xlink:title="parse_cli_config">
+<polygon fill="#d9534f" stroke="#d9534f" points="453.06,-24.27 356.04,-24.27 356.04,0 453.06,0 453.06,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="404.55" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">parse_cli_config</text>
+</a>
+</g>
+</g>
+<!-- proc~parse_cli_config&#45;&gt;proc~prepare_response_options -->
+<g id="proc~~response_candidates~~CalledByGraph_edge2" class="edge">
+<title>proc~parse_cli_config&#45;&gt;proc~prepare_response_options</title>
+<path fill="none" stroke="#ff0000" d="M453.28,-12.13C460.94,-12.13 469.07,-12.13 477.3,-12.13"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="477.05,-15.64 487.05,-12.14 477.05,-8.64 477.05,-15.64"/>
+</g>
+<!-- proc~handle_manifest_change -->
+<g id="proc~~response_candidates~~CalledByGraph_node4" class="node">
+<title>proc~handle_manifest_change</title>
+<g id="a_proc~~response_candidates~~CalledByGraph_node4"><a xlink:href="../proc/handle_manifest_change.html" xlink:title="handle_manifest_change">
+<polygon fill="#d9534f" stroke="#d9534f" points="320.04,-24.27 175.02,-24.27 175.02,0 320.04,0 320.04,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="247.53" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">handle_manifest_change</text>
+</a>
+</g>
+</g>
+<!-- proc~handle_manifest_change&#45;&gt;proc~parse_cli_config -->
+<g id="proc~~response_candidates~~CalledByGraph_edge3" class="edge">
+<title>proc~handle_manifest_change&#45;&gt;proc~parse_cli_config</title>
+<path fill="none" stroke="#ff0000" d="M320.14,-12.13C328.24,-12.13 336.43,-12.13 344.35,-12.13"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="344.2,-15.64 354.2,-12.14 344.2,-8.64 344.2,-15.64"/>
+</g>
+<!-- proc~watcher_run -->
+<g id="proc~~response_candidates~~CalledByGraph_node5" class="node">
+<title>proc~watcher_run</title>
+<g id="a_proc~~response_candidates~~CalledByGraph_node5"><a xlink:href="../proc/watcher_run.html" xlink:title="watcher_t%watcher_run">
+<polygon fill="#d9534f" stroke="#d9534f" points="139.02,-24.27 0,-24.27 0,0 139.02,0 139.02,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="69.51" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">watcher_t%watcher_run</text>
+</a>
+</g>
+</g>
+<!-- proc~watcher_run&#45;&gt;proc~handle_manifest_change -->
+<g id="proc~~response_candidates~~CalledByGraph_edge4" class="edge">
+<title>proc~watcher_run&#45;&gt;proc~handle_manifest_change</title>
+<path fill="none" stroke="#ff0000" d="M139.32,-12.13C147.18,-12.13 155.26,-12.13 163.29,-12.13"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="163.06,-15.64 173.06,-12.14 163.06,-8.64 163.06,-15.64"/>
+</g>
+</g>
+</svg>
+</div>                <script>
+                  var panprocresponse_candidatesCalledByGraph = svgPanZoom('#procresponse_candidatesCalledByGraph',
+                    {zoomEnabled: true, controlIconsEnabled: true, fit: true, center: true,}
+                  );
+                </script>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#CalledByGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="CalledByGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="641pt" height="28pt"
+ viewBox="0.00 0.00 641.00 28.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.873868 0.873868) rotate(0) translate(4 28.27)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-28.27 729.52,-28.27 729.52,4 -4,4"/>
+<!-- Subroutine -->
+<g id="node1" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="69.27,-24.27 0,-24.27 0,0 69.27,0 69.27,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="34.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node2" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="143.89,-24.27 87.38,-24.27 87.38,0 143.89,0 143.89,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="115.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node3" class="node">
+<title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="221.39,-24.27 161.88,-24.27 161.88,0 221.39,0 221.39,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="191.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Type Bound Procedure -->
+<g id="node4" class="node">
+<title>Type Bound Procedure</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="368.27,-24.27 239,-24.27 239,0 368.27,0 368.27,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="303.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type Bound Procedure</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node5" class="node">
+<title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="529.39,-24.27 385.88,-24.27 385.88,0 529.39,0 529.39,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="457.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node6" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="603.89,-24.27 547.38,-24.27 547.38,0 603.89,0 603.89,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="575.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node7" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="725.52,-24.27 621.75,-24.27 621.75,0 725.52,0 725.52,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="673.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.
+</p>
+ Where possible, edges connecting nodes are
+given different colours to make them easier to distinguish in
+large graphs.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+
+
+    
+    
+
+    
+    
+
+
+
+    
+    <section>
+    <h2><span class="anchor" id="src"></span>Source Code</h2>
+    <div class="hl codehilite"><pre><span></span><span class="w">   </span><span class="k">subroutine </span><span class="n">response_candidates</span><span class="p">(</span><span class="n">argument</span><span class="p">,</span><span class="w"> </span><span class="n">candidates</span><span class="p">,</span><span class="w"> </span><span class="n">error</span><span class="p">)</span>
+<span class="w">      </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">argument</span>
+<span class="w">      </span><span class="k">type</span><span class="p">(</span><span class="n">string_t</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">candidates</span><span class="p">(:)</span>
+<span class="w">      </span><span class="k">type</span><span class="p">(</span><span class="n">error_t</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">error</span>
+<span class="w">      </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">base</span><span class="p">,</span><span class="w"> </span><span class="n">paths</span><span class="p">(:),</span><span class="w"> </span><span class="n">candidate</span>
+<span class="w">      </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">i</span>
+
+<span class="w">      </span><span class="k">allocate</span><span class="p">(</span><span class="n">candidates</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">argument</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">         call </span><span class="n">fatal_error</span><span class="p">(</span><span class="n">error</span><span class="p">,</span><span class="w"> </span><span class="s2">"Response @ requires a file name"</span><span class="p">)</span>
+<span class="w">         </span><span class="k">return</span>
+<span class="k">      end if</span>
+<span class="k">      call </span><span class="n">get_current_directory</span><span class="p">(</span><span class="n">base</span><span class="p">,</span><span class="w"> </span><span class="n">error</span><span class="p">)</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">allocated</span><span class="p">(</span><span class="n">error</span><span class="p">))</span><span class="w"> </span><span class="k">return</span>
+<span class="k">      </span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">trim</span><span class="p">(</span><span class="n">argument</span><span class="p">(</span><span class="mi">2</span><span class="p">:))</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">index</span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="s2">"/"</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">.</span><span class="nb">or</span><span class="p">.</span><span class="w"> </span><span class="nb">index</span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="nb">achar</span><span class="p">(</span><span class="mi">92</span><span class="p">))</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">         </span><span class="n">candidate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">name</span>
+<span class="w">         </span><span class="k">if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="n">is_absolute_path</span><span class="p">(</span><span class="n">candidate</span><span class="p">))</span><span class="w"> </span><span class="n">candidate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">join_path</span><span class="p">(</span><span class="n">base</span><span class="p">,</span><span class="w"> </span><span class="n">candidate</span><span class="p">)</span>
+<span class="w">         </span><span class="k">call </span><span class="n">push_feature</span><span class="p">(</span><span class="n">candidates</span><span class="p">,</span><span class="w"> </span><span class="n">canon_path</span><span class="p">(</span><span class="n">candidate</span><span class="p">))</span>
+<span class="w">         </span><span class="k">return</span>
+<span class="k">      end if</span>
+<span class="k">      </span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="s2">".rsp"</span>
+<span class="w">      </span><span class="k">call </span><span class="n">push_feature</span><span class="p">(</span><span class="n">candidates</span><span class="p">,</span><span class="w"> </span><span class="n">canon_path</span><span class="p">(</span><span class="n">join_path</span><span class="p">(</span><span class="n">base</span><span class="p">,</span><span class="w"> </span><span class="n">name</span><span class="p">)))</span>
+<span class="w">      </span><span class="c">! These are M_CLI2's documented search paths and its default split delimiters.</span>
+<span class="w">      </span><span class="k">call </span><span class="n">split</span><span class="p">(</span><span class="n">get_env</span><span class="p">(</span><span class="s2">"CLI_RESPONSE_PATH"</span><span class="p">),</span><span class="w"> </span><span class="n">paths</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="w">         </span><span class="n">delimiters</span><span class="o">=</span><span class="s2">" "</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="nb">achar</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="nb">achar</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="nb">achar</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="nb">achar</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="nb">achar</span><span class="p">(</span><span class="mi">13</span><span class="p">)</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="nb">achar</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="s2">",:"</span><span class="p">)</span>
+<span class="w">      </span><span class="k">do </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="p">(</span><span class="n">paths</span><span class="p">)</span>
+<span class="w">         </span><span class="n">candidate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">paths</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+<span class="w">         </span><span class="k">if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="n">is_absolute_path</span><span class="p">(</span><span class="n">candidate</span><span class="p">))</span><span class="w"> </span><span class="n">candidate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">join_path</span><span class="p">(</span><span class="n">base</span><span class="p">,</span><span class="w"> </span><span class="n">candidate</span><span class="p">)</span>
+<span class="w">         </span><span class="k">call </span><span class="n">push_feature</span><span class="p">(</span><span class="n">candidates</span><span class="p">,</span><span class="w"> </span><span class="n">canon_path</span><span class="p">(</span><span class="n">join_path</span><span class="p">(</span><span class="n">candidate</span><span class="p">,</span><span class="w"> </span><span class="n">name</span><span class="p">)))</span>
+<span class="w">      </span><span class="k">end do</span>
+<span class="k">   end subroutine </span><span class="n">response_candidates</span>
+</pre></div>
+
+    </section>
+    <br>
+    
+    </div>
+  </div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              fpm-watch
+ was developed by Seyed Ali Ghasemi<br>              &copy; 2026 <a rel="license" href="https://opensource.org/licenses/MIT">MIT</a>
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+ on 2026-10-17T21:22:39.241228+0000             </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>
