@@ -1,10 +1,12 @@
 """Exercise supervisor behavior against a built fpm-watch executable."""
 
 import argparse
+import itertools
 import json
 import os
 from pathlib import Path
 import shlex
+import shutil
 import signal
 import subprocess
 import sys
@@ -150,7 +152,8 @@ def terminal_regression(command, directory, env):
                 if waited:
                     reaped = True
                     expected = {"input": 0, "interrupt": 130, "close": 129}[action]
-                    assert os.waitstatus_to_exitcode(status) == expected, transcript.decode(errors="replace")
+                    actual = os.waitstatus_to_exitcode(status)
+                    assert actual == expected, (action, actual, expected, transcript.decode(errors="replace"))
                     break
                 assert time.monotonic() < deadline, "terminal supervisor did not finish"
                 time.sleep(0.02)
@@ -315,6 +318,58 @@ def background_workspace_regressions(watcher, directory):
                         pass
 
 
+def check_forwarded_arguments(command, literals, directory, env, log, expected):
+    log.unlink(missing_ok=True)
+    result = subprocess.run([*command, *literals], cwd=directory, env=env,
+                            capture_output=True, text=True, timeout=10)
+    assert result.returncode == 0, (literals, result.stdout, result.stderr)
+    assert invocations(log) == [expected + literals], (literals, invocations(log), result.stderr)
+    assert "WATCH_INJECTED" not in result.stdout, (literals, result.stdout)
+
+
+def windows_batch_regressions(watcher, command, literals, directory, env, log, expected):
+    # A quote in one argument must not expose a later argument to cmd parsing.
+    vectors = [[value] for value in literals]
+    vectors.extend(list(pair) for pair in itertools.product(literals, repeat=2))
+    for values in vectors:
+        check_forwarded_arguments(command, values, directory, env, log, expected)
+    script_index = command.index("--watch-self") + 1
+    script = Path(command[script_index])
+    batch = script.with_suffix(".bat")
+    shutil.copyfile(script, batch)
+    for alternate in (script.with_suffix(""), batch, str(script) + ".", str(script) + " "):
+        invocation = list(command)
+        invocation[script_index] = str(alternate)
+        for values in [[value] for value in literals] + [literals]:
+            check_forwarded_arguments(invocation, values, directory, env, log, expected)
+
+    # Extensionless selection must prefer a native executable, even if invalid.
+    project = directory / "native-batch-preference"
+    (project / "src").mkdir(parents=True)
+    (project / "src/m.f90").write_text("module m\nend module\n", encoding="ascii")
+    (project / "fpm.toml").write_text('name="native-batch-preference"\n', encoding="ascii")
+    native = project / "native.exe"
+    shutil.copyfile(watcher, native)
+    make_child(project, name="native")
+    fpm = make_child(project, name="command")
+    native_log = project / "commands.jsonl"
+    native_env = env | {"WATCH_TEST_LOG": str(native_log)}
+    invocation = [str(watcher), "--watch-auto-restart", "--watch-restart-max=1", "--watch-restart-delay=0",
+                  "--watch-once", "--watch-self", str(native.with_suffix("")), "--watch-fpm", str(fpm), "build"]
+    result = subprocess.run(invocation, cwd=project, env=native_env, capture_output=True, text=True, timeout=20)
+    assert result.returncode == 0, (result.stdout, result.stderr)
+    assert invocations(native_log) == [["build"]], "extensionless batch script shadowed a native executable"
+    native_log.unlink()
+    native.write_bytes(b"not a native executable\n")
+    result = subprocess.run(invocation, cwd=project, env=native_env, capture_output=True, text=True, timeout=10)
+    assert result.returncode == 127, (result.returncode, result.stdout, result.stderr)
+    assert not native_log.exists(), "invalid native executable fell through to a batch script"
+    invocation[invocation.index("--watch-self") + 1] = str(project / "missing.cmd")
+    result = subprocess.run(invocation, cwd=project, env=native_env, capture_output=True, text=True, timeout=10)
+    assert result.returncode == 127, (result.returncode, result.stdout, result.stderr)
+    assert not native_log.exists(), "missing batch script was executed as shell text"
+
+
 def run_regressions(watcher):
     with tempfile.TemporaryDirectory(prefix="fpm-watch-platform-") as temporary:
         directory = Path(temporary)
@@ -351,10 +406,9 @@ def run_regressions(watcher):
         log.unlink()
         literals = ["", " ", "tail  ", "%PATH%", "!PATH!", 'double"quote',
                     'quote" & echo WATCH_INJECTED & rem "', "a&b|c<d>e^f(g)", "dir\\", 'slash\\"quote']
-        result = subprocess.run([*command, *literals], cwd=directory, env=env, capture_output=True, text=True, timeout=10)
-        assert result.returncode == 0, result.stderr
-        assert invocations(log) == [expected[0] + literals], (invocations(log), result.stderr)
-        assert "WATCH_INJECTED" not in result.stdout, result.stdout
+        check_forwarded_arguments(command, literals, directory, env, log, expected[0])
+        if os.name == "nt":
+            windows_batch_regressions(watcher, command, literals, directory, env, log, expected[0])
 
         if os.name == "posix":
             terminal_regression(command, directory, env)

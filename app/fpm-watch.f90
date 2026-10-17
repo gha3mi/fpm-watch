@@ -6,6 +6,8 @@
 !! command status, or exits successfully if no command ran. A latched command
 !! interruption exits with status 130. Continuous watching otherwise exits
 !! successfully when the stop file is detected, regardless of prior fpm failures.
+!! Propagated exit statuses suppress runtime STOP output, including after a
+!! terminal disconnects.
 program fpm_watch
    use watch_restart, only: maybe_supervise
    use watch_cli,     only: parse_cli_config
@@ -29,7 +31,7 @@ program fpm_watch
 
       call w%init(cfg)
       call w%run()
-      if (termination_requested()) stop 130
-      if (cfg%w%once .and. w%last_exit /= 0) stop w%last_exit
+      if (termination_requested()) stop 130, quiet=.true.
+      if (cfg%w%once .and. w%last_exit /= 0) stop w%last_exit, quiet=.true.
    end if
 end program fpm_watch

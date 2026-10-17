@@ -42,6 +42,8 @@ contains
    !! unlimited. Clamp `delay0` to zero or greater. Each restart increments the
    !! child generation. A user interruption or exhausted limit exits with the
    !! child execution status; a zero child status exits successfully.
+   !! Status propagation is quiet so runtime diagnostics cannot fail on a
+   !! disconnected terminal and replace the child's exit status.
    subroutine supervisor_loop(delay0, max0, exe0, log_format)
       real, intent(in) :: delay0
       integer, intent(in) :: max0
@@ -63,7 +65,7 @@ contains
 
          if (interrupted) then
             call log_event("info", "supervisor.stopped", "Supervisor interrupted", [log_string("reason", "interrupt")])
-            stop code
+            stop code, quiet=.true.
          end if
 
          if (code == 0) exit
@@ -71,7 +73,7 @@ contains
          if (max0 > 0 .and. attempt >= max0) then
             call log_event("error", "supervisor.limit_reached", "Child failed; restart limit reached", &
                            [log_int("exit_code", code), log_int("restart_count", attempt)])
-            stop code
+            stop code, quiet=.true.
          end if
 
          attempt = attempt + 1

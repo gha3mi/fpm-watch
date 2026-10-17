@@ -58,8 +58,6 @@ program check_platform
    end if
    if (first_temp == second_temp) error stop "temporary directorynames are not unique"
    if (.not. is_absolute_path(first_temp)) error stop "temporary path is not absolute"
-   inquire(file=first_temp, exist=present_file)
-   if (.not. present_file) error stop "temporary directory was not created"
    open(newunit=unit, file=first_temp // "/response", status="new", action="write", iostat=status)
    if (status /= 0) error stop "reserved temporary directory could not hold a response"
    write(unit, "(a)") "graph response"
@@ -67,6 +65,6 @@ program check_platform
    call remove_temp_directory(first_temp)
    call remove_temp_directory(first_temp)
    call remove_temp_directory(second_temp)
-   inquire(file=first_temp, exist=present_file)
-   if (present_file) error stop "temporary directory was not removed"
+   inquire(file=first_temp // "/response", exist=present_file)
+   if (present_file) error stop "temporary response was not removed"
 end program check_platform

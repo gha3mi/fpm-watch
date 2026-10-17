@@ -58,9 +58,9 @@ static HANDLE inherited_standard_handle(DWORD identifier, DWORD access, int disc
 
 /* Only existing batch scripts go through cmd; missing executables and invalid
  * native binaries remain launch errors. Resolve the script before dispatch. */
-static int resolve_batch_script(const char *command, char *resolved, DWORD capacity) {
+static int resolve_batch_script(const char *command, char *resolved, DWORD capacity, int allow_extensionless) {
     char *executable = fpm_watch_command_executable(command);
-    const char *filename, *extension, *slash;
+    const char *filename, *extension, *slash, *end;
     DWORD length = 0;
     int error = 0;
     if (executable == NULL) return errno == ENOMEM ? ERROR_NOT_ENOUGH_MEMORY : ERROR_INVALID_PARAMETER;
@@ -68,16 +68,22 @@ static int resolve_batch_script(const char *command, char *resolved, DWORD capac
     slash = strrchr(executable, '/');
     if (filename == NULL || (slash != NULL && slash > filename)) filename = slash;
     if (filename == NULL) filename = executable; else ++filename;
-    extension = strrchr(filename, '.');
+    /* Win32 resolves trailing periods/spaces before deciding the file type.
+     * Classify that suffix too, retaining the original path for lookup. */
+    end = executable + strlen(executable);
+    while (end > filename && (end[-1] == '.' || end[-1] == ' ')) --end;
+    extension = end;
+    while (extension > filename && extension[-1] != '.') --extension;
+    if (extension > filename) --extension; else extension = NULL;
     if (extension != NULL) {
-        if (strlen(extension) == 4 &&
+        if (end - extension == 4 &&
             ((tolower((unsigned char)extension[1]) == 'c' && tolower((unsigned char)extension[2]) == 'm' &&
               tolower((unsigned char)extension[3]) == 'd') ||
              (tolower((unsigned char)extension[1]) == 'b' && tolower((unsigned char)extension[2]) == 'a' &&
               tolower((unsigned char)extension[3]) == 't'))) {
             length = SearchPathA(NULL, executable, NULL, capacity, resolved, NULL);
         }
-    } else {
+    } else if (allow_extensionless) {
         length = SearchPathA(NULL, executable, ".cmd", capacity, resolved, NULL);
         if (length == 0) length = SearchPathA(NULL, executable, ".bat", capacity, resolved, NULL);
     }
@@ -95,7 +101,7 @@ int fpm_watch_execute(const char *command, int silent, int *interrupted, int *la
     HANDLE job = NULL;
     DWORD status = 127, error = 0, waited;
     DWORD creation_flags = CREATE_SUSPENDED;
-    int handler_installed = 0;
+    int handler_installed = 0, batch = 0, batch_error;
     char command_processor[MAX_PATH + 9], script[MAX_PATH];
 
     *interrupted = 0;
@@ -142,16 +148,23 @@ int fpm_watch_execute(const char *command, int silent, int *interrupted, int *la
     } else {
         handler_installed = 1;
     }
-    if (!CreateProcessA(NULL, line, NULL, NULL, TRUE, creation_flags, NULL, NULL, &startup, &process)) {
+    /* Windows can implicitly launch .cmd/.bat through cmd even when
+     * CreateProcess succeeds. Select the explicit batch encoding first so
+     * CRT-quoted argument contents never reach that implicit shell path. */
+    batch_error = resolve_batch_script(command, script, MAX_PATH, 0);
+    if (batch_error == 0) batch = 1;
+    else if (batch_error != ERROR_FILE_NOT_FOUND) { error = (DWORD)batch_error; goto cleanup; }
+    if (!batch && !CreateProcessA(NULL, line, NULL, NULL, TRUE, creation_flags, NULL, NULL, &startup, &process)) {
         error = GetLastError();
-        if (error != ERROR_BAD_EXE_FORMAT && error != ERROR_FILE_NOT_FOUND) goto cleanup;
-        {
-            int batch_error = resolve_batch_script(command, script, MAX_PATH);
-            if (batch_error != 0) {
-                if (batch_error != ERROR_FILE_NOT_FOUND) error = (DWORD)batch_error;
-                goto cleanup;
-            }
+        if (error != ERROR_FILE_NOT_FOUND) goto cleanup;
+        batch_error = resolve_batch_script(command, script, MAX_PATH, 1);
+        if (batch_error != 0) {
+            if (batch_error != ERROR_FILE_NOT_FOUND) error = (DWORD)batch_error;
+            goto cleanup;
         }
+        batch = 1;
+    }
+    if (batch) {
         free(line);
         line = fpm_watch_batch_command(command, script);
         if (line == NULL) {

@@ -1,4 +1,7 @@
 #ifndef _WIN32
+#if defined(__APPLE__) && !defined(_DARWIN_C_SOURCE)
+#define _DARWIN_C_SOURCE
+#endif
 #ifndef _XOPEN_SOURCE
 #define _XOPEN_SOURCE 700
 #endif
