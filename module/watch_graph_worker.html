@@ -199,19 +199,19 @@ survive control bytes and invalid UTF-8 without relying on TOML string encoding.
         <ul class="list-group list-group-flush">
             <li class="list-group-item">
               <ul class="list-inline">
-                  <li class="list-inline-item"><a href='watch_types.html'>watch_types</a></li>
-                  <li class="list-inline-item">fpm_os</li>
-                  <li class="list-inline-item">fpm_error</li>
+                  <li class="list-inline-item">fpm_strings</li>
                   <li class="list-inline-item"><a href='http://fortranwiki.org/fortran/show/iso_fortran_env'>iso_fortran_env</a></li>
                   <li class="list-inline-item"><a href='watch_log.html'>watch_log</a></li>
-                  <li class="list-inline-item">fpm_filesystem</li>
-                  <li class="list-inline-item"><a href='watch_cmdline.html'>watch_cmdline</a></li>
-                  <li class="list-inline-item"><a href='watch_platform.html'>watch_platform</a></li>
-                  <li class="list-inline-item"><a href='http://fortranwiki.org/fortran/show/ieee_arithmetic'>ieee_arithmetic</a></li>
                   <li class="list-inline-item">fpm_toml</li>
-                  <li class="list-inline-item">fpm_strings</li>
                   <li class="list-inline-item"><a href='watch_fpm_graph.html'>watch_fpm_graph</a></li>
+                  <li class="list-inline-item"><a href='http://fortranwiki.org/fortran/show/ieee_arithmetic'>ieee_arithmetic</a></li>
+                  <li class="list-inline-item">fpm_os</li>
+                  <li class="list-inline-item"><a href='watch_platform.html'>watch_platform</a></li>
+                  <li class="list-inline-item">fpm_filesystem</li>
+                  <li class="list-inline-item">fpm_error</li>
                   <li class="list-inline-item">tomlf</li>
+                  <li class="list-inline-item"><a href='watch_types.html'>watch_types</a></li>
+                  <li class="list-inline-item"><a href='watch_cmdline.html'>watch_cmdline</a></li>
               </ul>
             </li>
             <li class="list-group-item">
@@ -1070,7 +1070,7 @@ parameter
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-cfg"></span>
+              <span class="anchor" id="variable-cfg~4"></span>
               type(<a href='../type/watch_config_t.html'>watch_config_t</a>),
             </td>
 <td>intent(inout)</td>
@@ -1079,166 +1079,6 @@ parameter
             </td>
             <td>::</td>
             <td><strong>cfg</strong></td>
-            <td>
-
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-files~3"></span>
-              type(string_t),
-            </td>
-<td>intent(out),</td>
-              <td></td>            <td>
-              allocatable
-            </td>
-            <td>::</td>
-            <td><strong>files</strong>(:)</td>
-            <td>
-
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-file_mask~2"></span>
-              integer(kind=int64),
-            </td>
-<td>intent(out),</td>
-              <td></td>            <td>
-              allocatable
-            </td>
-            <td>::</td>
-            <td><strong>file_mask</strong>(:)</td>
-            <td>
-
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-roots~3"></span>
-              type(<a href='../type/root_info_t.html'>root_info_t</a>),
-            </td>
-<td>intent(out),</td>
-              <td></td>            <td>
-              allocatable
-            </td>
-            <td>::</td>
-            <td><strong>roots</strong>(:)</td>
-            <td>
-
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-build_secs"></span>
-              real,
-            </td>
-<td>intent(out)</td>
-              <td></td>            <td>
-              
-            </td>
-            <td>::</td>
-            <td><strong>build_secs</strong></td>
-            <td>
-
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-secs_model"></span>
-              real,
-            </td>
-<td>intent(out)</td>
-              <td></td>            <td>
-              
-            </td>
-            <td>::</td>
-            <td><strong>secs_model</strong></td>
-            <td>
-
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-secs_targets"></span>
-              real,
-            </td>
-<td>intent(out)</td>
-              <td></td>            <td>
-              
-            </td>
-            <td>::</td>
-            <td><strong>secs_targets</strong></td>
-            <td>
-
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-secs_watch"></span>
-              real,
-            </td>
-<td>intent(out)</td>
-              <td></td>            <td>
-              
-            </td>
-            <td>::</td>
-            <td><strong>secs_watch</strong></td>
-            <td>
-
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-error~13"></span>
-              type(error_t),
-            </td>
-<td>intent(out),</td>
-              <td></td>            <td>
-              allocatable
-            </td>
-            <td>::</td>
-            <td><strong>error</strong></td>
-            <td>
-
-            </td>
-        </tr>
-    </tbody>
-  </table>
-
-
-    </div>
-  </div>
-
-              <div class="card">
-    <div class="card-header codesum"><span class="anchor" id="proc-read_graph_response"></span> <h3>public  subroutine <a href='../proc/read_graph_response.html'>read_graph_response</a>(path, files, file_mask, roots, build_secs, secs_model, secs_targets, secs_watch, error)  
-</h3></div>
-    <div class="card-body">
-          
-  <p>Validate version, fields, alignment, masks, paths, and timings before accepting a response.</p>
-
-  <h4>Arguments</h4>
-      <table class="table table-striped varlist">
-    <thead>
-      <tr>
-        <th scope="col">Type</th>
-<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
-        <th scope="col"></th>
-        <th scope="col">Name</th>
-        <th scope="col"></th>
-    </thead>
-    <tbody>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-path~18"></span>
-              character(len=*),
-            </td>
-<td>intent(in)</td>
-              <td></td>            <td>
-              
-            </td>
-            <td>::</td>
-            <td><strong>path</strong></td>
             <td>
 
             </td>
@@ -1260,7 +1100,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-file_mask~5"></span>
+              <span class="anchor" id="variable-file_mask~3"></span>
               integer(kind=int64),
             </td>
 <td>intent(out),</td>
@@ -1275,7 +1115,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-roots~6"></span>
+              <span class="anchor" id="variable-roots~4"></span>
               type(<a href='../type/root_info_t.html'>root_info_t</a>),
             </td>
 <td>intent(out),</td>
@@ -1290,7 +1130,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-build_secs~3"></span>
+              <span class="anchor" id="variable-build_secs~2"></span>
               real,
             </td>
 <td>intent(out)</td>
@@ -1350,7 +1190,167 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-error~16"></span>
+              <span class="anchor" id="variable-error~6"></span>
+              type(error_t),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>error</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-read_graph_response"></span> <h3>public  subroutine <a href='../proc/read_graph_response.html'>read_graph_response</a>(path, files, file_mask, roots, build_secs, secs_model, secs_targets, secs_watch, error)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Validate version, fields, alignment, masks, paths, and timings before accepting a response.</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-path~2"></span>
+              character(len=*),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>path</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-files~9"></span>
+              type(string_t),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>files</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-file_mask~6"></span>
+              integer(kind=int64),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>file_mask</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-roots~7"></span>
+              type(<a href='../type/root_info_t.html'>root_info_t</a>),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>roots</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-build_secs~4"></span>
+              real,
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>build_secs</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-secs_model~5"></span>
+              real,
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>secs_model</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-secs_targets~5"></span>
+              real,
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>secs_targets</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-secs_watch~5"></span>
+              real,
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>secs_watch</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-error~9"></span>
               type(error_t),
             </td>
 <td>intent(out),</td>
@@ -1390,7 +1390,7 @@ parameter
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-cfg~2"></span>
+              <span class="anchor" id="variable-cfg~5"></span>
               type(<a href='../type/watch_config_t.html'>watch_config_t</a>),
             </td>
 <td>intent(inout)</td>
@@ -1515,7 +1515,7 @@ parameter
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-error~17"></span>
+              <span class="anchor" id="variable-error~10"></span>
               type(error_t),
             </td>
 <td>intent(out),</td>
@@ -1570,7 +1570,7 @@ parameter
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-path~17"></span>
+              <span class="anchor" id="variable-path"></span>
               character(len=*),
             </td>
 <td>intent(in)</td>
@@ -1585,7 +1585,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-files~5"></span>
+              <span class="anchor" id="variable-files~8"></span>
               type(string_t),
             </td>
 <td>intent(in),</td>
@@ -1600,7 +1600,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-file_mask~4"></span>
+              <span class="anchor" id="variable-file_mask~5"></span>
               integer(kind=int64),
             </td>
 <td>intent(in),</td>
@@ -1615,7 +1615,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-roots~5"></span>
+              <span class="anchor" id="variable-roots~6"></span>
               type(<a href='../type/root_info_t.html'>root_info_t</a>),
             </td>
 <td>intent(in),</td>
@@ -1660,7 +1660,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-error~15"></span>
+              <span class="anchor" id="variable-error~8"></span>
               type(error_t),
             </td>
 <td>intent(out),</td>
@@ -1703,7 +1703,7 @@ parameter
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2026-10-17T23:25:57.739691+0000             </p>
+ on 2026-10-17T23:53:24.628998+0000             </p>
           </div>
         </div>
         <br>
