@@ -89,7 +89,7 @@
 
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
-                 title=" 0.7% of total for procedures.">29 statements</a>
+                 title=" 0.6% of total for procedures.">26 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -691,8 +691,6 @@ large graphs.</div>
 <span class="w">      </span><span class="k">call </span><span class="n">toml_get_real</span><span class="p">(</span><span class="n">wt</span><span class="p">,</span><span class="w">    </span><span class="s2">"debounce"</span><span class="p">,</span><span class="w"> </span><span class="n">w</span><span class="p">%</span><span class="n">debounce</span><span class="p">)</span>
 <span class="w">      </span><span class="k">call </span><span class="n">toml_get_real</span><span class="p">(</span><span class="n">wt</span><span class="p">,</span><span class="w">    </span><span class="s2">"rescan"</span><span class="p">,</span><span class="w">   </span><span class="n">w</span><span class="p">%</span><span class="n">rescan</span><span class="p">)</span>
 
-<span class="w">      </span><span class="k">call </span><span class="n">toml_get_logical</span><span class="p">(</span><span class="n">wt</span><span class="p">,</span><span class="w"> </span><span class="s2">"debug"</span><span class="p">,</span><span class="w">        </span><span class="n">w</span><span class="p">%</span><span class="n">debug</span><span class="p">)</span>
-<span class="w">      </span><span class="k">call </span><span class="n">toml_get_logical</span><span class="p">(</span><span class="n">wt</span><span class="p">,</span><span class="w"> </span><span class="s2">"print-files"</span><span class="p">,</span><span class="w">  </span><span class="n">w</span><span class="p">%</span><span class="n">print_files_once</span><span class="p">)</span>
 <span class="w">      </span><span class="k">call </span><span class="n">toml_get_logical</span><span class="p">(</span><span class="n">wt</span><span class="p">,</span><span class="w"> </span><span class="s2">"silent-fpm"</span><span class="p">,</span><span class="w">   </span><span class="n">w</span><span class="p">%</span><span class="n">silent_fpm</span><span class="p">)</span>
 <span class="w">      </span><span class="k">call </span><span class="n">toml_get_logical</span><span class="p">(</span><span class="n">wt</span><span class="p">,</span><span class="w"> </span><span class="s2">"output-markers"</span><span class="p">,</span><span class="w"> </span><span class="n">w</span><span class="p">%</span><span class="n">output_markers</span><span class="p">)</span>
 <span class="w">      </span><span class="k">call </span><span class="n">toml_get_logical</span><span class="p">(</span><span class="n">wt</span><span class="p">,</span><span class="w"> </span><span class="s2">"run-on-start"</span><span class="p">,</span><span class="w"> </span><span class="n">w</span><span class="p">%</span><span class="n">run_on_start</span><span class="p">)</span>
@@ -709,7 +707,6 @@ large graphs.</div>
 <span class="w">      </span><span class="k">call </span><span class="n">toml_get_logical</span><span class="p">(</span><span class="n">wt</span><span class="p">,</span><span class="w"> </span><span class="s2">"auto-restart"</span><span class="p">,</span><span class="w"> </span><span class="n">w</span><span class="p">%</span><span class="n">auto_restart</span><span class="p">)</span>
 <span class="w">      </span><span class="k">call </span><span class="n">toml_get_real</span><span class="p">(</span><span class="n">wt</span><span class="p">,</span><span class="w"> </span><span class="s2">"restart-delay"</span><span class="p">,</span><span class="w"> </span><span class="n">w</span><span class="p">%</span><span class="n">restart_delay</span><span class="p">)</span>
 <span class="w">      </span><span class="k">call </span><span class="n">toml_get_int</span><span class="p">(</span><span class="n">wt</span><span class="p">,</span><span class="w"> </span><span class="s2">"restart-max"</span><span class="p">,</span><span class="w"> </span><span class="n">w</span><span class="p">%</span><span class="n">restart_max</span><span class="p">)</span>
-<span class="w">      </span><span class="k">call </span><span class="n">toml_get_string</span><span class="p">(</span><span class="n">wt</span><span class="p">,</span><span class="w"> </span><span class="s2">"self"</span><span class="p">,</span><span class="w"> </span><span class="n">w</span><span class="p">%</span><span class="n">self_exe</span><span class="p">)</span>
 
 <span class="w">      </span><span class="k">call </span><span class="n">normalize_watch_opts</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
 <span class="w">   </span><span class="k">end subroutine </span><span class="n">apply_watch_from_manifest</span>
@@ -736,7 +733,7 @@ large graphs.</div>
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2026-10-17T22:38:02.293968+0000             </p>
+ on 2026-10-17T23:25:57.739691+0000             </p>
           </div>
         </div>
         <br>

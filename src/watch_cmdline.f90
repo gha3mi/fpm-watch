@@ -15,14 +15,16 @@ module watch_cmdline
 
 contains
 
-   !> Parse trimmed, case-insensitive boolean spellings or return `default`.
+   !> Parse one trimmed, case-insensitive boolean value without a fallback.
    !!
    !! True accepts `1`, `true`, `on`, `yes`, `y`, `t`; false accepts `0`, `false`,
-   !! `off`, `no`, `n`, `f`. Empty and unrecognized values use the fallback.
-   pure logical function parse_bool(s, default) result(v)
+   !! `off`, `no`, `n`, `f`. Empty and unrecognized values set `ok` false.
+   pure subroutine parse_bool(s, v, ok)
       character(len=*), intent(in) :: s
-      logical, intent(in) :: default
+      logical, intent(out) :: v, ok
       character(len=:), allocatable :: t
+      ok = .true.
+      v = .false.
       t = trim(adjustl(lower_ascii(s)))
       select case (t)
        case ("1","true","on","yes","y","t")
@@ -30,9 +32,9 @@ contains
        case ("0","false","off","no","n","f")
          v = .false.
        case default
-         v = default
+         ok = .false.
       end select
-   end function parse_bool
+   end subroutine parse_bool
 
    !> Normalize ASCII letters for case-insensitive option values.
    pure function lower_ascii(s) result(r)
@@ -55,7 +57,7 @@ contains
    pure logical function watch_option_takes_value(a) result(takes_value)
       character(len=*), intent(in) :: a
       select case (a)
-       case ("--watch-restart-delay", "--watch-restart-max", "--watch-self", &
+       case ("--watch-restart-delay", "--watch-restart-max", &
              "--watch-rescan", "--watch-ignore", "--watch-include", &
              "--watch-poll", "--watch-debounce", "--watch-log-format", "--watch-fpm")
          takes_value = .true.
@@ -160,25 +162,84 @@ contains
       end function escape_quotes_sh
    end function quote_arg
 
-   !> Read an integer with list-directed input; return `default` if the read fails.
-   pure integer function parse_int(s, default) result(v)
+   !> Read one decimal integer, rejecting extra tokens, null fields, and overflow.
+   pure subroutine parse_int(s, v, ok)
       character(len=*), intent(in) :: s
-      integer, intent(in) :: default
+      integer, intent(out) :: v
+      logical, intent(out) :: ok
       integer :: ios
-      v = default
+      v = 0
+      ok = numeric_token(s, real_value=.false.)
+      if (.not. ok) return
       read(s, *, iostat=ios) v
-      if (ios /= 0) v = default
-   end function parse_int
+      ok = ios == 0
+      if (.not. ok) v = 0
+   end subroutine parse_int
 
-   !> Read a finite real; return `default` if the read fails or yields NaN/infinity.
-   pure real function parse_real(s, default) result(v)
+   !> Read one finite decimal real, rejecting extra tokens and nonnumeric syntax.
+   pure subroutine parse_real(s, v, ok)
       character(len=*), intent(in) :: s
-      real, intent(in) :: default
+      real, intent(out) :: v
+      logical, intent(out) :: ok
       integer :: ios
-      v = default
+      v = 0.0
+      ok = numeric_token(s, real_value=.true.)
+      if (.not. ok) return
       read(s, *, iostat=ios) v
-      if (ios /= 0) v = default
-      if (.not. ieee_is_finite(v)) v = default
-   end function parse_real
+      ok = ios == 0
+      if (ok) ok = ieee_is_finite(v)
+      if (.not. ok) v = 0.0
+   end subroutine parse_real
+
+   !> Validate a signed decimal token before list-directed conversion.
+   !!
+   !! Reals allow a decimal point and E/D exponent. Internal whitespace, list
+   !! separators, repetition syntax, null fields, and special values are rejected.
+   pure logical function numeric_token(s, real_value) result(ok)
+      character(len=*), intent(in) :: s
+      logical, intent(in) :: real_value
+      character(len=:), allocatable :: token
+      integer :: i, n, digits
+
+      ok = .false.
+      token = trim(adjustl(s))
+      n = len(token)
+      if (n == 0) return
+      i = 1
+      if (token(i:i) == "+" .or. token(i:i) == "-") i = i + 1
+      digits = 0
+      do while (i <= n)
+         if (token(i:i) < "0" .or. token(i:i) > "9") exit
+         digits = digits + 1
+         i = i + 1
+      end do
+      if (real_value .and. i <= n) then
+         if (token(i:i) == ".") then
+            i = i + 1
+            do while (i <= n)
+               if (token(i:i) < "0" .or. token(i:i) > "9") exit
+               digits = digits + 1
+               i = i + 1
+            end do
+         end if
+      end if
+      if (digits == 0) return
+      if (real_value .and. i <= n) then
+         if (index("eEdD", token(i:i)) > 0) then
+            i = i + 1
+            if (i <= n) then
+               if (token(i:i) == "+" .or. token(i:i) == "-") i = i + 1
+            end if
+            digits = 0
+            do while (i <= n)
+               if (token(i:i) < "0" .or. token(i:i) > "9") exit
+               digits = digits + 1
+               i = i + 1
+            end do
+            if (digits == 0) return
+         end if
+      end if
+      ok = i > n
+   end function numeric_token
 
 end module watch_cmdline

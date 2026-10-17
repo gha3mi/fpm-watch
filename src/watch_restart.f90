@@ -6,11 +6,13 @@
 !! if the watcher itself exits nonzero, as in one-shot mode. Child generations
 !! share the parent's selected log format and use distinct cycle-ID prefixes.
 module watch_restart
+   use, intrinsic :: iso_fortran_env, only: int64, real64
    use watch_time, only: sleep_seconds
    use watch_cmdline, only: get_arg, quote_arg, starts_with, &
                             watch_option_takes_value
    use watch_types, only: watch_config_t
-   use watch_platform, only: execute_command, create_temp_directory, remove_temp_directory, set_workspace_root
+   use watch_platform, only: execute_command, create_temp_directory, remove_temp_directory, set_workspace_root, &
+                             current_executable, stop_file_exists
    use watch_log, only: log_event, log_int, log_real, log_string
    use fpm_strings, only: str
    use fpm_environment, only: get_env
@@ -31,7 +33,7 @@ contains
       type(watch_config_t), intent(in) :: cfg
 
       if (cfg%w%auto_restart .and. (.not. cfg%w%is_child)) then
-         call supervisor_loop(cfg%w%restart_delay, cfg%w%restart_max, cfg%w%self_exe, cfg%w%log_format)
+         call supervisor_loop(cfg%w%restart_delay, cfg%w%restart_max, cfg%project_dir, cfg%w%log_format)
          stop 0
       end if
    end subroutine maybe_supervise
@@ -44,23 +46,29 @@ contains
    !! child execution status; a zero child status exits successfully.
    !! Status propagation is quiet so runtime diagnostics cannot fail on a
    !! disconnected terminal and replace the child's exit status.
-   subroutine supervisor_loop(delay0, max0, exe0, log_format)
+   subroutine supervisor_loop(delay0, max0, project_dir, log_format)
       real, intent(in) :: delay0
       integer, intent(in) :: max0
-      character(len=*), intent(in) :: exe0
+      character(len=*), intent(in) :: project_dir
       character(len=*), intent(in) :: log_format
 
-      character(len=:), allocatable :: child_cmd
+      character(len=:), allocatable :: child_cmd, executable
+      type(error_t), allocatable :: error
       integer :: code, attempt
       real :: delay
       logical :: interrupted
 
+      executable = current_executable(error)
+      if (allocated(error)) then
+         call log_event("error", "supervisor.launch_failed", error%message)
+         stop 127
+      end if
       attempt = 0
       delay = max(0.0, delay0)
 
       do
          code = 0
-         child_cmd = build_child_command(exe0, log_format, attempt)
+         child_cmd = build_child_command(executable, log_format, attempt)
          call execute_supervised_child(child_cmd, code, interrupted)
 
          if (interrupted) then
@@ -68,6 +76,10 @@ contains
             stop code, quiet=.true.
          end if
 
+         if (stop_file_exists(project_dir)) then
+            call log_event("info", "supervisor.stopped", "Supervisor stopped", [log_string("reason", "stop_file")])
+            exit
+         end if
          if (code == 0) exit
 
          if (max0 > 0 .and. attempt >= max0) then
@@ -80,11 +92,38 @@ contains
          call log_event("warn", "supervisor.restart", &
                         "Child failed (exit " // str(code) // "); restart #" // str(attempt) // " in " // ftoa(delay) // "s", &
                         [log_int("exit_code", code), log_int("restart_count", attempt), log_real("delay_ms", delay * 1000.0)])
-         call sleep_seconds(delay)
+         if (wait_for_restart(delay, project_dir)) then
+            call log_event("info", "supervisor.stopped", "Supervisor stopped", [log_string("reason", "stop_file")])
+            exit
+         end if
       end do
 
       stop 0
    end subroutine supervisor_loop
+
+   !> Wait with low CPU use while checking the selected project's stop marker.
+   logical function wait_for_restart(delay, project_dir) result(stopped)
+      real, intent(in) :: delay
+      character(len=*), intent(in) :: project_dir
+      integer(int64) :: started, now, rate
+      real(real64) :: elapsed
+      real :: slice
+
+      call system_clock(started, rate)
+      elapsed = 0.0_real64
+      do
+         stopped = stop_file_exists(project_dir)
+         if (stopped .or. elapsed >= real(delay, real64)) return
+         slice = real(min(0.1_real64, real(delay, real64) - elapsed))
+         call sleep_seconds(slice)
+         if (rate > 0_int64) then
+            call system_clock(now)
+            elapsed = real(now - started, real64) / real(rate, real64)
+         else
+            elapsed = elapsed + real(slice, real64)
+         end if
+      end do
+   end function wait_for_restart
 
    !> Own all descendant graph workspaces until the complete child execution ends.
    !!
@@ -126,17 +165,16 @@ contains
    !! Remove supervisor flags and prior log-format/child markers from the leading
    !! watcher options. Preserve other leading values and every forwarded token
    !! after the subcommand, quoting each original argv token independently.
-   function build_child_command(exe0, log_format, restart_count) result(cmd)
-      character(len=*), intent(in) :: exe0
+   function build_child_command(executable, log_format, restart_count) result(cmd)
+      character(len=*), intent(in) :: executable
       character(len=*), intent(in) :: log_format
       integer, intent(in) :: restart_count
       character(len=:), allocatable :: cmd
-      character(len=:), allocatable :: exe, a
+      character(len=:), allocatable :: a
       integer :: narg, i
       logical :: skip_next, copy_next, in_prefix
 
-      exe = choose_self_exe(exe0)
-      cmd = quote_arg(exe) // " --watch-child=" // str(restart_count) // " --watch-log-format " // log_format
+      cmd = quote_arg(executable) // " --watch-child=" // str(restart_count) // " --watch-log-format " // log_format
 
       narg = command_argument_count()
       skip_next = .false.
@@ -173,7 +211,7 @@ contains
          if (starts_with(a, "--watch-child=")) cycle
 
          select case (a)
-          case ("--watch-restart-delay", "--watch-restart-max", "--watch-self", "--watch-log-format")
+          case ("--watch-restart-delay", "--watch-restart-max", "--watch-log-format")
             skip_next = .true.
             cycle
           case default
@@ -182,49 +220,11 @@ contains
 
          if (starts_with(a, "--watch-restart-delay=")) cycle
          if (starts_with(a, "--watch-restart-max=")) cycle
-         if (starts_with(a, "--watch-self=")) cycle
          if (starts_with(a, "--watch-log-format=")) cycle
 
          copy_next = watch_option_takes_value(a)
          cmd = cmd // " " // quote_arg(a)
       end do
    end function build_child_command
-
-   !> Determine the executable to use when spawning the child watcher.
-   !!
-   !! Precedence:
-   !! 1. Explicit `exe0` argument
-   !! 2. Environment `FPM_WATCH_SELF`
-   !! 3. `argv[0]`
-   !! 4. Fallback `"fpm-watch"`
-   function choose_self_exe(exe0) result(exe)
-      character(len=*), intent(in) :: exe0
-      character(len=:), allocatable :: exe
-      character(len=2048) :: buf
-      integer :: n, stat
-      character(len=:), allocatable :: a0
-
-      if (len_trim(exe0) > 0) then
-         exe = trim(exe0)
-         return
-      end if
-
-      buf = ""
-      n = 0
-      stat = 0
-      call get_environment_variable("FPM_WATCH_SELF", buf, length=n, status=stat)
-      if (stat == 0 .and. n > 0) then
-         exe = trim(buf(1:n))
-         return
-      end if
-
-      a0 = get_arg(0)
-      if (len_trim(a0) > 0) then
-         exe = trim(a0)
-         return
-      end if
-
-      exe = "fpm-watch"
-   end function choose_self_exe
 
 end module watch_restart

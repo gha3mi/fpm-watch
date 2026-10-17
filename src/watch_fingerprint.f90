@@ -7,11 +7,9 @@
 module watch_fingerprint
    use, intrinsic :: iso_fortran_env, only: int64
    use fpm_strings, only: string_t
-   use fpm_filesystem, only: basename
-   use fpm_command_line, only: fpm_build_settings
    implicit none
    private
-   public init_fingerprints, scan_changes, accept_changes, manifest_key_from_files, file_fingerprint, watch_state_changed
+   public init_fingerprints, scan_changes, accept_changes, file_fingerprint, watch_state_changed
    public preserve_fingerprints
 
    integer(int64), parameter :: FNV_OFFSET = 1469598103934665603_int64
@@ -234,72 +232,6 @@ contains
       end do
    end subroutine accept_changes
 
-   !> Mix selected fpm settings and watched manifest paths/fingerprints into a key.
-   !!
-   !! Includes build directory, toolchain, profile, compile/link flags, pruning,
-   !! build-tests, and fpm features. File and feature ordering affects the key.
-   !! The engine includes this key in refresh diagnostics; watched file changes
-   !! trigger graph refreshes independently of the key.
-   integer(int64) function manifest_key_from_files(settings, files) result(k)
-      class(fpm_build_settings), intent(in) :: settings
-      type(string_t), allocatable, intent(in) :: files(:)
-
-      integer :: i
-      character(len=:), allocatable :: b
-
-      k = FNV_OFFSET
-
-      call mix_alloc(k, settings%build_dir)
-      call mix_alloc(k, settings%compiler)
-      call mix_alloc(k, settings%c_compiler)
-      call mix_alloc(k, settings%cxx_compiler)
-      call mix_alloc(k, settings%archiver)
-      call mix_alloc(k, settings%profile)
-      call mix_alloc(k, settings%flag)
-      call mix_alloc(k, settings%cflag)
-      call mix_alloc(k, settings%cxxflag)
-      call mix_alloc(k, settings%ldflag)
-
-      if (settings%prune) then
-         call fnv1a_mix_str(k, "prune=1")
-      else
-         call fnv1a_mix_str(k, "prune=0")
-      end if
-
-      if (settings%build_tests) then
-         call fnv1a_mix_str(k, "build_tests=1")
-      else
-         call fnv1a_mix_str(k, "build_tests=0")
-      end if
-
-      if (allocated(settings%features)) then
-         do i = 1, size(settings%features)
-            call fnv1a_mix_str(k, trim(settings%features(i)%s))
-         end do
-      end if
-
-      if (.not. allocated(files)) return
-      do i = 1, size(files)
-         b = basename(files(i)%s)
-         if (b == "fpm.toml") then
-            call fnv1a_mix_str(k, files(i)%s)
-            call fnv1a_mix_i64(k, file_fingerprint(files(i)%s))
-         end if
-      end do
-
-   contains
-
-      !> Mix a right-trimmed, allocated, nonempty string into the current hash state.
-      pure subroutine mix_alloc(h, s)
-         integer(int64), intent(inout) :: h
-         character(len=:), allocatable, intent(in) :: s
-         if (.not. allocated(s)) return
-         if (len_trim(s) == 0) return
-         call fnv1a_mix_str(h, trim(s))
-      end subroutine mix_alloc
-
-   end function manifest_key_from_files
-
    !> Hash every byte using bounded reads, reserving distinct non-content states.
    !!
    !! Missing files return zero, empty files one, and inquiry/open/read failures
@@ -348,16 +280,6 @@ contains
       end if
       close(u)
    end function file_fingerprint
-
-   !> Mix each byte of a right-trimmed string using XOR and the FNV prime.
-   pure subroutine fnv1a_mix_str(h, s)
-      integer(int64), intent(inout) :: h
-      character(len=*), intent(in)  :: s
-      integer :: i
-      do i = 1, len_trim(s)
-         call fnv1a_mix_i64(h, int(iachar(s(i:i)), int64))
-      end do
-   end subroutine fnv1a_mix_str
 
    !> Mix with the FNV prime modulo 2**64 using bounded 32-bit limbs.
    !!

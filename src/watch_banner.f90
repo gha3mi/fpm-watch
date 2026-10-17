@@ -73,8 +73,7 @@ contains
    !> Emit up to 200 `watch.file` records when verbosity is at least 2.
    !!
    !! Larger lists produce an omitted-count record. Unallocated lists are ignored.
-   !! The engine calls this at startup only when `print_files_once` is enabled,
-   !! and after successful refreshes whenever verbosity is at least 2.
+   !! Startup and successful refreshes share this verbosity threshold.
    subroutine print_file_list(files, w)
       type(string_t), allocatable, intent(in) :: files(:)
       type(watch_opts_t), intent(in) :: w

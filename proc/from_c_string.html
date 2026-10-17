@@ -1,0 +1,538 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="Documentation for fpm-watch">
+    <meta name="author" content="Seyed Ali Ghasemi" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>from_c_string &ndash; fpm-watch</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">fpm-watch </a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/types.html">Derived Types</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <div class="row">
+    <h1>from_c_string
+      <small>Function</small>
+      
+    </h1>
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+            <li class="list-inline-item" id="meta-license"><i class="fa fa-legal"></i> <a rel="license" href="https://opensource.org/licenses/MIT">MIT</a></li>
+
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title=" 0.3% of total for procedures.">14 statements</a>
+            </li>
+
+            <li class="list-inline-item" id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/watch_platform.f90"> Source File</a>
+            </li>
+        </ul>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+                <li class="breadcrumb-item"><a href='../sourcefile/watch_platform.f90.html'>watch_platform.f90</a></li>
+                <li class="breadcrumb-item"><a href='../module/watch_platform.html'>watch_platform</a></li>
+            <li class="breadcrumb-item active" aria-current="page">from_c_string</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
+  </script>
+
+  </div>
+  
+  <div class="row">
+    <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
+      <div id="sidebar">
+      <h3>Contents</h3>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    <div class="card card-primary">
+      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
+      <div class="list-group">
+        <a class="list-group-item" href="../proc/from_c_string.html#src">from_c_string</a>
+      </div>
+    </div>
+
+
+  </div>
+
+    </div>
+    
+    <div class="col-md-9" id='text'>
+    <h2>private pure function from_c_string(buffer) result(path)  
+</h2>
+    
+
+    <p>Copy a bounded NUL-terminated C path into an allocated Fortran string.</p>
+
+
+    <h3>Arguments</h3>
+        <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-buffer~2"></span>
+              character(kind=c_char, len=1),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>buffer</strong>(:)</td>
+            <td>
+                
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+      <h3>Return Value
+        <small>
+          <span class="anchor" id="variable-path~12"></span>
+          character(len=:), allocatable
+        </small>
+      </h3>
+      
+    <br>
+    <div class="card">
+      <div class="card-header">
+  <h3 class="card-title">Called by</h3>
+      </div>
+      <div class="card-body">
+  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: proc~~from_c_string~~CalledByGraph Pages: 1 -->
+<svg id="procfrom_c_stringCalledByGraph" width="641pt" height="105pt"
+ viewBox="0.00 0.00 641.00 105.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~from_c_string~~CalledByGraph" class="graph" transform="scale(0.682191 0.682191) rotate(0) translate(4 150.27)">
+<title>proc~~from_c_string~~CalledByGraph</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-150.27 935.62,-150.27 935.62,4 -4,4"/>
+<!-- proc~from_c_string -->
+<g id="proc~~from_c_string~~CalledByGraph_node1" class="node">
+<title>proc~from_c_string</title>
+<polygon fill="none" stroke="black" points="931.62,-64.27 848.85,-64.27 848.85,-40 931.62,-40 931.62,-64.27"/>
+<text xml:space="preserve" text-anchor="middle" x="890.23" y="-48.53" font-family="Helvetica,sans-Serif" font-size="10.50">from_c_string</text>
+</g>
+<!-- proc~create_temp_directory -->
+<g id="proc~~from_c_string~~CalledByGraph_node2" class="node">
+<title>proc~create_temp_directory</title>
+<g id="a_proc~~from_c_string~~CalledByGraph_node2"><a xlink:href="../proc/create_temp_directory.html" xlink:title="create_temp_directory">
+<polygon fill="#d9534f" stroke="#d9534f" points="812.85,-43.27 682.08,-43.27 682.08,-19 812.85,-19 812.85,-43.27"/>
+<text xml:space="preserve" text-anchor="middle" x="747.46" y="-27.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">create_temp_directory</text>
+</a>
+</g>
+</g>
+<!-- proc~create_temp_directory&#45;&gt;proc~from_c_string -->
+<g id="proc~~from_c_string~~CalledByGraph_edge1" class="edge">
+<title>proc~create_temp_directory&#45;&gt;proc~from_c_string</title>
+<path fill="none" stroke="#ff0000" d="M813.08,-40.77C821.24,-41.99 829.5,-43.22 837.43,-44.41"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="836.84,-47.86 847.25,-45.87 837.87,-40.93 836.84,-47.86"/>
+</g>
+<!-- proc~current_executable -->
+<g id="proc~~from_c_string~~CalledByGraph_node3" class="node">
+<title>proc~current_executable</title>
+<g id="a_proc~~from_c_string~~CalledByGraph_node3"><a xlink:href="../proc/current_executable.html" xlink:title="current_executable">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="804.22,-85.27 690.7,-85.27 690.7,-61 804.22,-61 804.22,-85.27"/>
+<text xml:space="preserve" text-anchor="middle" x="747.46" y="-69.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">current_executable</text>
+</a>
+</g>
+</g>
+<!-- proc~current_executable&#45;&gt;proc~from_c_string -->
+<g id="proc~~from_c_string~~CalledByGraph_edge2" class="edge">
+<title>proc~current_executable&#45;&gt;proc~from_c_string</title>
+<path fill="none" stroke="#ff0000" d="M804.51,-64.77C815.32,-63.16 826.6,-61.48 837.27,-59.89"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="837.69,-63.36 847.07,-58.43 836.66,-56.44 837.69,-63.36"/>
+</g>
+<!-- proc~compute_watch_snapshot -->
+<g id="proc~~from_c_string~~CalledByGraph_node4" class="node">
+<title>proc~compute_watch_snapshot</title>
+<g id="a_proc~~from_c_string~~CalledByGraph_node4"><a xlink:href="../proc/compute_watch_snapshot.html" xlink:title="compute_watch_snapshot">
+<polygon fill="#d9534f" stroke="#d9534f" points="646.08,-104.27 497.31,-104.27 497.31,-80 646.08,-80 646.08,-104.27"/>
+<text xml:space="preserve" text-anchor="middle" x="571.69" y="-88.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">compute_watch_snapshot</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_watch_snapshot&#45;&gt;proc~create_temp_directory -->
+<g id="proc~~from_c_string~~CalledByGraph_edge3" class="edge">
+<title>proc~compute_watch_snapshot&#45;&gt;proc~create_temp_directory</title>
+<path fill="none" stroke="#ff0000" d="M606.1,-79.57C627.7,-71.53 656.47,-60.99 682.08,-52.13 686.77,-50.51 691.66,-48.86 696.56,-47.22"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="697.41,-50.63 705.8,-44.16 695.21,-43.98 697.41,-50.63"/>
+</g>
+<!-- proc~compute_watch_snapshot&#45;&gt;proc~current_executable -->
+<g id="proc~~from_c_string~~CalledByGraph_edge5" class="edge">
+<title>proc~compute_watch_snapshot&#45;&gt;proc~current_executable</title>
+<path fill="none" stroke="#00ffff" d="M646.39,-84.08C657.19,-82.9 668.27,-81.68 678.94,-80.52"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="679.26,-84 688.82,-79.44 678.5,-77.05 679.26,-84"/>
+</g>
+<!-- proc~execute_supervised_child -->
+<g id="proc~~from_c_string~~CalledByGraph_node5" class="node">
+<title>proc~execute_supervised_child</title>
+<g id="a_proc~~from_c_string~~CalledByGraph_node5"><a xlink:href="../proc/execute_supervised_child.html" xlink:title="execute_supervised_child">
+<polygon fill="#d9534f" stroke="#d9534f" points="645.33,-24.27 498.06,-24.27 498.06,0 645.33,0 645.33,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="571.69" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">execute_supervised_child</text>
+</a>
+</g>
+</g>
+<!-- proc~execute_supervised_child&#45;&gt;proc~create_temp_directory -->
+<g id="proc~~from_c_string~~CalledByGraph_edge4" class="edge">
+<title>proc~execute_supervised_child&#45;&gt;proc~create_temp_directory</title>
+<path fill="none" stroke="#ff0000" d="M645.63,-20.11C653.87,-21.01 662.28,-21.93 670.55,-22.83"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="669.9,-26.28 680.22,-23.89 670.66,-19.33 669.9,-26.28"/>
+</g>
+<!-- proc~supervisor_loop -->
+<g id="proc~~from_c_string~~CalledByGraph_node6" class="node">
+<title>proc~supervisor_loop</title>
+<g id="a_proc~~from_c_string~~CalledByGraph_node6"><a xlink:href="../proc/supervisor_loop.html" xlink:title="supervisor_loop">
+<polygon fill="#d9534f" stroke="#d9534f" points="456.43,-24.27 360.91,-24.27 360.91,0 456.43,0 456.43,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="408.67" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">supervisor_loop</text>
+</a>
+</g>
+</g>
+<!-- proc~supervisor_loop&#45;&gt;proc~current_executable -->
+<g id="proc~~from_c_string~~CalledByGraph_edge6" class="edge">
+<title>proc~supervisor_loop&#45;&gt;proc~current_executable</title>
+<path fill="none" stroke="#00ffff" d="M456.83,-24.13C469.9,-27.26 484.12,-30.5 497.31,-33.13 558.49,-45.36 628.7,-56.36 678.97,-63.72"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="678.44,-67.18 688.84,-65.15 679.45,-60.25 678.44,-67.18"/>
+</g>
+<!-- proc~supervisor_loop&#45;&gt;proc~execute_supervised_child -->
+<g id="proc~~from_c_string~~CalledByGraph_edge8" class="edge">
+<title>proc~supervisor_loop&#45;&gt;proc~execute_supervised_child</title>
+<path fill="none" stroke="#00ff00" d="M456.68,-12.13C465.99,-12.13 476.02,-12.13 486.14,-12.13"/>
+<polygon fill="#00ff00" stroke="#00ff00" points="486.06,-15.64 496.06,-12.14 486.06,-8.64 486.06,-15.64"/>
+</g>
+<!-- proc~maybe_supervise -->
+<g id="proc~~from_c_string~~CalledByGraph_node7" class="node">
+<title>proc~maybe_supervise</title>
+<g id="a_proc~~from_c_string~~CalledByGraph_node7"><a xlink:href="../proc/maybe_supervise.html" xlink:title="maybe_supervise">
+<polygon fill="#d9534f" stroke="#d9534f" points="299.79,-24.27 195.27,-24.27 195.27,0 299.79,0 299.79,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="247.53" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">maybe_supervise</text>
+</a>
+</g>
+</g>
+<!-- proc~maybe_supervise&#45;&gt;proc~supervisor_loop -->
+<g id="proc~~from_c_string~~CalledByGraph_edge9" class="edge">
+<title>proc~maybe_supervise&#45;&gt;proc~supervisor_loop</title>
+<path fill="none" stroke="#0000ff" d="M300.2,-12.13C315.83,-12.13 333.1,-12.13 349.15,-12.13"/>
+<polygon fill="#0000ff" stroke="#0000ff" points="349.06,-15.64 359.06,-12.14 349.06,-8.64 349.06,-15.64"/>
+</g>
+<!-- proc~rebuild_watch_list -->
+<g id="proc~~from_c_string~~CalledByGraph_node8" class="node">
+<title>proc~rebuild_watch_list</title>
+<g id="a_proc~~from_c_string~~CalledByGraph_node8"><a xlink:href="../proc/rebuild_watch_list.html" xlink:title="rebuild_watch_list">
+<polygon fill="#d9534f" stroke="#d9534f" points="461.31,-104.27 356.04,-104.27 356.04,-80 461.31,-80 461.31,-104.27"/>
+<text xml:space="preserve" text-anchor="middle" x="408.67" y="-88.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rebuild_watch_list</text>
+</a>
+</g>
+</g>
+<!-- proc~rebuild_watch_list&#45;&gt;proc~compute_watch_snapshot -->
+<g id="proc~~from_c_string~~CalledByGraph_edge7" class="edge">
+<title>proc~rebuild_watch_list&#45;&gt;proc~compute_watch_snapshot</title>
+<path fill="none" stroke="#ff0000" d="M461.51,-92.13C469.28,-92.13 477.47,-92.13 485.72,-92.13"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="485.45,-95.64 495.45,-92.14 485.45,-88.64 485.45,-95.64"/>
+</g>
+<!-- proc~handle_manifest_change -->
+<g id="proc~~from_c_string~~CalledByGraph_node9" class="node">
+<title>proc~handle_manifest_change</title>
+<g id="a_proc~~from_c_string~~CalledByGraph_node9"><a xlink:href="../proc/handle_manifest_change.html" xlink:title="handle_manifest_change">
+<polygon fill="#d9534f" stroke="#d9534f" points="320.04,-146.27 175.02,-146.27 175.02,-122 320.04,-122 320.04,-146.27"/>
+<text xml:space="preserve" text-anchor="middle" x="247.53" y="-130.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">handle_manifest_change</text>
+</a>
+</g>
+</g>
+<!-- proc~handle_manifest_change&#45;&gt;proc~rebuild_watch_list -->
+<g id="proc~~from_c_string~~CalledByGraph_edge10" class="edge">
+<title>proc~handle_manifest_change&#45;&gt;proc~rebuild_watch_list</title>
+<path fill="none" stroke="#00ffff" d="M296.28,-121.53C312.96,-117.13 331.87,-112.14 349.32,-107.54"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="349.72,-111.05 358.5,-105.11 347.93,-104.28 349.72,-111.05"/>
+</g>
+<!-- proc~watcher_init -->
+<g id="proc~~from_c_string~~CalledByGraph_node10" class="node">
+<title>proc~watcher_init</title>
+<g id="a_proc~~from_c_string~~CalledByGraph_node10"><a xlink:href="../proc/watcher_init.html" xlink:title="watcher_t%watcher_init">
+<polygon fill="#d9534f" stroke="#d9534f" points="316.29,-104.27 178.77,-104.27 178.77,-80 316.29,-80 316.29,-104.27"/>
+<text xml:space="preserve" text-anchor="middle" x="247.53" y="-88.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">watcher_t%watcher_init</text>
+</a>
+</g>
+</g>
+<!-- proc~watcher_init&#45;&gt;proc~rebuild_watch_list -->
+<g id="proc~~from_c_string~~CalledByGraph_edge11" class="edge">
+<title>proc~watcher_init&#45;&gt;proc~rebuild_watch_list</title>
+<path fill="none" stroke="#00ffff" d="M316.48,-92.13C325.75,-92.13 335.23,-92.13 344.41,-92.13"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="344.32,-95.64 354.32,-92.14 344.32,-88.64 344.32,-95.64"/>
+</g>
+<!-- proc~watcher_run -->
+<g id="proc~~from_c_string~~CalledByGraph_node11" class="node">
+<title>proc~watcher_run</title>
+<g id="a_proc~~from_c_string~~CalledByGraph_node11"><a xlink:href="../proc/watcher_run.html" xlink:title="watcher_t%watcher_run">
+<polygon fill="#d9534f" stroke="#d9534f" points="139.02,-105.27 0,-105.27 0,-81 139.02,-81 139.02,-105.27"/>
+<text xml:space="preserve" text-anchor="middle" x="69.51" y="-89.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">watcher_t%watcher_run</text>
+</a>
+</g>
+</g>
+<!-- proc~watcher_run&#45;&gt;proc~rebuild_watch_list -->
+<g id="proc~~from_c_string~~CalledByGraph_edge12" class="edge">
+<title>proc~watcher_run&#45;&gt;proc~rebuild_watch_list</title>
+<path fill="none" stroke="#00ffff" d="M119.88,-80.55C137.2,-76.72 156.85,-73.03 175.02,-71.13 239.13,-64.46 256.03,-63.57 320.04,-71.13 330.76,-72.4 342.08,-74.51 352.88,-76.92"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="351.9,-80.28 362.43,-79.17 353.5,-73.47 351.9,-80.28"/>
+</g>
+<!-- proc~watcher_run&#45;&gt;proc~handle_manifest_change -->
+<g id="proc~~from_c_string~~CalledByGraph_edge13" class="edge">
+<title>proc~watcher_run&#45;&gt;proc~handle_manifest_change</title>
+<path fill="none" stroke="#ff0000" d="M124.28,-105.66C142.28,-109.85 162.55,-114.57 181.32,-118.95"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="180.48,-122.34 191.01,-121.2 182.07,-115.53 180.48,-122.34"/>
+</g>
+</g>
+</svg>
+</div>                <script>
+                  var panprocfrom_c_stringCalledByGraph = svgPanZoom('#procfrom_c_stringCalledByGraph',
+                    {zoomEnabled: true, controlIconsEnabled: true, fit: true, center: true,}
+                  );
+                </script>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#CalledByGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="CalledByGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="641pt" height="28pt"
+ viewBox="0.00 0.00 641.00 28.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.873868 0.873868) rotate(0) translate(4 28.27)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-28.27 729.52,-28.27 729.52,4 -4,4"/>
+<!-- Subroutine -->
+<g id="node1" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="69.27,-24.27 0,-24.27 0,0 69.27,0 69.27,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="34.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node2" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="143.89,-24.27 87.38,-24.27 87.38,0 143.89,0 143.89,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="115.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node3" class="node">
+<title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="221.39,-24.27 161.88,-24.27 161.88,0 221.39,0 221.39,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="191.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Type Bound Procedure -->
+<g id="node4" class="node">
+<title>Type Bound Procedure</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="368.27,-24.27 239,-24.27 239,0 368.27,0 368.27,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="303.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type Bound Procedure</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node5" class="node">
+<title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="529.39,-24.27 385.88,-24.27 385.88,0 529.39,0 529.39,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="457.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node6" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="603.89,-24.27 547.38,-24.27 547.38,0 603.89,0 603.89,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="575.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node7" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="725.52,-24.27 621.75,-24.27 621.75,0 725.52,0 725.52,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="673.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.
+</p>
+ Where possible, edges connecting nodes are
+given different colours to make them easier to distinguish in
+large graphs.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+
+
+    
+    
+
+    
+    
+
+
+
+    
+    <section>
+    <h2><span class="anchor" id="src"></span>Source Code</h2>
+    <div class="hl codehilite"><pre><span></span><span class="w">   </span><span class="k">pure function </span><span class="n">from_c_string</span><span class="p">(</span><span class="n">buffer</span><span class="p">)</span><span class="w"> </span><span class="k">result</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+<span class="w">      </span><span class="kt">character</span><span class="p">(</span><span class="nb">kind</span><span class="o">=</span><span class="kt">c_char</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">buffer</span><span class="p">(:)</span>
+<span class="w">      </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">path</span>
+<span class="w">      </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">n</span>
+<span class="w">      </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">      </span><span class="k">do </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="p">(</span><span class="n">buffer</span><span class="p">)</span>
+<span class="w">         </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">buffer</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">c_null_char</span><span class="p">)</span><span class="w"> </span><span class="k">exit</span>
+<span class="k">         </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">      </span><span class="k">end do</span>
+<span class="k">      </span><span class="n">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">repeat</span><span class="p">(</span><span class="s2">" "</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="p">)</span>
+<span class="w">      </span><span class="k">do </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">n</span>
+<span class="w">         </span><span class="n">path</span><span class="p">(</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">buffer</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+<span class="w">      </span><span class="k">end do</span>
+<span class="k">   end function </span><span class="n">from_c_string</span>
+</pre></div>
+
+    </section>
+    <br>
+    
+    </div>
+  </div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              fpm-watch
+ was developed by Seyed Ali Ghasemi<br>              &copy; 2026 <a rel="license" href="https://opensource.org/licenses/MIT">MIT</a>
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+ on 2026-10-17T23:25:57.739691+0000             </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>

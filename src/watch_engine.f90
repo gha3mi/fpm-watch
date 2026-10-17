@@ -10,14 +10,14 @@ module watch_engine
    use watch_log, only: log_event, log_int, log_real, log_string, configure_logging
    use fpm_error, only: error_t
    use watch_graph_worker, only: compute_watch_snapshot
-   use watch_fingerprint, only: init_fingerprints, scan_changes, accept_changes, manifest_key_from_files, watch_state_changed, preserve_fingerprints
+   use watch_fingerprint, only: init_fingerprints, scan_changes, accept_changes, watch_state_changed, preserve_fingerprints
    use watch_cli, only: parse_cli_config
-   use watch_platform, only: termination_requested
+   use watch_platform, only: termination_requested, stop_file_exists
    use watch_time, only: sleep_seconds
    use watch_exec, only: report_changes, build_run_command, run_command_and_report
    use watch_banner, only: print_banner, print_file_list, print_configuration
    use fpm_strings, only: string_t, str
-   use fpm_filesystem, only: basename, exists, join_path, canon_path, is_absolute_path
+   use fpm_filesystem, only: basename, join_path, canon_path, is_absolute_path
    use fpm_os, only: get_current_directory
    implicit none
    private
@@ -25,17 +25,15 @@ module watch_engine
 
    !> Accepted configuration and one aligned watch-state snapshot.
    !!
-   !! File masks and roots describe affected-target membership. `man_prev` stores the
-   !! last manifest/settings key for debug diagnostics. A failed manifest refresh
-   !! leaves a retry flag while accepted configuration and watch-list state are retained.
+   !! File masks and roots describe affected-target membership. A failed manifest
+   !! refresh leaves a retry flag while accepted configuration and watch-list state
+   !! are retained.
    type watcher_t
       !> Accepted watcher settings and serialized fpm command.
       type(watch_config_t) :: cfg
       !> Aligned accepted paths, root membership, and fingerprint baselines.
       type(watch_snapshot_t) :: snapshot
 
-      !> Manifest/settings key from the last successful refresh, used for diagnostics.
-      integer(int64) :: man_prev = 0_int64
       !> Most recent command exit status; zero before a run, propagated by one-shot mode.
       integer :: last_exit = 0
       !> Last graph-refresh error text, retained to suppress repeated diagnostics.
@@ -111,19 +109,19 @@ contains
 
       do
          if (termination_requested()) exit
-         if (exists(join_path(self%cfg%project_dir, ".fpm-watch.stop"))) exit
+         if (stop_file_exists(self%cfg%project_dir)) exit
 
          call sleep_seconds(self%cfg%w%poll)
 
          if (termination_requested()) exit
-         if (exists(join_path(self%cfg%project_dir, ".fpm-watch.stop"))) exit
+         if (stop_file_exists(self%cfg%project_dir)) exit
 
          call scan_changes(self%snapshot%files, self%snapshot%fp_prev, self%snapshot%fp_now, self%snapshot%changed_idx, changed_count)
 
          if (changed_count > 0) then
             call sleep_seconds(self%cfg%w%debounce)
             if (termination_requested()) exit
-            if (exists(join_path(self%cfg%project_dir, ".fpm-watch.stop"))) exit
+            if (stop_file_exists(self%cfg%project_dir)) exit
             call scan_changes(self%snapshot%files, self%snapshot%fp_prev, self%snapshot%fp_now, self%snapshot%changed_idx, changed_count)
          end if
 
@@ -186,9 +184,9 @@ contains
    !> Reparse settings, refresh the graph, and run after a configuration change.
    !!
    !! Pin the current log format. On refresh failure restore the accepted
-   !! configuration and leave a retry pending. On success accept the new settings,
-   !! update the manifest/settings key and run the full
-   !! command. `refreshed` reports graph-refresh success, not command success.
+   !! configuration and leave a retry pending. On success accept the new settings
+   !! and run the full command. `refreshed` reports graph-refresh success, not
+   !! command success.
    subroutine handle_manifest_change(self, refreshed)
       class(watcher_t), intent(inout) :: self
       logical, intent(out) :: refreshed
@@ -301,7 +299,7 @@ contains
       logical, intent(out), optional :: selection_changed
       !! True unless paths, root bits, and root names match the accepted selection mapping.
 
-      integer(int64) :: rate, t0, t1, candidate_manifest_key
+      integer(int64) :: rate, t0, t1
       real :: build_secs_total
       real :: secs_model, secs_targets, secs_watch
       integer :: nfiles, nroots, i
@@ -340,7 +338,6 @@ contains
             files        = new_files,         &
             file_mask    = new_mask,          &
             roots        = new_roots,         &
-            manifest_key = candidate_manifest_key, &
             build_secs   = dummy_build,       &
             secs_model   = secs_model,        &
             secs_targets = secs_targets,      &
@@ -376,8 +373,6 @@ contains
       call move_alloc(new_mask,  self%snapshot%file_mask)
       call move_alloc(new_roots, self%snapshot%roots)
 
-      self%man_prev = manifest_key_from_files(self%cfg%settings, self%snapshot%files)
-
       call init_fingerprints(self%snapshot%files, self%snapshot%fp_prev, self%snapshot%fp_now, self%snapshot%changed_idx)
       if (preserve) call preserve_fingerprints(old_files, old_fp, self%snapshot%files, self%snapshot%fp_prev)
       if (present(watch_changed)) then
@@ -394,11 +389,6 @@ contains
       nroots = 0
       if (allocated(self%snapshot%roots)) nroots = size(self%snapshot%roots)
 
-      if (self%cfg%w%debug) then
-         call log_event("debug", "watch.fingerprint", "Watch graph fingerprint updated", &
-                        [log_int("manifest_key", self%man_prev), log_int("root_count", nroots), log_int("file_count", nfiles)])
-      end if
-
       if (print_header) then
          call print_banner( &
             full_cmdline = self%cfg%fpm_cmdline, &
@@ -410,13 +400,12 @@ contains
             secs_model   = secs_model,           &
             secs_targets = secs_targets,         &
             secs_watch   = secs_watch )
-         if (self%cfg%w%print_files_once) call print_file_list(self%snapshot%files, self%cfg%w)
       else
          call print_configuration(self%cfg%settings, self%cfg%w)
          call log_event("info", "watch.refreshed", "Watch list updated; " // str(nfiles) // " files", &
                        [log_int("file_count", nfiles), log_real("duration_ms", build_secs_total * 1000.0)], verbosity=1)
-         if (self%cfg%w%verbosity >= 2) call print_file_list(self%snapshot%files, self%cfg%w)
       end if
+      if (self%cfg%w%verbosity >= 2) call print_file_list(self%snapshot%files, self%cfg%w)
    end subroutine rebuild_watch_list
 
    !> Return whether root names or their bits changed during a dependency refresh.

@@ -1,0 +1,867 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="Documentation for fpm-watch">
+    <meta name="author" content="Seyed Ali Ghasemi" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>boolean_watch_value &ndash; fpm-watch</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">fpm-watch </a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/types.html">Derived Types</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <div class="row">
+    <h1>boolean_watch_value
+      <small>Function</small>
+      
+    </h1>
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+            <li class="list-inline-item" id="meta-license"><i class="fa fa-legal"></i> <a rel="license" href="https://opensource.org/licenses/MIT">MIT</a></li>
+
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title=" 0.2% of total for procedures.">9 statements</a>
+            </li>
+
+            <li class="list-inline-item" id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/watch_cli.f90"> Source File</a>
+            </li>
+        </ul>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+                <li class="breadcrumb-item"><a href='../sourcefile/watch_cli.f90.html'>watch_cli.f90</a></li>
+                <li class="breadcrumb-item"><a href='../module/watch_cli.html'>watch_cli</a></li>
+            <li class="breadcrumb-item active" aria-current="page">boolean_watch_value</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
+  </script>
+
+  </div>
+  
+  <div class="row">
+    <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
+      <div id="sidebar">
+      <h3>Contents</h3>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    <div class="card card-primary">
+      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
+      <div class="list-group">
+        <a class="list-group-item" href="../proc/boolean_watch_value.html#src">boolean_watch_value</a>
+      </div>
+    </div>
+
+
+  </div>
+
+    </div>
+    
+    <div class="col-md-9" id='text'>
+    <h2>private  function boolean_watch_value(key, val, has_value) result(value)  
+</h2>
+    
+
+    <p>Parse an optional boolean, treating only a bare flag as true.</p>
+
+
+    <h3>Arguments</h3>
+        <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-key~5"></span>
+              character(len=*),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>key</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-val~2"></span>
+              character(len=*),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>val</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-has_value~2"></span>
+              logical,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>has_value</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+      <h3>Return Value
+        <small>
+          <span class="anchor" id="variable-value~6"></span>
+          logical
+        </small>
+      </h3>
+      
+    <br>
+    <div class="card">
+      <div class="card-header">
+  <h3 class="card-title">Calls</h3>
+      </div>
+      <div class="card-body">
+  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: proc~~boolean_watch_value~~CallsGraph Pages: 1 -->
+<svg id="procboolean_watch_valueCallsGraph" width="641pt" height="81pt"
+ viewBox="0.00 0.00 641.00 81.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~boolean_watch_value~~CallsGraph" class="graph" transform="scale(0.563056 0.563056) rotate(0) translate(4 140.32)">
+<title>proc~~boolean_watch_value~~CallsGraph</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-140.32 1134.43,-140.32 1134.43,4 -4,4"/>
+<!-- proc~boolean_watch_value -->
+<g id="proc~~boolean_watch_value~~CallsGraph_node1" class="node">
+<title>proc~boolean_watch_value</title>
+<polygon fill="none" stroke="black" points="126.27,-115.32 0,-115.32 0,-91.05 126.27,-91.05 126.27,-115.32"/>
+<text xml:space="preserve" text-anchor="middle" x="63.13" y="-99.58" font-family="Helvetica,sans-Serif" font-size="10.50">boolean_watch_value</text>
+</g>
+<!-- proc~parse_bool -->
+<g id="proc~~boolean_watch_value~~CallsGraph_node2" class="node">
+<title>proc~parse_bool</title>
+<g id="a_proc~~boolean_watch_value~~CallsGraph_node2"><a xlink:href="../proc/parse_bool.html" xlink:title="parse_bool">
+<polygon fill="#d9534f" stroke="#d9534f" points="245.79,-136.32 175.77,-136.32 175.77,-112.05 245.79,-112.05 245.79,-136.32"/>
+<text xml:space="preserve" text-anchor="middle" x="210.78" y="-120.58" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">parse_bool</text>
+</a>
+</g>
+</g>
+<!-- proc~boolean_watch_value&#45;&gt;proc~parse_bool -->
+<g id="proc~~boolean_watch_value~~CallsGraph_edge1" class="edge">
+<title>proc~boolean_watch_value&#45;&gt;proc~parse_bool</title>
+<path fill="none" stroke="#ff0000" d="M126.75,-112.21C139.24,-114.01 152.14,-115.87 163.93,-117.57"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="163.42,-121.03 173.81,-119 164.41,-114.1 163.42,-121.03"/>
+</g>
+<!-- proc~usage_and_stop -->
+<g id="proc~~boolean_watch_value~~CallsGraph_node3" class="node">
+<title>proc~usage_and_stop</title>
+<g id="a_proc~~boolean_watch_value~~CallsGraph_node3"><a xlink:href="../proc/usage_and_stop.html" xlink:title="usage_and_stop">
+<polygon fill="#d9534f" stroke="#d9534f" points="259.29,-94.32 162.27,-94.32 162.27,-70.05 259.29,-70.05 259.29,-94.32"/>
+<text xml:space="preserve" text-anchor="middle" x="210.78" y="-78.58" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">usage_and_stop</text>
+</a>
+</g>
+</g>
+<!-- proc~boolean_watch_value&#45;&gt;proc~usage_and_stop -->
+<g id="proc~~boolean_watch_value~~CallsGraph_edge2" class="edge">
+<title>proc~boolean_watch_value&#45;&gt;proc~usage_and_stop</title>
+<path fill="none" stroke="#ff0000" d="M126.75,-94.15C134.72,-93 142.87,-91.83 150.79,-90.69"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="151.28,-94.15 160.68,-89.26 150.28,-87.22 151.28,-94.15"/>
+</g>
+<!-- proc~lower_ascii -->
+<g id="proc~~boolean_watch_value~~CallsGraph_node5" class="node">
+<title>proc~lower_ascii</title>
+<g id="a_proc~~boolean_watch_value~~CallsGraph_node5"><a xlink:href="../proc/lower_ascii.html" xlink:title="lower_ascii">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="385.56,-136.32 315.54,-136.32 315.54,-112.05 385.56,-112.05 385.56,-136.32"/>
+<text xml:space="preserve" text-anchor="middle" x="350.55" y="-120.58" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">lower_ascii</text>
+</a>
+</g>
+</g>
+<!-- proc~parse_bool&#45;&gt;proc~lower_ascii -->
+<g id="proc~~boolean_watch_value~~CallsGraph_edge3" class="edge">
+<title>proc~parse_bool&#45;&gt;proc~lower_ascii</title>
+<path fill="none" stroke="#ff0000" d="M246.19,-124.18C263.61,-124.18 285,-124.18 303.8,-124.18"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="303.59,-127.68 313.59,-124.18 303.59,-120.68 303.59,-127.68"/>
+</g>
+<!-- proc~log_event -->
+<g id="proc~~boolean_watch_value~~CallsGraph_node4" class="node">
+<title>proc~log_event</title>
+<g id="a_proc~~boolean_watch_value~~CallsGraph_node4"><a xlink:href="../proc/log_event.html" xlink:title="log_event">
+<polygon fill="#d9534f" stroke="#d9534f" points="382.19,-52.32 318.92,-52.32 318.92,-28.05 382.19,-28.05 382.19,-52.32"/>
+<text xml:space="preserve" text-anchor="middle" x="350.55" y="-36.58" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">log_event</text>
+</a>
+</g>
+</g>
+<!-- proc~usage_and_stop&#45;&gt;proc~log_event -->
+<g id="proc~~boolean_watch_value~~CallsGraph_edge4" class="edge">
+<title>proc~usage_and_stop&#45;&gt;proc~log_event</title>
+<path fill="none" stroke="#00ffff" d="M253.12,-69.58C270.41,-64.31 290.48,-58.19 307.82,-52.9"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="308.77,-56.27 317.31,-50.01 306.72,-49.58 308.77,-56.27"/>
+</g>
+<!-- proc~structured_logging -->
+<g id="proc~~boolean_watch_value~~CallsGraph_node6" class="node">
+<title>proc~structured_logging</title>
+<g id="a_proc~~boolean_watch_value~~CallsGraph_node6"><a xlink:href="../proc/structured_logging.html" xlink:title="structured_logging">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="405.81,-94.32 295.29,-94.32 295.29,-70.05 405.81,-70.05 405.81,-94.32"/>
+<text xml:space="preserve" text-anchor="middle" x="350.55" y="-78.58" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">structured_logging</text>
+</a>
+</g>
+</g>
+<!-- proc~usage_and_stop&#45;&gt;proc~structured_logging -->
+<g id="proc~~boolean_watch_value~~CallsGraph_edge5" class="edge">
+<title>proc~usage_and_stop&#45;&gt;proc~structured_logging</title>
+<path fill="none" stroke="#00ffff" d="M259.58,-82.18C267.4,-82.18 275.62,-82.18 283.78,-82.18"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="283.71,-85.68 293.71,-82.18 283.71,-78.68 283.71,-85.68"/>
+</g>
+<!-- proc~format_log_record -->
+<g id="proc~~boolean_watch_value~~CallsGraph_node7" class="node">
+<title>proc~format_log_record</title>
+<g id="a_proc~~boolean_watch_value~~CallsGraph_node7"><a xlink:href="../proc/format_log_record.html" xlink:title="format_log_record">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="550.83,-73.32 441.81,-73.32 441.81,-49.05 550.83,-49.05 550.83,-73.32"/>
+<text xml:space="preserve" text-anchor="middle" x="496.32" y="-57.58" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">format_log_record</text>
+</a>
+</g>
+</g>
+<!-- proc~log_event&#45;&gt;proc~format_log_record -->
+<g id="proc~~boolean_watch_value~~CallsGraph_edge6" class="edge">
+<title>proc~log_event&#45;&gt;proc~format_log_record</title>
+<path fill="none" stroke="#ff0000" d="M382.39,-44.69C396.34,-46.72 413.38,-49.21 429.95,-51.63"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="429.41,-55.09 439.81,-53.07 430.43,-48.17 429.41,-55.09"/>
+</g>
+<!-- proc~log_timestamp -->
+<g id="proc~~boolean_watch_value~~CallsGraph_node8" class="node">
+<title>proc~log_timestamp</title>
+<g id="a_proc~~boolean_watch_value~~CallsGraph_node8"><a xlink:href="../proc/log_timestamp.html" xlink:title="log_timestamp">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="541.46,-31.32 451.19,-31.32 451.19,-7.05 541.46,-7.05 541.46,-31.32"/>
+<text xml:space="preserve" text-anchor="middle" x="496.32" y="-15.58" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">log_timestamp</text>
+</a>
+</g>
+</g>
+<!-- proc~log_event&#45;&gt;proc~log_timestamp -->
+<g id="proc~~boolean_watch_value~~CallsGraph_edge7" class="edge">
+<title>proc~log_event&#45;&gt;proc~log_timestamp</title>
+<path fill="none" stroke="#ff0000" d="M382.39,-35.68C399.08,-33.24 420.21,-30.15 439.67,-27.31"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="440,-30.8 449.39,-25.89 438.99,-23.87 440,-30.8"/>
+</g>
+<!-- proc~escape_text -->
+<g id="proc~~boolean_watch_value~~CallsGraph_node9" class="node">
+<title>proc~escape_text</title>
+<g id="a_proc~~boolean_watch_value~~CallsGraph_node9"><a xlink:href="../proc/escape_text.html" xlink:title="escape_text">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="661.35,-115.32 586.83,-115.32 586.83,-91.05 661.35,-91.05 661.35,-115.32"/>
+<text xml:space="preserve" text-anchor="middle" x="624.09" y="-99.58" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">escape_text</text>
+</a>
+</g>
+</g>
+<!-- proc~format_log_record&#45;&gt;proc~escape_text -->
+<g id="proc~~boolean_watch_value~~CallsGraph_edge8" class="edge">
+<title>proc~format_log_record&#45;&gt;proc~escape_text</title>
+<path fill="none" stroke="#ff0000" d="M535.06,-73.78C547.96,-78.09 562.55,-82.97 576.1,-87.49"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="574.65,-90.69 585.24,-90.54 576.87,-84.05 574.65,-90.69"/>
+</g>
+<!-- proc~escaped_length -->
+<g id="proc~~boolean_watch_value~~CallsGraph_node10" class="node">
+<title>proc~escaped_length</title>
+<g id="a_proc~~boolean_watch_value~~CallsGraph_node10"><a xlink:href="../proc/escaped_length.html" xlink:title="escaped_length">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="792.87,-115.32 697.35,-115.32 697.35,-91.05 792.87,-91.05 792.87,-115.32"/>
+<text xml:space="preserve" text-anchor="middle" x="745.11" y="-99.58" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">escaped_length</text>
+</a>
+</g>
+</g>
+<!-- proc~format_log_record&#45;&gt;proc~escaped_length -->
+<g id="proc~~boolean_watch_value~~CallsGraph_edge9" class="edge">
+<title>proc~format_log_record&#45;&gt;proc~escaped_length</title>
+<path fill="none" stroke="#ff0000" d="M509.56,-73.62C525.63,-88.98 555.49,-114.26 586.83,-124.18 624.07,-135.97 668.3,-128.26 700.36,-119.03"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="701.17,-122.44 709.71,-116.18 699.13,-115.75 701.17,-122.44"/>
+</g>
+<!-- proc~json_quote -->
+<g id="proc~~boolean_watch_value~~CallsGraph_node11" class="node">
+<title>proc~json_quote</title>
+<g id="a_proc~~boolean_watch_value~~CallsGraph_node11"><a xlink:href="../proc/json_quote.html" xlink:title="json_quote">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="658.73,-73.32 589.46,-73.32 589.46,-49.05 658.73,-49.05 658.73,-73.32"/>
+<text xml:space="preserve" text-anchor="middle" x="624.09" y="-57.58" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">json_quote</text>
+</a>
+</g>
+</g>
+<!-- proc~format_log_record&#45;&gt;proc~json_quote -->
+<g id="proc~~boolean_watch_value~~CallsGraph_edge10" class="edge">
+<title>proc~format_log_record&#45;&gt;proc~json_quote</title>
+<path fill="none" stroke="#ff0000" d="M551.02,-61.18C559.93,-61.18 569.08,-61.18 577.76,-61.18"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="577.7,-64.68 587.7,-61.18 577.7,-57.68 577.7,-64.68"/>
+</g>
+<!-- proc~put_json_string -->
+<g id="proc~~boolean_watch_value~~CallsGraph_node12" class="node">
+<title>proc~put_json_string</title>
+<g id="a_proc~~boolean_watch_value~~CallsGraph_node12"><a xlink:href="../proc/put_json_string.html" xlink:title="put_json_string">
+<polygon fill="#d9534f" stroke="#d9534f" points="790.62,-35.32 699.6,-35.32 699.6,-11.05 790.62,-11.05 790.62,-35.32"/>
+<text xml:space="preserve" text-anchor="middle" x="745.11" y="-19.58" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">put_json_string</text>
+</a>
+</g>
+</g>
+<!-- proc~format_log_record&#45;&gt;proc~put_json_string -->
+<g id="proc~~boolean_watch_value~~CallsGraph_edge11" class="edge">
+<title>proc~format_log_record&#45;&gt;proc~put_json_string</title>
+<path fill="none" stroke="#ff0000" d="M545.88,-48.64C559.09,-45.55 573.46,-42.46 586.83,-40.18 620.2,-34.49 657.89,-30.33 688.01,-27.56"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="688.01,-31.07 697.66,-26.7 687.38,-24.1 688.01,-31.07"/>
+</g>
+<!-- proc~put_text -->
+<g id="proc~~boolean_watch_value~~CallsGraph_node13" class="node">
+<title>proc~put_text</title>
+<g id="a_proc~~boolean_watch_value~~CallsGraph_node13"><a xlink:href="../proc/put_text.html" xlink:title="put_text">
+<polygon fill="#d9534f" stroke="#d9534f" points="1013.03,-35.32 959.03,-35.32 959.03,-11.05 1013.03,-11.05 1013.03,-35.32"/>
+<text xml:space="preserve" text-anchor="middle" x="986.03" y="-19.58" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">put_text</text>
+</a>
+</g>
+</g>
+<!-- proc~format_log_record&#45;&gt;proc~put_text -->
+<g id="proc~~boolean_watch_value~~CallsGraph_edge12" class="edge">
+<title>proc~format_log_record&#45;&gt;proc~put_text</title>
+<path fill="none" stroke="#ff0000" d="M529.51,-48.56C554.86,-38.63 586.07,-26.41 586.83,-26.18 675.09,0.47 700.81,2.83 792.87,-2.18 846.77,-5.12 908.8,-12.66 947.47,-17.85"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="946.8,-21.29 957.18,-19.18 947.75,-14.36 946.8,-21.29"/>
+</g>
+<!-- proc~escape_text&#45;&gt;proc~escaped_length -->
+<g id="proc~~boolean_watch_value~~CallsGraph_edge13" class="edge">
+<title>proc~escape_text&#45;&gt;proc~escaped_length</title>
+<path fill="none" stroke="#ff0000" d="M661.77,-103.18C669.38,-103.18 677.59,-103.18 685.76,-103.18"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="685.71,-106.68 695.71,-103.18 685.71,-99.68 685.71,-106.68"/>
+</g>
+<!-- proc~put_escaped -->
+<g id="proc~~boolean_watch_value~~CallsGraph_node15" class="node">
+<title>proc~put_escaped</title>
+<g id="a_proc~~boolean_watch_value~~CallsGraph_node15"><a xlink:href="../proc/put_escaped.html" xlink:title="put_escaped">
+<polygon fill="#d9534f" stroke="#d9534f" points="907.89,-75.32 828.87,-75.32 828.87,-51.05 907.89,-51.05 907.89,-75.32"/>
+<text xml:space="preserve" text-anchor="middle" x="868.38" y="-59.58" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">put_escaped</text>
+</a>
+</g>
+</g>
+<!-- proc~escape_text&#45;&gt;proc~put_escaped -->
+<g id="proc~~boolean_watch_value~~CallsGraph_edge14" class="edge">
+<title>proc~escape_text&#45;&gt;proc~put_escaped</title>
+<path fill="none" stroke="#ff0000" d="M661.55,-91.27C672.92,-87.91 685.56,-84.53 697.35,-82.18 737.39,-74.19 783.45,-69.3 817.53,-66.49"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="817.4,-70.01 827.09,-65.73 816.84,-63.03 817.4,-70.01"/>
+</g>
+<!-- proc~escape_piece -->
+<g id="proc~~boolean_watch_value~~CallsGraph_node14" class="node">
+<title>proc~escape_piece</title>
+<g id="a_proc~~boolean_watch_value~~CallsGraph_node14"><a xlink:href="../proc/escape_piece.html" xlink:title="escape_piece">
+<polygon fill="#d9534f" stroke="#d9534f" points="1028.16,-96.32 943.89,-96.32 943.89,-72.05 1028.16,-72.05 1028.16,-96.32"/>
+<text xml:space="preserve" text-anchor="middle" x="986.03" y="-80.58" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">escape_piece</text>
+</a>
+</g>
+</g>
+<!-- proc~escaped_length&#45;&gt;proc~escape_piece -->
+<g id="proc~~boolean_watch_value~~CallsGraph_edge15" class="edge">
+<title>proc~escaped_length&#45;&gt;proc~escape_piece</title>
+<path fill="none" stroke="#cbff00" d="M793.31,-99.43C833.34,-96.24 890.7,-91.68 932.24,-88.38"/>
+<polygon fill="#cbff00" stroke="#cbff00" points="932.31,-91.88 942,-87.6 931.75,-84.91 932.31,-91.88"/>
+</g>
+<!-- proc~json_quote&#45;&gt;proc~escaped_length -->
+<g id="proc~~boolean_watch_value~~CallsGraph_edge16" class="edge">
+<title>proc~json_quote&#45;&gt;proc~escaped_length</title>
+<path fill="none" stroke="#00ff66" d="M659.2,-73.22C671.22,-77.46 684.94,-82.3 697.8,-86.84"/>
+<polygon fill="#00ff66" stroke="#00ff66" points="696.32,-90.03 706.91,-90.05 698.65,-83.43 696.32,-90.03"/>
+</g>
+<!-- proc~json_quote&#45;&gt;proc~put_json_string -->
+<g id="proc~~boolean_watch_value~~CallsGraph_edge17" class="edge">
+<title>proc~json_quote&#45;&gt;proc~put_json_string</title>
+<path fill="none" stroke="#00ff66" d="M659.2,-50.29C669.92,-46.87 682,-43.01 693.61,-39.31"/>
+<polygon fill="#00ff66" stroke="#00ff66" points="694.63,-42.65 703.09,-36.28 692.5,-35.98 694.63,-42.65"/>
+</g>
+<!-- proc~put_json_string&#45;&gt;proc~put_text -->
+<g id="proc~~boolean_watch_value~~CallsGraph_edge19" class="edge">
+<title>proc~put_json_string&#45;&gt;proc~put_text</title>
+<path fill="none" stroke="#0066ff" d="M791.05,-23.18C836.17,-23.18 904.92,-23.18 947.3,-23.18"/>
+<polygon fill="#0066ff" stroke="#0066ff" points="947.26,-26.68 957.26,-23.18 947.26,-19.68 947.26,-26.68"/>
+</g>
+<!-- proc~put_json_string&#45;&gt;proc~put_escaped -->
+<g id="proc~~boolean_watch_value~~CallsGraph_edge18" class="edge">
+<title>proc~put_json_string&#45;&gt;proc~put_escaped</title>
+<path fill="none" stroke="#0066ff" d="M784.15,-35.73C795.1,-39.34 807.19,-43.33 818.69,-47.12"/>
+<polygon fill="#0066ff" stroke="#0066ff" points="817.45,-50.4 828.04,-50.21 819.64,-43.75 817.45,-50.4"/>
+</g>
+<!-- proc~utf8_width -->
+<g id="proc~~boolean_watch_value~~CallsGraph_node16" class="node">
+<title>proc~utf8_width</title>
+<g id="a_proc~~boolean_watch_value~~CallsGraph_node16"><a xlink:href="../proc/utf8_width.html" xlink:title="utf8_width">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="1130.43,-96.32 1064.16,-96.32 1064.16,-72.05 1130.43,-72.05 1130.43,-96.32"/>
+<text xml:space="preserve" text-anchor="middle" x="1097.3" y="-80.58" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">utf8_width</text>
+</a>
+</g>
+</g>
+<!-- proc~escape_piece&#45;&gt;proc~utf8_width -->
+<g id="proc~~boolean_watch_value~~CallsGraph_edge20" class="edge">
+<title>proc~escape_piece&#45;&gt;proc~utf8_width</title>
+<path fill="none" stroke="#ff0000" d="M1028.65,-84.18C1036.51,-84.18 1044.75,-84.18 1052.67,-84.18"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="1052.45,-87.68 1062.45,-84.18 1052.45,-80.68 1052.45,-87.68"/>
+</g>
+<!-- proc~put_escaped&#45;&gt;proc~put_text -->
+<g id="proc~~boolean_watch_value~~CallsGraph_edge22" class="edge">
+<title>proc~put_escaped&#45;&gt;proc~put_text</title>
+<path fill="none" stroke="#00ffff" d="M905.65,-50.63C919.11,-45.98 934.38,-40.7 947.91,-36.02"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="949.05,-39.33 957.36,-32.75 946.76,-32.71 949.05,-39.33"/>
+</g>
+<!-- proc~put_escaped&#45;&gt;proc~escape_piece -->
+<g id="proc~~boolean_watch_value~~CallsGraph_edge21" class="edge">
+<title>proc~put_escaped&#45;&gt;proc~escape_piece</title>
+<path fill="none" stroke="#00ffff" d="M908.21,-70.23C916.06,-71.66 924.43,-73.18 932.66,-74.67"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="931.77,-78.07 942.23,-76.41 933.02,-71.18 931.77,-78.07"/>
+</g>
+</g>
+</svg>
+</div>                <script>
+                  var panprocboolean_watch_valueCallsGraph = svgPanZoom('#procboolean_watch_valueCallsGraph',
+                    {zoomEnabled: true, controlIconsEnabled: true, fit: true, center: true,}
+                  );
+                </script>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#CallsGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="CallsGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="641pt" height="28pt"
+ viewBox="0.00 0.00 641.00 28.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.873868 0.873868) rotate(0) translate(4 28.27)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-28.27 729.52,-28.27 729.52,4 -4,4"/>
+<!-- Subroutine -->
+<g id="node1" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="69.27,-24.27 0,-24.27 0,0 69.27,0 69.27,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="34.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node2" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="143.89,-24.27 87.38,-24.27 87.38,0 143.89,0 143.89,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="115.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node3" class="node">
+<title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="221.39,-24.27 161.88,-24.27 161.88,0 221.39,0 221.39,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="191.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Type Bound Procedure -->
+<g id="node4" class="node">
+<title>Type Bound Procedure</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="368.27,-24.27 239,-24.27 239,0 368.27,0 368.27,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="303.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type Bound Procedure</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node5" class="node">
+<title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="529.39,-24.27 385.88,-24.27 385.88,0 529.39,0 529.39,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="457.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node6" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="603.89,-24.27 547.38,-24.27 547.38,0 603.89,0 603.89,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="575.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node7" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="725.52,-24.27 621.75,-24.27 621.75,0 725.52,0 725.52,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="673.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.
+</p>
+ Where possible, edges connecting nodes are
+given different colours to make them easier to distinguish in
+large graphs.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+  <h3 class="card-title">Called by</h3>
+      </div>
+      <div class="card-body">
+  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: proc~~boolean_watch_value~~CalledByGraph Pages: 1 -->
+<svg id="procboolean_watch_valueCalledByGraph" width="641pt" height="32pt"
+ viewBox="0.00 0.00 641.00 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~boolean_watch_value~~CalledByGraph" class="graph" transform="scale(0.620139 0.620139) rotate(0) translate(4 48.27)">
+<title>proc~~boolean_watch_value~~CalledByGraph</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-48.27 1029.64,-48.27 1029.64,4 -4,4"/>
+<!-- proc~boolean_watch_value -->
+<g id="proc~~boolean_watch_value~~CalledByGraph_node1" class="node">
+<title>proc~boolean_watch_value</title>
+<polygon fill="none" stroke="black" points="1025.64,-44.27 899.37,-44.27 899.37,-20 1025.64,-20 1025.64,-44.27"/>
+<text xml:space="preserve" text-anchor="middle" x="962.5" y="-28.53" font-family="Helvetica,sans-Serif" font-size="10.50">boolean_watch_value</text>
+</g>
+<!-- proc~apply_watch_flag -->
+<g id="proc~~boolean_watch_value~~CalledByGraph_node2" class="node">
+<title>proc~apply_watch_flag</title>
+<g id="a_proc~~boolean_watch_value~~CalledByGraph_node2"><a xlink:href="../proc/apply_watch_flag.html" xlink:title="apply_watch_flag">
+<polygon fill="#d9534f" stroke="#d9534f" points="863.37,-44.27 760.35,-44.27 760.35,-20 863.37,-20 863.37,-44.27"/>
+<text xml:space="preserve" text-anchor="middle" x="811.86" y="-28.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">apply_watch_flag</text>
+</a>
+</g>
+</g>
+<!-- proc~apply_watch_flag&#45;&gt;proc~boolean_watch_value -->
+<g id="proc~~boolean_watch_value~~CalledByGraph_edge1" class="edge">
+<title>proc~apply_watch_flag&#45;&gt;proc~boolean_watch_value</title>
+<path fill="none" stroke="#ff0000" d="M863.6,-32.13C871.32,-32.13 879.41,-32.13 887.5,-32.13"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="887.38,-35.64 897.38,-32.14 887.38,-28.64 887.38,-35.64"/>
+</g>
+<!-- proc~apply_watch_arguments -->
+<g id="proc~~boolean_watch_value~~CalledByGraph_node3" class="node">
+<title>proc~apply_watch_arguments</title>
+<g id="a_proc~~boolean_watch_value~~CalledByGraph_node3"><a xlink:href="../proc/apply_watch_arguments.html" xlink:title="apply_watch_arguments">
+<polygon fill="#d9534f" stroke="#d9534f" points="724.35,-44.27 583.83,-44.27 583.83,-20 724.35,-20 724.35,-44.27"/>
+<text xml:space="preserve" text-anchor="middle" x="654.09" y="-28.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">apply_watch_arguments</text>
+</a>
+</g>
+</g>
+<!-- proc~apply_watch_arguments&#45;&gt;proc~apply_watch_flag -->
+<g id="proc~~boolean_watch_value~~CalledByGraph_edge2" class="edge">
+<title>proc~apply_watch_arguments&#45;&gt;proc~apply_watch_flag</title>
+<path fill="none" stroke="#ff0000" d="M724.77,-32.13C732.72,-32.13 740.78,-32.13 748.62,-32.13"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="748.4,-35.64 758.4,-32.14 748.4,-28.64 748.4,-35.64"/>
+</g>
+<!-- proc~parse_cli -->
+<g id="proc~~boolean_watch_value~~CalledByGraph_node4" class="node">
+<title>proc~parse_cli</title>
+<g id="a_proc~~boolean_watch_value~~CalledByGraph_node4"><a xlink:href="../proc/parse_cli.html" xlink:title="parse_cli">
+<polygon fill="#d9534f" stroke="#d9534f" points="547.83,-24.27 489.06,-24.27 489.06,0 547.83,0 547.83,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="518.44" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">parse_cli</text>
+</a>
+</g>
+</g>
+<!-- proc~parse_cli&#45;&gt;proc~apply_watch_arguments -->
+<g id="proc~~boolean_watch_value~~CalledByGraph_edge3" class="edge">
+<title>proc~parse_cli&#45;&gt;proc~apply_watch_arguments</title>
+<path fill="none" stroke="#ff0000" d="M548.12,-16.43C555.42,-17.52 563.64,-18.75 572.19,-20.03"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="571.65,-23.49 582.05,-21.5 572.68,-16.56 571.65,-23.49"/>
+</g>
+<!-- proc~parse_cli_config -->
+<g id="proc~~boolean_watch_value~~CalledByGraph_node5" class="node">
+<title>proc~parse_cli_config</title>
+<g id="a_proc~~boolean_watch_value~~CalledByGraph_node5"><a xlink:href="../proc/parse_cli_config.html" xlink:title="parse_cli_config">
+<polygon fill="#d9534f" stroke="#d9534f" points="453.06,-44.27 356.04,-44.27 356.04,-20 453.06,-20 453.06,-44.27"/>
+<text xml:space="preserve" text-anchor="middle" x="404.55" y="-28.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">parse_cli_config</text>
+</a>
+</g>
+</g>
+<!-- proc~parse_cli_config&#45;&gt;proc~apply_watch_arguments -->
+<g id="proc~~boolean_watch_value~~CalledByGraph_edge4" class="edge">
+<title>proc~parse_cli_config&#45;&gt;proc~apply_watch_arguments</title>
+<path fill="none" stroke="#ff0000" d="M453.24,-32.8C464.96,-32.94 477.46,-33.07 489.06,-33.13 516.22,-33.3 545.91,-33.2 572.48,-33.01"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="572.17,-36.52 582.14,-32.94 572.11,-29.52 572.17,-36.52"/>
+</g>
+<!-- proc~parse_cli_config&#45;&gt;proc~parse_cli -->
+<g id="proc~~boolean_watch_value~~CalledByGraph_edge5" class="edge">
+<title>proc~parse_cli_config&#45;&gt;proc~parse_cli</title>
+<path fill="none" stroke="#ff0000" d="M453.33,-23.6C461.39,-22.15 469.68,-20.67 477.52,-19.27"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="477.87,-22.76 487.1,-17.56 476.64,-15.87 477.87,-22.76"/>
+</g>
+<!-- proc~handle_manifest_change -->
+<g id="proc~~boolean_watch_value~~CalledByGraph_node6" class="node">
+<title>proc~handle_manifest_change</title>
+<g id="a_proc~~boolean_watch_value~~CalledByGraph_node6"><a xlink:href="../proc/handle_manifest_change.html" xlink:title="handle_manifest_change">
+<polygon fill="#d9534f" stroke="#d9534f" points="320.04,-44.27 175.02,-44.27 175.02,-20 320.04,-20 320.04,-44.27"/>
+<text xml:space="preserve" text-anchor="middle" x="247.53" y="-28.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">handle_manifest_change</text>
+</a>
+</g>
+</g>
+<!-- proc~handle_manifest_change&#45;&gt;proc~parse_cli_config -->
+<g id="proc~~boolean_watch_value~~CalledByGraph_edge6" class="edge">
+<title>proc~handle_manifest_change&#45;&gt;proc~parse_cli_config</title>
+<path fill="none" stroke="#00ffff" d="M320.14,-32.13C328.24,-32.13 336.43,-32.13 344.35,-32.13"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="344.2,-35.64 354.2,-32.14 344.2,-28.64 344.2,-35.64"/>
+</g>
+<!-- proc~watcher_run -->
+<g id="proc~~boolean_watch_value~~CalledByGraph_node7" class="node">
+<title>proc~watcher_run</title>
+<g id="a_proc~~boolean_watch_value~~CalledByGraph_node7"><a xlink:href="../proc/watcher_run.html" xlink:title="watcher_t%watcher_run">
+<polygon fill="#d9534f" stroke="#d9534f" points="139.02,-44.27 0,-44.27 0,-20 139.02,-20 139.02,-44.27"/>
+<text xml:space="preserve" text-anchor="middle" x="69.51" y="-28.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">watcher_t%watcher_run</text>
+</a>
+</g>
+</g>
+<!-- proc~watcher_run&#45;&gt;proc~handle_manifest_change -->
+<g id="proc~~boolean_watch_value~~CalledByGraph_edge7" class="edge">
+<title>proc~watcher_run&#45;&gt;proc~handle_manifest_change</title>
+<path fill="none" stroke="#ff0000" d="M139.32,-32.13C147.18,-32.13 155.26,-32.13 163.29,-32.13"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="163.06,-35.64 173.06,-32.14 163.06,-28.64 163.06,-35.64"/>
+</g>
+</g>
+</svg>
+</div>                <script>
+                  var panprocboolean_watch_valueCalledByGraph = svgPanZoom('#procboolean_watch_valueCalledByGraph',
+                    {zoomEnabled: true, controlIconsEnabled: true, fit: true, center: true,}
+                  );
+                </script>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#CalledByGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="CalledByGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 14.1.2 (20260126.1125)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="641pt" height="28pt"
+ viewBox="0.00 0.00 641.00 28.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.873868 0.873868) rotate(0) translate(4 28.27)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-28.27 729.52,-28.27 729.52,4 -4,4"/>
+<!-- Subroutine -->
+<g id="node1" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="69.27,-24.27 0,-24.27 0,0 69.27,0 69.27,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="34.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node2" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="143.89,-24.27 87.38,-24.27 87.38,0 143.89,0 143.89,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="115.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node3" class="node">
+<title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="221.39,-24.27 161.88,-24.27 161.88,0 221.39,0 221.39,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="191.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Type Bound Procedure -->
+<g id="node4" class="node">
+<title>Type Bound Procedure</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="368.27,-24.27 239,-24.27 239,0 368.27,0 368.27,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="303.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type Bound Procedure</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node5" class="node">
+<title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="529.39,-24.27 385.88,-24.27 385.88,0 529.39,0 529.39,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="457.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node6" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="603.89,-24.27 547.38,-24.27 547.38,0 603.89,0 603.89,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="575.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node7" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="725.52,-24.27 621.75,-24.27 621.75,0 725.52,0 725.52,-24.27"/>
+<text xml:space="preserve" text-anchor="middle" x="673.63" y="-8.53" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.
+</p>
+ Where possible, edges connecting nodes are
+given different colours to make them easier to distinguish in
+large graphs.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+
+
+    
+    
+
+    
+    
+
+
+
+    
+    <section>
+    <h2><span class="anchor" id="src"></span>Source Code</h2>
+    <div class="hl codehilite"><pre><span></span><span class="w">   </span><span class="kt">logical </span><span class="k">function </span><span class="n">boolean_watch_value</span><span class="p">(</span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="n">val</span><span class="p">,</span><span class="w"> </span><span class="n">has_value</span><span class="p">)</span><span class="w"> </span><span class="k">result</span><span class="p">(</span><span class="k">value</span><span class="p">)</span>
+<span class="w">      </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="n">val</span>
+<span class="w">      </span><span class="kt">logical</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">has_value</span>
+<span class="w">      </span><span class="kt">logical</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">ok</span>
+<span class="w">      </span><span class="k">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">true</span><span class="p">.</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="n">has_value</span><span class="p">)</span><span class="w"> </span><span class="k">return</span>
+<span class="k">      call </span><span class="n">parse_bool</span><span class="p">(</span><span class="n">val</span><span class="p">,</span><span class="w"> </span><span class="k">value</span><span class="p">,</span><span class="w"> </span><span class="n">ok</span><span class="p">)</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="n">ok</span><span class="p">)</span><span class="w"> </span><span class="k">call </span><span class="n">usage_and_stop</span><span class="p">(</span><span class="n">key</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="s2">" requires a boolean such as true or false"</span><span class="p">)</span>
+<span class="w">   </span><span class="k">end function </span><span class="n">boolean_watch_value</span>
+</pre></div>
+
+    </section>
+    <br>
+    
+    </div>
+  </div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              fpm-watch
+ was developed by Seyed Ali Ghasemi<br>              &copy; 2026 <a rel="license" href="https://opensource.org/licenses/MIT">MIT</a>
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+ on 2026-10-17T23:25:57.739691+0000             </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>

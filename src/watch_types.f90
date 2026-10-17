@@ -20,14 +20,13 @@ module watch_types
       !!
       !! - `-1`: quiet (errors and enabled output protocol)
       !! - `0`: normal
-      !! - `1..2`: more detail
+      !! - `1`: more detail
+      !! - `2`: watch paths and debug records
       integer :: verbosity = 0
       !> Output format: text (default), json (JSON Lines), or logfmt.
       character(len=:), allocatable :: log_format
       !> Executable used for build/test/run; defaults to `fpm` on PATH.
       character(len=:), allocatable :: fpm_executable
-      !> Enable debug-level records; quiet mode still suppresses them.
-      logical :: debug = .false.
       !> Seconds between polling scans; normalized to at least 0.05.
       real    :: poll = 0.5
       !> Seconds to wait after detecting a change before resampling.
@@ -36,8 +35,6 @@ module watch_types
       real    :: rescan = 0.0
       !> Run the command once immediately on startup.
       logical :: run_on_start = .true.
-      !> Request a startup file list; the logger additionally requires verbosity 2.
-      logical :: print_files_once = .false.
       !> Suppress both command output streams; watcher and model records remain separate.
       logical :: silent_fpm = .false.
       !> Bracket command stderr and force cycle events in structured logging only.
@@ -60,8 +57,6 @@ module watch_types
       real :: restart_delay = 1.0
       !> Maximum restarts after initial launch; zero means unlimited.
       integer :: restart_max = 0
-      !> Explicit supervisor child executable, otherwise resolved from argv/environment.
-      character(len=:), allocatable :: self_exe
    end type watch_opts_t
 
    !> Executable basename and one root bit used for affected-target selection.

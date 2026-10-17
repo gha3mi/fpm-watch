@@ -690,13 +690,11 @@ contains
       ok = starts_with(a, "--watch-")
    end function is_watch_flag
 
-   !> Consume one leading watcher flag and normalize its options.
+   !> Consume one leading watcher flag and validate every explicit value.
    !!
-   !! Required value options accept `=value` or advance `i` to the next token.
-   !! Boolean and verbosity values use `=value`; bare boolean flags enable the
-   !! setting. Numeric parse failures retain a fallback value. Supervisor flags
-   !! are consumed here but applied separately by `watch_restart`. Unknown flags
-   !! or invalid log formats exit with status 2.
+   !! Required values accept `=value` or the next token. Boolean and verbosity
+   !! values require `=`; bare booleans enable the setting. Removed spellings
+   !! fail with migration guidance instead of silently changing behavior.
    subroutine apply_watch_flag(a, i, narg, w)
       character(len=*), intent(in) :: a
       integer, intent(inout) :: i
@@ -705,99 +703,128 @@ contains
 
       character(len=:), allocatable :: key, val
       integer :: eq
+      logical :: has_value
 
       key = trim(a)
       val = ""
-
       eq = index(key, "=")
-      if (eq > 0) then
+      has_value = eq > 0
+      if (has_value) then
          val = key(eq+1:)
          key = key(1:eq-1)
       else if (watch_option_takes_value(a)) then
          if (i >= narg) call usage_and_stop(key // " requires a value")
+         val = get_arg(i+1)
+         if (starts_with(val, "--") .or. val == "-q" .or. val == "-v" .or. val == "-vv" .or. &
+             val == "-h") then
+            call usage_and_stop(key // " requires a value; use =VALUE for a literal option name")
+         end if
          i = i + 1
-         val = get_arg(i)
+         has_value = .true.
       end if
 
       select case (key)
        case ("--watch-child")
          w%is_child = .true.
-         w%restart_count = max(0, parse_int(val, 0))
+         w%restart_count = integer_watch_value(key, val, 0)
        case ("--watch-auto-restart")
-         w%auto_restart = parse_bool(val, .true.)
+         w%auto_restart = boolean_watch_value(key, val, has_value)
        case ("--watch-restart-delay")
-         w%restart_delay = parse_real(val, w%restart_delay)
+         w%restart_delay = real_watch_value(key, val)
        case ("--watch-restart-max")
-         w%restart_max = parse_int(val, w%restart_max)
-       case ("--watch-self")
-         w%self_exe = val
+         w%restart_max = integer_watch_value(key, val, 0)
        case ("--watch-fpm")
-         if (len_trim(val) == 0) call usage_and_stop("--watch-fpm requires an executable path or name")
+         if (len_trim(val) == 0) call usage_and_stop(key // " requires an executable path or name")
          w%fpm_executable = val
-
        case ("--watch-deps")
-         if (len_trim(val) > 0) then
-            w%watch_deps = parse_bool(val, .true.)
-         else
-            w%watch_deps = .true.
-         end if
-       case ("--watch-no-deps")
-         w%watch_deps = .false.
-
+         w%watch_deps = boolean_watch_value(key, val, has_value)
        case ("--watch-quiet")
+         if (has_value) call usage_and_stop(key // " does not accept a value")
          w%verbosity = -1
        case ("--watch-log-format")
-         if (.not. valid_log_format(val)) call usage_and_stop("--watch-log-format requires text, json, or logfmt")
+         if (.not. valid_log_format(val)) call usage_and_stop(key // " requires text, json, or logfmt")
          w%log_format = val
          call configure_logging(w)
        case ("--watch-verbose")
-         if (len_trim(val) > 0) then
-            w%verbosity = max(w%verbosity, parse_int(val, 1))
+         if (has_value) then
+            w%verbosity = max(w%verbosity, integer_watch_value(key, val, 0, 2))
          else
             w%verbosity = max(w%verbosity, 1)
          end if
-       case ("--watch-very-verbose")
-         w%verbosity = max(w%verbosity, 2)
-       case ("--watch-debug")
-         w%debug = parse_bool(val, .true.)
-       case ("--watch-print-files")
-         w%print_files_once = parse_bool(val, .true.)
-         if (w%print_files_once) w%verbosity = max(w%verbosity, 2)
        case ("--watch-silent-fpm")
-         w%silent_fpm = parse_bool(val, .true.)
+         w%silent_fpm = boolean_watch_value(key, val, has_value)
        case ("--watch-output-markers")
-         w%output_markers = parse_bool(val, .true.)
+         w%output_markers = boolean_watch_value(key, val, has_value)
        case ("--watch-run-on-start")
-         w%run_on_start = .true.
-       case ("--watch-no-run-on-start")
-         w%run_on_start = .false.
+         w%run_on_start = boolean_watch_value(key, val, has_value)
        case ("--watch-rescan")
-         w%rescan = parse_real(val, w%rescan)
-       case ("--watch-no-rescan")
-         w%rescan = 0.0
-       case ("--watch-ignore")
-         call push_feature(w%ignore, trim(val))
-       case ("--watch-include")
-         call push_feature(w%include, trim(val))
-       case ("--watch-poll")
-         w%poll = parse_real(val, w%poll)
-       case ("--watch-debounce")
-         w%debounce = parse_real(val, w%debounce)
-       case ("--watch-once")
-         if (len_trim(val) > 0) then
-            w%once = parse_bool(val, .true.)
+         w%rescan = real_watch_value(key, val)
+       case ("--watch-ignore", "--watch-include")
+         if (len_trim(val) == 0) call usage_and_stop(key // " requires a nonempty glob")
+         if (key == "--watch-ignore") then
+            call push_feature(w%ignore, val)
          else
-            w%once = .true.
+            call push_feature(w%include, val)
          end if
+       case ("--watch-poll")
+         w%poll = real_watch_value(key, val)
+       case ("--watch-debounce")
+         w%debounce = real_watch_value(key, val)
+       case ("--watch-once")
+         w%once = boolean_watch_value(key, val, has_value)
        case ("--watch-help")
+         if (has_value) call usage_and_stop(key // " does not accept a value")
          call usage_and_stop_ok()
+       case ("--watch-no-deps")
+         call usage_and_stop(key // " was removed; use --watch-deps=false")
+       case ("--watch-no-rescan")
+         call usage_and_stop(key // " was removed; use --watch-rescan=0")
+       case ("--watch-no-run-on-start")
+         call usage_and_stop(key // " was removed; use --watch-run-on-start=false")
+       case ("--watch-debug", "--watch-print-files", "--watch-very-verbose")
+         call usage_and_stop(key // " was removed; use --watch-verbose=2 or -vv")
+       case ("--watch-self")
+         call usage_and_stop(key // " was removed; the watcher executable is detected automatically")
        case default
          call usage_and_stop("unknown watch flag: " // trim(a))
       end select
 
       call normalize_watch_opts(w)
-
    end subroutine apply_watch_flag
+
+   !> Parse an optional boolean, treating only a bare flag as true.
+   logical function boolean_watch_value(key, val, has_value) result(value)
+      character(len=*), intent(in) :: key, val
+      logical, intent(in) :: has_value
+      logical :: ok
+      value = .true.
+      if (.not. has_value) return
+      call parse_bool(val, value, ok)
+      if (.not. ok) call usage_and_stop(key // " requires a boolean such as true or false")
+   end function boolean_watch_value
+
+   !> Parse an integer option and reject invalid syntax, overflow, or range.
+   integer function integer_watch_value(key, val, minimum, maximum) result(value)
+      character(len=*), intent(in) :: key, val
+      integer, intent(in) :: minimum
+      integer, intent(in), optional :: maximum
+      logical :: ok
+      call parse_int(val, value, ok)
+      if (.not. ok) call usage_and_stop(key // " requires one decimal integer")
+      if (value < minimum) call usage_and_stop(key // " must be nonnegative")
+      if (present(maximum)) then
+         if (value > maximum) call usage_and_stop(key // " requires an integer from 0 to 2")
+      end if
+   end function integer_watch_value
+
+   !> Parse a finite, nonnegative duration without list-directed fallbacks.
+   real function real_watch_value(key, val) result(value)
+      character(len=*), intent(in) :: key, val
+      logical :: ok
+      call parse_real(val, value, ok)
+      if (.not. ok) call usage_and_stop(key // " requires one finite number of seconds")
+      if (value < 0.0) call usage_and_stop(key // " must be nonnegative")
+   end function real_watch_value
 
    !> Print a usage message and terminate with a non-zero exit status.
    subroutine usage_and_stop(msg)
@@ -813,128 +840,56 @@ contains
       stop 0
    end subroutine usage_and_stop_ok
 
-   !> Print the `fpm-watch` help text.
-   !!
-   !! The help includes:
-   !! - Watcher options (`--watch-*`),
-   !! - Project configuration (`[extra.fpm-watch]`),
-   !! - Examples and behavioral notes.
+   !> Print the complete public option and manifest configuration reference.
    subroutine usage_print_only()
-      write(error_unit,"(a)") "fpm-watch — Smart file watcher plugin for fpm projects"
+      write(error_unit,"(a)") "fpm-watch [watch options] <build|test|run> [fpm options]"
+      write(error_unit,"(a)") "Everything after the subcommand is passed to fpm unchanged."
+      write(error_unit,"(a)") "Required values accept a space or =; optional values require =."
+      write(error_unit,"(a)") "Bare boolean flags enable; =false disables. Times are seconds."
       write(error_unit,"(a)") ""
-      write(error_unit,"(a)") "USAGE"
-      write(error_unit,"(a)") "  fpm-watch [watch options] <build|test|run> [fpm options]"
-      write(error_unit,"(a)") ""
-      write(error_unit,"(a)") "  Everything after <build|test|run> is passed to fpm unchanged."
-      write(error_unit,"(a)") ""
-
       write(error_unit,"(a)") "WATCH OPTIONS"
-      write(error_unit,"(a)") "  --watch-help"
-      write(error_unit,"(a)") "      Show this help and exit."
+      write(error_unit,"(a)") "  --watch-help | --help | -h       Show help."
+      write(error_unit,"(a)") "  --watch-deps[=BOOL]              Watch dependency sources (default: false)."
+      write(error_unit,"(a)") "  --watch-poll SEC                 Scan interval (default: 0.5; minimum: 0.05)."
+      write(error_unit,"(a)") "  --watch-debounce SEC             Resample delay after edits (default: 0.2)."
+      write(error_unit,"(a)") "  --watch-rescan SEC               Periodic graph refresh (default: 0, disabled)."
+      write(error_unit,"(a)") "  --watch-run-on-start[=BOOL]      Execute at startup (default: true)."
+      write(error_unit,"(a)") "  --watch-once[=BOOL]              Initialize, optionally run, and exit (default: false)."
+      write(error_unit,"(a)") "  --watch-include GLOB             Repeatable inclusion filter (default: all)."
+      write(error_unit,"(a)") "  --watch-ignore GLOB              Repeatable exclusion filter."
+      write(error_unit,"(a)") "  --watch-fpm PATH                 Command executable (default: fpm on PATH)."
+      write(error_unit,"(a)") "  --watch-silent-fpm[=BOOL]        Suppress command stdout/stderr (default: false)."
+      write(error_unit,"(a)") "  --watch-log-format FORMAT        text (default), json, or logfmt."
+      write(error_unit,"(a)") "  --watch-quiet | -q               Errors only, except enabled marker events."
+      write(error_unit,"(a)") "  --watch-verbose[=N] | -v | -vv   Raise verbosity: bare/-v=1; N=0..2; -vv=2."
+      write(error_unit,"(a)") "                                  Level 2 includes paths and debug records."
+      write(error_unit,"(a)") "  --watch-output-markers[=BOOL]    Frame command stderr in structured modes (default: false)."
+      write(error_unit,"(a)") "  --watch-auto-restart[=BOOL]      Supervise nonzero exits (default: false)."
+      write(error_unit,"(a)") "  --watch-restart-delay SEC        Delay before restarting (default: 1)."
+      write(error_unit,"(a)") "  --watch-restart-max N            Restarts after initial launch (default: 0, unlimited)."
       write(error_unit,"(a)") ""
-      write(error_unit,"(a)") "  --watch-quiet | -q"
-      write(error_unit,"(a)") "      Quiet mode (errors only)."
-      write(error_unit,"(a)") "  --watch-log-format <text|json|logfmt>"
-      write(error_unit,"(a)") "      Log format (default: text). Structured logs use stdout; fpm output uses stderr."
-      write(error_unit,"(a)") "  --watch-verbose[=N] | -v"
-      write(error_unit,"(a)") "      Increase verbosity. N: 0..2 (default: 1)."
-      write(error_unit,"(a)") "  --watch-very-verbose | -vv"
-      write(error_unit,"(a)") "      Same as verbosity=2 (prints watch list, more details)."
-      write(error_unit,"(a)") "  --watch-debug"
-      write(error_unit,"(a)") "      Extra debug logs. Use --watch-debug=false to disable a manifest setting."
-      write(error_unit,"(a)") ""
-
-      write(error_unit,"(a)") "  --watch-deps"
-      write(error_unit,"(a)") "      Also watch dependency source trees (including deps under build/)."
-      write(error_unit,"(a)") "  --watch-no-deps"
-      write(error_unit,"(a)") "      Disable dependency watching (default)."
-      write(error_unit,"(a)") ""
-
-      write(error_unit,"(a)") "  --watch-poll <sec>"
-      write(error_unit,"(a)") "      Poll interval for file checks. Default: 0.5"
-      write(error_unit,"(a)") "  --watch-debounce <sec>"
-      write(error_unit,"(a)") "      Wait after first change to coalesce edits. Default: 0.2"
-      write(error_unit,"(a)") "  --watch-rescan <sec>"
-      write(error_unit,"(a)") "      Rebuild the fpm model periodically (slow on big projects). Default: 0 (off)."
-      write(error_unit,"(a)") "  --watch-no-rescan"
-      write(error_unit,"(a)") "      Disable periodic rebuild (recommended)."
-      write(error_unit,"(a)") ""
-
-      write(error_unit,"(a)") "  --watch-run-on-start"
-      write(error_unit,"(a)") "      Run the command once immediately on startup. Default: on."
-      write(error_unit,"(a)") "  --watch-no-run-on-start"
-      write(error_unit,"(a)") "      Only run after a change is detected."
-      write(error_unit,"(a)") ""
-
-      write(error_unit,"(a)") "  --watch-silent-fpm"
-      write(error_unit,"(a)") "      Suppress fpm output; keep only fpm-watch status lines."
-      write(error_unit,"(a)") "      Use --watch-silent-fpm=false to override manifest suppression."
-      write(error_unit,"(a)") "  --watch-fpm <path>"
-      write(error_unit,"(a)") "      fpm executable to invoke (default: fpm on PATH)."
-      write(error_unit,"(a)") "  --watch-output-markers"
-      write(error_unit,"(a)") "      Frame raw stderr with cycle markers in structured logging mode (GUI integrations)."
-      write(error_unit,"(a)") "      Keep matching command events visible even in quiet mode."
-      write(error_unit,"(a)") "  --watch-print-files"
-      write(error_unit,"(a)") "      Print the watched file list at startup; --watch-print-files=false disables it."
-      write(error_unit,"(a)") ""
-
-      write(error_unit,"(a)") "  --watch-ignore <glob>"
-      write(error_unit,"(a)") "      Ignore files matching glob (repeatable)."
-      write(error_unit,"(a)") "  --watch-include <glob>"
-      write(error_unit,"(a)") "      Only watch files matching glob (repeatable). Empty means include all."
-      write(error_unit,"(a)") ""
-
-      write(error_unit,"(a)") "  --watch-auto-restart"
-      write(error_unit,"(a)") "      Restart on crashes; --watch-auto-restart=false disables a manifest setting."
-      write(error_unit,"(a)") "  --watch-restart-delay <sec>"
-      write(error_unit,"(a)") "      Delay before restart. Default: 1.0"
-      write(error_unit,"(a)") "  --watch-restart-max <N>"
-      write(error_unit,"(a)") "      Maximum restart attempts (0 = unlimited). Default: 0"
-      write(error_unit,"(a)") "  --watch-self <path>"
-      write(error_unit,"(a)") "      Explicit path to fpm-watch executable (advanced)."
-      write(error_unit,"(a)") ""
-
-      write(error_unit,"(a)") "  --watch-once"
-      write(error_unit,"(a)") "      Initialize (and optionally run once) then exit. Good for CI."
-      write(error_unit,"(a)") ""
-
-      write(error_unit,"(a)") "CONFIGURATION (fpm.toml)"
-      write(error_unit,"(a)") "  [extra.fpm-watch]  (same names as flags, without the --watch- prefix)"
-      write(error_unit,"(a)") "  poll         = 0.5"
-      write(error_unit,"(a)") "  debounce     = 0.2"
-      write(error_unit,"(a)") "  rescan       = 0.0"
+      write(error_unit,"(a)") "CONFIGURATION DEFAULTS (fpm.toml)"
+      write(error_unit,"(a)") "  [extra.fpm-watch]"
+      write(error_unit,"(a)") "  poll = 0.5"
+      write(error_unit,"(a)") "  debounce = 0.2"
+      write(error_unit,"(a)") "  rescan = 0.0"
       write(error_unit,"(a)") "  run-on-start = true"
-      write(error_unit,"(a)") "  silent-fpm   = false"
-      write(error_unit,"(a)") "  print-files  = false"
-      write(error_unit,"(a)") "  deps         = false"
-      write(error_unit,"(a)") "  auto-restart = false"
-      write(error_unit,"(a)") "  restart-delay= 1.0"
-      write(error_unit,"(a)") "  restart-max  = 0"
-      write(error_unit,"(a)") "  self         = """""
-      write(error_unit,"(a)") "  debug        = false"
-      write(error_unit,"(a)") "  verbosity    = 0"
-      write(error_unit,"(a)") '  log-format   = "text"'
+      write(error_unit,"(a)") "  once = false"
+      write(error_unit,"(a)") "  deps = false"
+      write(error_unit,"(a)") "  include = []"
+      write(error_unit,"(a)") "  ignore = []"
       write(error_unit,"(a)") '  fpm-executable = "fpm"'
+      write(error_unit,"(a)") "  silent-fpm = false"
+      write(error_unit,"(a)") '  log-format = "text"'
+      write(error_unit,"(a)") "  verbosity = 0"
       write(error_unit,"(a)") "  output-markers = false"
-      write(error_unit,"(a)") "  ignore       = []"
-      write(error_unit,"(a)") "  include      = []"
-      write(error_unit,"(a)") "  once         = false"
+      write(error_unit,"(a)") "  auto-restart = false"
+      write(error_unit,"(a)") "  restart-delay = 1.0"
+      write(error_unit,"(a)") "  restart-max = 0"
       write(error_unit,"(a)") ""
-
-      write(error_unit,"(a)") "EXAMPLES"
-      write(error_unit,"(a)") "  fpm-watch build"
-      write(error_unit,"(a)") "  fpm-watch test"
-      write(error_unit,"(a)") "  fpm-watch --watch-deps test -- --list"
-      write(error_unit,"(a)") "  fpm-watch --watch-auto-restart test"
-      write(error_unit,"(a)") ""
-
-      write(error_unit,"(a)") "NOTES"
-      write(error_unit,"(a)") "  fpm-watch ignores build/ to avoid infinite rebuild loops."
-      write(error_unit,"(a)") "  Enable deps only if you want dependency source changes to trigger runs."
-      write(error_unit,"(a)") "  Polling, debounce, and restart delays always use OS sleep to minimize idle CPU usage."
-      write(error_unit,"(a)") "  To quit, press Ctrl+C (or create an empty file named .fpm-watch.stop)."
-      write(error_unit,"(a)") ""
-
+      write(error_unit,"(a)") "CLI overrides scalars, appends unique filters, and raises verbosity."
+      write(error_unit,"(a)") "Ctrl+C interrupts commands; .fpm-watch.stop stops between commands or restarts."
+      write(error_unit,"(a)") "Examples: fpm-watch build; fpm-watch --watch-once test"
    end subroutine usage_print_only
 
    !> Copy parsed build and toolchain values into a typed fpm settings object.

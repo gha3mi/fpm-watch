@@ -89,7 +89,7 @@
 
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
-                 title=" 3.4% of total for procedures.">139 statements</a>
+                 title=" 3.1% of total for procedures.">131 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -156,7 +156,7 @@
     </div>
     
     <div class="col-md-9" id='text'>
-    <h2>public  subroutine read_graph_response(path, files, file_mask, roots, manifest_key, build_secs, secs_model, secs_targets, secs_watch, error)  
+    <h2>public  subroutine read_graph_response(path, files, file_mask, roots, build_secs, secs_model, secs_targets, secs_watch, error)  
 </h2>
     
 
@@ -176,7 +176,7 @@
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-path~21"></span>
+              <span class="anchor" id="variable-path~18"></span>
               character(len=*),
             </td>
 <td>intent(in)</td>
@@ -191,7 +191,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-files~15"></span>
+              <span class="anchor" id="variable-files~6"></span>
               type(string_t),
             </td>
 <td>intent(out),</td>
@@ -206,7 +206,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-file_mask~6"></span>
+              <span class="anchor" id="variable-file_mask~5"></span>
               integer(kind=int64),
             </td>
 <td>intent(out),</td>
@@ -236,22 +236,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-manifest_key~5"></span>
-              integer(kind=int64),
-            </td>
-<td>intent(out)</td>
-              <td></td>            <td>
-              
-            </td>
-            <td>::</td>
-            <td><strong>manifest_key</strong></td>
-            <td>
-                
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-build_secs~5"></span>
+              <span class="anchor" id="variable-build_secs~3"></span>
               real,
             </td>
 <td>intent(out)</td>
@@ -266,7 +251,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-secs_model~6"></span>
+              <span class="anchor" id="variable-secs_model~3"></span>
               real,
             </td>
 <td>intent(out)</td>
@@ -281,7 +266,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-secs_targets~6"></span>
+              <span class="anchor" id="variable-secs_targets~3"></span>
               real,
             </td>
 <td>intent(out)</td>
@@ -296,7 +281,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-secs_watch~6"></span>
+              <span class="anchor" id="variable-secs_watch~3"></span>
               real,
             </td>
 <td>intent(out)</td>
@@ -311,7 +296,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-error~28"></span>
+              <span class="anchor" id="variable-error~16"></span>
               type(error_t),
             </td>
 <td>intent(out),</td>
@@ -709,13 +694,12 @@ large graphs.</div>
     
     <section>
     <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="hl codehilite"><pre><span></span><span class="w">   </span><span class="k">subroutine </span><span class="n">read_graph_response</span><span class="p">(</span><span class="n">path</span><span class="p">,</span><span class="w"> </span><span class="n">files</span><span class="p">,</span><span class="w"> </span><span class="n">file_mask</span><span class="p">,</span><span class="w"> </span><span class="n">roots</span><span class="p">,</span><span class="w"> </span><span class="n">manifest_key</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span>
+    <div class="hl codehilite"><pre><span></span><span class="w">   </span><span class="k">subroutine </span><span class="n">read_graph_response</span><span class="p">(</span><span class="n">path</span><span class="p">,</span><span class="w"> </span><span class="n">files</span><span class="p">,</span><span class="w"> </span><span class="n">file_mask</span><span class="p">,</span><span class="w"> </span><span class="n">roots</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span>
 <span class="w">                                  </span><span class="n">build_secs</span><span class="p">,</span><span class="w"> </span><span class="n">secs_model</span><span class="p">,</span><span class="w"> </span><span class="n">secs_targets</span><span class="p">,</span><span class="w"> </span><span class="n">secs_watch</span><span class="p">,</span><span class="w"> </span><span class="n">error</span><span class="p">)</span>
 <span class="w">      </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">path</span>
 <span class="w">      </span><span class="k">type</span><span class="p">(</span><span class="n">string_t</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">files</span><span class="p">(:)</span>
 <span class="w">      </span><span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">file_mask</span><span class="p">(:)</span>
 <span class="w">      </span><span class="k">type</span><span class="p">(</span><span class="n">root_info_t</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">roots</span><span class="p">(:)</span>
-<span class="w">      </span><span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">manifest_key</span>
 <span class="w">      </span><span class="kt">real</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">build_secs</span><span class="p">,</span><span class="w"> </span><span class="n">secs_model</span><span class="p">,</span><span class="w"> </span><span class="n">secs_targets</span><span class="p">,</span><span class="w"> </span><span class="n">secs_watch</span>
 <span class="w">      </span><span class="k">type</span><span class="p">(</span><span class="n">error_t</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">error</span>
 <span class="w">      </span><span class="k">type</span><span class="p">(</span><span class="n">toml_table</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">table</span>
@@ -727,11 +711,10 @@ large graphs.</div>
 <span class="w">      </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">encoded</span><span class="p">,</span><span class="w"> </span><span class="n">decoded</span>
 <span class="w">      </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">512</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">message</span>
 <span class="w">      </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">unit</span><span class="p">,</span><span class="w"> </span><span class="n">status</span><span class="p">,</span><span class="w"> </span><span class="n">version</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">nfiles</span><span class="p">,</span><span class="w"> </span><span class="n">nroots</span>
-<span class="w">      </span><span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="n">allowed_mask</span>
+<span class="w">      </span><span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">allowed_mask</span>
 <span class="w">      </span><span class="kt">real</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">timings</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
 <span class="w">      </span><span class="kt">logical</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">success</span><span class="p">,</span><span class="w"> </span><span class="n">valid</span>
 
-<span class="w">      </span><span class="n">manifest_key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0_int64</span>
 <span class="w">      </span><span class="n">build_secs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span>
 <span class="w">      </span><span class="n">secs_model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span>
 <span class="w">      </span><span class="n">secs_targets</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span>
@@ -778,11 +761,6 @@ large graphs.</div>
 <span class="k">            call </span><span class="n">fatal_error</span><span class="p">(</span><span class="n">error</span><span class="p">,</span><span class="w"> </span><span class="n">decoded</span><span class="p">)</span>
 <span class="w">         </span><span class="k">end if</span>
 <span class="k">         return</span>
-<span class="k">      end if</span>
-<span class="k">      call </span><span class="n">get_value</span><span class="p">(</span><span class="n">table</span><span class="p">,</span><span class="w"> </span><span class="s2">"manifest-key"</span><span class="p">,</span><span class="w"> </span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="nb">stat</span><span class="o">=</span><span class="n">status</span><span class="p">)</span>
-<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">status</span><span class="w"> </span><span class="o">/=</span><span class="w"> </span><span class="n">toml_stat</span><span class="p">%</span><span class="n">success</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">         call </span><span class="n">invalid_response</span><span class="p">(</span><span class="n">error</span><span class="p">,</span><span class="w"> </span><span class="s2">"missing manifest key"</span><span class="p">)</span>
-<span class="w">         </span><span class="k">return</span>
 <span class="k">      end if</span>
 <span class="k">      call </span><span class="n">get_value</span><span class="p">(</span><span class="n">table</span><span class="p">,</span><span class="w"> </span><span class="s2">"files"</span><span class="p">,</span><span class="w"> </span><span class="n">paths</span><span class="p">,</span><span class="w"> </span><span class="n">requested</span><span class="o">=</span><span class="p">.</span><span class="n">false</span><span class="p">.)</span>
 <span class="w">      </span><span class="k">call </span><span class="n">get_value</span><span class="p">(</span><span class="n">table</span><span class="p">,</span><span class="w"> </span><span class="s2">"file-masks"</span><span class="p">,</span><span class="w"> </span><span class="n">masks</span><span class="p">,</span><span class="w"> </span><span class="n">requested</span><span class="o">=</span><span class="p">.</span><span class="n">false</span><span class="p">.)</span>
@@ -845,7 +823,6 @@ large graphs.</div>
 <span class="k">      call </span><span class="nb">move_alloc</span><span class="p">(</span><span class="n">candidate_files</span><span class="p">,</span><span class="w"> </span><span class="n">files</span><span class="p">)</span>
 <span class="w">      </span><span class="k">call </span><span class="nb">move_alloc</span><span class="p">(</span><span class="n">candidate_masks</span><span class="p">,</span><span class="w"> </span><span class="n">file_mask</span><span class="p">)</span>
 <span class="w">      </span><span class="k">call </span><span class="nb">move_alloc</span><span class="p">(</span><span class="n">candidate_roots</span><span class="p">,</span><span class="w"> </span><span class="n">roots</span><span class="p">)</span>
-<span class="w">      </span><span class="n">manifest_key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">key</span>
 <span class="w">      </span><span class="n">build_secs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">timings</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 <span class="w">      </span><span class="n">secs_model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">timings</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 <span class="w">      </span><span class="n">secs_targets</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">timings</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
@@ -874,7 +851,7 @@ large graphs.</div>
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2026-10-17T22:38:02.293968+0000             </p>
+ on 2026-10-17T23:25:57.739691+0000             </p>
           </div>
         </div>
         <br>
