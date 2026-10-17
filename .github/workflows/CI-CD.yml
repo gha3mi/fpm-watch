@@ -48,6 +48,9 @@ jobs:
       - name: fpm build (release)
         run: fpm build --compiler ${{ env.FPM_FC }} --profile ${{ matrix.release_profile || 'release' }} --verbose
 
+      - name: fpm test (release)
+        run: fpm test --compiler ${{ env.FPM_FC }} --profile ${{ matrix.release_profile || 'release' }}
+
       - name: install fpm-watch
         run: fpm install --compiler ${{ env.FPM_FC }} --profile ${{ matrix.release_profile || 'release' }} --prefix .
 

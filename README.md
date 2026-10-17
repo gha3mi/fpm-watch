@@ -5,15 +5,13 @@
 [![CI](https://github.com/gha3mi/fpm-watch/actions/workflows/CI-CD.yml/badge.svg?branch=main)](https://github.com/gha3mi/fpm-watch/actions/workflows/CI-CD.yml)
 [![License](https://img.shields.io/github/license/gha3mi/fpm-watch?color=green)](LICENSE)
 
-`fpm-watch` reruns `fpm build`, `fpm test`, or `fpm run` when relevant files
-change. It uses fpm's dependency model to select files and affected targets.
-Polling uses OS sleep between scans; dependency watching and a restart supervisor
-are optional.
+`fpm-watch` reruns `fpm build|test|run` when relevant files change, using fpm's
+dependency model to select files and affected targets. Polling sleeps between scans.
 
 ## Installation
 
-Use fpm 0.13.0, a Fortran compiler, and a C compiler. The fpm library dependency is
-pinned to 0.13.0 in [fpm.toml](fpm.toml).
+Requires fpm 0.13.0, a Fortran compiler, and a C compiler. The library dependency
+is pinned to fpm 0.13.0 in [fpm.toml](fpm.toml).
 
 ```bash
 git clone https://github.com/gha3mi/fpm-watch.git
@@ -29,61 +27,47 @@ Put both `fpm` and the installed `fpm-watch` executable on `PATH`.
 fpm-watch [watch options] <build|test|run> [fpm arguments...]
 ```
 
-Run from an fpm project, or select one with fpm's `--directory`/`-C` option:
-
 ```bash
 fpm-watch build
 fpm-watch test
 fpm-watch run first -- input.dat
 fpm-watch --watch-deps run --example my_example
-fpm-watch run --directory path/to/project
+fpm-watch run -C path/to/project
 ```
 
-Place watcher options **before** the subcommand. Everything after it is forwarded
-to fpm; use fpm's `--` delimiter for application arguments. Explicit target names,
-`--target first,second`, and `--all` retain fpm's selection.
+Run inside an fpm project or select one with `--directory`/`-C`. Watcher options
+go **before** the subcommand; everything after it is forwarded to fpm. Use `--`
+before application arguments.
 
-### Watching and target selection
+### Behavior
 
-The command runs at startup by default. After that, the watcher polls known paths,
-waits for the debounce interval after detecting an edit, and checks again.
-Commands run synchronously: polling pauses while fpm runs, and subsequent scans
-detect edits made during that run.
+The command runs at startup by default, then after debounced changes. Commands run
+synchronously; polling pauses during execution and detects intervening edits afterward.
 
-The watch list contains relevant sources, nested Fortran/CPP includes, quoted C
-headers, manifests, manifest version files, and response-file lookup candidates.
-Build mode watches project sources from fpm's model. Run/test mode watches the
-selected targets' dependency closures. `--watch-deps` includes dependency projects.
+Build mode watches project sources; run/test watches selected targets' dependency
+closures. Relevant includes, quoted C headers, manifests, version files, and
+response-file candidates are included. `--watch-deps` adds dependency projects.
 
-For unpinned run/test commands with 1–64 targets, source edits normally run only
-affected targets. The original command runs when metadata changes, target/path
-membership changes, or affected-target mapping is unavailable. Explicit user
-selections remain part of that original command.
+With 1–64 targets and no explicit selection, source edits normally run only
+affected targets. Metadata or graph membership changes, or unavailable mapping,
+run the original command. Explicit target names, `--target`, and `--all` are preserved.
 
-Source/include edits refresh the graph before execution. If that refresh fails,
-the previous watch list is retained and the original command runs so fpm can
-report the failure. Manifest/response edits also reparse settings; if that
-configuration refresh fails, execution waits until a later edit or rescan succeeds.
+Source/include edits refresh the graph; failure retains the previous list and
+runs the original command. Invalid manifest/response settings pause execution
+until a later edit or rescan succeeds.
 
-New sources are discovered during graph refreshes. Use
-`fpm-watch --watch-rescan 2 test` to discover additions without another watched
-path changing. Rescans are disabled by default. Small poll intervals and frequent
-rescans increase work; each polling scan hashes complete file contents.
+New files appear on graph refresh. Enable periodic discovery with `--watch-rescan 2`
+(disabled by default). Scans hash complete file contents; shorter intervals cost more CPU.
 
-### Stopping and supervision
+**Stop:** Ctrl+C stops the watcher and interrupts an active command. Creating
+`.fpm-watch.stop` in the project stops between commands; remove it before the
+next session. It does not prevent enabled startup execution.
 
-Press **Ctrl+C** to stop the watcher and interrupt an active command. Alternatively,
-create `.fpm-watch.stop` in the selected project directory. The stop file is checked
-between commands; it does not interrupt an active command. Remove it before the
-next session. Startup execution still occurs if run-on-start is enabled.
-
-`--watch-auto-restart` restarts a watcher after a nonzero exit. Continuous watching
-continues after fpm failures. In one-shot mode, fpm failure becomes the watcher's
-exit status and can trigger a restart. User interruption ends supervision.
+**Supervision:** `--watch-auto-restart` restarts nonzero watcher exits. Continuous
+watching survives fpm failures; `--watch-once` propagates them. User interruption
+ends supervision.
 
 ### Response files
-
-Use a named options-only fpm response file:
 
 ```text
 # dev.rsp
@@ -91,65 +75,56 @@ options run
 options --profile release
 ```
 
-Run it with `fpm-watch run @dev`. `@dev` searches for `dev.rsp` in the current
-directory and `CLI_RESPONSE_PATH`. Use `@./config/dev.rsp` for an exact path.
-Options, quoting, and named-file OS sections follow fpm's parser. Include an
-`options build`, `options test`, or `options run` record; it may override the
-command-line subcommand. Comments and OS section headers are allowed.
+Run `fpm-watch run @dev` to load `dev.rsp` from the current directory or `CLI_RESPONSE_PATH`.
+Use `@./config/dev.rsp` for an exact path. Include `options build|test|run`; it can
+override the CLI subcommand. Comments, quoting, and OS sections follow fpm's parser.
 
-Response files and lookup candidates are watched, including missing candidates
-whose creation could change lookup. Procedural records such as
-`system`/`print`/`stop` and executable-specific compound response files are
-unsupported. When response parsing is active, other raw `@` arguments, even
-after `--`, must also resolve to options-only response files.
+Only options-only files are supported: no `system`/`print`/`stop` or compound
+executable responses. Once response parsing is active, every raw `@` argument,
+including those after `--`, must resolve to such a file. Lookup candidates are watched.
 
-### fpm cache limitation
+### Known fpm limitations
 
-In fpm 0.13.0, some include-only edits can leave cached objects unchanged even
-though the watcher reruns the command. For the default build directory,
-`fpm clean --skip` forces recompilation on the next build while retaining
-downloaded dependencies.
+With fpm 0.13.0, some include-only edits leave cached objects unchanged. For the
+default build directory, `fpm clean --skip` forces recompilation while retaining dependencies.
+Intel ifx can also crash inside fpm when scanning an empty source directory; this remains unresolved.
 
 ## Watch options
 
-Value options accept `--watch-option VALUE` or `--watch-option=VALUE`.
-Optional boolean and verbosity values require `=`: a bare boolean flag enables
-the setting, and `=false` disables it. All times are seconds.
+Values accept `--watch-option VALUE` or `=VALUE`. Optional boolean/verbosity values
+require `=`; bare booleans enable, `=false` disables. All times are seconds.
 
 | Option | Effect |
 | --- | --- |
-| `--help`, `-h`, `--watch-help` | Show help and exit. |
-| `--watch-deps[=BOOL]`, `--watch-no-deps` | Enable or disable dependency watching. |
-| `--watch-poll SEC` | Poll interval; minimum 0.05. |
-| `--watch-debounce SEC` | Delay after detecting an edit before resampling. |
-| `--watch-rescan SEC`, `--watch-no-rescan` | Periodic graph refresh; 0 disables it. |
-| `--watch-run-on-start`, `--watch-no-run-on-start` | Enable or disable startup execution. |
-| `--watch-once[=BOOL]` | Initialize and optionally run once; propagate fpm's status, or exit 0 after successful initialization without a run. |
-| `--watch-include GLOB`, `--watch-ignore GLOB` | Repeatable include/ignore filters. |
-| `--watch-fpm PATH` | fpm executable path or name. |
-| `--watch-silent-fpm[=BOOL]` | Suppress both command output streams. |
+| `--help`, `-h`, `--watch-help` | Show help. |
+| `--watch-deps[=BOOL]`, `--watch-no-deps` | Watch dependency projects. |
+| `--watch-poll SEC` | Scan interval; minimum 0.05. |
+| `--watch-debounce SEC` | Delay before resampling an edit. |
+| `--watch-rescan SEC`, `--watch-no-rescan` | Periodic graph refresh; 0 disables. |
+| `--watch-run-on-start`, `--watch-no-run-on-start` | Control startup execution. |
+| `--watch-once[=BOOL]` | Initialize, optionally execute once, return fpm's status (0 without a run). |
+| `--watch-include GLOB`, `--watch-ignore GLOB` | Repeatable path filters. |
+| `--watch-fpm PATH` | fpm executable. |
+| `--watch-silent-fpm[=BOOL]` | Suppress command stdout/stderr. |
 | `--watch-log-format FORMAT` | `text`, `json`, or `logfmt`. |
-| `--watch-quiet`, `-q` | Watcher errors only, except forced output-marker events. |
-| `--watch-verbose[=N]`, `-v` | Raise verbosity to N; default 1, maximum 2. |
-| `--watch-very-verbose`, `-vv` | Raise verbosity to 2; list paths after refreshes. |
-| `--watch-print-files[=BOOL]` | List up to 200 startup paths; enabling the CLI flag raises verbosity to 2. |
-| `--watch-debug[=BOOL]` | Enable debug records unless quiet mode suppresses them. |
-| `--watch-output-markers[=BOOL]` | Add command-output markers in structured logging modes. |
-| `--watch-auto-restart[=BOOL]` | Enable or disable supervision. |
-| `--watch-restart-delay SEC` | Delay before a supervisor restart. |
-| `--watch-restart-max N` | Maximum restarts after the initial launch; 0 means unlimited. |
-| `--watch-self PATH` | Watcher executable used by the supervisor; normally auto-detected. |
+| `--watch-quiet`, `-q` | Watcher errors only; markers retain command events. |
+| `--watch-verbose[=N]`, `-v` | Raise verbosity; default 1, maximum 2. |
+| `--watch-very-verbose`, `-vv` | Verbosity 2; list paths after refreshes. |
+| `--watch-print-files[=BOOL]` | Up to 200 startup paths; CLI enables verbosity 2. |
+| `--watch-debug[=BOOL]` | Debug records unless quiet. |
+| `--watch-output-markers[=BOOL]` | Frame command output in structured modes. |
+| `--watch-auto-restart[=BOOL]` | Supervise watcher exits. |
+| `--watch-restart-delay SEC` | Delay before restarting. |
+| `--watch-restart-max N` | Restarts after initial launch; 0 = unlimited. |
+| `--watch-self PATH` | Supervisor child executable; auto-detected by default. |
 
-Quote glob arguments against shell expansion. Patterns match watched paths
-normalized to `/` separators; use `--watch-print-files` to inspect them. An empty
-include list admits all eligible paths; otherwise, at least one include pattern
-must match. Ignore matches exclude paths. Manifests, version metadata, and
-response-file candidates bypass these filters.
+Quote globs; paths use `/` separators. Nonempty include lists require a match;
+ignore matches exclude paths. Manifests, version metadata, and response candidates
+bypass filters. Use `--watch-print-files` to inspect paths.
 
 ## Configuration
 
-Add `[extra.fpm-watch]` to the selected project's `fpm.toml`. The following values
-are the built-in defaults:
+Add `[extra.fpm-watch]` to the project's `fpm.toml`. Defaults:
 
 ```toml
 [extra.fpm-watch]
@@ -174,58 +149,28 @@ ignore         = []
 include        = []
 ```
 
-Leading CLI flags override manifest settings. Include/ignore flags append unique
-entries, and verbosity flags raise rather than replace the current level.
-`verbosity=-1` selects quiet mode. For a startup path list configured only in the
-manifest, set both `print-files=true` and `verbosity=2`.
-
-Negative debounce, rescan, and restart delays become 0. The poll interval is
-clamped to at least 0.05. The log format stays fixed across configuration refreshes
-and supervisor restarts; restart the whole watcher session to change it.
+CLI overrides settings; include/ignore flags append unique entries, and verbosity
+flags raise the level. `verbosity=-1` means quiet. Manifest-only startup listings
+need `print-files=true` and `verbosity=2`. Negative delays/rescan become 0;
+poll is at least 0.05. Log format stays fixed for the watcher session.
 
 ## Logging and integrations
 
-Text logs have timestamps and no ANSI colors; errors use stderr. Quiet mode
-controls watcher records, while `--watch-silent-fpm` controls command output.
-
-In JSON Lines or logfmt mode, watcher records, including errors, use stdout.
-Raw fpm/model output and compiler/runtime diagnostics use stderr. Keep the streams
-separate:
+Text errors use stderr. JSON Lines/logfmt records use stdout; raw fpm/model and
+compiler/runtime output uses stderr:
 
 ```bash
 fpm-watch --watch-log-format=json build > watch.jsonl 2> fpm.log
-fpm-watch --watch-log-format=logfmt test > watch.log 2> fpm.log
 ```
 
-Records contain `timestamp` (RFC 3339), `level`, `event`, and `message` (JSON) or
-`msg` (logfmt), and are flushed immediately. JSON attributes retain their types;
-logfmt arrays are quoted JSON.
+Records contain `timestamp`, `level`, `event`, and `message` (`msg` in logfmt).
+Correlate `command.started`/`command.finished` by session-scoped `cycle_id`;
+completion includes `exit_code`, `duration_ms`, and `interrupted`.
+In structured modes, `--watch-output-markers` brackets stderr with `@@fpm-watch:started:ID@@` and
+`@@fpm-watch:finished:ID@@`, retaining both events even when quiet. Match IDs
+rather than relying on stdout/stderr delivery order.
 
-Correlate `command.started` and `command.finished` with `cycle_id`. Completion
-includes `exit_code`, `duration_ms`, and `interrupted`. Treat IDs as opaque and
-scope them to one watcher session. At verbosity 1, `watch.configuration` reports
-effective settings at startup and after successful refreshes.
-
-To frame each command's raw output, enable markers:
-
-```bash
-fpm-watch --watch-log-format=json --watch-output-markers build
-```
-
-Stderr receives `@@fpm-watch:started:ID@@` and `@@fpm-watch:finished:ID@@`
-around command output. The ID matches `cycle_id`. With markers enabled, both
-command events remain visible even in quiet mode. Stdout and stderr delivery order
-can differ; integrations should correlate by ID.
-
-## Bash completion
-
-From this repository, install and load the completion script:
-
-```bash
-mkdir -p ~/.local/share/bash-completion/completions
-cp completion.bash ~/.local/share/bash-completion/completions/fpm-watch
-source ~/.local/share/bash-completion/completions/fpm-watch
-```
+For Bash completion, run `source ./completion.bash` from this repository.
 
 ## Development
 
@@ -241,34 +186,15 @@ python test/platform_regression.py ./bin/fpm-watch
 python test/release_regression.py
 ```
 
-On Windows, use `.\bin\fpm-watch.exe` for direct execution and
-`--watcher ./bin/fpm-watch.exe` for the Python suites that accept `--watcher`.
-The platform suite takes the executable as a positional argument. The checks need
-Python 3.9+ and use its standard library and temporary projects. Release tests require
-Bash and jq and are skipped on Windows.
-
-Optional local checks:
-
-```bash
-fortitude check
-ford README.md
-```
-
-Documentation uses FORD only and is written to `doc/`. CI builds with gfortran
-on Linux/macOS/Windows and ifx on Linux. The macOS job uses the GNU `ci-release`
-profile (`-O1`); other release jobs use `release`, and tests use `debug`.
-
-### Release helper
-
-The package reads its version from `VERSION`. `release.sh` uses the previous
-release tag as its baseline, or `VERSION` when there are no tags. Patch changes
-promote a prerelease to its stable core (`v1.2.3-rc.1` → `v1.2.3`); feature
-and breaking changes advance the minor and major versions. Invalid baseline
-versions fail before files are modified.
+On Windows, replace `./bin/fpm-watch` with `.\bin\fpm-watch.exe`. Python tests need 3.9+;
+release tests also need Bash/jq and are skipped on Windows.
+Optional checks: `fortitude check`; `ford README.md` generates FORD docs in `doc/`.
+CI targets GNU on Linux/macOS/Windows and Intel ifx on Linux. macOS uses the
+optimized GNU `ci-release` profile (`-O1`); other release jobs use `release`.
 
 ### CI status
 
-This block is maintained by CI.
+Generated by CI for `main`.
 
 <!-- STATUS:setup-fortran-conda:START -->
 

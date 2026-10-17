@@ -153,6 +153,7 @@ program graph_check
    call check_source_closures()
    call check_shared_includes()
    call check_global_metadata_overlap()
+   call check_empty_library_graph()
 
    call change_directory(initial_directory, error)
    call check_error()
@@ -489,6 +490,47 @@ contains
       call expect_file("nested.inc", .false.)
       deallocate(options%include, options%ignore)
    end subroutine check_global_metadata_overlap
+
+   !> Rebuild a two-program graph whose default library directory contains no sources.
+   subroutine check_empty_library_graph()
+      type(fpm_run_settings) :: empty_settings
+      type(watch_opts_t) :: empty_options
+      character(len=:), allocatable :: fixture
+      integer :: pass, first_index, second_index
+
+      fixture = join_path(initial_directory, "build/watch-graph-tests/empty-library")
+      call mkdir(join_path(fixture, "src"), echo=.false.)
+      call mkdir(join_path(fixture, "app"), echo=.false.)
+      call change_directory(fixture, error)
+      call check_error()
+      call write_lines("fpm.toml", [character(len=60) :: 'name = "empty_library_graph"', 'version = "0.1.0"'])
+      call write_lines("app/first.f90", [character(len=60) :: &
+         "program first", "implicit none", "print *, 1", "end program first"])
+      call write_lines("app/second.f90", [character(len=60) :: &
+         "program second", "implicit none", "print *, 2", "end program second"])
+      empty_settings%fpm_build_settings = settings%fpm_build_settings
+      empty_settings%example = .false.
+      allocate(empty_settings%name(0))
+      empty_options%verbosity = -1
+
+      do pass = 1, 2
+         call compute_watch_files_from_settings(empty_settings, empty_options, files, masks, roots, &
+            manifest_key, build_secs, model_secs, target_secs, watch_secs, error)
+         call check_error()
+         call expect_file("app/first.f90", .true.)
+         call expect_file("app/second.f90", .true.)
+         call expect_mask("fpm.toml", 0_int64)
+         if (size(roots) /= 2) error stop "empty-library graph did not retain both programs"
+         first_index = find_file("app/first.f90")
+         second_index = find_file("app/second.f90")
+         if (popcnt(masks(first_index)) /= 1 .or. popcnt(masks(second_index)) /= 1) then
+            error stop "empty-library graph lost program root membership"
+         end if
+         if (iand(masks(first_index), masks(second_index)) /= 0_int64) then
+            error stop "independent empty-library programs share a root mask"
+         end if
+      end do
+   end subroutine check_empty_library_graph
 
    !> Verify that a watched path retains exactly the expected root membership.
    subroutine expect_mask(path, expected)
