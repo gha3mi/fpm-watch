@@ -14,7 +14,11 @@ program test_cmdline
    type(string_t), allocatable :: values(:)
    type(watch_config_t) :: cfg
    character(len=:), allocatable :: mode, cmd, actual, expected, prefix, rest, runner
-   integer :: i, code
+   integer :: i, code, number
+   real :: seconds
+   logical :: ok, enabled
+   character(len=24), parameter :: invalid_numbers(*) = [character(len=24) :: &
+      "", "/", ",", "1,2", "1 2", "2*3", "NaN", "Infinity", "+", ".", "1e", "1e+", "1/", "1;2"]
 
    values = [string_t(""), string_t(" "), string_t("tail  "), string_t("*.toml"), &
       string_t("hello;true"), string_t("cash$USER"), string_t("single'quote"), string_t('double"quote'), &
@@ -39,6 +43,15 @@ program test_cmdline
             expected = expected // quote_arg(values(i)%s)
          end do
          call require(join_argv(2, command_argument_count()) == expected, "joined argv preserves all tokens")
+      else if (mode == "--parse-watch") then
+         call parse_cli_config(cfg, start_arg=2)
+         call require(.not. cfg%w%run_on_start, "explicit false startup setting")
+         call require(.not. cfg%w%watch_deps, "explicit false dependency setting")
+         call require(cfg%w%verbosity == 2, "verbosity 2 replaces diagnostic options")
+         call require(cfg%w%restart_max == 3, "strict nonnegative restart limit")
+         call require(abs(cfg%w%poll - 0.125) < 1.0e-6, "scientific duration value")
+         call require(size(cfg%w%ignore) == 1, "space-valued command-name glob retained")
+         call require(cfg%w%ignore(1)%s == "run", "command-name glob is not a subcommand")
       else if (mode == "--watch-fpm" .or. mode == "--watch-fpm=custom fpm") then
          call parse_cli_config(cfg)
          call require(cfg%w%fpm_executable == "custom fpm", "custom executable preserved")
@@ -78,13 +91,32 @@ program test_cmdline
    end if
    call require(watch_option_takes_value("--watch-ignore"), "watch option consumes value")
    call require(.not. watch_option_takes_value("--watch-ignore=run"), "equals-style watch option arity")
-   call require(parse_bool(" YES ", .false.), "case-insensitive true value")
-   call require(.not. parse_bool("OFF", .true.), "case-insensitive false value")
-   call require(parse_bool("invalid", .true.), "invalid boolean uses fallback")
-   call require(parse_int("/", 17) == 17, "slash integer retains fallback")
-   call require(parse_int(",", 17) == 17, "null integer retains fallback")
-   call require(parse_real("/", 17.0) == 17.0, "slash real retains fallback")
-   call require(parse_real(",", 17.0) == 17.0, "null real retains fallback")
+   call parse_bool(" YES ", enabled, ok)
+   call require(ok .and. enabled, "case-insensitive true value")
+   call parse_bool("OFF", enabled, ok)
+   call require(ok .and. .not. enabled, "case-insensitive false value")
+   call parse_bool("invalid", enabled, ok)
+   call require(.not. ok, "invalid boolean rejected")
+   call parse_bool("", enabled, ok)
+   call require(.not. ok, "explicit empty boolean rejected")
+   call parse_bool("true,false", enabled, ok)
+   call require(.not. ok, "multiple boolean values rejected")
+   call parse_int(" +12 ", number, ok)
+   call require(ok .and. number == 12, "signed integer accepted")
+   call parse_int("999999999999999999999999", number, ok)
+   call require(.not. ok, "integer overflow rejected")
+   call parse_int("1.0", number, ok)
+   call require(.not. ok, "integer rejects real syntax")
+   call parse_real(" +.125D+1 ", seconds, ok)
+   call require(ok .and. abs(seconds - 1.25) < 1.0e-6, "decimal and exponent real accepted")
+   call parse_real("1e9999", seconds, ok)
+   call require(.not. ok, "real overflow rejected")
+   do i = 1, size(invalid_numbers)
+      call parse_int(trim(invalid_numbers(i)), number, ok)
+      call require(.not. ok, "invalid integer rejected: " // trim(invalid_numbers(i)))
+      call parse_real(trim(invalid_numbers(i)), seconds, ok)
+      call require(.not. ok, "invalid real rejected: " // trim(invalid_numbers(i)))
+   end do
 
    cmd = quote_arg(get_arg(0)) // " --check-argv"
    do i = 1, size(values)
@@ -105,6 +137,10 @@ program test_cmdline
    cmd = quote_arg(get_arg(0)) // " " // quote_arg("--watch-fpm=custom fpm") // &
       " --watch-silent-fpm --watch-silent-fpm=false run --profile=release"
    call run_child(cmd, "equals-style custom executable")
+
+   cmd = quote_arg(get_arg(0)) // " --parse-watch --watch-run-on-start=false --watch-deps=false" // &
+      " --watch-verbose=2 --watch-restart-max=3 --watch-poll=1.25e-1 --watch-ignore run build"
+   call run_child(cmd, "consolidated watcher options")
 
    runner = quote_arg("echo -- marker")
    rest = quote_arg("--runner") // " " // runner

@@ -46,7 +46,7 @@ to fpm. Use `-C path/to/project` after the subcommand to select another project.
 - New files appear on graph refresh; `--watch-rescan 2` enables periodic discovery
   (default: off). Scans hash whole files; shorter intervals cost more CPU.
 - Ctrl+C stops the watcher and interrupts commands. `.fpm-watch.stop` stops between
-  commands, after enabled startup execution; remove it before restarting.
+  commands and supervisor retries; remove it before restarting.
 - Continuous watching survives fpm failures; `--watch-once` propagates their status.
   `--watch-auto-restart` restarts nonzero watcher exits; interruption ends supervision.
 
@@ -54,16 +54,17 @@ to fpm. Use `-C path/to/project` after the subcommand to select another project.
 
 All public watcher options are listed below. Required values accept a space or `=`;
 optional values in brackets require `=`. For `[=BOOL]`, bare enables and `=false` disables.
-Times are seconds. Defaults show keys under `[extra.fpm-watch]`.
+Times are finite, nonnegative seconds; malformed or missing values are errors.
+Defaults show keys under `[extra.fpm-watch]`.
 
 | Option | Config default | Effect |
 | --- | --- | --- |
 | `--watch-help`, `--help`, `-h` | — | Show help. |
-| `--watch-deps[=BOOL]`, `--watch-no-deps` | `deps=false` | Enable/disable dependency watching. |
+| `--watch-deps[=BOOL]` | `deps=false` | Enable/disable dependency watching. |
 | `--watch-poll SEC` | `poll=0.5` | Scan interval; minimum 0.05. |
 | `--watch-debounce SEC` | `debounce=0.2` | Delay before resampling edits. |
-| `--watch-rescan SEC`, `--watch-no-rescan` | `rescan=0.0` | Periodic graph refresh; 0 disables. |
-| `--watch-run-on-start`, `--watch-no-run-on-start` | `run-on-start=true` | Enable/disable startup execution. |
+| `--watch-rescan SEC` | `rescan=0.0` | Periodic graph refresh; 0 disables. |
+| `--watch-run-on-start[=BOOL]` | `run-on-start=true` | Enable/disable startup execution. |
 | `--watch-once[=BOOL]` | `once=false` | Initialize and optionally run once; propagate failures. |
 | `--watch-include GLOB` | `include=[]` | Repeatable inclusion filter; empty means all. |
 | `--watch-ignore GLOB` | `ignore=[]` | Repeatable exclusion filter. |
@@ -71,15 +72,11 @@ Times are seconds. Defaults show keys under `[extra.fpm-watch]`.
 | `--watch-silent-fpm[=BOOL]` | `silent-fpm=false` | Suppress command stdout/stderr. |
 | `--watch-log-format FORMAT` | `log-format="text"` | `text`, `json`, or `logfmt`. |
 | `--watch-quiet`, `-q` | `verbosity=0` | Set verbosity to -1: errors only, except marker events. |
-| `--watch-verbose[=N]`, `-v` | `verbosity=0` | Raise verbosity to N (bare: 1), maximum 2. |
-| `--watch-very-verbose`, `-vv` | `verbosity=0` | Raise verbosity to 2; list refreshed paths. |
-| `--watch-print-files[=BOOL]` | `print-files=false` | Up to 200 startup paths; CLI raises verbosity to 2. |
-| `--watch-debug[=BOOL]` | `debug=false` | Debug records unless quiet. |
+| `--watch-verbose[=N]`, `-v`, `-vv` | `verbosity=0` | Raise verbosity: bare/`-v`=1; N=0..2; `-vv`=2 includes debug records and up to 200 paths at startup/refresh. |
 | `--watch-output-markers[=BOOL]` | `output-markers=false` | Frame command stderr in structured modes, including quiet mode. |
 | `--watch-auto-restart[=BOOL]` | `auto-restart=false` | Supervise nonzero watcher exits. |
 | `--watch-restart-delay SEC` | `restart-delay=1.0` | Delay before restarting. |
 | `--watch-restart-max N` | `restart-max=0` | Restarts after initial launch; 0 means unlimited. |
-| `--watch-self PATH` | `self=""` | Supervisor child executable; auto-detected by default. |
 
 For forwarded fpm options, use `fpm build --help`, `fpm test --help`, or `fpm run --help`.
 
@@ -100,19 +97,21 @@ ignore = []
 fpm-executable = "fpm"
 silent-fpm = false
 log-format = "text"
-verbosity = 0                # -1: quiet; 0: normal; 1–2: verbose
-debug = false
-print-files = false
+verbosity = 0                # -1: quiet; 0: normal; 1: detail; 2: paths/debug
 output-markers = false
 auto-restart = false
 restart-delay = 1.0
 restart-max = 0              # unlimited
-self = ""                   # auto-detected
 ```
 
 CLI overrides scalars, appends unique filters, and raises verbosity. Quote globs;
 paths use `/`. Metadata bypasses filters. Invalid manifest/response edits pause execution.
-Manifest `print-files=true` also needs `verbosity=2`. Log format stays fixed for the session.
+Log format stays fixed for the session. The supervisor detects its executable automatically.
+
+Removed options: use `--watch-deps=false`, `--watch-rescan=0`, and
+`--watch-run-on-start=false` instead of their `--watch-no-*` forms. Use `-vv` instead
+of `--watch-debug`, `--watch-print-files`, or `--watch-very-verbose`; replace manifest
+`debug`/`print-files` with `verbosity=2`. Remove `--watch-self`, manifest `self`, and `FPM_WATCH_SELF`.
 
 ## Responses and logs
 

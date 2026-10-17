@@ -10,7 +10,7 @@ module watch_graph_worker
    use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
    use watch_types, only: watch_config_t, root_info_t
    use watch_cmdline, only: get_arg, quote_arg
-   use watch_platform, only: create_temp_directory, remove_temp_directory, set_temp_directory, execute_command
+   use watch_platform, only: create_temp_directory, remove_temp_directory, set_temp_directory, execute_command, current_executable
    use watch_fpm_graph, only: compute_watch_files_from_settings
    use watch_log, only: log_event
    use fpm_strings, only: string_t, str
@@ -23,40 +23,40 @@ module watch_graph_worker
    private
    public compute_watch_snapshot, run_graph_worker, read_graph_response
 
-   integer, parameter :: RESPONSE_VERSION = 1
+   integer, parameter :: RESPONSE_VERSION = 2
 
 contains
 
    !> Launch the watcher itself with original argv and accept only a complete response.
-   subroutine compute_watch_snapshot(cfg, files, file_mask, roots, manifest_key, &
+   subroutine compute_watch_snapshot(cfg, files, file_mask, roots, &
                                     build_secs, secs_model, secs_targets, secs_watch, error)
       type(watch_config_t), intent(inout) :: cfg
       type(string_t), allocatable, intent(out) :: files(:)
       integer(int64), allocatable, intent(out) :: file_mask(:)
       type(root_info_t), allocatable, intent(out) :: roots(:)
-      integer(int64), intent(out) :: manifest_key
       real, intent(out) :: build_secs, secs_model, secs_targets, secs_watch
       type(error_t), allocatable, intent(out) :: error
-      character(len=:), allocatable :: workspace, response_path, command, format
+      character(len=:), allocatable :: workspace, response_path, command, format, executable
       integer :: i, status
 
-      manifest_key = 0_int64
       build_secs = 0.0
       secs_model = 0.0
       secs_targets = 0.0
       secs_watch = 0.0
+      executable = current_executable(error)
+      if (allocated(error)) return
       call create_temp_directory(workspace, error)
       if (allocated(error)) return
       response_path = join_path(workspace, "response.toml")
       format = "text"
       if (allocated(cfg%w%log_format)) format = cfg%w%log_format
-      command = quote_arg(get_arg(0)) // " --watch-graph-worker " // quote_arg(response_path) // " " // quote_arg(format)
+      command = quote_arg(executable) // " --watch-graph-worker " // quote_arg(response_path) // " " // quote_arg(format)
       do i = 1, command_argument_count()
          command = command // " " // quote_arg(get_arg(i))
       end do
       call execute_command(command, status)
       if (status == 0) then
-         call read_graph_response(response_path, files, file_mask, roots, manifest_key, &
+         call read_graph_response(response_path, files, file_mask, roots, &
                                   build_secs, secs_model, secs_targets, secs_watch, error)
       else
          call fatal_error(error, "Watch graph worker exited with status " // str(status))
@@ -72,10 +72,8 @@ contains
       integer(int64), allocatable :: file_mask(:)
       type(root_info_t), allocatable :: roots(:)
       type(error_t), allocatable :: error, write_error
-      integer(int64) :: manifest_key
       real :: build_secs, secs_model, secs_targets, secs_watch
 
-      manifest_key = 0_int64
       build_secs = 0.0
       secs_model = 0.0
       secs_targets = 0.0
@@ -89,11 +87,11 @@ contains
          end if
       end if
       if (.not. allocated(error)) then
-         call compute_watch_files_from_settings(cfg%settings, cfg%w, files, file_mask, roots, manifest_key, &
+         call compute_watch_files_from_settings(cfg%settings, cfg%w, files, file_mask, roots, &
                                                build_secs, secs_model, secs_targets, secs_watch, error, &
                                                metadata_files=cfg%response_files)
       end if
-      call write_graph_response(response_path, files, file_mask, roots, manifest_key, &
+      call write_graph_response(response_path, files, file_mask, roots, &
                                 [build_secs, secs_model, secs_targets, secs_watch], error, write_error)
       if (allocated(write_error)) then
          call log_event("error", "graph.worker_failed", write_error%message)
@@ -102,12 +100,11 @@ contains
    end subroutine run_graph_worker
 
    !> Write one versioned TOML response using fpm's TOML dependency.
-   subroutine write_graph_response(path, files, file_mask, roots, manifest_key, timings, graph_error, error)
+   subroutine write_graph_response(path, files, file_mask, roots, timings, graph_error, error)
       character(len=*), intent(in) :: path
       type(string_t), allocatable, intent(in) :: files(:)
       integer(int64), allocatable, intent(in) :: file_mask(:)
       type(root_info_t), allocatable, intent(in) :: roots(:)
-      integer(int64), intent(in) :: manifest_key
       real, intent(in) :: timings(4)
       type(error_t), allocatable, intent(in) :: graph_error
       type(error_t), allocatable, intent(out) :: error
@@ -123,7 +120,6 @@ contains
       if (allocated(graph_error)) then
          call set_value(table, "error", encode_bytes(graph_error%message))
       else
-         call set_value(table, "manifest-key", manifest_key)
          call add_array(table, "files", array)
          do i = 1, size(files)
             call set_value(array, i, encode_bytes(files(i)%s))
@@ -160,13 +156,12 @@ contains
    end subroutine write_graph_response
 
    !> Validate version, fields, alignment, masks, paths, and timings before accepting a response.
-   subroutine read_graph_response(path, files, file_mask, roots, manifest_key, &
+   subroutine read_graph_response(path, files, file_mask, roots, &
                                   build_secs, secs_model, secs_targets, secs_watch, error)
       character(len=*), intent(in) :: path
       type(string_t), allocatable, intent(out) :: files(:)
       integer(int64), allocatable, intent(out) :: file_mask(:)
       type(root_info_t), allocatable, intent(out) :: roots(:)
-      integer(int64), intent(out) :: manifest_key
       real, intent(out) :: build_secs, secs_model, secs_targets, secs_watch
       type(error_t), allocatable, intent(out) :: error
       type(toml_table), allocatable :: table
@@ -178,11 +173,10 @@ contains
       character(len=:), allocatable :: encoded, decoded
       character(len=512) :: message
       integer :: unit, status, version, i, nfiles, nroots
-      integer(int64) :: key, allowed_mask
+      integer(int64) :: allowed_mask
       real :: timings(4)
       logical :: success, valid
 
-      manifest_key = 0_int64
       build_secs = 0.0
       secs_model = 0.0
       secs_targets = 0.0
@@ -228,11 +222,6 @@ contains
          else
             call fatal_error(error, decoded)
          end if
-         return
-      end if
-      call get_value(table, "manifest-key", key, stat=status)
-      if (status /= toml_stat%success) then
-         call invalid_response(error, "missing manifest key")
          return
       end if
       call get_value(table, "files", paths, requested=.false.)
@@ -296,7 +285,6 @@ contains
       call move_alloc(candidate_files, files)
       call move_alloc(candidate_masks, file_mask)
       call move_alloc(candidate_roots, roots)
-      manifest_key = key
       build_secs = timings(1)
       secs_model = timings(2)
       secs_targets = timings(3)

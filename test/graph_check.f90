@@ -18,7 +18,6 @@ program graph_check
    integer(int64), allocatable :: masks(:)
    type(error_t), allocatable :: error
    character(len=:), allocatable :: initial_directory
-   integer(int64) :: manifest_key
    real :: build_secs, model_secs, target_secs, watch_secs
    integer :: include_index, iteration
 
@@ -93,7 +92,7 @@ program graph_check
       "program main", "use missing_graph_module", "implicit none", "end program main"])
    do iteration = 1, 10
       call compute_watch_files_from_settings(settings, options, files, masks, roots, &
-         manifest_key, build_secs, model_secs, target_secs, watch_secs, error)
+         build_secs, model_secs, target_secs, watch_secs, error)
       if (.not. allocated(error)) error stop "missing module did not return a target error"
    end do
    call write_main(with_feature=.false.)
@@ -122,7 +121,7 @@ program graph_check
 
    call write_lines("fpm.toml", [character(len=20) :: "name = ["])
    call compute_watch_files_from_settings(settings, options, files, masks, roots, &
-      manifest_key, build_secs, model_secs, target_secs, watch_secs, error)
+      build_secs, model_secs, target_secs, watch_secs, error)
    if (.not. allocated(error)) error stop "invalid manifest did not return an error"
    call write_manifest()
 
@@ -151,6 +150,7 @@ program graph_check
    call expect_file("0.1.0", .false.)
 
    call check_source_closures()
+   call check_link_input_masks()
    call check_shared_includes()
    call check_global_metadata_overlap()
    call check_empty_library_graph()
@@ -164,7 +164,7 @@ contains
    !> Build the graph without invoking an external fpm command.
    subroutine compute_graph()
       call compute_watch_files_from_settings(settings, options, files, masks, roots, &
-         manifest_key, build_secs, model_secs, target_secs, watch_secs, error)
+         build_secs, model_secs, target_secs, watch_secs, error)
       call check_error()
    end subroutine compute_graph
 
@@ -257,10 +257,15 @@ contains
       call write_lines("fpm.toml", [character(len=60) :: 'name = "source_closure"'])
       call write_lines("src/parent.f90", [character(len=80) :: &
          "module parent_module", "implicit none", "interface", "module integer function value()", &
-         "end function value", "end interface", "end module parent_module"])
+         "end function value", "module integer function nested_value()", "end function nested_value", &
+         "end interface", "end module parent_module"])
       call write_lines("src/child.f90", [character(len=80) :: &
          "submodule(parent_module) child_module", "implicit none", "contains", &
          "module procedure value", "value = 9", "end procedure value", "end submodule child_module"])
+      call write_lines("src/grandchild.f90", [character(len=80) :: &
+         "submodule(parent_module:child_module) grandchild_module", "implicit none", "contains", &
+         "module procedure nested_value", "nested_value = 11", "end procedure nested_value", &
+         "end submodule grandchild_module"])
       call write_lines("src/unused.f90", [character(len=80) :: &
          "module unused_module", "implicit none", "end module unused_module"])
       call write_lines("src/global.c", [character(len=80) :: "int global_helper(void) { return 1; }"])
@@ -277,6 +282,7 @@ contains
       call compute_graph()
       call expect_file("src/parent.f90", .true.)
       call expect_file("src/child.f90", .true.)
+      call expect_file("src/grandchild.f90", .true.)
       call expect_file("src/global.c", .true.)
       call expect_file("src/unused.f90", .false.)
       call expect_file("app/first/helper.c", .true.)
@@ -313,6 +319,7 @@ contains
       call compute_graph()
       call expect_file("src/parent.f90", .false.)
       call expect_file("src/child.f90", .false.)
+      call expect_file("src/grandchild.f90", .false.)
       call expect_file("src/global.c", .true.)
       call expect_file("app/first/first.f90", .false.)
       call expect_file("app/first/helper.c", .false.)
@@ -320,7 +327,7 @@ contains
 
       build_settings = settings%fpm_build_settings
       call compute_watch_files_from_settings(build_settings, options, files, masks, roots, &
-         manifest_key, build_secs, model_secs, target_secs, watch_secs, error)
+         build_secs, model_secs, target_secs, watch_secs, error)
       call check_error()
       call expect_file("src/unused.f90", .true.)
       if (size(roots) /= 0) error stop "build mode unexpectedly maps runnable roots"
@@ -335,13 +342,80 @@ contains
       test_settings%build_tests = .true.
       test_settings%name = [character(len=10) :: "first_test"]
       call compute_watch_files_from_settings(test_settings, options, files, masks, roots, &
-         manifest_key, build_secs, model_secs, target_secs, watch_secs, error)
+         build_secs, model_secs, target_secs, watch_secs, error)
       call check_error()
       call expect_file("test/first/first_test.f90", .true.)
       call expect_file("test/second/second_test.f90", .false.)
       call expect_file("src/child.f90", .true.)
+      call expect_file("src/grandchild.f90", .true.)
       if (size(roots) /= 1) error stop "named test selection did not restrict roots"
    end subroutine check_source_closures
+
+   !> Retain shared link-input closures across all root bits and the unmapped fallback.
+   subroutine check_link_input_masks()
+      character(len=:), allocatable :: fixture
+      character(len=2) :: number
+      character(len=80) :: program_lines(3)
+      integer :: i
+
+      fixture = join_path(initial_directory, "build/watch-graph-tests/link-inputs")
+      call mkdir(join_path(fixture, "src"), echo=.false.)
+      call mkdir(join_path(fixture, "app"), echo=.false.)
+      call change_directory(fixture, error)
+      call check_error()
+      call write_lines("fpm.toml", [character(len=60) :: 'name = "link_input_graph"'])
+      call write_lines("src/common.f90", [character(len=80) :: &
+         "module common_module", "implicit none", "end module common_module"])
+      call write_lines("src/external.f90", [character(len=80) :: &
+         "subroutine external_helper", "use common_module", "implicit none", "end subroutine external_helper"])
+      call write_lines("src/global.c", [character(len=80) :: "int global_helper(void) { return 1; }"])
+      call write_lines("src/global.cpp", [character(len=80) :: "int cpp_helper() { return 2; }"])
+      call write_lines("src/unused.f90", [character(len=80) :: &
+         "module unused_module", "implicit none", "end module unused_module"])
+      do i = 1, 65
+         write(number, "(i2.2)") i
+         program_lines(1) = "program root" // number
+         program_lines(2) = "implicit none"
+         program_lines(3) = "end program root" // number
+         call write_lines("app/root" // number // ".f90", program_lines)
+      end do
+      if (allocated(settings%name)) deallocate(settings%name)
+      allocate(settings%name(64))
+      do i = 1, 64
+         write(number, "(i2.2)") i
+         settings%name(i) = "root" // number
+      end do
+      call compute_graph()
+      if (size(roots) /= 64) error stop "link-input graph did not retain 64 selected roots"
+      call expect_mask("src/common.f90", not(0_int64))
+      call expect_mask("src/external.f90", not(0_int64))
+      call expect_mask("src/global.c", not(0_int64))
+      call expect_mask("src/global.cpp", not(0_int64))
+      call expect_file("src/unused.f90", .false.)
+      call expect_file("app/root65.f90", .false.)
+
+      deallocate(settings%name)
+      allocate(settings%name(0))
+      call compute_graph()
+      if (size(roots) /= 0) error stop "more than 64 link-input roots unexpectedly produced masks"
+      if (any(masks /= 0_int64)) error stop "unmapped link-input graph returned a nonzero mask"
+      call expect_file("src/common.f90", .true.)
+      call expect_file("src/external.f90", .true.)
+      call expect_file("src/global.c", .true.)
+      call expect_file("src/global.cpp", .true.)
+      call expect_file("src/unused.f90", .false.)
+      call expect_file("app/root65.f90", .true.)
+
+      settings%name = [character(len=6) :: "root01"]
+      settings%prune = .false.
+      call compute_graph()
+      call expect_mask("src/unused.f90", roots(1)%mask)
+      settings%prune = .true.
+      call write_lines("fpm.toml", [character(len=60) :: &
+         'name = "link_input_graph"', "[library]", 'type = ["static"]'])
+      call compute_graph()
+      call expect_mask("src/unused.f90", roots(1)%mask)
+   end subroutine check_link_input_masks
 
    !> Keep all 64 root bits across cached nested includes, cycles, and storage growth.
    subroutine check_shared_includes()
@@ -423,7 +497,7 @@ contains
       options%include = [string_t("app/*.f90")]
       options%ignore = [string_t("*.rsp"), string_t("*shared.inc")]
       call compute_watch_files_from_settings(settings, options, files, masks, roots, &
-         manifest_key, build_secs, model_secs, target_secs, watch_secs, error, metadata_files)
+         build_secs, model_secs, target_secs, watch_secs, error, metadata_files)
       call check_error()
       call expect_mask("build/args.rsp", 0_int64)
       call expect_mask("build/future.rsp", 0_int64)
@@ -461,7 +535,7 @@ contains
       allocate(settings%name(0))
       metadata_files = [string_t("options.rsp"), string_t("options.rsp")]
       call compute_watch_files_from_settings(settings, options, files, masks, roots, &
-         manifest_key, build_secs, model_secs, target_secs, watch_secs, error, metadata_files)
+         build_secs, model_secs, target_secs, watch_secs, error, metadata_files)
       call check_error()
       if (size(roots) /= 2) error stop "metadata overlap fixture did not retain both roots"
       all_roots = 0_int64
@@ -483,7 +557,7 @@ contains
       options%include = [string_t("app/*.f90")]
       options%ignore = [string_t("*VERSION*"), string_t("*.rsp"), string_t("*.inc")]
       call compute_watch_files_from_settings(settings, options, files, masks, roots, &
-         manifest_key, build_secs, model_secs, target_secs, watch_secs, error, metadata_files)
+         build_secs, model_secs, target_secs, watch_secs, error, metadata_files)
       call check_error()
       call expect_mask("VERSION", 0_int64)
       call expect_mask("options.rsp", 0_int64)
@@ -515,7 +589,7 @@ contains
 
       do pass = 1, 2
          call compute_watch_files_from_settings(empty_settings, empty_options, files, masks, roots, &
-            manifest_key, build_secs, model_secs, target_secs, watch_secs, error)
+            build_secs, model_secs, target_secs, watch_secs, error)
          call check_error()
          call expect_file("app/first.f90", .true.)
          call expect_file("app/second.f90", .true.)

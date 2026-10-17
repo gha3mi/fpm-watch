@@ -40,8 +40,8 @@ class ResponseRegression(unittest.TestCase):
 
     def once(self, *forwarded, cwd=None, env=None, watch_options=(), subcommand="run", format="json"):
         return subprocess.run(
-            [str(WATCHER), "--watch-once", "--watch-no-run-on-start",
-             "--watch-log-format=" + format, "--watch-print-files", *watch_options,
+            [str(WATCHER), "--watch-once", "--watch-run-on-start=false",
+             "--watch-log-format=" + format, "--watch-verbose=2", *watch_options,
              subcommand, *(forwarded or ("@args",))],
             cwd=cwd or self.root, env=env, capture_output=True, text=True,
             encoding="utf-8", errors="replace", timeout=30,
@@ -267,11 +267,12 @@ class ResponseRegression(unittest.TestCase):
         marker = self.root / "unexpected.txt"
         (self.root / "evil.rsp").write_text('options run\n'
                                            f'system echo unexpected > "{marker}"\n')
-        for options in (("--watch-fpm", "@evil"), ("--watch-ignore", "@evil"), ("--watch-debug=@evil",)):
+        for options in (("--watch-fpm", "@evil"), ("--watch-ignore", "@evil"), ("--watch-deps=@evil",)):
             with self.subTest(options=options):
                 result = self.once(watch_options=options)
                 self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
-                self.assertIn("unsupported record", result.stdout + result.stderr)
+                expected = "requires a boolean" if options == ("--watch-deps=@evil",) else "unsupported record"
+                self.assertIn(expected, result.stdout + result.stderr)
                 self.assertFalse(marker.exists())
         result = self.once("@args", "--", "@missing-program-input")
         self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
@@ -293,7 +294,7 @@ class ResponseRegression(unittest.TestCase):
         marker = self.root / "unexpected.txt"
         with log.open("w") as stream:
             process = subprocess.Popen(
-                [str(WATCHER), "--watch-no-run-on-start", "--watch-log-format=json",
+                [str(WATCHER), "--watch-run-on-start=false", "--watch-log-format=json",
                  "--watch-poll=0.05", "--watch-debounce=0.1", "run", "@args"],
                 cwd=self.root, stdout=stream, stderr=stream,
             )
@@ -325,7 +326,7 @@ class ResponseRegression(unittest.TestCase):
                 errors = self.root / (format + "-refresh.stderr")
                 with log.open("w") as stream, errors.open("w") as diagnostics:
                     process = subprocess.Popen(
-                        [str(WATCHER), "--watch-no-run-on-start", "--watch-log-format=" + format,
+                        [str(WATCHER), "--watch-run-on-start=false", "--watch-log-format=" + format,
                          "--watch-poll=0.05", "--watch-debounce=0.1", "run", "@args"],
                         cwd=self.root, stdout=stream, stderr=diagnostics,
                     )

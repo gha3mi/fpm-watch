@@ -1,4 +1,4 @@
-"""Exercise supervisor behavior against a built fpm-watch executable."""
+"""Exercise real watcher supervision and portable external-command execution."""
 
 import argparse
 import itertools
@@ -14,6 +14,13 @@ import tempfile
 import time
 
 
+def write_pid(path, pid=None):
+    """Publish the complete PID before a controller can observe its marker."""
+    temporary = path.with_name(path.name + f".{os.getpid()}.tmp")
+    temporary.write_text(str(os.getpid() if pid is None else pid), encoding="ascii")
+    temporary.replace(path)
+
+
 def child():
     with open(os.environ["WATCH_TEST_LOG"], "a", encoding="utf-8") as stream:
         stream.write(json.dumps(sys.argv[2:]) + "\n")
@@ -26,7 +33,7 @@ def child():
                          stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     if "WATCH_TEST_TREE" in os.environ:
         marker = Path(os.environ["WATCH_TEST_TREE"])
-        marker.with_suffix(".child.pid").write_text(str(os.getpid()), encoding="ascii")
+        write_pid(marker.with_suffix(".child.pid"))
         subprocess.Popen([sys.executable, str(Path(__file__).resolve()), "--stubborn"])
     if os.environ.get("WATCH_TEST_WAIT") == "1":
         while True:
@@ -52,6 +59,15 @@ def make_child(directory, mode="--child", name="child"):
         )
         executable.chmod(0o755)
     return executable
+
+
+def make_project(directory):
+    (directory / "src").mkdir(parents=True)
+    (directory / "src/m.f90").write_text("module m\nend module m\n", encoding="ascii")
+    (directory / "app").mkdir()
+    (directory / "app/main.f90").write_text(
+        "program main\nuse m\nend program main\n", encoding="ascii")
+    (directory / "fpm.toml").write_text('name="platform-fixture"\n', encoding="ascii")
 
 
 def invocations(log):
@@ -83,15 +99,60 @@ def live_process(pid):
     return bool(state) and not state.startswith("Z")
 
 
+def descendant_processes(parent):
+    rows = subprocess.check_output(["ps", "-axo", "pid=,ppid="], text=True, timeout=3)
+    relationships = [tuple(map(int, row.split())) for row in rows.splitlines() if row.strip()]
+    descendants = {parent}
+    while True:
+        expanded = descendants | {pid for pid, owner in relationships if owner in descendants}
+        if expanded == descendants:
+            return descendants - {parent}
+        descendants = expanded
+
+
+def cleanup_process_tree(process, descendants):
+    """Kill only this trial's groups before collecting pipes with a bounded wait."""
+    failure = sys.exc_info()[1]
+    known = set(descendants) | {process.pid}
+    known.update(descendant_processes(process.pid))
+    driver_group = os.getpgrp()
+    groups = set()
+    for pid in known:
+        try:
+            group = os.getpgid(pid)
+        except ProcessLookupError:
+            continue
+        if group != driver_group:
+            groups.add(group)
+    for group in groups:
+        try:
+            os.killpg(group, signal.SIGKILL)
+        except ProcessLookupError:
+            pass
+    if process.poll() is None:
+        process.kill()
+    try:
+        process.communicate(timeout=5)
+    except subprocess.TimeoutExpired:
+        for stream in (process.stdout, process.stderr):
+            if stream is not None:
+                stream.close()
+        message = "process-tree cleanup timed out; an unknown descendant still holds captured output"
+        if failure is None:
+            raise AssertionError(message) from None
+        failure.add_note(message)
+
+
 def direct_signal_regressions(command, directory, env):
     for nested in (False, True):
         invocation = list(command)
         if nested:
             bridge = directory / "nested.sh"
-            inner = [command[0], "--watch-auto-restart", "--watch-self", command[command.index("--watch-self") + 1], "run"]
+            inner = [command[0], "--watch-auto-restart", "--watch-once", "--watch-fpm",
+                     command[command.index("--watch-fpm") + 1], "build"]
             bridge.write_text("#!/bin/sh\nexec " + shlex.join(inner) + "\n", encoding="utf-8")
             bridge.chmod(0o755)
-            invocation[invocation.index("--watch-self") + 1] = str(bridge)
+            invocation[invocation.index("--watch-fpm") + 1] = str(bridge)
         for cancellation in (signal.SIGINT, signal.SIGTERM, signal.SIGHUP):
             marker = directory / f"tree-{nested}-{cancellation}"
             trial_env = env | {"WATCH_TEST_TREE": str(marker), "WATCH_TEST_WAIT": "1", "WATCH_TEST_EXIT": "0"}
@@ -112,12 +173,9 @@ def direct_signal_regressions(command, directory, env):
                 assert "restart #" not in stderr, stderr
                 assert all(not live_process(pid) for pid in descendants), "cancellation left a live descendant"
             finally:
-                if process.poll() is None:
-                    process.kill()
-                    process.communicate()
-                for pid in descendants:
-                    if live_process(pid):
-                        os.kill(pid, signal.SIGKILL)
+                descendants.extend(int(path.read_text(encoding="ascii"))
+                                   for path in (child, descendant) if path.exists())
+                cleanup_process_tree(process, descendants)
 
 
 def terminal_regression(command, directory, env):
@@ -194,11 +252,6 @@ def worker_cancellation_regression(watcher, directory, supervisor_depth, stubbor
                   "build", "--compiler", str(compiler)]
     if supervisor_depth:
         invocation.insert(1, "--watch-auto-restart")
-    if supervisor_depth > 1:
-        bridge = project / "nested-supervisor.sh"
-        bridge.write_text("#!/bin/sh\nexec " + shlex.join(invocation) + "\n", encoding="utf-8")
-        bridge.chmod(0o755)
-        invocation[1:1] = ["--watch-self", str(bridge)]
     process = subprocess.Popen(invocation, cwd=project, env=env,
                                stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, start_new_session=True)
     descendants = set()
@@ -209,15 +262,7 @@ def worker_cancellation_regression(watcher, directory, supervisor_depth, stubbor
             time.sleep(0.02)
         # fpm recognizes an MPI-wrapper filename and queries -show while building
         # the initial model. Snapshot its whole tree before cancelling its parent.
-        rows = subprocess.check_output(["ps", "-axo", "pid=,ppid="], text=True)
-        relationships = [tuple(map(int, row.split())) for row in rows.splitlines() if row.strip()]
-        descendants.add(process.pid)
-        while True:
-            expanded = descendants | {pid for pid, parent in relationships if parent in descendants}
-            if expanded == descendants:
-                break
-            descendants = expanded
-        descendants.discard(process.pid)
+        descendants.update(descendant_processes(process.pid))
         descendants.add(int(marker.read_text(encoding="ascii")))
         process.send_signal(signal.SIGINT)
         stdout, stderr = process.communicate(timeout=5)
@@ -230,12 +275,9 @@ def worker_cancellation_regression(watcher, directory, supervisor_depth, stubbor
         assert not list(temporary.iterdir()), "graph cancellation left temporary workspace contents"
         assert sentinel.read_text(encoding="ascii") == "keep", "workspace cleanup followed a symlink outside its directory"
     finally:
-        if process.poll() is None:
-            process.kill()
-            process.communicate()
-        for pid in descendants:
-            if live_process(pid):
-                os.kill(pid, signal.SIGKILL)
+        if marker.exists():
+            descendants.add(int(marker.read_text(encoding="ascii")))
+        cleanup_process_tree(process, descendants)
 
 
 def background_watcher_launcher():
@@ -244,12 +286,12 @@ def background_watcher_launcher():
         os.environ.get("FPM_WATCH_WORKSPACE_ROOT", "ABSENT"), encoding="utf-8")
     with (project / "background.log").open("w", encoding="utf-8") as stream:
         process = subprocess.Popen(
-            [os.environ["WATCH_TEST_BACKGROUND_WATCHER"], "--watch-no-run-on-start",
+            [os.environ["WATCH_TEST_BACKGROUND_WATCHER"], "--watch-run-on-start=false",
              "--watch-log-format=json", "--watch-poll=0.05", "--watch-debounce=0.05",
              "--watch-fpm", os.environ["WATCH_TEST_BACKGROUND_FPM"], "build"],
             stdin=subprocess.DEVNULL, stdout=stream, stderr=stream,
         )
-    (project / "background.pid").write_text(str(process.pid), encoding="ascii")
+    write_pid(project / "background.pid", process.pid)
     if os.environ["WATCH_TEST_BACKGROUND_READY"] == "1":
         wait_for_background(project, lambda text: '"event":"watch.ready"' in text)
 
@@ -324,7 +366,7 @@ def check_forwarded_arguments(command, literals, directory, env, log, expected):
                             capture_output=True, text=True, timeout=10)
     assert result.returncode == 0, (literals, result.stdout, result.stderr)
     assert invocations(log) == [expected + literals], (literals, invocations(log), result.stderr)
-    assert "WATCH_INJECTED" not in result.stdout, (literals, result.stdout)
+    assert not any(line.strip() == "WATCH_INJECTED" for line in result.stdout.splitlines()), (literals, result.stdout)
 
 
 def windows_batch_regressions(watcher, command, literals, directory, env, log, expected):
@@ -333,7 +375,7 @@ def windows_batch_regressions(watcher, command, literals, directory, env, log, e
     vectors.extend(list(pair) for pair in itertools.product(literals, repeat=2))
     for values in vectors:
         check_forwarded_arguments(command, values, directory, env, log, expected)
-    script_index = command.index("--watch-self") + 1
+    script_index = command.index("--watch-fpm") + 1
     script = Path(command[script_index])
     batch = script.with_suffix(".bat")
     shutil.copyfile(script, batch)
@@ -345,17 +387,17 @@ def windows_batch_regressions(watcher, command, literals, directory, env, log, e
 
     # Extensionless selection must prefer a native executable, even if invalid.
     project = directory / "native-batch-preference"
-    (project / "src").mkdir(parents=True)
-    (project / "src/m.f90").write_text("module m\nend module\n", encoding="ascii")
-    (project / "fpm.toml").write_text('name="native-batch-preference"\n', encoding="ascii")
+    make_project(project)
     native = project / "native.exe"
     shutil.copyfile(watcher, native)
-    make_child(project, name="native")
+    native.with_suffix(".cmd").write_text("@exit /b 99\n", encoding="ascii")
     fpm = make_child(project, name="command")
+    with (project / "fpm.toml").open("a", encoding="utf-8") as manifest:
+        manifest.write("[extra.fpm-watch]\nonce = true\nfpm-executable = " + json.dumps(str(fpm)) + "\n")
     native_log = project / "commands.jsonl"
     native_env = env | {"WATCH_TEST_LOG": str(native_log)}
     invocation = [str(watcher), "--watch-auto-restart", "--watch-restart-max=1", "--watch-restart-delay=0",
-                  "--watch-once", "--watch-self", str(native.with_suffix("")), "--watch-fpm", str(fpm), "build"]
+                  "--watch-once", "--watch-fpm", str(native.with_suffix("")), "build"]
     result = subprocess.run(invocation, cwd=project, env=native_env, capture_output=True, text=True, timeout=20)
     assert result.returncode == 0, (result.stdout, result.stderr)
     assert invocations(native_log) == [["build"]], "extensionless batch script shadowed a native executable"
@@ -364,7 +406,7 @@ def windows_batch_regressions(watcher, command, literals, directory, env, log, e
     result = subprocess.run(invocation, cwd=project, env=native_env, capture_output=True, text=True, timeout=10)
     assert result.returncode == 127, (result.returncode, result.stdout, result.stderr)
     assert not native_log.exists(), "invalid native executable fell through to a batch script"
-    invocation[invocation.index("--watch-self") + 1] = str(project / "missing.cmd")
+    invocation[invocation.index("--watch-fpm") + 1] = str(project / "missing.cmd")
     result = subprocess.run(invocation, cwd=project, env=native_env, capture_output=True, text=True, timeout=10)
     assert result.returncode == 127, (result.returncode, result.stdout, result.stderr)
     assert not native_log.exists(), "missing batch script was executed as shell text"
@@ -373,18 +415,17 @@ def windows_batch_regressions(watcher, command, literals, directory, env, log, e
 def run_regressions(watcher):
     with tempfile.TemporaryDirectory(prefix="fpm-watch-platform-") as temporary:
         directory = Path(temporary)
+        make_project(directory)
         executable = make_child(directory)
         log = directory / "invocations.jsonl"
         env = os.environ.copy()
         env["WATCH_TEST_LOG"] = str(log)
-        forwarded = ["run", "--", "--watch-restart-max", "12", "--watch-self", "unchanged"]
         command = [
-            str(watcher), "--watch-ignore", "run", "--watch-auto-restart",
+            str(watcher), "--watch-ignore=run", "--watch-auto-restart", "--watch-once",
             "--watch-restart-max", "1", "--watch-restart-delay", "0",
-            "--watch-self", str(executable), *forwarded,
+            "--watch-fpm", str(executable), "build",
         ]
-        expected = [[f"--watch-child={attempt}", "--watch-log-format", "text", "--watch-ignore", "run", *forwarded]
-                    for attempt in range(2)]
+        expected = [["build"], ["build"]]
         for code in (2, 130):
             env["WATCH_TEST_EXIT"] = str(code)
             log.unlink(missing_ok=True)
@@ -406,14 +447,16 @@ def run_regressions(watcher):
         log.unlink()
         literals = ["", " ", "tail  ", "%PATH%", "!PATH!", 'double"quote',
                     'quote" & echo WATCH_INJECTED & rem "', "a&b|c<d>e^f(g)", "dir\\", 'slash\\"quote']
-        check_forwarded_arguments(command, literals, directory, env, log, expected[0])
+        forwarded = ["run", "--", "--watch-restart-max", "12", "--watch-fpm", "unchanged"]
+        argument_command = [*command[:-1], *forwarded]
+        check_forwarded_arguments(argument_command, literals, directory, env, log, forwarded)
         if os.name == "nt":
-            windows_batch_regressions(watcher, command, literals, directory, env, log, expected[0])
+            windows_batch_regressions(watcher, argument_command, literals, directory, env, log, forwarded)
 
         if os.name == "posix":
             terminal_regression(command, directory, env)
             direct_signal_regressions(command, directory, env)
-            for supervisor_depth in (0, 1, 2):
+            for supervisor_depth in (0, 1):
                 for stubborn in (False, True):
                     worker_cancellation_regression(watcher, directory, supervisor_depth, stubborn)
 
@@ -451,12 +494,11 @@ def run_regressions(watcher):
             assert len(invocations(log)) == 1, "watcher restarted after Ctrl+C"
             assert "restart #" not in stderr, stderr
         finally:
-            if process.poll() is None:
-                if os.name == "nt":
-                    process.kill()
-                else:
-                    os.killpg(process.pid, signal.SIGKILL)
-                process.communicate()
+            if os.name == "posix":
+                cleanup_process_tree(process, [])
+            elif process.poll() is None:
+                process.kill()
+                process.communicate(timeout=5)
             if allocated_console is not None:
                 allocated_console.FreeConsole()
     print("Supervisor platform regressions passed")
@@ -474,13 +516,13 @@ if __name__ == "__main__":
         (scratch / "nested").mkdir()
         (scratch / "nested" / "native.tmp").write_text("scratch", encoding="ascii")
         (scratch / "outside-link").symlink_to(os.environ["WATCH_TEST_LINK_TARGET"], target_is_directory=True)
-        Path(os.environ["WATCH_TEST_COMPILER_PID"]).write_text(str(os.getpid()), encoding="ascii")
+        write_pid(Path(os.environ["WATCH_TEST_COMPILER_PID"]))
         while True:
             time.sleep(1)
     if len(sys.argv) > 1 and sys.argv[1] == "--stubborn":
         signal.signal(signal.SIGINT, signal.SIG_IGN)
         signal.signal(signal.SIGTERM, signal.SIG_IGN)
-        Path(os.environ["WATCH_TEST_TREE"]).with_suffix(".descendant.pid").write_text(str(os.getpid()), encoding="ascii")
+        write_pid(Path(os.environ["WATCH_TEST_TREE"]).with_suffix(".descendant.pid"))
         while True:
             time.sleep(1)
     if len(sys.argv) > 1 and sys.argv[1] == "--background":

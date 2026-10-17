@@ -25,12 +25,10 @@ contains
       w%verbosity = 0
       w%log_format = "text"
       w%fpm_executable = "fpm"
-      w%debug = .false.
       w%poll = 0.5
       w%debounce = 0.2
       w%rescan = 0.0
       w%run_on_start = .true.
-      w%print_files_once = .false.
       w%silent_fpm = .false.
       w%output_markers = .false.
       w%restart_count = 0
@@ -42,7 +40,6 @@ contains
       w%is_child = .false.
       w%restart_delay = 1.0
       w%restart_max = 0
-      w%self_exe = ""
    end subroutine set_watch_defaults
 
    !> Normalize timing bounds, verbosity, and the executable name.
@@ -83,8 +80,6 @@ contains
       call toml_get_real(wt,    "debounce", w%debounce)
       call toml_get_real(wt,    "rescan",   w%rescan)
 
-      call toml_get_logical(wt, "debug",        w%debug)
-      call toml_get_logical(wt, "print-files",  w%print_files_once)
       call toml_get_logical(wt, "silent-fpm",   w%silent_fpm)
       call toml_get_logical(wt, "output-markers", w%output_markers)
       call toml_get_logical(wt, "run-on-start", w%run_on_start)
@@ -101,7 +96,6 @@ contains
       call toml_get_logical(wt, "auto-restart", w%auto_restart)
       call toml_get_real(wt, "restart-delay", w%restart_delay)
       call toml_get_int(wt, "restart-max", w%restart_max)
-      call toml_get_string(wt, "self", w%self_exe)
 
       call normalize_watch_opts(w)
    end subroutine apply_watch_from_manifest

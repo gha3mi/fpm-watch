@@ -19,11 +19,11 @@ module watch_fpm_graph
    use fpm_model,        only: fpm_model_t, srcfile_t, FPM_SCOPE_APP, FPM_SCOPE_TEST, FPM_SCOPE_EXAMPLE, &
                               FPM_SCOPE_LIB, FPM_SCOPE_DEP, FPM_UNIT_PROGRAM, FPM_UNIT_SUBMODULE, &
                               FPM_UNIT_SUBPROGRAM, FPM_UNIT_CSOURCE, FPM_UNIT_CPPSOURCE
-   use fpm_targets,      only: build_target_ptr, new_target, resolve_module_dependencies, add_dependency, FPM_TARGET_OBJECT
+   use fpm_targets,      only: build_target_ptr, new_target, resolve_module_dependencies, FPM_TARGET_OBJECT
    use fpm_sources,      only: get_exe_name_with_suffix
    use fpm_source_parsing, only: parse_f_source, parse_c_source
    use fpm_filesystem,   only: basename, exists, join_path, dirname, canon_path, is_absolute_path
-   use fpm_strings,      only: string_t, glob, str, fnv_1a, operator(.in.)
+   use fpm_strings,      only: string_t, glob, str, fnv_1a
    use fpm_error,        only: error_t
    use fpm_toml,         only: read_package_file, get_value
    use fpm_versioning,   only: version_t, new_version
@@ -68,14 +68,13 @@ contains
    !! Mapping is disabled when there are no roots or more than 64, yielding
    !! empty `roots` and zero file masks while retaining the selected closure.
    !!
-   !! `manifest_key` is always zero here; the engine computes it after refresh.
    !! Timing outputs are seconds: `build_secs` sums model, target, and collection
    !! time, excluding manifest reading. Build watches all model files conservatively;
    !! it does not reproduce fpm pruning. On manifest/model/target failure, return
    !! allocated `error` if supplied, otherwise log the stage and exit with status 1.
    !! Watch-list outputs are only usable after a successful return.
    subroutine compute_watch_files_from_settings(settings, w, files, file_mask, roots, &
-      manifest_key, build_secs, secs_model, secs_targets, secs_watch, error, metadata_files)
+      build_secs, secs_model, secs_targets, secs_watch, error, metadata_files)
       class(fpm_build_settings), intent(inout) :: settings
       !! Typed build/run/test settings; fpm may update these while constructing its model.
       type(watch_opts_t), intent(in) :: w
@@ -86,8 +85,6 @@ contains
       !! Root-membership bits aligned with files; zero when root mapping is disabled.
       type(root_info_t), allocatable, intent(out) :: roots(:)
       !! Executable names and distinct mask bits; empty for build mode or unsupported root counts.
-      integer(int64), intent(out) :: manifest_key
-      !! Reserved output, always zero; computed from accepted files by the engine.
       real, intent(out) :: build_secs
       !! Sum of model, target-construction, and watch-list collection times in seconds.
       real, intent(out) :: secs_model, secs_targets, secs_watch
@@ -119,7 +116,6 @@ contains
       secs_targets = 0.0
       secs_watch   = 0.0
       build_secs   = 0.0
-      manifest_key = 0_int64
 
       call system_clock(count_rate=rate)
       if (rate <= 0_int64) rate = 1000_int64
@@ -156,7 +152,7 @@ contains
       call begin_raw_output(structured_logging(), saved_output)
       whole_libraries = .not. settings%prune
       if (allocated(package%library)) whole_libraries = whole_libraries .or. .not. package%library%monolithic()
-      call build_watch_targets(model, whole_libraries, targets, err)
+      call build_watch_targets(model, is_run_or_test(settings), targets, err)
       call end_raw_output(saved_output)
       call system_clock(t1)
       secs_targets = real(t1 - t0) / real(rate)
@@ -203,7 +199,7 @@ contains
             roots(r)%mask = shiftl(1_int64, r-1)
             call dfs_mark_mask(targets(i)%ptr, targets, target_mask, roots(r)%mask)
          end do
-
+         call mark_link_inputs(targets, keep, whole_libraries, target_mask, visited)
          visited = (target_mask /= 0_int64)
       else
          if (allocated(roots)) deallocate(roots)
@@ -215,6 +211,7 @@ contains
             do i = 1, size(targets)
                if (keep(i)) call dfs_mark_bool(targets(i)%ptr, targets, visited)
             end do
+            call mark_link_inputs(targets, keep, whole_libraries, target_mask, visited)
          end if
       end if
 
@@ -250,7 +247,7 @@ contains
       n_after = 0
       if (allocated(files)) n_after = size(files)
 
-      if (w%debug) then
+      if (w%verbosity >= 2) then
          call log_event("debug", "graph.filtered", "Filtered watch list", &
                         [log_int("files_before", n_before), log_int("files_after", n_after)])
       end if
@@ -319,9 +316,10 @@ contains
    !! No fpm pruning routine is called: its discarded pointer allocations cannot
    !! be recovered by callers. These nodes serve watch membership only. Every
    !! allocation stays in `targets`, including on dependency-resolution errors.
-   subroutine build_watch_targets(model, whole_libraries, targets, error)
+   !! Build mode needs no closure edges because it retains every model source.
+   subroutine build_watch_targets(model, resolve_dependencies, targets, error)
       type(fpm_model_t), intent(in) :: model
-      logical, intent(in) :: whole_libraries
+      logical, intent(in) :: resolve_dependencies
       type(build_target_ptr), allocatable, intent(out) :: targets(:)
       type(error_t), allocatable, intent(out) :: error
       integer :: i, j, k, n
@@ -345,41 +343,122 @@ contains
             targets(k)%ptr%schedule = k
          end do
       end do
+      if (.not. resolve_dependencies) return
       call resolve_module_dependencies(targets, model%external_modules, error)
       if (allocated(error)) return
+      call add_submodule_implementations(targets)
+   end subroutine build_watch_targets
 
-      ! Implementations and sources without module symbols cannot be narrowed by
-      ! USE resolution. Retain library link inputs and inputs beside each program.
+   !> Add reverse parent-to-implementation edges in one allocation per parent.
+   !!
+   !! fpm resolves each submodule's forward USE dependencies. Watching a parent
+   !! also needs its implementation, including nested submodules. Only these
+   !! sparse reverse edges are stored; shared linker inputs are marked directly.
+   subroutine add_submodule_implementations(targets)
+      type(build_target_ptr), intent(inout) :: targets(:)
+      type(build_target_ptr), allocatable :: dependencies(:)
+      integer, allocatable :: implementations(:), children(:)
+      integer :: i, j, k, l, n, existing
+
+      implementations = pack([(i, i=1,size(targets))], &
+         [(targets(i)%ptr%source%unit_type == FPM_UNIT_SUBMODULE, i=1,size(targets))])
+      if (size(implementations) == 0) return
+      allocate(children(size(implementations)))
+      do i = 1, size(targets)
+         if (size(targets(i)%ptr%source%modules_provided) == 0) cycle
+         n = 0
+         do j = 1, size(implementations)
+            k = implementations(j)
+            if (i == k) cycle
+            if (.not. implements_parent(targets(k)%ptr%source, targets(i)%ptr%source)) cycle
+            if (any([(associated(targets(i)%ptr%dependencies(l)%ptr, targets(k)%ptr), &
+               l=1,size(targets(i)%ptr%dependencies))])) cycle
+            n = n + 1
+            children(n) = k
+         end do
+         if (n == 0) cycle
+         existing = size(targets(i)%ptr%dependencies)
+         allocate(dependencies(existing+n))
+         dependencies(:existing) = targets(i)%ptr%dependencies
+         do j = 1, n
+            dependencies(existing+j)%ptr => targets(children(j))%ptr
+         end do
+         call move_alloc(dependencies, targets(i)%ptr%dependencies)
+      end do
+   end subroutine add_submodule_implementations
+
+   !> Test the parent names parsed by fpm without duplicating module resolution.
+   pure logical function implements_parent(child, parent) result(matches)
+      type(srcfile_t), intent(in) :: child, parent
+      integer :: i, j
+      matches = .false.
+      do i = 1, size(child%parent_modules)
+         if (.not. any([(child%parent_modules(i)%s == parent%modules_provided(j)%s, &
+            j=1,size(parent%modules_provided))])) cycle
+         matches = .true.
+         return
+      end do
+   end function implements_parent
+
+   !> Mark shared and executable-local link inputs without a dense edge matrix.
+   !!
+   !! Link-only library sources belong to every selected executable; unpruned or
+   !! separate library outputs retain all library sources. Propagate their union
+   !! of root bits once, then mark scoped inputs beside each selected program.
+   !! When more than 64 roots are selected, boolean traversal retains the same
+   !! source closure without allocating masks or per-executable adjacency lists.
+   subroutine mark_link_inputs(targets, keep, whole_libraries, target_mask, visited)
+      type(build_target_ptr), intent(in) :: targets(:)
+      logical, intent(in) :: keep(:), whole_libraries
+      integer(int64), allocatable, intent(inout) :: target_mask(:)
+      logical, intent(inout) :: visited(:)
+      integer :: i, j, r
+      integer(int64) :: all_roots, mask
+      logical :: library_source, link_source, selected
+      character(len=:), allocatable :: source_dir
+
+      if (.not. any(keep)) return
+      all_roots = 0_int64
+      if (allocated(target_mask)) then
+         do r = 1, count(keep)
+            all_roots = ibset(all_roots, r-1)
+         end do
+      end if
       do i = 1, size(targets)
          associate(source => targets(i)%ptr%source)
-            if (whole_libraries .and. any(source%unit_scope == [FPM_SCOPE_LIB, FPM_SCOPE_DEP])) then
+            library_source = any(source%unit_scope == [FPM_SCOPE_LIB, FPM_SCOPE_DEP])
+            link_source = any(source%unit_type == [FPM_UNIT_SUBPROGRAM, FPM_UNIT_CSOURCE, FPM_UNIT_CPPSOURCE])
+            if (library_source .and. (whole_libraries .or. link_source)) then
+               mask = all_roots
+               selected = .true.
+            else
+               if (.not. link_source) cycle
+               mask = 0_int64
+               selected = .false.
+               source_dir = dirname(source%file_name)
+               r = 0
                do j = 1, size(targets)
-                  if (targets(j)%ptr%source%unit_type == FPM_UNIT_PROGRAM) then
-                     call add_dependency(targets(j)%ptr, targets(i)%ptr)
-                  end if
-               end do
-            end if
-            if (source%unit_type == FPM_UNIT_SUBMODULE) then
-               do j = 1, size(targets)
-                  do k = 1, size(source%parent_modules)
-                     if (source%parent_modules(k)%s .in. targets(j)%ptr%source%modules_provided) then
-                        call add_dependency(targets(j)%ptr, targets(i)%ptr)
-                     end if
-                  end do
-               end do
-            else if (any(source%unit_type == [FPM_UNIT_SUBPROGRAM, FPM_UNIT_CSOURCE, FPM_UNIT_CPPSOURCE])) then
-               do j = 1, size(targets)
-                  if (targets(j)%ptr%source%unit_type /= FPM_UNIT_PROGRAM) cycle
-                  if (any(source%unit_scope == [FPM_SCOPE_LIB, FPM_SCOPE_DEP]) .or. &
-                      (source%unit_scope == targets(j)%ptr%source%unit_scope .and. &
-                       starts_with(dirname(source%file_name), dirname(targets(j)%ptr%source%file_name)))) then
-                     call add_dependency(targets(j)%ptr, targets(i)%ptr)
+                  if (.not. keep(j)) cycle
+                  r = r + 1
+                  if (source%unit_scope /= targets(j)%ptr%source%unit_scope) cycle
+                  if (.not. starts_with(source_dir, dirname(targets(j)%ptr%source%file_name))) cycle
+                  selected = .true.
+                  if (allocated(target_mask)) then
+                     mask = ibset(mask, r-1)
+                  else
+                     exit
                   end if
                end do
             end if
          end associate
+         if (.not. selected) cycle
+         if (allocated(target_mask)) then
+            call dfs_mark_mask(targets(i)%ptr, targets, target_mask, mask)
+         else
+            call dfs_mark_bool(targets(i)%ptr, targets, visited)
+         end if
       end do
-   end subroutine build_watch_targets
+   end subroutine mark_link_inputs
 
    !> Release every owned source node once, independent of shared dependency edges.
    subroutine release_targets(targets)
@@ -781,16 +860,17 @@ contains
       integer(int64), intent(inout) :: tmask(:)
       integer(int64), intent(in) :: mask
       integer :: idx, i
+      integer(int64) :: new_mask
 
       idx = find_ptr_index(node, all)
       if (idx <= 0) return
-      if (iand(tmask(idx), mask) /= 0_int64) return
-
-      tmask(idx) = ior(tmask(idx), mask)
+      new_mask = iand(mask, not(tmask(idx)))
+      if (new_mask == 0_int64) return
+      tmask(idx) = ior(tmask(idx), new_mask)
 
       if (allocated(node%dependencies)) then
          do i = 1, size(node%dependencies)
-            if (associated(node%dependencies(i)%ptr)) call dfs_mark_mask(node%dependencies(i)%ptr, all, tmask, mask)
+            if (associated(node%dependencies(i)%ptr)) call dfs_mark_mask(node%dependencies(i)%ptr, all, tmask, new_mask)
          end do
       end if
    end subroutine dfs_mark_mask

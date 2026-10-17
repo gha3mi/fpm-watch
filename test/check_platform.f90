@@ -1,7 +1,7 @@
 !> Check that command failures are distinct from console interruption.
 program check_platform
    use watch_cmdline, only: get_arg, quote_arg
-   use watch_platform, only: execute_command, termination_requested, create_temp_directory, remove_temp_directory
+   use watch_platform, only: execute_command, termination_requested, create_temp_directory, remove_temp_directory, current_executable
    use fpm_error, only: error_t
    use fpm_filesystem, only: is_absolute_path
    implicit none
@@ -26,7 +26,9 @@ program check_platform
       continue
    end select
 
-   executable = get_arg(0)
+   executable = current_executable(error)
+   if (allocated(error)) error stop "could not locate running executable"
+   if (.not. is_absolute_path(executable)) error stop "running executable path is not absolute"
    do i = 1, size(codes)
       select case (codes(i))
        case (0)

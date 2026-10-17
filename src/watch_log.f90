@@ -29,12 +29,10 @@ module watch_log
    character(len=:), allocatable, save :: active_format
    !> Minimum-detail filter: -1 quiet, 0 normal, 1..2 additional detail.
    integer, save :: active_verbosity = 0
-   !> Allow debug-level records when verbosity also permits them.
-   logical, save :: active_debug = .false.
 
 contains
 
-   !> Copy format, verbosity, and debug options into process-wide logger state.
+   !> Copy format and verbosity options into process-wide logger state.
    !!
    !! An unallocated format selects text. Callers must validate format names;
    !! this routine neither normalizes nor validates the configuration.
@@ -43,7 +41,6 @@ contains
       active_format = "text"
       if (allocated(w%log_format)) active_format = w%log_format
       active_verbosity = w%verbosity
-      active_debug = w%debug
    end subroutine configure_logging
 
    !> Accept exactly the case-sensitive format names `text`, `json`, and `logfmt`.
@@ -61,7 +58,7 @@ contains
    !> Format, write, and flush one timestamped event with optional typed attributes.
    !!
    !! `verbosity` is the minimum detail level, defaulting to zero. Quiet mode
-   !! suppresses non-error records; debug records additionally require debug mode.
+   !! suppresses non-error records; debug records require verbosity 2.
    !! `force=true` and errors bypass both filters. Structured output always uses
    !! stdout; only text errors use stderr. `fields` should use the typed constructors.
    !! Output errors are nonfatal so a disconnected terminal cannot replace a
@@ -74,7 +71,7 @@ contains
       integer, intent(in), optional :: verbosity
       !! Minimum active verbosity for this non-error event; defaults to zero.
       logical, intent(in), optional :: force
-      !! Bypass verbosity/debug filters for required protocol events; defaults to false.
+      !! Bypass verbosity filters for required protocol events; defaults to false.
       integer :: unit, detail, io_status
       logical :: required
       character(len=:), allocatable :: line, timestamp
@@ -86,7 +83,7 @@ contains
          detail = 0
          if (present(verbosity)) detail = verbosity
          if (active_verbosity < detail) return
-         if (level == "debug" .and. .not. active_debug) return
+         if (level == "debug" .and. active_verbosity < 2) return
       end if
       timestamp = log_timestamp()
       line = format_log_record(active_format, timestamp, level, event, message, fields)

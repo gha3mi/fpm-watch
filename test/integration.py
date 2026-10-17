@@ -127,7 +127,7 @@ class WatchIntegration(unittest.TestCase):
             stream = stack.enter_context(log.open("w"))
             errors = stream if stderr_path is None else stack.enter_context(stderr_path.open("w"))
             process = subprocess.Popen(
-                [str(WATCHER), "--watch-no-run-on-start",
+                [str(WATCHER), "--watch-run-on-start=false",
                  "--watch-poll", "0.05", "--watch-debounce", "0.1", *args],
                 cwd=self.project, stdout=stream, stderr=errors,
             )
@@ -240,17 +240,31 @@ class WatchIntegration(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         self.assertIn("WATCH_RESULT", result.stdout)
 
-    def test_false_flags_override_manifest_logging_and_supervisor(self):
+    def test_boolean_flags_override_manifest_supervisor_and_startup(self):
         self.manifest.write_text(self.manifest_text + '[extra.fpm-watch]\n'
-                                 + 'debug=true\nprint-files=true\nauto-restart=true\n'
-                                 + 'restart-max=1\nrestart-delay=0.0\nself="missing-watcher"\n')
-        result = self.once("--watch-log-format=json", "--watch-verbose=1", "--watch-debug=false",
-                           "--watch-print-files=false", "--watch-auto-restart=false", "build")
+                                 + 'verbosity=1\nauto-restart=true\nrun-on-start=false\n'
+                                 + 'restart-max=1\nrestart-delay=0.0\n')
+        result = self.once("--watch-log-format=json", "--watch-run-on-start=true",
+                           "--watch-auto-restart=false", "build")
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         events = records(result.stdout, "json")
         self.assertFalse(any(event["level"] == "debug" for event in events))
         self.assertNotIn("watch.file", [event["event"] for event in events])
         self.assertFalse(any(event["event"].startswith("supervisor.") for event in events))
+        self.assertIn("command.finished", [event["event"] for event in events])
+
+    def test_native_executable_resolution_ignores_argv0_and_old_override(self):
+        result = subprocess.run(
+            ["missing-watcher-argv0", "--watch-once", "--watch-auto-restart",
+             "--watch-run-on-start=false", "--watch-log-format=json", "build"],
+            executable=str(WATCHER), cwd=self.project,
+            env=os.environ | {"FPM_WATCH_SELF": "missing-watcher-override"},
+            capture_output=True, text=True, timeout=15,
+        )
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        events = records(result.stdout, "json")
+        self.assertIn("watch.ready", [event["event"] for event in events])
+        self.assertNotIn("supervisor.restart", [event["event"] for event in events])
 
     def test_effective_configuration_updates_after_manifest_refresh(self):
         self.manifest.write_text(self.manifest_text + '[extra.fpm-watch]\n'
@@ -275,53 +289,87 @@ class WatchIntegration(unittest.TestCase):
 
     def test_logging_config_and_cli_override(self):
         self.manifest.write_text(self.manifest_text + '[extra.fpm-watch]\nlog-format="json"\n')
-        result = self.once("--watch-no-run-on-start", "build")
+        result = self.once("--watch-run-on-start=false", "build")
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual(records(result.stdout, "json")[0]["event"], "watch.ready")
-        result = self.once("--watch-log-format=logfmt", "--watch-no-run-on-start", "build")
+        result = self.once("--watch-log-format=logfmt", "--watch-run-on-start=false", "build")
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual(records(result.stdout, "logfmt")[0]["event"], "watch.ready")
 
     def test_removed_wait_options_are_rejected(self):
         for flag in ("--watch-low-cpu", "--watch-low-cpu=false", "--watch-no-low-cpu",
-                     "--watch-feature=stats"):
+                     "--watch-feature=stats", "--watch-no-deps", "--watch-no-rescan",
+                     "--watch-no-run-on-start", "--watch-print-files", "--watch-debug",
+                     "--watch-very-verbose", "--watch-self=missing"):
             with self.subTest(flag=flag):
                 result = self.once("--watch-log-format=json", flag, "build")
                 self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
                 event = records(result.stdout, "json")[-1]
                 self.assertEqual(event["event"], "cli.error")
-                self.assertIn("unknown watch flag", event["message"])
+                self.assertTrue("unknown watch flag" in event["message"] or "was removed;" in event["message"], event)
 
         result = self.once("run", "first", "--", "--watch-low-cpu")
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         self.assertIn("<--watch-low-cpu>", result.stdout)
 
-    def test_nonfinite_delays_retain_defaults(self):
+    def test_nonfinite_manifest_timings_retain_defaults(self):
         self.manifest.write_text(self.manifest_text + '[extra.fpm-watch]\n'
                                  + 'poll=nan\ndebounce=inf\nrescan=nan\n')
-        for flags in ([], ["--watch-poll=NaN", "--watch-debounce=Inf", "--watch-rescan=NaN"]):
-            with self.subTest(flags=flags):
-                result = self.once(*flags, "--watch-log-format=json", "--watch-verbose",
-                                   "--watch-no-run-on-start", "build")
-                self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
-                config = next(event for event in records(result.stdout, "json")
-                              if event["event"] == "watch.configuration")
-                self.assertEqual(config["poll_ms"], 500)
-                self.assertEqual(config["debounce_ms"], 200)
-                self.assertEqual(config["rescan_s"], 0)
+        result = self.once("--watch-log-format=json", "--watch-verbose",
+                           "--watch-run-on-start=false", "build")
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        config = next(event for event in records(result.stdout, "json")
+                      if event["event"] == "watch.configuration")
+        self.assertEqual(config["poll_ms"], 500)
+        self.assertEqual(config["debounce_ms"], 200)
+        self.assertEqual(config["rescan_s"], 0)
 
-    def test_null_numeric_values_retain_defaults(self):
-        for value in ("/", ","):
-            with self.subTest(value=value):
-                result = self.once(f"--watch-poll={value}", f"--watch-debounce={value}",
-                                   f"--watch-restart-delay={value}", f"--watch-restart-max={value}",
-                                   "--watch-log-format=json", "--watch-verbose",
-                                   "--watch-no-run-on-start", "build")
-                self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
-                config = next(event for event in records(result.stdout, "json")
-                              if event["event"] == "watch.configuration")
-                self.assertEqual(config["poll_ms"], 500)
-                self.assertEqual(config["debounce_ms"], 200)
+    def test_explicit_invalid_cli_values_are_rejected(self):
+        numeric = ("poll", "debounce", "rescan", "restart-delay", "restart-max", "verbose")
+        for option in numeric:
+            for value in ("", "broken", "/", ",", "0.1,0.2", "NaN", "Inf", "-1", "1e999"):
+                with self.subTest(option=option, value=value):
+                    result = self.once(f"--watch-{option}={value}", "build")
+                    self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
+                    self.assertNotIn("Running ", result.stdout)
+        for option in ("deps", "run-on-start", "once", "silent-fpm", "output-markers", "auto-restart"):
+            for value in ("", "broken", "true,false"):
+                with self.subTest(option=option, value=value):
+                    result = self.once(f"--watch-{option}={value}", "build")
+                    self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
+        for option in ("poll", "debounce", "rescan", "restart-delay", "restart-max", "fpm", "log-format"):
+            for following in (["build"], ["--watch-run-on-start=false", "build"]):
+                with self.subTest(option=option, following=following):
+                    result = self.once(f"--watch-{option}", *following)
+                    self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
+                    self.assertNotIn("Running ", result.stdout)
+
+    def test_stop_marker_ends_supervisor_initialization_retries(self):
+        self.manifest.write_text("name = [\n")
+        marker = self.project / ".fpm-watch.stop"
+        for delay in ("0.05", "30"):
+            with self.subTest(delay=delay):
+                marker.unlink(missing_ok=True)
+                log = self.root / ("restart-" + delay + ".log")
+                with log.open("w") as stream:
+                    process = subprocess.Popen(
+                        [str(WATCHER), "--watch-log-format=json", "--watch-auto-restart",
+                         "--watch-restart-delay=" + delay, "build", "-C", str(self.project)],
+                        cwd=self.root, stdout=stream, stderr=stream,
+                    )
+                    try:
+                        wait_for(process, log, lambda text: "supervisor.restart" in text)
+                        marker.touch()
+                        self.assertEqual(process.wait(timeout=5), 0, output(log))
+                        self.assertIn('"reason":"stop_file"', output(log))
+                    finally:
+                        if process.poll() is None:
+                            process.terminate()
+                            try:
+                                process.wait(timeout=3)
+                            except subprocess.TimeoutExpired:
+                                process.kill()
+                                process.wait()
 
     def test_structured_live_changes_and_manifest_recovery(self):
         for format in ("json", "logfmt"):
@@ -368,7 +416,7 @@ class WatchIntegration(unittest.TestCase):
         flag = f'-DNAME="{name}" ' + "\\quoted\tline\nnext  "
         for format in ("json", "logfmt"):
             with self.subTest(format=format):
-                result = self.once("--watch-log-format", format, "--watch-no-run-on-start", "build", "--flag", flag)
+                result = self.once("--watch-log-format", format, "--watch-run-on-start=false", "build", "--flag", flag)
                 self.assertEqual(result.returncode, 0, result.stderr)
                 events = records(result.stdout, format)
                 self.assertEqual(len(events), 1)
@@ -438,12 +486,14 @@ class WatchIntegration(unittest.TestCase):
         self.assertEqual(restarts[0]["restart_count"], 1)
         self.assertEqual(events[-1]["event"], "supervisor.limit_reached")
 
-    def test_debug_logging_has_debug_severity(self):
-        result = self.once("--watch-log-format", "json", "--watch-debug", "--watch-no-run-on-start", "build")
+    def test_highest_verbosity_lists_startup_files_and_configuration(self):
+        result = self.once("--watch-log-format", "json", "--watch-verbose=2", "--watch-run-on-start=false", "build")
         self.assertEqual(result.returncode, 0, result.stderr)
         events = records(result.stdout, "json")
+        self.assertIn("watch.configuration", [event["event"] for event in events])
+        paths = [event["path"].replace("\\", "/") for event in events if event["event"] == "watch.file"]
+        self.assertIn("app/first.f90", paths)
         self.assertTrue(any(event["level"] == "debug" for event in events))
-        self.assertNotIn("watch.configuration", [event["event"] for event in events])
 
     def test_supervisor_preserves_manifest_log_format(self):
         self.manifest.write_text(self.manifest_text + '[extra.fpm-watch]\nlog-format="json"\n')
@@ -463,7 +513,7 @@ class WatchIntegration(unittest.TestCase):
         self.assertEqual(events[-1]["event"], "supervisor.limit_reached")
 
     def test_text_logging_is_compact(self):
-        result = self.once("--watch-no-run-on-start", "build")
+        result = self.once("--watch-run-on-start=false", "build")
         self.assertEqual(result.returncode, 0, result.stderr)
         watcher_lines = [line for line in result.stdout.splitlines() if " INFO " in line]
         self.assertEqual(len(watcher_lines), 1)
@@ -478,7 +528,7 @@ class WatchIntegration(unittest.TestCase):
         self.assertEqual(result.returncode, direct.returncode, result.stdout + result.stderr)
 
     def test_comma_separated_targets(self):
-        result = self.once("--watch-no-run-on-start", "--watch-print-files", "run", "--target", "first,second")
+        result = self.once("--watch-run-on-start=false", "--watch-verbose=2", "run", "--target", "first,second")
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         self.assertIn("app/first.f90", result.stdout)
         self.assertIn("app/second.f90", result.stdout)
@@ -637,8 +687,8 @@ class WatchIntegration(unittest.TestCase):
         for options in (("--directory", "project"), ("-C", "project"),
                         ("--directory=project",), ("-C=project",)):
             with self.subTest(options=options):
-                result = run_captured([str(WATCHER), "--watch-once", "--watch-no-run-on-start",
-                                       "--watch-print-files", "run", "first", *options], cwd=self.root)
+                result = run_captured([str(WATCHER), "--watch-once", "--watch-run-on-start=false",
+                                       "--watch-verbose=2", "run", "first", *options], cwd=self.root)
                 self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
                 files = [event["path"] for event in records(result.stdout, "json")
                          if event["event"] == "watch.file"]
@@ -653,7 +703,7 @@ class WatchIntegration(unittest.TestCase):
     def test_directory_changes_and_stop_file_use_selected_project(self):
         log = self.root / "directory.log"
         with log.open("w") as stream:
-            process = subprocess.Popen([str(WATCHER), "--watch-no-run-on-start", "--watch-poll=0.05",
+            process = subprocess.Popen([str(WATCHER), "--watch-run-on-start=false", "--watch-poll=0.05",
                                         "--watch-debounce=0.05", "run", "first", "-C", "project"],
                                        cwd=self.root, stdout=stream, stderr=stream)
             try:
@@ -689,7 +739,7 @@ class WatchIntegration(unittest.TestCase):
             with self.subTest(invalid=invalid):
                 if invalid:
                     self.manifest.write_text("name = [\n")
-                result = subprocess.run([str(WATCHER), "--watch-once", "--watch-no-run-on-start", "build"],
+                result = subprocess.run([str(WATCHER), "--watch-once", "--watch-run-on-start=false", "build"],
                                         cwd=self.project, env=env, capture_output=True, text=True, timeout=15)
                 self.assertEqual(result.returncode, int(invalid), result.stdout + result.stderr)
                 self.assertEqual(list(temporary.iterdir()), [], result.stdout + result.stderr)
@@ -715,7 +765,7 @@ class WatchIntegration(unittest.TestCase):
 
     def recover_pending_manifest(self, rescan):
         options = ["--watch-rescan", "0.15"] if rescan else []
-        with self.watch(*options, "--watch-very-verbose", "build") as (process, log):
+        with self.watch(*options, "--watch-verbose=2", "build") as (process, log):
             self.manifest.write_text(
                 self.manifest_text + '[dependencies]\ndep={path="../missing"}\n'
                 + '[extra.fpm-watch]\nignore=["app/second.f90"]\n'
@@ -757,8 +807,8 @@ class WatchIntegration(unittest.TestCase):
         self.manifest.write_text(self.manifest_text + '[dependencies]\ndep={path="../dep"}\n')
         source = self.project / "app/second.f90"
         source.write_text("program second\nuse dep\nimplicit none\nend program second\n")
-        disabled = self.once("--watch-no-deps", "--watch-no-run-on-start", "--watch-print-files", "build")
-        enabled = self.once("--watch-deps", "--watch-no-run-on-start", "--watch-print-files", "build")
+        disabled = self.once("--watch-deps=false", "--watch-run-on-start=false", "--watch-verbose=2", "build")
+        enabled = self.once("--watch-deps", "--watch-run-on-start=false", "--watch-verbose=2", "build")
         self.assertEqual(disabled.returncode, 0, disabled.stdout + disabled.stderr)
         self.assertEqual(enabled.returncode, 0, enabled.stdout + enabled.stderr)
         self.assertNotIn("../dep/src/dep.f90", disabled.stdout)
@@ -772,7 +822,7 @@ class WatchIntegration(unittest.TestCase):
         (dep / "src/dep.f90").write_text("module dep\nimplicit none\nend module dep\n")
         self.manifest.write_text(self.manifest_text + '[features.special.dependencies]\ndep={path="build/featuredep"}\n')
         (self.project / "app/second.f90").write_text("program second\nuse dep\nimplicit none\nend program second\n")
-        result = self.once("--watch-deps", "--watch-no-run-on-start", "--watch-print-files", "build", "--features", "special")
+        result = self.once("--watch-deps", "--watch-run-on-start=false", "--watch-verbose=2", "build", "--features", "special")
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         self.assertIn("build/featuredep/src/dep.f90", result.stdout)
         self.assertIn("build/featuredep/fpm.toml", result.stdout)
@@ -795,7 +845,7 @@ class WatchIntegration(unittest.TestCase):
 
     @unittest.skipUnless(os.name == "posix", "console groups are checked by platform_regression.py on Windows")
     def test_interrupt_supervised_watcher(self):
-        self.interrupt_watcher(["--watch-auto-restart", "--watch-no-run-on-start", "run", "first"],
+        self.interrupt_watcher(["--watch-auto-restart", "--watch-run-on-start=false", "run", "first"],
                                "Ctrl+C or touch")
 
     @unittest.skipUnless(os.name == "posix", "console groups are checked by platform_regression.py on Windows")

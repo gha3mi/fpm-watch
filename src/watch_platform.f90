@@ -10,16 +10,27 @@ module watch_platform
    use watch_log, only: log_event, log_int, log_string
    use fpm_environment, only: get_os_type, OS_WINDOWS, get_env
    use fpm_error, only: error_t, fatal_error
+   use fpm_filesystem, only: exists, join_path
    implicit none
    private
    public is_windows, execute_command, termination_requested
    public begin_raw_output, end_raw_output, create_temp_directory, remove_temp_directory, set_temp_directory
    public set_workspace_root
+   public current_executable, stop_file_exists
 
    !> Latched cancellation request; ordinary child exit codes do not set it.
    logical, save :: stop_requested = .false.
 
    interface
+      !> Resolve the running native image; return zero or an OS error without truncation.
+      function fpm_watch_current_executable(path, capacity) bind(C, name="fpm_watch_current_executable") result(error)
+         import c_char, c_int, c_size_t
+         implicit none
+         ! allow(C071, C072)
+         character(kind=c_char), intent(out) :: path(*)
+         integer(c_size_t), value :: capacity
+         integer(c_int) :: error
+      end function fpm_watch_current_executable
       !> C process wrapper returning child status or 127 for a launch/wait error.
       !!
       !! `command` is NUL-terminated. On Windows, `silent` selects inherited streams:
@@ -89,6 +100,46 @@ module watch_platform
    end interface
 
 contains
+
+   !> Return the absolute native executable path for internal worker and supervisor launches.
+   function current_executable(error) result(path)
+      type(error_t), allocatable, intent(out) :: error
+      character(len=:), allocatable :: path
+      character(kind=c_char) :: buffer(32768)
+      integer(c_int) :: status
+      character(len=32) :: code
+
+      path = ""
+      status = fpm_watch_current_executable(buffer, int(size(buffer), c_size_t))
+      if (status /= 0_c_int) then
+         write(code, "(i0)") status
+         call fatal_error(error, "Cannot locate the running watcher executable (OS error " // trim(code) // ")")
+         return
+      end if
+      path = from_c_string(buffer)
+   end function current_executable
+
+   !> Copy a bounded NUL-terminated C path into an allocated Fortran string.
+   pure function from_c_string(buffer) result(path)
+      character(kind=c_char), intent(in) :: buffer(:)
+      character(len=:), allocatable :: path
+      integer :: i, n
+      n = 0
+      do i = 1, size(buffer)
+         if (buffer(i) == c_null_char) exit
+         n = n + 1
+      end do
+      path = repeat(" ", n)
+      do i = 1, n
+         path(i:i) = buffer(i)
+      end do
+   end function from_c_string
+
+   !> Check the stop marker in the selected project, independently of the process directory.
+   logical function stop_file_exists(project_dir) result(stopped)
+      character(len=*), intent(in) :: project_dir
+      stopped = exists(join_path(project_dir, ".fpm-watch.stop"))
+   end function stop_file_exists
 
    !> Wait for a command and return its status while latching handled user interrupts.
    !!
@@ -216,7 +267,6 @@ contains
       character(kind=c_char) :: buffer(32768)
       character(len=32) :: code
       integer(c_int) :: status
-      integer :: i, n
 
       path = ""
       status = fpm_watch_create_temp_directory(buffer, int(size(buffer), c_size_t))
@@ -226,15 +276,7 @@ contains
                           "); check the temporary directory and its permissions")
          return
       end if
-      n = 0
-      do i = 1, size(buffer)
-         if (buffer(i) == c_null_char) exit
-         n = n + 1
-      end do
-      path = repeat(" ", n)
-      do i = 1, n
-         path(i:i) = buffer(i)
-      end do
+      path = from_c_string(buffer)
    end subroutine create_temp_directory
 
    !> Remove a workspace and its contents without following links, tolerating repeated cleanup.

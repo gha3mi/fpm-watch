@@ -9,15 +9,8 @@ _fpm_watch() {
   i=1
   while (( i < ${#COMP_WORDS[@]} )); do
     case "${COMP_WORDS[i]}" in
-      --watch-poll|--watch-debounce|--watch-rescan|--watch-ignore|--watch-include|--watch-restart-delay|--watch-restart-max|--watch-self|--watch-log-format|--watch-fpm)
+      --watch-poll|--watch-debounce|--watch-rescan|--watch-ignore|--watch-include|--watch-restart-delay|--watch-restart-max|--watch-log-format|--watch-fpm)
         ((i+=2)); continue ;;
-      --watch-verbose)
-        if (( i+1 < ${#COMP_WORDS[@]} )) && [[ "${COMP_WORDS[i+1]}" =~ ^[0-2]$ ]]; then
-          ((i+=2))
-        else
-          ((i+=1))
-        fi
-        continue ;;
       --watch-verbose=*|--watch-*=*)
         ((i+=1)); continue ;;
     esac
@@ -50,26 +43,20 @@ _fpm_watch() {
 --watch-quiet -q
 --watch-log-format
 --watch-verbose -v
---watch-very-verbose -vv
---watch-debug
+-vv
 --watch-deps
---watch-no-deps
 --watch-poll
 --watch-debounce
 --watch-rescan
---watch-no-rescan
 --watch-run-on-start
---watch-no-run-on-start
 --watch-silent-fpm
 --watch-fpm
 --watch-output-markers
---watch-print-files
 --watch-ignore
 --watch-include
 --watch-auto-restart
 --watch-restart-delay
 --watch-restart-max
---watch-self
 --watch-once"
 
   if [[ -z "$cur" ]]; then
