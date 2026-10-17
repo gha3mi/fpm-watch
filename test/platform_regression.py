@@ -1,6 +1,7 @@
 """Exercise real watcher supervision and portable external-command execution."""
 
 import argparse
+import faulthandler
 import itertools
 import json
 import os
@@ -95,7 +96,7 @@ def live_process(pid):
     except ProcessLookupError:
         return False
     # An orphan may briefly remain as a zombie until the system reaps it.
-    state = subprocess.run(["ps", "-o", "stat=", "-p", str(pid)], capture_output=True, text=True).stdout.strip()
+    state = subprocess.run(["ps", "-o", "stat=", "-p", str(pid)], capture_output=True, text=True, timeout=3).stdout.strip()
     return bool(state) and not state.startswith("Z")
 
 
@@ -110,11 +111,8 @@ def descendant_processes(parent):
         descendants = expanded
 
 
-def cleanup_process_tree(process, descendants):
-    """Kill only this trial's groups before collecting pipes with a bounded wait."""
-    failure = sys.exc_info()[1]
-    known = set(descendants) | {process.pid}
-    known.update(descendant_processes(process.pid))
+def kill_process_groups(known):
+    """Kill only known trial groups, excluding the calling driver's group."""
     driver_group = os.getpgrp()
     groups = set()
     for pid in known:
@@ -129,6 +127,14 @@ def cleanup_process_tree(process, descendants):
             os.killpg(group, signal.SIGKILL)
         except ProcessLookupError:
             pass
+
+
+def cleanup_process_tree(process, descendants):
+    """Kill only this trial's groups before collecting pipes with a bounded wait."""
+    failure = sys.exc_info()[1]
+    known = set(descendants) | {process.pid}
+    known.update(descendant_processes(process.pid))
+    kill_process_groups(known)
     if process.poll() is None:
         process.kill()
     try:
@@ -178,50 +184,89 @@ def direct_signal_regressions(command, directory, env):
                 cleanup_process_tree(process, descendants)
 
 
-def terminal_regression(command, directory, env):
+def terminal_case(action, command):
+    """Run one PTY trial in a fresh interpreter before any subprocess calls."""
     import pty
     import select
 
-    for action in ("input", "interrupt", "close"):
-        pid, terminal = pty.fork()
-        if pid == 0:
-            os.chdir(directory)
-            os.execvpe(command[0], command, env | {"WATCH_TEST_STDIN": "1", "WATCH_TEST_EXIT": "0"})
-        transcript = bytearray()
-        reaped = False
-        try:
-            deadline = time.monotonic() + 10
-            while b"WATCH_PLATFORM_CHILD_OUTPUT" not in transcript:
-                assert time.monotonic() < deadline, "terminal child did not start"
-                if select.select([terminal], [], [], 0.1)[0]:
-                    transcript.extend(os.read(terminal, 65536))
-            if action == "close":
-                os.close(terminal)
-                terminal = -1
-            else:
-                os.write(terminal, b"terminal-input\n" if action == "input" else b"\x03")
-            if action == "input":
-                while b"WATCH_PLATFORM_STDIN:terminal-input" not in transcript:
-                    assert time.monotonic() < deadline, "foreground child could not read its terminal"
-                    if select.select([terminal], [], [], 0.1)[0]:
-                        transcript.extend(os.read(terminal, 65536))
-            while True:
-                waited, status = os.waitpid(pid, os.WNOHANG)
-                if waited:
-                    reaped = True
-                    expected = {"input": 0, "interrupt": 130, "close": 129}[action]
-                    actual = os.waitstatus_to_exitcode(status)
-                    assert actual == expected, (action, actual, expected, transcript.decode(errors="replace"))
-                    break
-                assert time.monotonic() < deadline, "terminal supervisor did not finish"
-                time.sleep(0.02)
-        finally:
-            if not reaped:
-                os.kill(pid, signal.SIGKILL)
-                os.waitpid(pid, 0)
-            if terminal >= 0:
-                os.close(terminal)
+    faulthandler.register(signal.SIGUSR1)
+    pid, terminal = pty.fork()
+    if pid == 0:
+        os.execve(command[0], command, os.environ)
+    os.set_blocking(terminal, False)
+    transcript = bytearray()
+    reaped = False
+    try:
+        deadline = time.monotonic() + 10
 
+        def read_until(marker, message):
+            while marker not in transcript:
+                assert time.monotonic() < deadline, (message, transcript.decode(errors="replace"))
+                if not select.select([terminal], [], [], 0.1)[0]:
+                    continue
+                try:
+                    chunk = os.read(terminal, 65536)
+                except BlockingIOError:
+                    continue
+                assert chunk, ("terminal closed before expected output", message)
+                transcript.extend(chunk)
+
+        read_until(b"WATCH_PLATFORM_CHILD_OUTPUT", "terminal child did not start")
+        if action == "close":
+            os.close(terminal)
+            terminal = -1
+        else:
+            os.write(terminal, b"terminal-input\n" if action == "input" else b"\x03")
+        if action == "input":
+            read_until(b"WATCH_PLATFORM_STDIN:terminal-input", "foreground child could not read its terminal")
+        while True:
+            waited, status = os.waitpid(pid, os.WNOHANG)
+            if waited:
+                reaped = True
+                expected = {"input": 0, "interrupt": 130, "close": 129}[action]
+                actual = os.waitstatus_to_exitcode(status)
+                assert actual == expected, (action, actual, expected, transcript.decode(errors="replace"))
+                break
+            assert time.monotonic() < deadline, "terminal supervisor did not finish"
+            time.sleep(0.02)
+    finally:
+        if not reaped:
+            kill_process_groups({pid} | descendant_processes(pid))
+            deadline = time.monotonic() + 3
+            while not os.waitpid(pid, os.WNOHANG)[0]:
+                assert time.monotonic() < deadline, "terminal child cleanup timed out"
+                time.sleep(0.02)
+        if terminal >= 0:
+            os.close(terminal)
+
+
+def terminal_regression(command, directory, env):
+    """Contain macOS fork/PTY operations, including close, within a bounded child."""
+    script = str(Path(__file__).resolve())
+    for action in ("input", "interrupt", "close"):
+        print(f"Terminal regression: {action}", flush=True)
+        process = subprocess.Popen([sys.executable, script, "--terminal-case", action, *command],
+                                   cwd=directory, env=env | {"WATCH_TEST_STDIN": "1", "WATCH_TEST_EXIT": "0"},
+                                   stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, start_new_session=True)
+        try:
+            try:
+                stdout, stderr = process.communicate(timeout=20)
+            except subprocess.TimeoutExpired as error:
+                # No watchdog thread is created before the helper's fork. Ask its
+                # signal handler for the native-blocking Python frame instead.
+                if process.poll() is None:
+                    process.send_signal(signal.SIGUSR1)
+                try:
+                    _, diagnostic = process.communicate(timeout=0.5)
+                except subprocess.TimeoutExpired as timeout:
+                    diagnostic = timeout.stderr or b""
+                if isinstance(diagnostic, bytes):
+                    diagnostic = diagnostic.decode(errors="replace")
+                print(diagnostic, file=sys.stderr, flush=True)
+                raise AssertionError(f"terminal {action} helper timed out") from error
+            assert process.returncode == 0, (action, stdout, stderr)
+        finally:
+            cleanup_process_tree(process, [])
 
 
 def worker_cancellation_regression(watcher, directory, supervisor_depth, stubborn):
@@ -426,6 +471,7 @@ def run_regressions(watcher):
             "--watch-fpm", str(executable), "build",
         ]
         expected = [["build"], ["build"]]
+        print("Supervisor regression: restart limits and exit status", flush=True)
         for code in (2, 130):
             env["WATCH_TEST_EXIT"] = str(code)
             log.unlink(missing_ok=True)
@@ -438,6 +484,7 @@ def run_regressions(watcher):
         log.unlink()
         env["WATCH_TEST_EXIT"] = "0"
         env["WATCH_TEST_STDIN"] = "1"
+        print("Supervisor regression: forwarded stdin", flush=True)
         result = subprocess.run(command, cwd=directory, env=env, capture_output=True,
                                 input="forwarded-input\n", text=True, timeout=10)
         assert result.returncode == 0, result.stderr
@@ -449,17 +496,21 @@ def run_regressions(watcher):
                     'quote" & echo WATCH_INJECTED & rem "', "a&b|c<d>e^f(g)", "dir\\", 'slash\\"quote']
         forwarded = ["run", "--", "--watch-restart-max", "12", "--watch-fpm", "unchanged"]
         argument_command = [*command[:-1], *forwarded]
+        print("Supervisor regression: literal arguments", flush=True)
         check_forwarded_arguments(argument_command, literals, directory, env, log, forwarded)
         if os.name == "nt":
             windows_batch_regressions(watcher, argument_command, literals, directory, env, log, forwarded)
 
         if os.name == "posix":
             terminal_regression(command, directory, env)
+            print("Supervisor regression: direct and nested signals", flush=True)
             direct_signal_regressions(command, directory, env)
             for supervisor_depth in (0, 1):
                 for stubborn in (False, True):
+                    print(f"Supervisor regression: graph cancellation depth={supervisor_depth} stubborn={stubborn}", flush=True)
                     worker_cancellation_regression(watcher, directory, supervisor_depth, stubborn)
 
+        print("Supervisor regression: surviving background commands", flush=True)
         for code in (0, 2):
             marker = directory / f"background-{code}.txt"
             env["WATCH_TEST_BACKGROUND"] = str(marker)
@@ -472,8 +523,10 @@ def run_regressions(watcher):
                 assert time.monotonic() < deadline, "normal command exit terminated its background child"
                 time.sleep(0.02)
         del env["WATCH_TEST_BACKGROUND"]
+        print("Supervisor regression: background workspace ownership", flush=True)
         background_workspace_regressions(watcher, directory)
 
+        print("Supervisor regression: console interrupt", flush=True)
         log.unlink()
         env["WATCH_TEST_WAIT"] = "1"
         allocated_console = ensure_console()
@@ -501,10 +554,13 @@ def run_regressions(watcher):
                 process.communicate(timeout=5)
             if allocated_console is not None:
                 allocated_console.FreeConsole()
-    print("Supervisor platform regressions passed")
+    print("Supervisor platform regressions passed", flush=True)
 
 
 if __name__ == "__main__":
+    if len(sys.argv) > 1 and sys.argv[1] == "--terminal-case":
+        terminal_case(sys.argv[2], sys.argv[3:])
+        sys.exit(0)
     if len(sys.argv) > 1 and sys.argv[1] == "--background-watcher-launcher":
         background_watcher_launcher()
         sys.exit(0)
@@ -536,4 +592,11 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("watcher", type=Path, help="path to the built fpm-watch executable")
     args = parser.parse_args()
-    run_regressions(args.watcher.resolve())
+    # PTY trials fork only in fresh helper interpreters, never in this process
+    # after creating faulthandler's watchdog thread or calling subprocess APIs.
+    faulthandler.enable()
+    faulthandler.dump_traceback_later(600 if os.name == "nt" else 180, exit=True)
+    try:
+        run_regressions(args.watcher.resolve())
+    finally:
+        faulthandler.cancel_dump_traceback_later()
