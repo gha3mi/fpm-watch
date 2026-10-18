@@ -89,6 +89,7 @@ program test_cmdline
       call require(quote_arg("") == "''", "POSIX empty argument")
       call require(quote_arg("tail  ") == "'tail  '", "POSIX trailing spaces")
    end if
+   call check_long_quotes()
    call require(watch_option_takes_value("--watch-ignore"), "watch option consumes value")
    call require(.not. watch_option_takes_value("--watch-ignore=run"), "equals-style watch option arity")
    call parse_bool(" YES ", enabled, ok)
@@ -165,6 +166,32 @@ program test_cmdline
       "Windows escaped quotes preserve runner and delimiter")
 
 contains
+
+   !> Exercise large quote/backslash runs without depending on command-line size limits.
+   subroutine check_long_quotes()
+      integer, parameter :: repetitions = 10000
+      character(len=:), allocatable :: value, quoted, fragment
+
+      value = repeat("x'", repetitions) // " tail  "
+      fragment = "x'""'""'"
+      expected = "'" // repeat(fragment, repetitions) // " tail  '"
+      call require(quote_arg(value, windows=.false.) == expected, "long POSIX escaped quotes")
+      value = repeat("'", repetitions)
+      fragment = "'""'""'"
+      call require(quote_arg(value, windows=.false.) == "'" // repeat(fragment, repetitions) // "'", &
+         "POSIX all-quote argument")
+
+      value = repeat("x" // achar(92) // '"', repetitions) // repeat(achar(92), repetitions)
+      fragment = "x" // repeat(achar(92), 3) // '"'
+      quoted = '"' // repeat(fragment, repetitions) // repeat(achar(92), 2 * repetitions) // '"'
+      call require(quote_arg(value, windows=.true.) == quoted, "long Windows escaped quotes and trailing backslashes")
+      value = repeat(achar(92), repetitions) // "x"
+      call require(quote_arg(value, windows=.true.) == '"' // value // '"', "Windows ordinary backslash run")
+      value = repeat(achar(92), repetitions) // '"'
+      call require(quote_arg(value, windows=.true.) == &
+         '"' // repeat(achar(92), 2 * repetitions + 1) // '""', "Windows backslash run before quote")
+      call require(join_argv(2, 1) == "", "reversed argv range remains empty")
+   end subroutine check_long_quotes
 
    !> Assert a regression condition with an actionable failure message.
    subroutine require(condition, message)

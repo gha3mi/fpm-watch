@@ -9,7 +9,7 @@ module watch_graph_worker
    use, intrinsic :: iso_fortran_env, only: int64
    use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
    use watch_types, only: watch_config_t, root_info_t
-   use watch_cmdline, only: get_arg, quote_arg
+   use watch_cmdline, only: join_argv, quote_arg
    use watch_platform, only: create_temp_directory, remove_temp_directory, set_temp_directory, execute_command, current_executable
    use watch_fpm_graph, only: compute_watch_files_from_settings
    use watch_log, only: log_event
@@ -17,11 +17,11 @@ module watch_graph_worker
    use fpm_error, only: error_t, fatal_error
    use fpm_os, only: change_directory
    use fpm_filesystem, only: join_path, dirname
-   use fpm_toml, only: toml_table, toml_array, toml_load, toml_error, new_table, add_array, len
-   use tomlf, only: get_value, set_value, toml_dump, toml_stat
+   use fpm_toml, only: toml_table, toml_array, toml_error, len
+   use tomlf, only: get_value, toml_stat, toml_loads
    implicit none
    private
-   public compute_watch_snapshot, run_graph_worker, read_graph_response
+   public compute_watch_snapshot, run_graph_worker, read_graph_response, write_graph_response
 
    integer, parameter :: RESPONSE_VERSION = 2
 
@@ -37,7 +37,7 @@ contains
       real, intent(out) :: build_secs, secs_model, secs_targets, secs_watch
       type(error_t), allocatable, intent(out) :: error
       character(len=:), allocatable :: workspace, response_path, command, format, executable
-      integer :: i, status
+      integer :: status
 
       build_secs = 0.0
       secs_model = 0.0
@@ -51,9 +51,7 @@ contains
       format = "text"
       if (allocated(cfg%w%log_format)) format = cfg%w%log_format
       command = quote_arg(executable) // " --watch-graph-worker " // quote_arg(response_path) // " " // quote_arg(format)
-      do i = 1, command_argument_count()
-         command = command // " " // quote_arg(get_arg(i))
-      end do
+      if (command_argument_count() > 0) command = command // " " // join_argv(1, command_argument_count())
       call execute_command(command, status)
       if (status == 0) then
          call read_graph_response(response_path, files, file_mask, roots, &
@@ -99,7 +97,11 @@ contains
       end if
    end subroutine run_graph_worker
 
-   !> Write one versioned TOML response using fpm's TOML dependency.
+   !> Stream the fixed TOML response schema without accumulating a complete document.
+   !!
+   !! Strings contain only hexadecimal ASCII, so each array member is safe to
+   !! write directly. fpm's TOML parser continues to validate the received document.
+   !! Storage is bounded by the longest encoded entry, rather than the full graph.
    subroutine write_graph_response(path, files, file_mask, roots, timings, graph_error, error)
       character(len=*), intent(in) :: path
       type(string_t), allocatable, intent(in) :: files(:)
@@ -108,51 +110,66 @@ contains
       real, intent(in) :: timings(4)
       type(error_t), allocatable, intent(in) :: graph_error
       type(error_t), allocatable, intent(out) :: error
-      type(toml_table) :: table
-      type(toml_array), pointer :: array
-      type(toml_error), allocatable :: serialization_error
       integer :: i, unit, status, close_status
-      character(len=512) :: message
+      character(len=512) :: message, close_message
+      character(len=32) :: real_text
 
-      call new_table(table)
-      call set_value(table, "version", RESPONSE_VERSION)
-      call set_value(table, "success", .not. allocated(graph_error))
-      if (allocated(graph_error)) then
-         call set_value(table, "error", encode_bytes(graph_error%message))
-      else
-         call add_array(table, "files", array)
-         do i = 1, size(files)
-            call set_value(array, i, encode_bytes(files(i)%s))
-         end do
-         call add_array(table, "file-masks", array)
-         do i = 1, size(file_mask)
-            call set_value(array, i, file_mask(i))
-         end do
-         call add_array(table, "root-names", array)
-         do i = 1, size(roots)
-            call set_value(array, i, encode_bytes(roots(i)%name))
-         end do
-         call add_array(table, "root-masks", array)
-         do i = 1, size(roots)
-            call set_value(array, i, roots(i)%mask)
-         end do
-         call add_array(table, "timings", array)
-         do i = 1, size(timings)
-            call set_value(array, i, timings(i))
-         end do
-      end if
       open(newunit=unit, file=path, status="new", action="write", iostat=status, iomsg=message)
       if (status /= 0) then
          call fatal_error(error, "Cannot write watch graph response: " // trim(message))
          return
       end if
-      call toml_dump(table, unit, serialization_error)
-      close(unit, iostat=close_status, iomsg=message)
-      if (allocated(serialization_error)) then
-         call fatal_error(error, "Cannot serialize watch graph response: " // serialization_error%message)
-      else if (close_status /= 0) then
-         call fatal_error(error, "Cannot close watch graph response: " // trim(message))
+      call append("version = " // str(RESPONSE_VERSION))
+      if (allocated(graph_error)) then
+         call append("success = false")
+         call append('error = "' // encode_bytes(graph_error%message) // '"')
+      else
+         call append("success = true")
+         call append("files = [")
+         do i = 1, size(files)
+            if (status /= 0) exit
+            call append('  "' // encode_bytes(files(i)%s) // '",')
+         end do
+         call append("]")
+         call append("file-masks = [")
+         do i = 1, size(file_mask)
+            if (status /= 0) exit
+            call append("  " // str(file_mask(i)) // ",")
+         end do
+         call append("]")
+         call append("root-names = [")
+         do i = 1, size(roots)
+            if (status /= 0) exit
+            call append('  "' // encode_bytes(roots(i)%name) // '",')
+         end do
+         call append("]")
+         call append("root-masks = [")
+         do i = 1, size(roots)
+            if (status /= 0) exit
+            call append("  " // str(roots(i)%mask) // ",")
+         end do
+         call append("]")
+         call append("timings = [")
+         do i = 1, size(timings)
+            if (status /= 0) exit
+            write(real_text, "(es24.16e3)", decimal="point", iostat=status, iomsg=message) timings(i)
+            call append("  " // trim(adjustl(real_text)) // ",")
+         end do
+         call append("]")
       end if
+      close(unit, iostat=close_status, iomsg=close_message)
+      if (status /= 0) then
+         call fatal_error(error, "Cannot write watch graph response: " // trim(message))
+      else if (close_status /= 0) then
+         call fatal_error(error, "Cannot close watch graph response: " // trim(close_message))
+      end if
+   contains
+      !> Retain the first write error while allowing the caller to close the unit.
+      subroutine append(record)
+         character(len=*), intent(in) :: record
+         if (status /= 0) return
+         write(unit, "(a)", iostat=status, iomsg=message) record
+      end subroutine append
    end subroutine write_graph_response
 
    !> Validate version, fields, alignment, masks, paths, and timings before accepting a response.
@@ -170,9 +187,8 @@ contains
       type(string_t), allocatable :: candidate_files(:)
       integer(int64), allocatable :: candidate_masks(:)
       type(root_info_t), allocatable :: candidate_roots(:)
-      character(len=:), allocatable :: encoded, decoded
-      character(len=512) :: message
-      integer :: unit, status, version, i, nfiles, nroots
+      character(len=:), allocatable :: encoded, decoded, source
+      integer :: status, version, i, nfiles, nroots
       integer(int64) :: allowed_mask
       real :: timings(4)
       logical :: success, valid
@@ -181,13 +197,10 @@ contains
       secs_model = 0.0
       secs_targets = 0.0
       secs_watch = 0.0
-      open(newunit=unit, file=path, status="old", action="read", iostat=status, iomsg=message)
-      if (status /= 0) then
-         call fatal_error(error, "Cannot read watch graph response: " // trim(message))
-         return
-      end if
-      call toml_load(table, unit, error=parse_error)
-      close(unit)
+      call read_response_source(path, source, error)
+      if (allocated(error)) return
+      call toml_loads(table, source, error=parse_error)
+      deallocate(source)
       if (allocated(parse_error)) then
          call invalid_response(error, "invalid TOML")
          return
@@ -290,6 +303,40 @@ contains
       secs_targets = timings(3)
       secs_watch = timings(4)
    end subroutine read_graph_response
+
+   !> Read the closed worker file once, avoiding repeated concatenation of TOML records.
+   subroutine read_response_source(path, source, error)
+      character(len=*), intent(in) :: path
+      character(len=:), allocatable, intent(out) :: source
+      type(error_t), allocatable, intent(out) :: error
+      integer :: unit, status, close_status
+      integer(int64) :: length
+      character(len=512) :: message, close_message
+
+      open(newunit=unit, file=path, status="old", action="read", access="stream", form="unformatted", &
+         iostat=status, iomsg=message)
+      if (status /= 0) then
+         call fatal_error(error, "Cannot read watch graph response: " // trim(message))
+         return
+      end if
+      inquire(unit=unit, size=length, iostat=status, iomsg=message)
+      if (status == 0) then
+         if (length < 0_int64 .or. length > int(huge(0), int64)) then
+            status = 1
+            message = "Response size exceeds the TOML parser's supported range"
+         end if
+      end if
+      if (status == 0) allocate(character(len=length) :: source, stat=status, errmsg=message)
+      if (status == 0) then
+         if (length > 0_int64) read(unit, iostat=status, iomsg=message) source
+      end if
+      close(unit, iostat=close_status, iomsg=close_message)
+      if (status /= 0) then
+         call fatal_error(error, "Cannot read watch graph response: " // trim(message))
+      else if (close_status /= 0) then
+         call fatal_error(error, "Cannot close watch graph response: " // trim(close_message))
+      end if
+   end subroutine read_response_source
 
    !> Report malformed worker data without accepting a partial snapshot.
    subroutine invalid_response(error, detail)

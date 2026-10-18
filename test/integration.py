@@ -731,6 +731,26 @@ class WatchIntegration(unittest.TestCase):
                 wait_for(process, log, lambda text: text.count("INFO  Build succeeded") >= iteration + 1)
                 self.assertLessEqual(len(list(descriptors.iterdir())), baseline + 1, output(log))
 
+    @unittest.skipUnless(os.name == "posix", "descriptor limits use the POSIX resource module")
+    def test_many_empty_sources_under_descriptor_limit(self):
+        import resource
+
+        def limit_descriptors():
+            _, hard = resource.getrlimit(resource.RLIMIT_NOFILE)
+            soft = 256 if hard == resource.RLIM_INFINITY else min(256, hard)
+            resource.setrlimit(resource.RLIMIT_NOFILE, (soft, hard))
+
+        for index in range(300):
+            (self.project / "src" / f"empty_{index}.f90").touch()
+        result = subprocess.run(
+            [str(WATCHER), "--watch-once", "--watch-run-on-start=false", "--watch-log-format=json", "build"],
+            cwd=self.project, capture_output=True, text=True, encoding="utf-8", errors="replace",
+            timeout=30, preexec_fn=limit_descriptors,
+        )
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        ready = next(event for event in records(result.stdout, "json") if event["event"] == "watch.ready")
+        self.assertGreaterEqual(ready["file_count"], 300)
+
     def test_model_workspace_cleanup_after_success_and_failure(self):
         temporary = self.root / "model-temp"
         temporary.mkdir()

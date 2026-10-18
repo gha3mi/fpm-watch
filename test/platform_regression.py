@@ -290,6 +290,62 @@ def terminal_regression(command, directory, env):
             cleanup_process_tree(process, [])
 
 
+def compiler_descriptor_regression(watcher, directory, env):
+    """A compiler helper must not inherit the temporarily saved JSON stdout."""
+    project = directory / "compiler-descriptor"
+    make_project(project)
+    compiler = make_child(project, "--compiler-background-launcher", "audit-mpifort")
+    fpm = make_child(project)
+    release = project / "background.release"
+    trial_env = env | {
+        "WATCH_TEST_COMPILER_BACKGROUND": str(project), "WATCH_TEST_EXIT": "0",
+        "PATH": str(project) + os.pathsep + env.get("PATH", ""),
+    }
+    invocation = [str(watcher), "--watch-once", "--watch-log-format=json", "--watch-fpm", str(fpm),
+                  "build", "--compiler", compiler.name]
+    process = subprocess.Popen(invocation, cwd=project, env=trial_env,
+                               stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    try:
+        process.wait(timeout=15)
+        assert list(project.glob("background.*.ready")), "graph model never queried the compiler wrapper"
+        stdout, stderr = process.communicate(timeout=2)
+        assert process.returncode == 0, (stdout, stderr)
+        assert not list(project.glob("background.*.done")), "compiler helper exited before the descriptor check"
+    finally:
+        release.touch()
+        if process.poll() is None:
+            process.kill()
+        process.communicate(timeout=5)
+        deadline = time.monotonic() + 5
+        while len(list(project.glob("background.*.done"))) < len(list(project.glob("background.*.ready"))):
+            assert time.monotonic() < deadline, "background compiler helper did not finish"
+            time.sleep(0.02)
+
+
+def compiler_background_launcher():
+    project = Path(os.environ["WATCH_TEST_COMPILER_BACKGROUND"])
+    process = subprocess.Popen(
+        [sys.executable, str(Path(__file__).resolve()), "--compiler-background"],
+        stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+        close_fds=False,
+    )
+    ready = project / f"background.{process.pid}.ready"
+    deadline = time.monotonic() + 5
+    while not ready.exists():
+        assert process.poll() is None and time.monotonic() < deadline, "background compiler helper did not start"
+        time.sleep(0.01)
+    print("gfortran", flush=True)
+
+
+def compiler_background():
+    project = Path(os.environ["WATCH_TEST_COMPILER_BACKGROUND"])
+    write_pid(project / f"background.{os.getpid()}.ready")
+    deadline = time.monotonic() + 30
+    while not (project / "background.release").exists() and time.monotonic() < deadline:
+        time.sleep(0.02)
+    (project / f"background.{os.getpid()}.done").write_text("done", encoding="ascii")
+
+
 def worker_cancellation_regression(watcher, directory, supervisor_depth, stubborn):
     project = directory / f"graph-cancel-{supervisor_depth}-{stubborn}"
     project.mkdir()
@@ -522,6 +578,9 @@ def run_regressions(watcher):
         if os.name == "nt":
             windows_batch_regressions(watcher, argument_command, literals, directory, env, log, forwarded)
 
+        print("Supervisor regression: compiler descriptor inheritance", flush=True)
+        compiler_descriptor_regression(watcher, directory, env)
+
         if os.name == "posix":
             terminal_regression(command, directory, env)
             print("Supervisor regression: direct and nested signals", flush=True)
@@ -579,6 +638,12 @@ def run_regressions(watcher):
 
 
 if __name__ == "__main__":
+    if len(sys.argv) > 1 and sys.argv[1] == "--compiler-background-launcher":
+        compiler_background_launcher()
+        sys.exit(0)
+    if len(sys.argv) > 1 and sys.argv[1] == "--compiler-background":
+        compiler_background()
+        sys.exit(0)
     if len(sys.argv) > 1 and sys.argv[1] == "--terminal-case":
         terminal_case(sys.argv[2], sys.argv[3:])
         sys.exit(0)

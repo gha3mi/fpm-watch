@@ -154,6 +154,7 @@ program graph_check
    call check_shared_includes()
    call check_global_metadata_overlap()
    call check_empty_library_graph()
+   call check_empty_source_units()
 
    call change_directory(initial_directory, error)
    call check_error()
@@ -605,6 +606,50 @@ contains
          end if
       end do
    end subroutine check_empty_library_graph
+
+   !> Empty model sources release their units without closing caller-owned files.
+   subroutine check_empty_source_units()
+      type(fpm_build_settings) :: empty_settings
+      type(watch_opts_t) :: empty_options
+      character(len=:), allocatable :: fixture
+      character(len=32), parameter :: empty_paths(3) = [character(len=32) :: &
+         "src/empty.f90", "src/empty.c", "deps/empty/src/empty.f90"]
+      integer :: pass, path, caller_unit
+      logical :: opened
+
+      fixture = join_path(initial_directory, "build/watch-graph-tests/empty-sources")
+      call mkdir(join_path(fixture, "src"), echo=.false.)
+      call mkdir(join_path(fixture, "app"), echo=.false.)
+      call mkdir(join_path(fixture, "deps/empty/src"), echo=.false.)
+      call change_directory(fixture, error)
+      call check_error()
+      call write_lines("fpm.toml", [character(len=80) :: &
+         'name = "empty_source_graph"', "[dependencies]", 'empty_dep = { path = "deps/empty" }'])
+      call write_lines("deps/empty/fpm.toml", [character(len=60) :: 'name = "empty_dep"'])
+      call write_lines("app/main.f90", [character(len=60) :: "program main", "end program main"])
+      do path = 1, size(empty_paths)
+         call write_lines(trim(empty_paths(path)), [character(len=1) :: ])
+      end do
+
+      empty_settings = settings%fpm_build_settings
+      empty_options%verbosity = -1
+      open(newunit=caller_unit, file="caller-owned.txt", status="replace", action="readwrite")
+      do pass = 1, 20
+         call compute_watch_files_from_settings(empty_settings, empty_options, files, masks, roots, &
+            build_secs, model_secs, target_secs, watch_secs, error)
+         call check_error()
+         call expect_file("src/empty.f90", .true.)
+         call expect_file("src/empty.c", .true.)
+         call expect_file("deps/empty/src/empty.f90", .false.)
+         do path = 1, size(empty_paths)
+            inquire(file=trim(empty_paths(path)), opened=opened)
+            if (opened) error stop "empty model source left a file unit open"
+         end do
+         inquire(unit=caller_unit, opened=opened)
+         if (.not. opened) error stop "graph construction closed a caller-owned file"
+      end do
+      close(caller_unit, status="delete")
+   end subroutine check_empty_source_units
 
    !> Verify that a watched path retains exactly the expected root membership.
    subroutine expect_mask(path, expected)

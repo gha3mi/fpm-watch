@@ -15,7 +15,8 @@ source-form = "free"
 [preprocess.cpp]
 
 [dependencies]
-fpm  = { git = "https://github.com/fortran-lang/fpm", tag = "v0.13.0" }
+# Current upstream fpm plus the empty-file unit cleanup fix on gha3mi/fpm's dev branch.
+fpm  = { git = "https://github.com/gha3mi/fpm", rev = "e2798a98b9cb6ca373e8d9a2c7ec3b01bfee03de" }
 
 [profiles]
 ci-release = ["ci-release"]

@@ -1,12 +1,12 @@
 !> Reject incomplete worker responses and preserve native snapshot bytes.
 program check_graph_worker
    use, intrinsic :: iso_fortran_env, only: int64
-   use watch_graph_worker, only: read_graph_response
+   use watch_graph_worker, only: read_graph_response, write_graph_response
    use watch_platform, only: create_temp_directory, remove_temp_directory
    use fpm_filesystem, only: join_path
    use watch_types, only: root_info_t
-   use fpm_strings, only: string_t
-   use fpm_error, only: error_t
+   use fpm_strings, only: string_t, str
+   use fpm_error, only: error_t, fatal_error
    implicit none
    type(string_t), allocatable :: lines(:), files(:)
    type(root_info_t), allocatable :: roots(:)
@@ -83,12 +83,81 @@ program check_graph_worker
    call reject_line(3, 'error = ""')
    call reject_line(3, 'error = "zz"')
    call reject_line(3, "")
+   call check_streamed_response()
    call remove_temp_directory(workspace)
    call read_response()
    if (.not. allocated(error)) error stop "missing worker response accepted"
    print *, "Graph worker response checks passed"
 
 contains
+
+   !> Round-trip a large streamed snapshot, native bytes, high mask bits, and worker failures.
+   subroutine check_streamed_response()
+      type(string_t), allocatable :: source_files(:), decoded_files(:)
+      type(root_info_t), allocatable :: source_roots(:), decoded_roots(:)
+      integer(int64), allocatable :: source_masks(:), decoded_masks(:)
+      type(error_t), allocatable :: graph_error, write_error, read_error
+      character(len=:), allocatable :: stream_path, native_bytes
+      integer :: j
+      real, parameter :: timings(4) = [0.125, 0.25, 0.5, 1.0]
+      real :: actual_timings(4)
+
+      native_bytes = repeat(" ", 255)
+      do j = 1, 255
+         native_bytes(j:j) = achar(j)
+      end do
+      allocate(source_files(10000), source_masks(10000), source_roots(64))
+      do j = 1, size(source_roots)
+         source_roots(j)%name = "root/" // str(j) // native_bytes
+         source_roots(j)%mask = ibset(0_int64, j - 1)
+      end do
+      do j = 1, size(source_files)
+         source_files(j)%s = "src/" // str(j) // "/" // repeat("long-path/", 10) // "tail  "
+         source_masks(j) = ior(source_roots(1)%mask, source_roots(64)%mask)
+      end do
+      source_files(1)%s = native_bytes
+      stream_path = join_path(workspace, "streamed.toml")
+      call write_graph_response(stream_path, source_files, source_masks, source_roots, timings, graph_error, write_error)
+      if (allocated(write_error)) error stop "cannot write large streamed response"
+      call read_graph_response(stream_path, decoded_files, decoded_masks, decoded_roots, &
+         actual_timings(1), actual_timings(2), actual_timings(3), actual_timings(4), read_error)
+      if (allocated(read_error)) error stop "cannot read large streamed response"
+      if (size(decoded_files) /= size(source_files)) error stop "streamed file count changed"
+      if (size(decoded_roots) /= size(source_roots)) error stop "streamed root count changed"
+      if (any(decoded_masks /= source_masks)) error stop "streamed high-bit masks changed"
+      if (any(abs(actual_timings - timings) > 1.0e-6)) error stop "streamed timings changed"
+      do j = 1, size(source_files)
+         if (decoded_files(j)%s /= source_files(j)%s) error stop "streamed native path changed"
+      end do
+      do j = 1, size(source_roots)
+         if (decoded_roots(j)%name /= source_roots(j)%name) error stop "streamed native root changed"
+         if (decoded_roots(j)%mask /= source_roots(j)%mask) error stop "streamed root mask changed"
+      end do
+      call write_graph_response(stream_path, source_files, source_masks, source_roots, timings, graph_error, write_error)
+      if (.not. allocated(write_error)) error stop "streamed writer overwrote an existing response"
+
+      deallocate(source_files, source_masks, source_roots)
+      allocate(source_files(0), source_masks(0), source_roots(0))
+      stream_path = join_path(workspace, "streamed-empty.toml")
+      call write_graph_response(stream_path, source_files, source_masks, source_roots, timings, graph_error, write_error)
+      if (allocated(write_error)) error stop "cannot write empty streamed response"
+      call read_graph_response(stream_path, decoded_files, decoded_masks, decoded_roots, &
+         actual_timings(1), actual_timings(2), actual_timings(3), actual_timings(4), read_error)
+      if (allocated(read_error)) error stop "cannot read empty streamed response"
+      if (size(decoded_files) /= 0 .or. size(decoded_roots) /= 0) error stop "empty streamed arrays changed"
+
+      deallocate(source_files, source_masks, source_roots)
+      call fatal_error(graph_error, "worker failure/" // native_bytes)
+      stream_path = join_path(workspace, "streamed-error.toml")
+      call write_graph_response(stream_path, source_files, source_masks, source_roots, timings, graph_error, write_error)
+      if (allocated(write_error)) error stop "cannot write streamed worker failure"
+      call read_graph_response(stream_path, decoded_files, decoded_masks, decoded_roots, &
+         actual_timings(1), actual_timings(2), actual_timings(3), actual_timings(4), read_error)
+      if (.not. allocated(read_error)) error stop "streamed worker failure accepted"
+      if (read_error%message /= graph_error%message) error stop "streamed native error changed"
+      if (allocated(decoded_files) .or. allocated(decoded_masks) .or. allocated(decoded_roots)) &
+         error stop "streamed worker failure accepted partial arrays"
+   end subroutine check_streamed_response
 
    !> Read every protocol output, reusing storage to expose partial acceptance.
    subroutine read_response()

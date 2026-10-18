@@ -552,8 +552,7 @@ contains
          return
       end if
       collected%includes(index)%parsed = .true.
-      ! fpm's text reader leaves its unit open for an empty file. Empty files
-      ! have no includes, so retain them in the watch set without parsing them.
+      ! Empty files have no includes; retain them without invoking either parser.
       inquire(file=path, size=file_size, iostat=io_status)
       if (io_status /= 0) return
       if (file_size <= 0_int64) return

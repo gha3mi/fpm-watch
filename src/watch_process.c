@@ -18,7 +18,8 @@ static int launch_failure(int error, int *launch_error) {
 #include <io.h>
 #include <errno.h>
 #include <ctype.h>
-#define watch_dup _dup
+#include <fcntl.h>
+#include <stdint.h>
 #define watch_dup2 _dup2
 #define watch_close _close
 
@@ -234,11 +235,11 @@ cleanup:
 #include <stdlib.h>
 #include <string.h>
 #include <sys/types.h>
+#include <sys/select.h>
 #include <sys/wait.h>
 #include <termios.h>
 #include <time.h>
 #include <unistd.h>
-#define watch_dup dup
 #define watch_dup2 dup2
 #define watch_close close
 
@@ -251,6 +252,11 @@ static volatile sig_atomic_t monitor_parent = 0;
 static const char group_variable[] = "FPM_WATCH_PROCESS_GROUP=";
 static const int watched_signals[] = {SIGHUP, SIGINT, SIGQUIT, SIGTERM};
 enum { WATCHED_SIGNAL_COUNT = sizeof(watched_signals) / sizeof(watched_signals[0]) };
+
+/* SIGCHLD wakes pselect; waitpid owns both completion and job-control status. */
+static void child_status_handler(int signal_number) {
+    (void)signal_number;
+}
 
 /* Forward once: managed groups can include another watcher and its monitor. */
 static void watch_signal_handler(int signal_number) {
@@ -274,12 +280,14 @@ static void monitor_signal_handler(int signal_number) {
 }
 
 static int close_on_exec_pipe(int descriptors[2]) {
+    descriptors[0] = descriptors[1] = -1;
     if (pipe(descriptors) != 0) return -1;
     if (fcntl(descriptors[0], F_SETFD, FD_CLOEXEC) < 0 ||
         fcntl(descriptors[1], F_SETFD, FD_CLOEXEC) < 0) {
         int error = errno;
         close(descriptors[0]);
         close(descriptors[1]);
+        descriptors[0] = descriptors[1] = -1;
         errno = error;
         return -1;
     }
@@ -376,14 +384,14 @@ static void run_monitor(const char *command, int gate, int result_descriptor,
 }
 
 int fpm_watch_execute(const char *command, int silent, int *interrupted, int *launch_error) {
-    struct sigaction action, previous[WATCHED_SIGNAL_COUNT];
-    sigset_t blocked, previous_mask;
+    struct sigaction action, previous[WATCHED_SIGNAL_COUNT], previous_child;
+    sigset_t blocked, previous_mask, wait_mask;
     struct command_result result;
     struct timespec pause = {0, 50000000};
     pid_t pid = -1, waited, original_group = getpgrp(), managed_group = 0;
     int gate[2] = {-1, -1}, results[2] = {-1, -1};
     int status = 0, error = 0, installed = 0, i, reaped = 0;
-    int terminal = -1, terminal_given = 0;
+    int terminal = -1, terminal_given = 0, child_handler_installed = 0;
     double deadline = 0.0;
     size_t nenv = 0, used = 0;
     char **environment = NULL, marker[sizeof(group_variable) + 32];
@@ -408,6 +416,7 @@ int fpm_watch_execute(const char *command, int silent, int *interrupted, int *la
     environment[used] = NULL;
     sigemptyset(&blocked);
     for (i = 0; i < WATCHED_SIGNAL_COUNT; ++i) sigaddset(&blocked, watched_signals[i]);
+    sigaddset(&blocked, SIGCHLD);
     if (sigprocmask(SIG_BLOCK, &blocked, &previous_mask) != 0) {
         error = errno;
         free(environment);
@@ -420,6 +429,11 @@ int fpm_watch_execute(const char *command, int silent, int *interrupted, int *la
         if (sigaction(watched_signals[i], &action, &previous[i]) != 0) { error = errno; goto restore; }
         ++installed;
     }
+    action.sa_handler = child_status_handler;
+    if (sigaction(SIGCHLD, &action, &previous_child) != 0) { error = errno; goto restore; }
+    child_handler_installed = 1;
+    wait_mask = previous_mask;
+    sigdelset(&wait_mask, SIGCHLD);
     if (close_on_exec_pipe(gate) != 0 || close_on_exec_pipe(results) != 0) { error = errno; goto restore; }
     terminal = open("/dev/tty", O_RDWR | O_CLOEXEC);
     pid = fork();
@@ -455,6 +469,9 @@ int fpm_watch_execute(const char *command, int silent, int *interrupted, int *la
     close(gate[1]); gate[1] = -1;
     sigprocmask(SIG_SETMASK, &previous_mask, NULL);
     for (;;) {
+        /* Block before checking state: pselect atomically releases these signals
+         * while waiting, so a fast child cannot finish between the check and sleep. */
+        sigprocmask(SIG_BLOCK, &blocked, NULL);
         if (!reaped) {
             waited = waitpid(pid, &status, WNOHANG | WUNTRACED);
             if (waited == pid) {
@@ -487,7 +504,14 @@ int fpm_watch_execute(const char *command, int silent, int *interrupted, int *la
                 }
             }
         } else if (reaped) break;
-        nanosleep(&pause, NULL);
+        {
+            struct timespec interval = pause;
+            const struct timespec *timeout = interrupt_signal != 0 && ancestor_group == 0 ? &interval : NULL;
+            if (pselect(0, NULL, NULL, NULL, timeout, &wait_mask) < 0 && errno != EINTR) {
+                error = errno;
+                goto cancel;
+            }
+        }
     }
     if (!reaped) {
         while (waitpid(pid, &status, 0) < 0) {
@@ -521,6 +545,7 @@ restore:
     else if (!error && WIFEXITED(status)) status = WEXITSTATUS(status);
     else if (!error && WIFSIGNALED(status)) status = 128 + WTERMSIG(status);
     for (i = 0; i < installed; ++i) sigaction(watched_signals[i], &previous[i], NULL);
+    if (child_handler_installed) sigaction(SIGCHLD, &previous_child, NULL);
     sigprocmask(SIG_SETMASK, &previous_mask, NULL);
     return error ? launch_failure(error, launch_error) : status;
 }
@@ -529,7 +554,21 @@ restore:
 int fpm_watch_redirect_stdout(void) {
     int saved;
     fflush(stdout);
-    saved = watch_dup(1);
+#ifdef _WIN32
+    {
+        HANDLE duplicate;
+        if (!DuplicateHandle(GetCurrentProcess(), (HANDLE)_get_osfhandle(1), GetCurrentProcess(),
+                             &duplicate, 0, FALSE, DUPLICATE_SAME_ACCESS)) return -(int)GetLastError();
+        saved = _open_osfhandle((intptr_t)duplicate, _O_WRONLY | _O_NOINHERIT);
+        if (saved < 0) {
+            int error = errno;
+            CloseHandle(duplicate);
+            return -error;
+        }
+    }
+#else
+    saved = fcntl(1, F_DUPFD_CLOEXEC, 0);
+#endif
     if (saved < 0) return -errno;
     if (watch_dup2(2, 1) < 0) {
         int error = errno;

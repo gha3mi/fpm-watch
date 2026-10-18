@@ -60,6 +60,18 @@ program check_fingerprint
    write(unit) "abc"
    close(unit)
    if (file_fingerprint(path) /= -2204510569963675907_int64) error stop "bounded FNV arithmetic differs"
+   content = repeat(achar(0), 256)
+   do i = 0, 255
+      content(i+1:i+1) = achar(i)
+   end do
+   open(newunit=unit, file=path, access="stream", form="unformatted", status="replace")
+   write(unit) content
+   close(unit)
+   do i = 1, 100
+      if (file_fingerprint(path) /= -7579149438059616893_int64) error stop "native byte hash differs"
+   end do
+   if (file_fingerprint(path // "/missing") /= missing) error stop "non-directory parent is not missing"
+   if (file_fingerprint("build/watch-fingerprint-tests") /= 2_int64) error stop "directory is not unreadable"
    open(newunit=unit, file=path, status="old")
    close(unit, status="delete")
    print *, "Full-content fingerprint checks passed"
