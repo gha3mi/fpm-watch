@@ -194,14 +194,14 @@ that stream with command events. Target injection preserves explicit names.</p>
         <ul class="list-group list-group-flush">
             <li class="list-group-item">
               <ul class="list-inline">
-                  <li class="list-inline-item"><a href='watch_util.html'>watch_util</a></li>
                   <li class="list-inline-item"><a href='watch_cmdline.html'>watch_cmdline</a></li>
-                  <li class="list-inline-item"><a href='watch_types.html'>watch_types</a></li>
-                  <li class="list-inline-item"><a href='watch_log.html'>watch_log</a></li>
-                  <li class="list-inline-item"><a href='http://fortranwiki.org/fortran/show/iso_fortran_env'>iso_fortran_env</a></li>
-                  <li class="list-inline-item">fpm_command_line</li>
-                  <li class="list-inline-item"><a href='watch_platform.html'>watch_platform</a></li>
                   <li class="list-inline-item">fpm_strings</li>
+                  <li class="list-inline-item"><a href='watch_platform.html'>watch_platform</a></li>
+                  <li class="list-inline-item"><a href='watch_util.html'>watch_util</a></li>
+                  <li class="list-inline-item"><a href='http://fortranwiki.org/fortran/show/iso_fortran_env'>iso_fortran_env</a></li>
+                  <li class="list-inline-item"><a href='watch_log.html'>watch_log</a></li>
+                  <li class="list-inline-item"><a href='watch_types.html'>watch_types</a></li>
+                  <li class="list-inline-item">fpm_command_line</li>
               </ul>
             </li>
             <li class="list-group-item">
@@ -743,7 +743,7 @@ large graphs.</div>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-settings~10"></span>
+              <span class="anchor" id="variable-settings"></span>
               class(fpm_build_settings),
             </td>
 <td>intent(in)</td>
@@ -758,7 +758,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-full_cmdline~2"></span>
+              <span class="anchor" id="variable-full_cmdline"></span>
               character(len=*),
             </td>
 <td>intent(in)</td>
@@ -773,7 +773,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-cmd_prefix~2"></span>
+              <span class="anchor" id="variable-cmd_prefix"></span>
               character(len=*),
             </td>
 <td>intent(in)</td>
@@ -788,7 +788,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-cmd_rest~2"></span>
+              <span class="anchor" id="variable-cmd_rest"></span>
               character(len=*),
             </td>
 <td>intent(in)</td>
@@ -803,7 +803,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-roots~7"></span>
+              <span class="anchor" id="variable-roots"></span>
               type(<a href='../type/root_info_t.html'>root_info_t</a>),
             </td>
 <td>intent(in),</td>
@@ -818,7 +818,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-file_mask~7"></span>
+              <span class="anchor" id="variable-file_mask"></span>
               integer(kind=int64),
             </td>
 <td>intent(in),</td>
@@ -833,7 +833,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-changed_idx~7"></span>
+              <span class="anchor" id="variable-changed_idx~2"></span>
               integer,
             </td>
 <td>intent(in)</td>
@@ -848,7 +848,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-changed_count~6"></span>
+              <span class="anchor" id="variable-changed_count~2"></span>
               integer,
             </td>
 <td>intent(in)</td>
@@ -898,7 +898,7 @@ large graphs.</div>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-files~15"></span>
+              <span class="anchor" id="variable-files"></span>
               type(string_t),
             </td>
 <td>intent(in),</td>
@@ -913,7 +913,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-changed_idx~6"></span>
+              <span class="anchor" id="variable-changed_idx"></span>
               integer,
             </td>
 <td>intent(in)</td>
@@ -928,7 +928,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-changed_count~5"></span>
+              <span class="anchor" id="variable-changed_count"></span>
               integer,
             </td>
 <td>intent(in)</td>
@@ -943,7 +943,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-w~13"></span>
+              <span class="anchor" id="variable-w"></span>
               type(<a href='../type/watch_opts_t.html'>watch_opts_t</a>),
             </td>
 <td>intent(in)</td>
@@ -983,7 +983,7 @@ large graphs.</div>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-cmd~5"></span>
+              <span class="anchor" id="variable-cmd"></span>
               character(len=*),
             </td>
 <td>intent(in)</td>
@@ -998,7 +998,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-w~14"></span>
+              <span class="anchor" id="variable-w~2"></span>
               type(<a href='../type/watch_opts_t.html'>watch_opts_t</a>),
             </td>
 <td>intent(in)</td>
@@ -1013,7 +1013,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-exitstat~3"></span>
+              <span class="anchor" id="variable-exitstat"></span>
               integer,
             </td>
 <td>intent(out)</td>
@@ -1028,7 +1028,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-secs~2"></span>
+              <span class="anchor" id="variable-secs"></span>
               real,
             </td>
 <td>intent(out)</td>
@@ -1098,7 +1098,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-enabled~2"></span>
+              <span class="anchor" id="variable-enabled"></span>
               logical,
             </td>
 <td>intent(in)</td>
@@ -1141,7 +1141,7 @@ large graphs.</div>
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2026-10-18T00:11:15.723870+0000             </p>
+ on 2026-10-18T00:40:44.178800+0000             </p>
           </div>
         </div>
         <br>
