@@ -10,7 +10,8 @@ module watch_engine
    use watch_log, only: log_event, log_int, log_real, log_string, configure_logging
    use fpm_error, only: error_t
    use watch_graph_worker, only: compute_watch_snapshot
-   use watch_fingerprint, only: init_fingerprints, scan_changes, accept_changes, watch_state_changed, preserve_fingerprints
+   use watch_fingerprint, only: init_fingerprints, scan_changes, accept_changes, watch_state_changed, preserve_fingerprints, &
+                                FINGERPRINT_UNREADABLE
    use watch_cli, only: parse_cli_config
    use watch_platform, only: termination_requested, stop_file_exists
    use watch_time, only: sleep_seconds
@@ -38,8 +39,12 @@ module watch_engine
       integer :: last_exit = 0
       !> Last graph-refresh error text, retained to suppress repeated diagnostics.
       character(len=:), allocatable :: last_refresh_error
+      !> First unreadable watched path, retained to suppress repeated diagnostics.
+      character(len=:), allocatable :: last_unreadable_path
       !> Retry manifest settings/graph refresh on a later edit or periodic rescan.
       logical :: manifest_refresh_pending = .false.
+      !> Retry the full command if unreadable paths postponed an accepted edit.
+      logical :: command_pending = .false.
    contains
       procedure :: init => watcher_init
       procedure :: run  => watcher_run
@@ -70,7 +75,9 @@ contains
 
       self%last_exit = 0
       self%manifest_refresh_pending = .false.
+      self%command_pending = .false.
       if (allocated(self%last_refresh_error)) deallocate(self%last_refresh_error)
+      if (allocated(self%last_unreadable_path)) deallocate(self%last_unreadable_path)
 
       call rebuild_watch_list(self, print_header=.true.)
 
@@ -117,15 +124,17 @@ contains
          if (stop_file_exists(self%cfg%project_dir)) exit
 
          call scan_changes(self%snapshot%files, self%snapshot%fp_prev, self%snapshot%fp_now, self%snapshot%changed_idx, changed_count)
+         if (unreadable_watch_file(self)) cycle
 
          if (changed_count > 0) then
             call sleep_seconds(self%cfg%w%debounce)
             if (termination_requested()) exit
             if (stop_file_exists(self%cfg%project_dir)) exit
             call scan_changes(self%snapshot%files, self%snapshot%fp_prev, self%snapshot%fp_now, self%snapshot%changed_idx, changed_count)
+            if (unreadable_watch_file(self)) cycle
          end if
 
-         if (changed_count > 0) then
+         if (changed_count > 0 .or. (self%command_pending .and. .not. self%manifest_refresh_pending)) then
             if (self%manifest_refresh_pending .or. &
                 any_configuration_changed(self%snapshot%files, self%snapshot%changed_idx, changed_count, &
                                           self%cfg%response_files)) then
@@ -134,17 +143,23 @@ contains
                cycle
             end if
 
-            call report_changes(self%snapshot%files, self%snapshot%changed_idx, changed_count, self%cfg%w)
+            if (changed_count > 0) then
+               call report_changes(self%snapshot%files, self%snapshot%changed_idx, changed_count, self%cfg%w)
+            end if
 
-            cmd = build_run_command( &
-               settings      = self%cfg%settings,    &
-               full_cmdline  = self%cfg%fpm_cmdline, &
-               cmd_prefix    = self%cfg%cmd_prefix,  &
-               cmd_rest      = self%cfg%cmd_rest,    &
-               roots         = self%snapshot%roots,           &
-               file_mask     = self%snapshot%file_mask,       &
-               changed_idx   = self%snapshot%changed_idx,     &
-               changed_count = changed_count )
+            if (self%command_pending) then
+               cmd = self%cfg%fpm_cmdline
+            else
+               cmd = build_run_command( &
+                  settings      = self%cfg%settings,    &
+                  full_cmdline  = self%cfg%fpm_cmdline, &
+                  cmd_prefix    = self%cfg%cmd_prefix,  &
+                  cmd_rest      = self%cfg%cmd_rest,    &
+                  roots         = self%snapshot%roots,           &
+                  file_mask     = self%snapshot%file_mask,       &
+                  changed_idx   = self%snapshot%changed_idx,     &
+                  changed_count = changed_count )
+            end if
 
             call accept_changes(self%snapshot%fp_prev, self%snapshot%fp_now, self%snapshot%changed_idx, changed_count)
             call rebuild_watch_list(self, print_header=.false., refreshed=refreshed, &
@@ -153,6 +168,7 @@ contains
             call run_once(self, cmd)
 
             if (termination_requested()) exit
+            if (unreadable_watch_file(self)) cycle
          end if
 
          if (self%cfg%w%rescan > 0.0) then
@@ -258,6 +274,32 @@ contains
       call log_event("error", "watch.refresh_failed", "Watch list refresh failed: " // message // "; waiting for edits")
    end subroutine report_refresh_error
 
+   !> Postpone graph refreshes and commands while retaining unreadable-file baselines.
+   !!
+   !! Nonregular files share the unreadable fingerprint. Passing them to fpm can
+   !! block its source parser, so keep polling and checking for stop requests until
+   !! all watched paths are readable again. Missing files retain their normal
+   !! change behavior. Report the first unreadable path only when it changes.
+   logical function unreadable_watch_file(self) result(unreadable)
+      class(watcher_t), intent(inout) :: self
+      integer :: i
+
+      unreadable = .false.
+      do i = 1, size(self%snapshot%fp_now)
+         if (self%snapshot%fp_now(i) /= FINGERPRINT_UNREADABLE) cycle
+         unreadable = .true.
+         if (allocated(self%last_unreadable_path)) then
+            if (self%last_unreadable_path == self%snapshot%files(i)%s) return
+         end if
+         self%last_unreadable_path = self%snapshot%files(i)%s
+         call log_event("warn", "watch.unreadable", &
+                        "Cannot read watched file: " // self%last_unreadable_path // "; waiting for a readable file", &
+                        [log_string("path", self%last_unreadable_path)])
+         return
+      end do
+      if (allocated(self%last_unreadable_path)) deallocate(self%last_unreadable_path)
+   end function unreadable_watch_file
+
    !> Execute one command cycle and retain its status.
    !!
    !! Store the resulting exit status in `self%last_exit`; command failure does not stop
@@ -272,9 +314,15 @@ contains
          self%last_exit = 130
          return
       end if
+      if (unreadable_watch_file(self)) then
+         self%last_exit = 1
+         self%command_pending = .true.
+         return
+      end if
       cmd = trim(cmd0)
       call run_command_and_report(cmd, self%cfg%w, exitstat, secs)
       self%last_exit = exitstat
+      self%command_pending = .false.
    end subroutine run_once
 
    !> Build a candidate graph and replace the accepted watch-list snapshot.

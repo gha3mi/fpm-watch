@@ -89,7 +89,7 @@
 
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
-                 title=" 3.6% of total for modules and submodules.">151 statements</a>
+                 title=" 3.0% of total for modules and submodules.">128 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -142,8 +142,6 @@
         <div class="list-group list-group-flush">
             <a class="list-group-item" href="../module/watch_filter.html#proc-is_ignored_path">is_ignored_path</a>
             <a class="list-group-item" href="../module/watch_filter.html#proc-normalize_path">normalize_path</a>
-            <a class="list-group-item" href="../module/watch_filter.html#proc-contains_path_fragment">contains_path_fragment</a>
-            <a class="list-group-item" href="../module/watch_filter.html#proc-ends_with">ends_with</a>
         </div>
       </div>
     </div>
@@ -504,11 +502,11 @@ large graphs.</div>
         <section>
           <h2>Functions</h2>
               <div class="card">
-    <div class="card-header codesum"><span class="anchor" id="proc-is_ignored_path"></span> <h3>public pure function <a href='../proc/is_ignored_path.html'>is_ignored_path</a>(path, build_dir) result(ignored)  
+    <div class="card-header codesum"><span class="anchor" id="proc-is_ignored_path"></span> <h3>public pure function <a href='../proc/is_ignored_path.html'>is_ignored_path</a>(path, build_dir, windows) result(ignored)  
 </h3></div>
     <div class="card-body">
           
-  <p>Test normalized paths against a build directory or its slash-delimited fragments.</p><a href="../proc/is_ignored_path.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+  <p>Test canonical paths against only the build directory and its descendants.</p><a href="../proc/is_ignored_path.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -523,7 +521,7 @@ large graphs.</div>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-path~4"></span>
+              <span class="anchor" id="variable-path~2"></span>
               character(len=*),
             </td>
 <td>intent(in)</td>
@@ -547,6 +545,21 @@ large graphs.</div>
             </td>
             <td>::</td>
             <td><strong>build_dir</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-windows~3"></span>
+              logical,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>windows</strong></td>
             <td>
 
             </td>
@@ -583,7 +596,7 @@ large graphs.</div>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-path~3"></span>
+              <span class="anchor" id="variable-path"></span>
               character(len=*),
             </td>
 <td>intent(in)</td>
@@ -602,126 +615,6 @@ large graphs.</div>
     <h4>
     Return Value
     <small>character(len=:), allocatable</small>
-    </h4>
-    
-
-    </div>
-  </div>
-
-              <div class="card">
-    <div class="card-header codesum"><span class="anchor" id="proc-contains_path_fragment"></span> <h3>private pure function <a href='../proc/contains_path_fragment.html'>contains_path_fragment</a>(p, frag) result(ok)  
-</h3></div>
-    <div class="card-body">
-          
-  <p>Test for a slash-delimited interior or trailing path fragment.</p>
-
-  <h4>Arguments</h4>
-      <table class="table table-striped varlist">
-    <thead>
-      <tr>
-        <th scope="col">Type</th>
-<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
-        <th scope="col"></th>
-        <th scope="col">Name</th>
-        <th scope="col"></th>
-    </thead>
-    <tbody>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-p~2"></span>
-              character(len=*),
-            </td>
-<td>intent(in)</td>
-              <td></td>            <td>
-              
-            </td>
-            <td>::</td>
-            <td><strong>p</strong></td>
-            <td>
-
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-frag"></span>
-              character(len=*),
-            </td>
-<td>intent(in)</td>
-              <td></td>            <td>
-              
-            </td>
-            <td>::</td>
-            <td><strong>frag</strong></td>
-            <td>
-
-            </td>
-        </tr>
-    </tbody>
-  </table>
-
-    <h4>
-    Return Value
-    <small>logical</small>
-    </h4>
-    
-
-    </div>
-  </div>
-
-              <div class="card">
-    <div class="card-header codesum"><span class="anchor" id="proc-ends_with"></span> <h3>private pure function <a href='../proc/ends_with.html'>ends_with</a>(s, suffix) result(ok)  
-</h3></div>
-    <div class="card-body">
-          
-  <p>Compare right-trimmed suffixes; an empty suffix matches every string.</p>
-
-  <h4>Arguments</h4>
-      <table class="table table-striped varlist">
-    <thead>
-      <tr>
-        <th scope="col">Type</th>
-<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
-        <th scope="col"></th>
-        <th scope="col">Name</th>
-        <th scope="col"></th>
-    </thead>
-    <tbody>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-s~7"></span>
-              character(len=*),
-            </td>
-<td>intent(in)</td>
-              <td></td>            <td>
-              
-            </td>
-            <td>::</td>
-            <td><strong>s</strong></td>
-            <td>
-
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-suffix"></span>
-              character(len=*),
-            </td>
-<td>intent(in)</td>
-              <td></td>            <td>
-              
-            </td>
-            <td>::</td>
-            <td><strong>suffix</strong></td>
-            <td>
-
-            </td>
-        </tr>
-    </tbody>
-  </table>
-
-    <h4>
-    Return Value
-    <small>logical</small>
     </h4>
     
 
@@ -753,7 +646,7 @@ large graphs.</div>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-files~6"></span>
+              <span class="anchor" id="variable-files"></span>
               type(string_t),
             </td>
 <td>intent(inout),</td>
@@ -768,7 +661,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-include~2"></span>
+              <span class="anchor" id="variable-include"></span>
               type(string_t),
             </td>
 <td>intent(in),</td>
@@ -783,7 +676,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-ignore~2"></span>
+              <span class="anchor" id="variable-ignore"></span>
               type(string_t),
             </td>
 <td>intent(in),</td>
@@ -856,7 +749,7 @@ large graphs.</div>
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2026-10-18T12:55:28.737329+0000             </p>
+ on 2026-10-18T14:08:53.506908+0000             </p>
           </div>
         </div>
         <br>

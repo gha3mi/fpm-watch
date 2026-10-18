@@ -8,9 +8,10 @@ module watch_cmdline
    use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
    use watch_util, only: starts_with
    use watch_platform, only: is_windows_os => is_windows
+   use fpm_strings, only: string_t
    implicit none
    private
-   public get_arg, join_argv, parse_int, parse_real, quote_arg, is_windows_os, starts_with
+   public get_arg, join_argv, join_args, parse_int, parse_real, quote_arg, is_windows_os, starts_with
    public watch_option_takes_value, parse_bool
 
 contains
@@ -85,37 +86,50 @@ contains
 
    !> Serialize argv entries from `i1` through `i2` with spaces and platform quoting.
    !!
-   !! Every token, including an empty one, passes through `quote_arg`. A reversed
-   !! range returns an empty command string.
+   !! Collect tokens once, then share the list serializer's platform quoting.
+   !! A reversed range returns an empty command string.
    function join_argv(i1, i2) result(s)
       integer, intent(in) :: i1, i2
       !! Inclusive range of argv indices to join.
       character(len=:), allocatable :: s
-      character(len=:), allocatable :: a
-      integer :: i, total, position
-      logical :: windows
+      type(string_t), allocatable :: arguments(:)
+      integer :: i
 
       if (i2 < i1) then
          s = ""
          return
       end if
-      windows = is_windows_os()
-      total = i2 - i1
+      allocate(arguments(i2 - i1 + 1))
       do i = i1, i2
-         a = get_arg(i)
-         total = total + quoted_length(a, windows)
+         arguments(i - i1 + 1)%s = get_arg(i)
+      end do
+      s = join_args(arguments, is_windows_os())
+   end function join_argv
+
+   !> Serialize an initialized token list with one allocation and linear copying.
+   !!
+   !! Every token retains its full length, including empty strings and trailing
+   !! whitespace. `windows` selects the same quoting rules as `quote_arg`.
+   pure function join_args(arguments, windows) result(s)
+      type(string_t), intent(in) :: arguments(:)
+      logical, intent(in) :: windows
+      character(len=:), allocatable :: s
+      integer :: i, total, position
+
+      total = max(0, size(arguments) - 1)
+      do i = 1, size(arguments)
+         total = total + quoted_length(arguments(i)%s, windows)
       end do
       allocate(character(len=total) :: s)
       position = 1
-      do i = i1, i2
-         if (i > i1) then
+      do i = 1, size(arguments)
+         if (i > 1) then
             s(position:position) = " "
             position = position + 1
          end if
-         a = get_arg(i)
-         call put_quoted_arg(s, position, a, windows)
+         call put_quoted_arg(s, position, arguments(i)%s, windows)
       end do
-   end function join_argv
+   end function join_args
 
    !> Serialize one complete argv token, preserving whitespace and empty arguments.
    !!
