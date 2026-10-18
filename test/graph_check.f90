@@ -189,10 +189,12 @@ contains
    !> Find a normalized fixture path in the watch list.
    integer function find_file(path) result(index)
       character(len=*), intent(in) :: path
+      character(len=:), allocatable :: normalized
       integer :: i
       index = 0
+      normalized = normalize_path(path)
       do i = 1, size(files)
-         if (normalize_path(files(i)%s) /= path) cycle
+         if (normalize_path(files(i)%s) /= normalized) cycle
          index = i
          return
       end do
@@ -705,6 +707,7 @@ contains
                build_secs, model_secs, target_secs, watch_secs, error)
             call check_error()
             call expect_file("src/build/nested.f90", .true.)
+            call expect_file("src" // achar(92) // "build" // achar(92) // "nested.f90", .true.)
             call expect_file("src/root.f90", .true.)
             call expect_file("build-sibling/keep.inc", .true.)
             call expect_file("include/build/keep.inc", .true.)
