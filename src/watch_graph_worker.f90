@@ -167,8 +167,10 @@ contains
       !> Retain the first write error while allowing the caller to close the unit.
       subroutine append(record)
          character(len=*), intent(in) :: record
+         integer :: record_status
          if (status /= 0) return
-         write(unit, "(a)", iostat=status, iomsg=message) record
+         write(unit, "(a)", iostat=record_status, iomsg=message) record
+         if (record_status /= 0) status = record_status
       end subroutine append
    end subroutine write_graph_response
 

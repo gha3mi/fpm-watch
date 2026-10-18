@@ -155,8 +155,9 @@ contains
          actual_timings(1), actual_timings(2), actual_timings(3), actual_timings(4), read_error)
       if (.not. allocated(read_error)) error stop "streamed worker failure accepted"
       if (read_error%message /= graph_error%message) error stop "streamed native error changed"
-      if (allocated(decoded_files) .or. allocated(decoded_masks) .or. allocated(decoded_roots)) &
+      if (allocated(decoded_files) .or. allocated(decoded_masks) .or. allocated(decoded_roots)) then
          error stop "streamed worker failure accepted partial arrays"
+      end if
    end subroutine check_streamed_response
 
    !> Read every protocol output, reusing storage to expose partial acceptance.
