@@ -21,7 +21,7 @@ class ResponseRegression(unittest.TestCase):
     def setUp(self):
         temporary = tempfile.TemporaryDirectory(prefix="fpm-watch-response-")
         self.addCleanup(temporary.cleanup)
-        self.root = Path(temporary.name)
+        self.root = Path(temporary.name).resolve()
         self.project = self.root / "project"
         (self.project / "app").mkdir(parents=True)
         (self.project / "src").mkdir()

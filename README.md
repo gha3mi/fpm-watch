@@ -128,7 +128,9 @@ For Bash completion, run `source ./completion.bash` from this repository.
 
 - fpm 0.13.0 may reuse cached objects after include-only edits. With the default
   build directory, `fpm clean --skip` forces recompilation while retaining dependencies.
-- Intel ifx can crash inside fpm while scanning empty source directories; unresolved.
+- On Linux, Intel ifx 2026.2 can crash inside fpm 0.13.0 while scanning empty source
+  directories with optimization enabled. Build, test, and install fpm-watch with
+  `--compiler ifx --profile ci-release` for the tested `-O0` workaround used in CI.
 
 ## Development
 

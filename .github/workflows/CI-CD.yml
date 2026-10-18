@@ -23,7 +23,8 @@ jobs:
       matrix:
         include:
         - {os: ubuntu-latest,  compiler: gfortran}
-        - {os: ubuntu-latest,  compiler: ifx     }
+        # ifx 2026.2 crashes in fpm's empty-directory scan at its default -O2.
+        - {os: ubuntu-latest,  compiler: ifx, release_profile: ci-release}
         # Higher GNU optimization spends most of this job compiling fpm's
         # feature_collection module. Keep an optimized release build on macOS.
         - {os: macos-latest,   compiler: gfortran, release_profile: ci-release}
