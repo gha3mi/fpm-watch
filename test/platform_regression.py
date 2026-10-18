@@ -1,6 +1,7 @@
 """Exercise real watcher supervision and portable external-command execution."""
 
 import argparse
+import errno
 import faulthandler
 import itertools
 import json
@@ -196,20 +197,36 @@ def terminal_case(action, command):
     os.set_blocking(terminal, False)
     transcript = bytearray()
     reaped = False
+    terminal_eof = False
+
+    def drain_terminal(timeout):
+        nonlocal terminal_eof
+        if terminal < 0 or terminal_eof:
+            time.sleep(timeout)
+            return
+        if not select.select([terminal], [], [], timeout)[0]:
+            return
+        try:
+            chunk = os.read(terminal, 65536)
+        except BlockingIOError:
+            return
+        except OSError as error:
+            if error.errno != errno.EIO:
+                raise
+            chunk = b""  # Linux reports a closed PTY slave as EIO.
+        if chunk:
+            transcript.extend(chunk)
+        else:
+            terminal_eof = True
+
     try:
         deadline = time.monotonic() + 10
 
         def read_until(marker, message):
             while marker not in transcript:
                 assert time.monotonic() < deadline, (message, transcript.decode(errors="replace"))
-                if not select.select([terminal], [], [], 0.1)[0]:
-                    continue
-                try:
-                    chunk = os.read(terminal, 65536)
-                except BlockingIOError:
-                    continue
-                assert chunk, ("terminal closed before expected output", message)
-                transcript.extend(chunk)
+                assert not terminal_eof, ("terminal closed before expected output", message)
+                drain_terminal(0.1)
 
         read_until(b"WATCH_PLATFORM_CHILD_OUTPUT", "terminal child did not start")
         if action == "close":
@@ -227,17 +244,21 @@ def terminal_case(action, command):
                 actual = os.waitstatus_to_exitcode(status)
                 assert actual == expected, (action, actual, expected, transcript.decode(errors="replace"))
                 break
-            assert time.monotonic() < deadline, "terminal supervisor did not finish"
-            time.sleep(0.02)
+            assert time.monotonic() < deadline, ("terminal supervisor did not finish", transcript.decode(errors="replace"))
+            # Darwin can wait for pending PTY output while closing the slave.
+            # Keep consuming output until the supervisor has actually exited.
+            drain_terminal(0.02)
     finally:
-        if not reaped:
-            kill_process_groups({pid} | descendant_processes(pid))
-            deadline = time.monotonic() + 3
-            while not os.waitpid(pid, os.WNOHANG)[0]:
-                assert time.monotonic() < deadline, "terminal child cleanup timed out"
-                time.sleep(0.02)
-        if terminal >= 0:
-            os.close(terminal)
+        try:
+            if not reaped:
+                kill_process_groups({pid} | descendant_processes(pid))
+                deadline = time.monotonic() + 3
+                while not os.waitpid(pid, os.WNOHANG)[0]:
+                    assert time.monotonic() < deadline, "terminal child cleanup timed out"
+                    drain_terminal(0.02)
+        finally:
+            if terminal >= 0:
+                os.close(terminal)
 
 
 def terminal_regression(command, directory, env):
