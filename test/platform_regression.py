@@ -303,23 +303,27 @@ def compiler_descriptor_regression(watcher, directory, env):
     }
     invocation = [str(watcher), "--watch-once", "--watch-log-format=json", "--watch-fpm", str(fpm),
                   "build", "--compiler", compiler.name]
-    process = subprocess.Popen(invocation, cwd=project, env=trial_env,
-                               stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-    try:
-        process.wait(timeout=15)
-        assert list(project.glob("background.*.ready")), "graph model never queried the compiler wrapper"
-        stdout, stderr = process.communicate(timeout=2)
-        assert process.returncode == 0, (stdout, stderr)
-        assert not list(project.glob("background.*.done")), "compiler helper exited before the descriptor check"
-    finally:
-        release.touch()
-        if process.poll() is None:
-            process.kill()
-        process.communicate(timeout=5)
-        deadline = time.monotonic() + 5
-        while len(list(project.glob("background.*.done"))) < len(list(project.glob("background.*.ready"))):
-            assert time.monotonic() < deadline, "background compiler helper did not finish"
-            time.sleep(0.02)
+    # Windows inherits incidental standard handles when close_fds=False, even
+    # when the helper redirects its own stderr. Only saved stdout is under test.
+    stderr_path = project / "watcher.stderr.log"
+    with stderr_path.open("w", encoding="utf-8") as stderr_log:
+        process = subprocess.Popen(invocation, cwd=project, env=trial_env,
+                                   stdout=subprocess.PIPE, stderr=stderr_log, text=True)
+        try:
+            process.wait(timeout=15)
+            assert list(project.glob("background.*.ready")), "graph model never queried the compiler wrapper"
+            stdout, _ = process.communicate(timeout=2)
+            assert process.returncode == 0, (stdout, stderr_path.read_text(encoding="utf-8", errors="replace"))
+            assert not list(project.glob("background.*.done")), "compiler helper exited before the descriptor check"
+        finally:
+            release.touch()
+            if process.poll() is None:
+                process.kill()
+            process.communicate(timeout=5)
+            deadline = time.monotonic() + 5
+            while len(list(project.glob("background.*.done"))) < len(list(project.glob("background.*.ready"))):
+                assert time.monotonic() < deadline, "background compiler helper did not finish"
+                time.sleep(0.02)
 
 
 def compiler_background_launcher():
