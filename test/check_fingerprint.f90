@@ -1,7 +1,8 @@
 !> Check complete byte coverage, file states, and bounded hash arithmetic.
 program check_fingerprint
    use, intrinsic :: iso_fortran_env, only: int64
-   use watch_fingerprint, only: file_fingerprint, init_fingerprints, scan_changes, accept_changes
+   use watch_fingerprint, only: file_fingerprint, init_fingerprints, scan_changes, accept_changes, FINGERPRINT_UNREADABLE
+   use watch_platform, only: is_windows
    use fpm_filesystem, only: mkdir
    use fpm_strings, only: string_t
    implicit none
@@ -71,7 +72,12 @@ program check_fingerprint
       if (file_fingerprint(path) /= -7579149438059616893_int64) error stop "native byte hash differs"
    end do
    if (file_fingerprint(path // "/missing") /= missing) error stop "non-directory parent is not missing"
-   if (file_fingerprint("build/watch-fingerprint-tests") /= 2_int64) error stop "directory is not unreadable"
+   if (file_fingerprint("build/watch-fingerprint-tests") /= FINGERPRINT_UNREADABLE) error stop "directory is not unreadable"
+   if (is_windows()) then
+      if (file_fingerprint("NUL") /= FINGERPRINT_UNREADABLE) error stop "character device is not unreadable"
+   else
+      if (file_fingerprint("/dev/null") /= FINGERPRINT_UNREADABLE) error stop "character device is not unreadable"
+   end if
    open(newunit=unit, file=path, status="old")
    close(unit, status="delete")
    print *, "Full-content fingerprint checks passed"

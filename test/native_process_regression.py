@@ -1,4 +1,4 @@
-"""Stress native POSIX process completion and caller-owned resources."""
+"""Stress native POSIX helpers and caller-owned resources."""
 
 import os
 from pathlib import Path
@@ -123,6 +123,50 @@ int main(void) {
 }
 """
 
+HASH_HARNESS = r"""
+#define _POSIX_C_SOURCE 200809L
+#include <fcntl.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <sys/stat.h>
+#include <unistd.h>
+
+int64_t fpm_watch_file_fingerprint(const char *);
+
+int main(void) {
+    FILE *regular = fopen("hash-file", "wb");
+    int expected_descriptor, descriptor;
+    if (regular == NULL) return 1;
+    if (fwrite("abc", 1, 3, regular) != 3 || fclose(regular) != 0) return 1;
+    if (symlink("hash-file", "hash-link") != 0 ||
+        fpm_watch_file_fingerprint("hash-file") != -INT64_C(2204510569963675907) ||
+        fpm_watch_file_fingerprint("hash-link") != -INT64_C(2204510569963675907)) return 1;
+    /* Replace an accepted source inode; check the opened descriptor, not a prior stat. */
+    if (unlink("hash-file") != 0 || mkfifo("hash-file", 0600) != 0) return 1;
+    expected_descriptor = open("/dev/null", O_RDONLY);
+    if (expected_descriptor < 0) return 1;
+    close(expected_descriptor);
+    for (int iteration = 0; iteration < 1000; ++iteration) {
+        if (fpm_watch_file_fingerprint("hash-file") != 2 ||
+            fpm_watch_file_fingerprint("hash-link") != 2 ||
+            fpm_watch_file_fingerprint("/dev/null") != 2 ||
+            fpm_watch_file_fingerprint(".") != 2) {
+            fprintf(stderr, "nonregular file was accepted at iteration %d\n", iteration);
+            return 1;
+        }
+    }
+    descriptor = open("/dev/null", O_RDONLY);
+    if (descriptor != expected_descriptor) {
+        fprintf(stderr, "nonregular-file rejection leaked a descriptor\n");
+        return 1;
+    }
+    close(descriptor);
+    if (unlink("hash-file") != 0 || unlink("hash-link") != 0) return 1;
+    puts("FIFO replacement, FIFO links, devices and directories rejected without blocking or leaks");
+    return 0;
+}
+"""
+
 
 if __name__ == "__main__":
     if os.name != "posix":
@@ -131,11 +175,12 @@ if __name__ == "__main__":
     compiler = shlex.split(os.environ.get("FPM_CC", "cc"))
     with tempfile.TemporaryDirectory(prefix="fpm-watch-native-") as temporary:
         directory = Path(temporary).resolve()
-        for name, program, sources in (("stress", HARNESS, [str(repository / "src/watch_process.c")]),
-                                       ("groups", GROUP_HARNESS, [])):
+        for name, program, sources, timeout in (("stress", HARNESS, [str(repository / "src/watch_process.c")], 90),
+                                                ("groups", GROUP_HARNESS, [], 90),
+                                                ("hash", HASH_HARNESS, [str(repository / "src/watch_hash.c")], 5)):
             source = directory / f"{name}.c"
             executable = directory / name
             source.write_text(program, encoding="ascii")
             subprocess.run([*compiler, "-O2", "-Wall", "-Wextra", "-Werror", str(source), *sources,
                             "-I", str(repository / "src"), "-o", str(executable)], check=True)
-            subprocess.run([str(executable)], check=True, timeout=90)
+            subprocess.run([str(executable)], check=True, timeout=timeout, cwd=directory)

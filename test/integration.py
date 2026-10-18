@@ -158,6 +158,22 @@ class WatchIntegration(unittest.TestCase):
         self.assertEqual(received, baseline)
         self.assertEqual(len(received), len(args))
 
+    def test_supervisor_preserves_many_forwarded_arguments(self):
+        args = ["", "trailing  ", "two words", "single'quote", "plain"]
+        args += [f"argument-{i:04d}" for i in range(200)]
+        direct = run_captured(["fpm", "run", "first", "--", *args], cwd=self.project)
+        result = self.once("--watch-auto-restart", "--watch-restart-max=1",
+                           "--watch-restart-delay", "0", "--watch-log-format=json",
+                           "run", "first", "--", *args)
+        self.assertEqual(direct.returncode, 0, direct.stdout + direct.stderr)
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        baseline = [line[1:-1] for line in direct.stdout.splitlines()
+                    if line.startswith("<") and line.endswith(">")]
+        received = [line[1:-1] for line in result.stderr.splitlines()
+                    if line.startswith("<") and line.endswith(">")]
+        self.assertEqual(received, baseline)
+        self.assertEqual(len(received), len(args))
+
     def test_structured_logs_separate_fpm_output(self):
         for format in ("json", "logfmt"):
             with self.subTest(format=format):
@@ -612,6 +628,47 @@ class WatchIntegration(unittest.TestCase):
         with self.watch("run", "first") as (process, log):
             source.write_text(source.read_text().replace("offset = 0", "offset = 4"))
             wait_for(process, log, lambda text: re.search(r"WATCH_RESULT\s+5", text))
+
+    def test_nested_source_directory_named_build_is_watched(self):
+        directory = self.project / "src/build"
+        directory.mkdir()
+        source = directory / "fixture.f90"
+        (self.project / "src/fixture.f90").rename(source)
+        with self.watch("run", "first") as (process, log):
+            source.write_text(source.read_text().replace("offset = 0", "offset = 4"))
+            text = wait_for(process, log, lambda text: re.search(r"WATCH_RESULT\s+5", text))
+            self.assertIn("Changed src/build/fixture.f90", text)
+
+    @unittest.skipUnless(os.name == "posix", "named pipes use the POSIX filesystem API")
+    def test_fifo_replacement_pauses_recovers_and_stops(self):
+        include = self.project / "include/value.inc"
+        source = self.project / "src/fixture.f90"
+        errors = self.root / "fifo-output.log"
+        with self.watch("--watch-log-format=json", "--watch-rescan=0.1", "run", "first",
+                        stderr_path=errors) as (process, log):
+            include.unlink()
+            os.mkfifo(include)
+            wait_for(process, log, lambda text: '"event":"watch.unreadable"' in text)
+            source.write_text(source.read_text().replace("offset = 0", "offset = 4"))
+            time.sleep(0.2)
+            events = records(output(log), "json")
+            self.assertEqual(sum(event["event"] == "watch.unreadable" for event in events), 1)
+            self.assertFalse(any(event["event"] == "command.started" for event in events))
+            include.unlink()
+            include.write_text("integer, parameter :: value = 2\n")
+            text = wait_for(process, log, lambda text: '"event":"command.finished"' in text)
+            events = records(text, "json")
+            changed = next(event for event in events if event["event"] == "watch.changed")
+            self.assertIn("include/value.inc", changed["paths"])
+            self.assertIn("src/fixture.f90", changed["paths"])
+            finished = next(event for event in events if event["event"] == "command.finished")
+            self.assertEqual(finished["exit_code"], 0, text + output(errors))
+            self.assertRegex(output(errors), r"WATCH_RESULT\s+6")
+            include.unlink()
+            os.mkfifo(include)
+            wait_for(process, log, lambda text: text.count('"event":"watch.unreadable"') == 2)
+            (self.project / ".fpm-watch.stop").touch()
+            self.assertEqual(process.wait(timeout=5), 0, output(log))
 
     def test_cpp_and_nested_include_changes_run_command(self):
         source = self.project / "app/first.F90"

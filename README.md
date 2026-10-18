@@ -45,6 +45,8 @@ to fpm. Use `-C path/to/project` after the subcommand to select another project.
   unavailable mapping use the original command. Explicit target selections are preserved.
 - New files appear on graph refresh; `--watch-rescan 2` enables periodic discovery
   (default: off). Scans hash whole files; shorter intervals cost more CPU.
+- Unreadable watched files pause graph refreshes and commands until readable again;
+  pending edits remain tracked, and the stop marker still works while paused.
 - Ctrl+C stops the watcher and interrupts commands. `.fpm-watch.stop` stops between
   commands and supervisor retries; remove it before restarting.
 - Continuous watching survives fpm failures; `--watch-once` propagates their status.

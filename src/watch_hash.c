@@ -37,13 +37,15 @@ int64_t fpm_watch_file_fingerprint(const char *path) {
         DWORD error = GetLastError();
         return error == ERROR_FILE_NOT_FOUND || error == ERROR_PATH_NOT_FOUND || error == ERROR_DIRECTORY ? 0 : 2;
     }
-    if (!GetFileSizeEx(file, &size) || size.QuadPart < 0) goto cleanup;
+    if (GetFileType(file) != FILE_TYPE_DISK || !GetFileSizeEx(file, &size) || size.QuadPart < 0) goto cleanup;
     original_size = (uint64_t)size.QuadPart;
 #else
     struct stat size, final_size;
-    int file = open(path, O_RDONLY | O_CLOEXEC);
+    /* A watched file can become a FIFO between polls. Nonblocking open avoids
+     * waiting for a writer before the descriptor's actual type can be checked. */
+    int file = open(path, O_RDONLY | O_CLOEXEC | O_NONBLOCK);
     if (file < 0) return errno == ENOENT || errno == ENOTDIR ? 0 : 2;
-    if (fstat(file, &size) != 0 || size.st_size < 0) goto cleanup;
+    if (fstat(file, &size) != 0 || !S_ISREG(size.st_mode) || size.st_size < 0) goto cleanup;
     original_size = (uint64_t)size.st_size;
 #endif
     remaining = original_size;

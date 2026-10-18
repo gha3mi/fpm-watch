@@ -3,7 +3,7 @@ program graph_check
    use, intrinsic :: iso_fortran_env, only: int64, error_unit
    use watch_fpm_graph, only: compute_watch_files_from_settings
    use watch_types, only: watch_opts_t, root_info_t
-   use watch_filter, only: normalize_path
+   use watch_filter, only: normalize_path, is_ignored_path
    use fpm_command_line, only: fpm_build_settings, fpm_run_settings, fpm_test_settings, get_fpm_env
    use fpm_filesystem, only: mkdir, join_path
    use fpm_os, only: get_current_directory, change_directory
@@ -155,6 +155,7 @@ program graph_check
    call check_global_metadata_overlap()
    call check_empty_library_graph()
    call check_empty_source_units()
+   call check_build_directory_boundaries()
 
    call change_directory(initial_directory, error)
    call check_error()
@@ -650,6 +651,82 @@ contains
       end do
       close(caller_unit, status="delete")
    end subroutine check_empty_source_units
+
+   !> Exclude the configured build tree without dropping same-named source directories.
+   subroutine check_build_directory_boundaries()
+      type(fpm_build_settings) :: build_settings
+      type(watch_opts_t) :: build_options
+      character(len=:), allocatable :: fixture
+      integer :: pass, dependencies
+
+      fixture = join_path(initial_directory, "build/watch-graph-tests/build-boundaries")
+      call mkdir(join_path(fixture, "src/build"), echo=.false.)
+      call mkdir(join_path(fixture, "include/build"), echo=.false.)
+      call mkdir(join_path(fixture, "build/localdep/src"), echo=.false.)
+      call mkdir(join_path(fixture, "build-sibling"), echo=.false.)
+      call mkdir(join_path(fixture, "scratch"), echo=.false.)
+      call change_directory(fixture, error)
+      call check_error()
+      call write_lines("fpm.toml", [character(len=100) :: &
+         'name = "build_boundaries_graph"', "[dependencies]", 'localdep = { path = "build/localdep" }'])
+      call write_lines("src/build/nested.f90", [character(len=60) :: &
+         "module nested_build_source", "end module nested_build_source"])
+      call write_lines("src/root.f90", [character(len=512) :: &
+         "module build_boundaries_root", "include '../build/relative.inc'", &
+         "include '" // join_path(fixture, "build/absolute.inc") // "'", &
+         "include '../build-sibling/keep.inc'", "include '../include/build/keep.inc'", &
+         "include '" // join_path(fixture, "include/build/absolute.inc") // "'", &
+         "end module build_boundaries_root"])
+      call write_lines("build/relative.inc", [character(len=60) :: "integer :: generated_relative"])
+      call write_lines("build/absolute.inc", [character(len=60) :: "integer :: generated_absolute"])
+      call write_lines("build-sibling/keep.inc", [character(len=60) :: "integer :: sibling_value"])
+      call write_lines("include/build/keep.inc", [character(len=60) :: "integer :: nested_value"])
+      call write_lines("include/build/absolute.inc", [character(len=60) :: "integer :: absolute_value"])
+      call write_lines("build/localdep/fpm.toml", [character(len=60) :: 'name = "localdep"'])
+      call write_lines("build/localdep/src/local.f90", [character(len=60) :: &
+         "module localdep", "end module localdep"])
+      build_settings = settings%fpm_build_settings
+      build_options%verbosity = -1
+
+      do pass = 1, 4
+         select case (pass)
+          case (1)
+            build_settings%build_dir = "build"
+          case (2)
+            build_settings%build_dir = join_path(fixture, "build")
+          case (3)
+            build_settings%build_dir = "./scratch/../build/"
+          case default
+            build_settings%build_dir = join_path(fixture, "scratch/../build/")
+         end select
+         do dependencies = 0, 1
+            build_options%watch_deps = dependencies == 1
+            call compute_watch_files_from_settings(build_settings, build_options, files, masks, roots, &
+               build_secs, model_secs, target_secs, watch_secs, error)
+            call check_error()
+            call expect_file("src/build/nested.f90", .true.)
+            call expect_file("src/root.f90", .true.)
+            call expect_file("build-sibling/keep.inc", .true.)
+            call expect_file("include/build/keep.inc", .true.)
+            call expect_file(join_path(fixture, "include/build/absolute.inc"), .true.)
+            call expect_file("build/relative.inc", .false.)
+            call expect_file(join_path(fixture, "build/absolute.inc"), .false.)
+            call expect_file("build/localdep/src/local.f90", build_options%watch_deps)
+            call expect_file("build/localdep/fpm.toml", build_options%watch_deps)
+            call expect_mask("fpm.toml", 0_int64)
+         end do
+      end do
+
+      if (.not. is_ignored_path("C:\Project\build\generated.inc", "c:/project/BUILD", windows=.true.)) then
+         error stop "Windows build directory comparison lost separator or case equivalence"
+      end if
+      if (is_ignored_path("C:\Project\src\build\keep.f90", "C:/Project/build", windows=.true.)) then
+         error stop "Windows build directory comparison excluded a nested source directory"
+      end if
+      if (is_ignored_path("/project/BUILD/source.f90", "/project/build")) then
+         error stop "case-sensitive build directory comparison folded source paths"
+      end if
+   end subroutine check_build_directory_boundaries
 
    !> Verify that a watched path retains exactly the expected root membership.
    subroutine expect_mask(path, expected)

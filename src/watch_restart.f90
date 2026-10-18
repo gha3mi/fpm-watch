@@ -8,13 +8,13 @@
 module watch_restart
    use, intrinsic :: iso_fortran_env, only: int64, real64
    use watch_time, only: sleep_seconds
-   use watch_cmdline, only: get_arg, quote_arg, starts_with, &
+   use watch_cmdline, only: get_arg, quote_arg, join_args, is_windows_os, starts_with, &
                             watch_option_takes_value
    use watch_types, only: watch_config_t
    use watch_platform, only: execute_command, create_temp_directory, remove_temp_directory, set_workspace_root, &
                              current_executable, stop_file_exists
    use watch_log, only: log_event, log_int, log_real, log_string
-   use fpm_strings, only: str
+   use fpm_strings, only: str, string_t
    use fpm_environment, only: get_env
    use fpm_error, only: error_t
    use watch_util, only: ftoa
@@ -164,19 +164,23 @@ contains
    !!
    !! Remove supervisor flags and prior log-format/child markers from the leading
    !! watcher options. Preserve other leading values and every forwarded token
-   !! after the subcommand, quoting each original argv token independently.
+   !! after the subcommand. Collect retained tokens before serializing them once
+   !! so constructing long child commands takes linear time.
    function build_child_command(executable, log_format, restart_count) result(cmd)
       character(len=*), intent(in) :: executable
       character(len=*), intent(in) :: log_format
       integer, intent(in) :: restart_count
       character(len=:), allocatable :: cmd
       character(len=:), allocatable :: a
-      integer :: narg, i
+      type(string_t), allocatable :: arguments(:)
+      integer :: narg, i, retained
       logical :: skip_next, copy_next, in_prefix
 
       cmd = quote_arg(executable) // " --watch-child=" // str(restart_count) // " --watch-log-format " // log_format
 
       narg = command_argument_count()
+      allocate(arguments(narg))
+      retained = 0
       skip_next = .false.
       copy_next = .false.
       in_prefix = .true.
@@ -184,47 +188,35 @@ contains
       do i = 1, narg
          a = get_arg(i)
 
-         if (.not. in_prefix) then
-            cmd = cmd // " " // quote_arg(a)
-            cycle
+         if (in_prefix) then
+            if (skip_next) then
+               skip_next = .false.
+               cycle
+            else if (copy_next) then
+               copy_next = .false.
+            else if (.not. starts_with(a, "--watch-") .and. a /= "-q" .and. a /= "-v" .and. a /= "-vv") then
+               in_prefix = .false.
+            else
+               if (a == "--watch-auto-restart" .or. starts_with(a, "--watch-auto-restart=")) cycle
+               if (a == "--watch-child" .or. starts_with(a, "--watch-child=")) cycle
+
+               select case (a)
+                case ("--watch-restart-delay", "--watch-restart-max", "--watch-log-format")
+                  skip_next = .true.
+                  cycle
+                case default
+                  continue
+               end select
+               if (starts_with(a, "--watch-restart-delay=")) cycle
+               if (starts_with(a, "--watch-restart-max=")) cycle
+               if (starts_with(a, "--watch-log-format=")) cycle
+               copy_next = watch_option_takes_value(a)
+            end if
          end if
-
-         if (skip_next) then
-            skip_next = .false.
-            cycle
-         end if
-
-         if (copy_next) then
-            copy_next = .false.
-            cmd = cmd // " " // quote_arg(a)
-            cycle
-         end if
-
-         if (.not. starts_with(a, "--watch-") .and. a /= "-q" .and. a /= "-v" .and. a /= "-vv") then
-            in_prefix = .false.
-            cmd = cmd // " " // quote_arg(a)
-            cycle
-         end if
-
-         if (a == "--watch-auto-restart" .or. starts_with(a, "--watch-auto-restart=")) cycle
-         if (a == "--watch-child") cycle
-         if (starts_with(a, "--watch-child=")) cycle
-
-         select case (a)
-          case ("--watch-restart-delay", "--watch-restart-max", "--watch-log-format")
-            skip_next = .true.
-            cycle
-          case default
-            continue
-         end select
-
-         if (starts_with(a, "--watch-restart-delay=")) cycle
-         if (starts_with(a, "--watch-restart-max=")) cycle
-         if (starts_with(a, "--watch-log-format=")) cycle
-
-         copy_next = watch_option_takes_value(a)
-         cmd = cmd // " " // quote_arg(a)
+         retained = retained + 1
+         arguments(retained)%s = a
       end do
+      if (retained > 0) cmd = cmd // " " // join_args(arguments(:retained), is_windows_os())
    end function build_child_command
 
 end module watch_restart

@@ -5,7 +5,7 @@ program test_cmdline
    use fpm_command_line, only: fpm_run_settings
    use watch_types, only: watch_config_t
    use watch_cli, only: parse_cli_config
-   use watch_cmdline, only: get_arg, join_argv, quote_arg, is_windows_os, watch_option_takes_value, &
+   use watch_cmdline, only: get_arg, join_argv, join_args, quote_arg, is_windows_os, watch_option_takes_value, &
                             parse_bool, parse_int, parse_real
    use watch_platform, only: execute_command
    use watch_cmdsplice, only: split_cmd_after_subcmd, inject_names_into_cmd
@@ -90,6 +90,7 @@ program test_cmdline
       call require(quote_arg("tail  ") == "'tail  '", "POSIX trailing spaces")
    end if
    call check_long_quotes()
+   call check_joined_args()
    call require(watch_option_takes_value("--watch-ignore"), "watch option consumes value")
    call require(.not. watch_option_takes_value("--watch-ignore=run"), "equals-style watch option arity")
    call parse_bool(" YES ", enabled, ok)
@@ -166,6 +167,29 @@ program test_cmdline
       "Windows escaped quotes preserve runner and delimiter")
 
 contains
+
+   !> Check list boundaries, platform quoting, and many tokens without launching a shell.
+   subroutine check_joined_args()
+      integer, parameter :: argument_count = 10000
+      type(string_t), allocatable :: arguments(:)
+      character(len=:), allocatable :: joined, reference
+
+      arguments = [string_t(""), string_t(" tail  "), string_t("a" // achar(92) // '"' // achar(92))]
+      reference = "'' ' tail  ' 'a" // achar(92) // '"' // achar(92) // "'"
+      call require(join_args(arguments, windows=.false.) == reference, "POSIX list retains every token boundary")
+      reference = '"" " tail  " "a' // repeat(achar(92), 3) // '"' // repeat(achar(92), 2) // '"'
+      call require(join_args(arguments, windows=.true.) == reference, "Windows list retains escaped quotes and slashes")
+      call require(join_args(arguments(:0), windows=.false.) == "", "empty POSIX argument list")
+      call require(join_args(arguments(:0), windows=.true.) == "", "empty Windows argument list")
+
+      deallocate(arguments)
+      allocate(arguments(argument_count))
+      arguments = string_t("x")
+      joined = join_args(arguments, windows=.false.)
+      call require(joined == repeat("'x' ", argument_count - 1) // "'x'", "many POSIX argument boundaries")
+      joined = join_args(arguments, windows=.true.)
+      call require(joined == repeat('"x" ', argument_count - 1) // '"x"', "many Windows argument boundaries")
+   end subroutine check_joined_args
 
    !> Exercise large quote/backslash runs without depending on command-line size limits.
    subroutine check_long_quotes()

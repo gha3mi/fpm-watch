@@ -12,6 +12,10 @@ module watch_fingerprint
    private
    public init_fingerprints, scan_changes, accept_changes, file_fingerprint, watch_state_changed
    public preserve_fingerprints
+   public FINGERPRINT_UNREADABLE
+
+   !> Reserved state for read failures and paths that are not regular files.
+   integer(int64), parameter :: FINGERPRINT_UNREADABLE = 2_int64
 
    interface
       !> Stream a native path with bounded memory and return the content/state fingerprint.
@@ -239,7 +243,8 @@ contains
    !> Hash every byte using bounded reads, reserving distinct non-content states.
    !!
    !! Missing files return zero, empty files one, and inquiry/open/read failures
-   !! two. Successful nonempty hashes are negative and cannot equal those states.
+   !! or nonregular files `FINGERPRINT_UNREADABLE`. Successful nonempty hashes
+   !! are negative and cannot equal those states.
    !! A size change during reading is treated as unreadable until the next poll.
    integer(int64) function file_fingerprint(path) result(fp)
       character(len=*), intent(in) :: path

@@ -11,7 +11,7 @@ module watch_fpm_graph
    use, intrinsic :: iso_c_binding, only: c_int
    use watch_types, only: watch_opts_t, root_info_t
    use watch_log, only: log_event, log_int, log_real, structured_logging
-   use watch_platform, only: begin_raw_output, end_raw_output
+   use watch_platform, only: begin_raw_output, end_raw_output, is_windows
    use watch_filter, only: normalize_path, is_ignored_path, filter_watch_files, starts_with
    use watch_util, only: ftoa, trim_or_empty
    use fpm,              only: build_model
@@ -30,6 +30,7 @@ module watch_fpm_graph
    use tomlf,            only: toml_table
    use fpm_dependency,   only: dependency_tree_t
    use fpm_command_line, only: fpm_build_settings, fpm_run_settings, fpm_test_settings
+   use fpm_os,           only: get_current_directory
    implicit none
    private
    public compute_watch_files_from_settings
@@ -43,6 +44,8 @@ module watch_fpm_graph
 
    !> Shared growable path/mask collection with indexed, cached include edges.
    type file_collection_t
+      !> Absolute project base shared by path comparisons without changing exported paths.
+      character(len=:), allocatable :: project_dir
       type(string_t), allocatable :: paths(:)
       !> Internal root bits also drive include propagation and cycle detection.
       integer(int64), allocatable :: masks(:)
@@ -105,6 +108,7 @@ contains
 
       type(string_t), allocatable :: dep_dirs(:)
       type(file_collection_t) :: collected
+      character(len=:), allocatable :: build_dir
 
       integer :: i, r, nroots
       logical :: whole_libraries
@@ -119,6 +123,13 @@ contains
 
       call system_clock(count_rate=rate)
       if (rate <= 0_int64) rate = 1000_int64
+
+      call get_current_directory(collected%project_dir, err)
+      if (allocated(err)) then
+         call handle_graph_error(err, error, "directory")
+         return
+      end if
+      collected%project_dir = normalize_path(canon_path(collected%project_dir))
 
       allocate(package, model)
 
@@ -164,6 +175,9 @@ contains
       end if
 
       call system_clock(tw0)
+
+      build_dir = trim_or_empty(settings%build_dir)
+      if (len(build_dir) > 0) build_dir = project_path(build_dir, collected%project_dir)
 
       allocate(keep(size(targets)))
       keep = .false.
@@ -216,22 +230,22 @@ contains
       end if
 
       call gather_files_with_mask(targets, visited, target_mask, collected, &
-         trim_or_empty(settings%build_dir), model, w%watch_deps, dep_dirs)
+         build_dir, model, w%watch_deps, dep_dirs)
 
-      call collect_manifest_metadata(collected, "fpm.toml", trim_or_empty(settings%build_dir), dep_dirs)
+      call collect_manifest_metadata(collected, "fpm.toml", build_dir, dep_dirs)
 
       if (w%watch_deps) then
          do i = 1, size(dep_dirs)
             if (len_trim(dep_dirs(i)%s) == 0) cycle
             call collect_manifest_metadata(collected, join_path(dep_dirs(i)%s, "fpm.toml"), &
-               trim_or_empty(settings%build_dir), dep_dirs)
+               build_dir, dep_dirs)
          end do
       end if
 
       if (present(metadata_files)) then
          if (allocated(metadata_files)) then
             do i = 1, size(metadata_files)
-               call collected%add(metadata_files(i)%s, trim_or_empty(settings%build_dir), 0_int64, &
+               call collected%add(metadata_files(i)%s, build_dir, 0_int64, &
                   dep_dirs, preserve=.true., allow_missing=.true.)
             end do
          end if
@@ -668,6 +682,16 @@ contains
       if (exists(version_file)) call collected%add(version_file, build_dir, 0_int64, dep_dirs, preserve=.true.)
    end subroutine collect_manifest_metadata
 
+   !> Resolve a path against the project base using fpm's lexical canonicalization.
+   function project_path(path, project_dir) result(absolute)
+      character(len=*), intent(in) :: path, project_dir
+      character(len=:), allocatable :: absolute
+
+      absolute = normalize_path(path)
+      if (.not. is_absolute_path(absolute)) absolute = join_path(project_dir, absolute)
+      absolute = normalize_path(canon_path(absolute))
+   end function project_path
+
    !> Insert an eligible path and merge root bits; include candidates may be missing.
    subroutine collection_add(self, path, build_dir, mask, dep_dirs, changed, preserve, allow_missing, path_index)
       class(file_collection_t), intent(inout) :: self
@@ -689,7 +713,7 @@ contains
       if (present(allow_missing)) keep_missing = allow_missing
       normalized = normalize_path(canon_path(path))
       if (len_trim(normalized) == 0) return
-      if (.not. protected .and. is_ignored_path(normalized, build_dir)) then
+      if (.not. protected .and. is_ignored_path(project_path(normalized, self%project_dir), build_dir, is_windows())) then
          if (.not. is_in_dep_dirs(normalized, dep_dirs)) return
       end if
       if (.not. keep_missing) then

@@ -6,7 +6,7 @@
 module watch_filter
    use watch_util, only: starts_with
    use, intrinsic :: iso_fortran_env, only: int64
-   use fpm_strings, only: string_t, glob
+   use fpm_strings, only: string_t, glob, lower
    use fpm_filesystem, only: basename
    implicit none
    private
@@ -35,68 +35,37 @@ contains
       end do
    end function normalize_path
 
-
-   !> Compare right-trimmed suffixes; an empty suffix matches every string.
-   pure logical function ends_with(s, suffix) result(ok)
-      character(len=*), intent(in) :: s, suffix
-      integer :: ns, n
-      ns = len_trim(suffix)
-      n = len_trim(s)
-      if (ns <= 0) then
-         ok = .true.
-      else if (n < ns) then
-         ok = .false.
-      else
-         ok = (s(n-ns+1:n) == suffix(1:ns))
-      end if
-   end function ends_with
-
-   !> Test for a slash-delimited interior or trailing path fragment.
-   pure logical function contains_path_fragment(p, frag) result(ok)
-      character(len=*), intent(in) :: p, frag
-      character(len=:), allocatable :: needle
-      ok = .false.
-      if (len_trim(frag) == 0) return
-      needle = "/" // trim(frag) // "/"
-      if (index(p, needle) /= 0) then
-         ok = .true.
-         return
-      end if
-      if (ends_with(p, "/" // trim(frag))) then
-         ok = .true.
-         return
-      end if
-   end function contains_path_fragment
-
-   !> Test normalized paths against a build directory or its slash-delimited fragments.
+   !> Test canonical paths against only the build directory and its descendants.
    !!
-   !! Matches the directory itself, its descendants, and interior/trailing path
-   !! fragments. An empty build directory matches nothing; dependency exceptions
-   !! are applied by the graph collector.
-   pure logical function is_ignored_path(path, build_dir) result(ignored)
+   !! Both paths must use the same base: the graph collector resolves them against
+   !! the project directory before comparison. A same-named directory elsewhere
+   !! is retained. An empty build directory matches nothing. Optional `windows`
+   !! enables case-insensitive comparison; dependency exceptions remain in the collector.
+   pure logical function is_ignored_path(path, build_dir, windows) result(ignored)
       character(len=*), intent(in) :: path, build_dir
+      logical, intent(in), optional :: windows
       character(len=:), allocatable :: p, b
 
       p = normalize_path(path)
       b = normalize_path(build_dir)
 
       ignored = .false.
-
       if (len_trim(b) == 0) return
-
-      if (p == b) then
-         ignored = .true.
-         return
+      if (present(windows)) then
+         if (windows) then
+            p = lower(p)
+            b = lower(b)
+         end if
       end if
-
-      if (starts_with(p, b // "/")) then
-         ignored = .true.
-         return
-      end if
-
-      if (contains_path_fragment(p, b)) then
-         ignored = .true.
-         return
+      do while (len(b) > 1)
+         if (b(len(b):) /= "/") exit
+         b = b(:len(b)-1)
+      end do
+      ignored = p == b
+      if (b == "/") then
+         ignored = ignored .or. starts_with(p, b)
+      else
+         ignored = ignored .or. starts_with(p, b // "/")
       end if
    end function is_ignored_path
 
