@@ -563,8 +563,10 @@ class WatchIntegration(unittest.TestCase):
                     started = next(event for event in events if event["event"] == "command.started")
                     self.assertEqual(started["command"], "fpm " + mode)
                     results = output(errors)
-                    self.assertRegex(results, r"METADATA_first\s+2")
-                    self.assertRegex(results, r"METADATA_second\s+2")
+                    finished = next(event for event in events if event["event"] == "command.finished")
+                    self.assertEqual(finished["exit_code"], 0, text + results)
+                    self.assertRegex(results, r"METADATA_first\s+2", text + results)
+                    self.assertRegex(results, r"METADATA_second\s+2", text + results)
 
     def test_include_change_runs_command(self):
         with self.watch("run", "first") as (process, log):

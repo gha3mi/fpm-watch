@@ -5,8 +5,27 @@
 #endif
 #include <stdio.h>
 
-static int launch_failure(int error, int *launch_error) {
+enum { LAUNCH_OPERATION_CAPACITY = 64 };
+static char last_launch_operation[LAUNCH_OPERATION_CAPACITY] = "";
+
+static void copy_launch_operation(char *buffer, size_t capacity, const char *operation) {
+    size_t i = 0;
+    if (capacity == 0) return;
+    while (i < capacity - 1 && operation[i] != '\0') {
+        buffer[i] = operation[i];
+        ++i;
+    }
+    buffer[i] = '\0';
+}
+
+/* Retain operation details without changing the established execution ABI. */
+void fpm_watch_launch_operation(char *buffer, size_t capacity) {
+    copy_launch_operation(buffer, capacity, last_launch_operation);
+}
+
+static int launch_failure(int error, int *launch_error, const char *operation) {
     *launch_error = error;
+    copy_launch_operation(last_launch_operation, sizeof(last_launch_operation), operation);
     return 127;
 }
 
@@ -112,7 +131,8 @@ int fpm_watch_execute(const char *command, int silent, int *interrupted, int *la
 
     *interrupted = 0;
     *launch_error = 0;
-    if (line == NULL) return launch_failure(ERROR_NOT_ENOUGH_MEMORY, launch_error);
+    last_launch_operation[0] = '\0';
+    if (line == NULL) return launch_failure(ERROR_NOT_ENOUGH_MEMORY, launch_error, "allocate(command)");
     strcpy(line, command);
     ZeroMemory(&startup_info, sizeof(startup_info));
     ZeroMemory(&process, sizeof(process));
@@ -251,7 +271,7 @@ cleanup:
     if (attributes_initialized) DeleteProcThreadAttributeList(startup_info.lpAttributeList);
     free(startup_info.lpAttributeList);
     free(line);
-    return error ? launch_failure((int)error, launch_error) : (int)status;
+    return error ? launch_failure((int)error, launch_error, "CreateProcess/job setup") : (int)status;
 }
 
 #else
@@ -339,13 +359,19 @@ static double monotonic_seconds(void) {
     return (double)now.tv_sec + (double)now.tv_nsec / 1000000000.0;
 }
 
-struct command_result { int status; int error; };
+/* Both private pipes transfer this small record atomically (below PIPE_BUF). */
+struct command_result { int status; int error; char operation[LAUNCH_OPERATION_CAPACITY]; };
 
-static void finish_monitor(int descriptor, int status, int error) {
-    struct command_result result;
+static void write_command_result(int descriptor, int status, int error, const char *operation) {
+    struct command_result result = {0};
     result.status = status;
     result.error = error;
+    copy_launch_operation(result.operation, sizeof(result.operation), operation);
     while (write(descriptor, &result, sizeof(result)) < 0 && errno == EINTR) {}
+}
+
+static void finish_monitor(int descriptor, int status, int error, const char *operation) {
+    write_command_result(descriptor, status, error, operation);
     _exit(0);
 }
 
@@ -365,48 +391,69 @@ static void run_monitor(const char *command, int gate, int result_descriptor,
     struct sigaction action;
     char ready;
     int exec_error[2], status = 0, error = 0, i;
+    struct command_result execution = {0};
+    const char *operation = "";
     pid_t command_pid;
-    ssize_t released;
+    ssize_t released, bytes;
 
     child_group = ancestor_group = 0;
     interrupt_signal = 0;
     monitor_parent = (sig_atomic_t)getppid();
-    if (managed_group == 0 && setpgid(0, 0) != 0) finish_monitor(result_descriptor, 0, errno);
+    if (managed_group == 0 && setpgid(0, 0) != 0)
+        finish_monitor(result_descriptor, 0, errno, "setpgid(monitor)");
     action.sa_handler = monitor_signal_handler;
     action.sa_flags = 0;
     sigemptyset(&action.sa_mask);
     for (i = 0; i < WATCHED_SIGNAL_COUNT; ++i) {
-        if (sigaction(watched_signals[i], &action, NULL) != 0) finish_monitor(result_descriptor, 0, errno);
+        if (sigaction(watched_signals[i], &action, NULL) != 0)
+            finish_monitor(result_descriptor, 0, errno, "sigaction(monitor)");
     }
     /* Parent first gives this group terminal ownership, then releases the gate. */
     do { released = read(gate, &ready, 1); } while (released < 0 && errno == EINTR);
-    if (released != 1) finish_monitor(result_descriptor, 0, released < 0 ? errno : ECANCELED);
+    if (released != 1) finish_monitor(result_descriptor, 0, released < 0 ? errno : ECANCELED, "read(gate)");
     close(gate);
-    sigprocmask(SIG_SETMASK, mask, NULL);
-    if (interrupt_signal != 0) finish_monitor(result_descriptor, 0, 0);
-    if (close_on_exec_pipe(exec_error) != 0) finish_monitor(result_descriptor, 0, errno);
+    if (sigprocmask(SIG_SETMASK, mask, NULL) != 0)
+        finish_monitor(result_descriptor, 0, errno, "sigprocmask(monitor)");
+    if (interrupt_signal != 0) finish_monitor(result_descriptor, 0, 0, "");
+    if (close_on_exec_pipe(exec_error) != 0) finish_monitor(result_descriptor, 0, errno, "pipe(exec_error)");
     format_group(marker, getpgrp());
     command_pid = fork();
-    if (command_pid < 0) finish_monitor(result_descriptor, 0, errno);
+    if (command_pid < 0) finish_monitor(result_descriptor, 0, errno, "fork(command)");
     if (command_pid == 0) {
         char *arguments[] = {"sh", "-c", (char *)command, NULL};
         close(exec_error[0]);
         action.sa_handler = SIG_DFL;
-        for (i = 0; i < WATCHED_SIGNAL_COUNT; ++i) sigaction(watched_signals[i], &action, NULL);
+        for (i = 0; i < WATCHED_SIGNAL_COUNT; ++i) {
+            if (sigaction(watched_signals[i], &action, NULL) != 0) {
+                write_command_result(exec_error[1], 0, errno, "sigaction(command)");
+                _exit(127);
+            }
+        }
         execve("/bin/sh", arguments, environment);
         error = errno;
-        while (write(exec_error[1], &error, sizeof(error)) < 0 && errno == EINTR) {}
+        write_command_result(exec_error[1], 0, error, "execve(/bin/sh)");
         _exit(127);
     }
     close(exec_error[1]);
-    while (read(exec_error[0], &error, sizeof(error)) < 0) {
-        if (errno != EINTR) { error = errno; break; }
+    do { bytes = read(exec_error[0], &execution, sizeof(execution)); } while (bytes < 0 && errno == EINTR);
+    if (bytes < 0) {
+        error = errno;
+        operation = "read(exec_error)";
+    } else if (bytes == (ssize_t)sizeof(execution)) {
+        error = execution.error;
+        operation = execution.operation;
+    } else if (bytes != 0) {
+        error = EIO;
+        operation = "read(exec_error)";
     }
     close(exec_error[0]);
     while (waitpid(command_pid, &status, 0) < 0) {
-        if (errno != EINTR) { error = errno; break; }
+        if (errno != EINTR) {
+            if (error == 0) { error = errno; operation = "waitpid(command)"; }
+            break;
+        }
     }
-    finish_monitor(result_descriptor, status, error);
+    finish_monitor(result_descriptor, status, error, operation);
 }
 
 int fpm_watch_execute(const char *command, int silent, int *interrupted, int *launch_error) {
@@ -422,10 +469,12 @@ int fpm_watch_execute(const char *command, int silent, int *interrupted, int *la
     size_t nenv = 0, used = 0;
     char **environment = NULL, marker[sizeof(group_variable) + 32];
     const char *inherited = getenv("FPM_WATCH_PROCESS_GROUP");
+    const char *operation = "";
 
     (void)silent;
     *interrupted = 0;
     *launch_error = 0;
+    last_launch_operation[0] = '\0';
     interrupt_signal = child_group = ancestor_group = 0;
     if (inherited != NULL) {
         char *end;
@@ -434,7 +483,7 @@ int fpm_watch_execute(const char *command, int silent, int *interrupted, int *la
     }
     while (environ[nenv] != NULL) ++nenv;
     environment = malloc((nenv + 2) * sizeof(*environment));
-    if (environment == NULL) return launch_failure(ENOMEM, launch_error);
+    if (environment == NULL) return launch_failure(ENOMEM, launch_error, "allocate(environment)");
     for (size_t j = 0; j < nenv; ++j) {
         if (strncmp(environ[j], group_variable, sizeof(group_variable) - 1) != 0) environment[used++] = environ[j];
     }
@@ -446,24 +495,29 @@ int fpm_watch_execute(const char *command, int silent, int *interrupted, int *la
     if (sigprocmask(SIG_BLOCK, &blocked, &previous_mask) != 0) {
         error = errno;
         free(environment);
-        return launch_failure(error, launch_error);
+        return launch_failure(error, launch_error, "sigprocmask(block)");
     }
     action.sa_handler = watch_signal_handler;
     action.sa_flags = 0;
     sigemptyset(&action.sa_mask);
     for (i = 0; i < WATCHED_SIGNAL_COUNT; ++i) {
-        if (sigaction(watched_signals[i], &action, &previous[i]) != 0) { error = errno; goto restore; }
+        if (sigaction(watched_signals[i], &action, &previous[i]) != 0) {
+            error = errno; operation = "sigaction(parent)"; goto restore;
+        }
         ++installed;
     }
     action.sa_handler = child_status_handler;
-    if (sigaction(SIGCHLD, &action, &previous_child) != 0) { error = errno; goto restore; }
+    if (sigaction(SIGCHLD, &action, &previous_child) != 0) {
+        error = errno; operation = "sigaction(SIGCHLD)"; goto restore;
+    }
     child_handler_installed = 1;
     wait_mask = previous_mask;
     sigdelset(&wait_mask, SIGCHLD);
-    if (close_on_exec_pipe(gate) != 0 || close_on_exec_pipe(results) != 0) { error = errno; goto restore; }
+    if (close_on_exec_pipe(gate) != 0) { error = errno; operation = "pipe(gate)"; goto restore; }
+    if (close_on_exec_pipe(results) != 0) { error = errno; operation = "pipe(results)"; goto restore; }
     terminal = open("/dev/tty", O_RDWR | O_CLOEXEC);
     pid = fork();
-    if (pid < 0) { error = errno; goto restore; }
+    if (pid < 0) { error = errno; operation = "fork(monitor)"; goto restore; }
     if (pid == 0) {
         close(gate[1]);
         close(results[0]);
@@ -475,9 +529,13 @@ int fpm_watch_execute(const char *command, int silent, int *interrupted, int *la
     close(results[1]); results[1] = -1;
     managed_group = ancestor_group > 0 ? original_group : pid;
     child_group = (sig_atomic_t)managed_group;
-    if (managed_group == pid && setpgid(pid, pid) != 0) { error = errno; goto cancel; }
+    if (managed_group == pid && setpgid(pid, pid) != 0) {
+        error = errno; operation = "setpgid(parent)"; goto cancel;
+    }
     if (managed_group == pid && terminal >= 0 && tcgetpgrp(terminal) == original_group) {
-        if (terminal_foreground(terminal, pid) != 0) { error = errno; goto cancel; }
+        if (terminal_foreground(terminal, pid) != 0) {
+            error = errno; operation = "terminal_foreground(start)"; goto cancel;
+        }
         terminal_given = 1;
     }
     {
@@ -486,18 +544,26 @@ int fpm_watch_execute(const char *command, int silent, int *interrupted, int *la
         ignored.sa_handler = SIG_IGN;
         ignored.sa_flags = 0;
         sigemptyset(&ignored.sa_mask);
-        if (sigaction(SIGPIPE, &ignored, &old_pipe) != 0) { error = errno; goto cancel; }
+        if (sigaction(SIGPIPE, &ignored, &old_pipe) != 0) {
+            error = errno; operation = "sigaction(SIGPIPE)"; goto cancel;
+        }
         do { released = write(gate[1], "x", 1); } while (released < 0 && errno == EINTR);
-        if (released != 1) error = errno;
-        sigaction(SIGPIPE, &old_pipe, NULL);
+        if (released != 1) { error = errno; operation = "write(gate)"; }
+        if (sigaction(SIGPIPE, &old_pipe, NULL) != 0 && error == 0) {
+            error = errno; operation = "sigaction(SIGPIPE restore)";
+        }
         if (error) goto cancel;
     }
     close(gate[1]); gate[1] = -1;
-    sigprocmask(SIG_SETMASK, &previous_mask, NULL);
+    if (sigprocmask(SIG_SETMASK, &previous_mask, NULL) != 0) {
+        error = errno; operation = "sigprocmask(wait)"; goto cancel;
+    }
     for (;;) {
         /* Block before checking state: pselect atomically releases these signals
          * while waiting, so a fast child cannot finish between the check and sleep. */
-        sigprocmask(SIG_BLOCK, &blocked, NULL);
+        if (sigprocmask(SIG_BLOCK, &blocked, NULL) != 0) {
+            error = errno; operation = "sigprocmask(wait block)"; goto cancel;
+        }
         if (!reaped) {
             waited = waitpid(pid, &status, WNOHANG | WUNTRACED);
             if (waited == pid) {
@@ -506,14 +572,18 @@ int fpm_watch_execute(const char *command, int silent, int *interrupted, int *la
                     terminal_given = 0;
                     kill(getpid(), WSTOPSIG(status));
                     if (terminal >= 0 && tcgetpgrp(terminal) == original_group) {
-                        if (terminal_foreground(terminal, managed_group) != 0) { error = errno; goto cancel; }
+                        if (terminal_foreground(terminal, managed_group) != 0) {
+                            error = errno; operation = "terminal_foreground(resume)"; goto cancel;
+                        }
                         terminal_given = 1;
                     }
                     kill(-managed_group, SIGCONT);
                     continue;
                 }
                 reaped = 1;
-            } else if (waited < 0 && errno != EINTR) { error = errno; goto cancel; }
+            } else if (waited < 0 && errno != EINTR) {
+                error = errno; operation = "waitpid(monitor)"; goto cancel;
+            }
         }
         if (interrupt_signal != 0) {
             /* A nested caller is itself in the managed group. Once its monitor
@@ -535,20 +605,28 @@ int fpm_watch_execute(const char *command, int silent, int *interrupted, int *la
             const struct timespec *timeout = interrupt_signal != 0 && ancestor_group == 0 ? &interval : NULL;
             if (pselect(0, NULL, NULL, NULL, timeout, &wait_mask) < 0 && errno != EINTR) {
                 error = errno;
+                operation = "pselect";
                 goto cancel;
             }
         }
     }
     if (!reaped) {
         while (waitpid(pid, &status, 0) < 0) {
-            if (errno != EINTR) { error = errno; break; }
+            if (errno != EINTR) { error = errno; operation = "waitpid(monitor)"; break; }
         }
         reaped = 1;
     }
     if (!error) {
         ssize_t bytes;
         do { bytes = read(results[0], &result, sizeof(result)); } while (bytes < 0 && errno == EINTR);
-        if (bytes == (ssize_t)sizeof(result)) { status = result.status; error = result.error; }
+        if (bytes == (ssize_t)sizeof(result)) {
+            status = result.status;
+            error = result.error;
+            operation = result.operation;
+        } else if (bytes != 0) {
+            error = bytes < 0 ? errno : EIO;
+            operation = "read(results)";
+        }
     }
     goto restore;
 
@@ -573,7 +651,7 @@ restore:
     for (i = 0; i < installed; ++i) sigaction(watched_signals[i], &previous[i], NULL);
     if (child_handler_installed) sigaction(SIGCHLD, &previous_child, NULL);
     sigprocmask(SIG_SETMASK, &previous_mask, NULL);
-    return error ? launch_failure(error, launch_error) : status;
+    return error ? launch_failure(error, launch_error, operation) : status;
 }
 #endif
 

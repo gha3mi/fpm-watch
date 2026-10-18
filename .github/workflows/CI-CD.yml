@@ -44,6 +44,10 @@ jobs:
           platform: ${{ matrix.os }}
           compiler: ${{ matrix.compiler }}
 
+      - name: Native process regressions
+        if: runner.os != 'Windows'
+        run: python test/native_process_regression.py
+
       - name: fpm build (debug)
         run: fpm build --compiler ${{ env.FPM_FC }} --profile debug --verbose
       - name: fpm build (release)

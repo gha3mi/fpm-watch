@@ -49,6 +49,14 @@ module watch_platform
          integer(c_int), intent(out) :: launch_error
          integer(c_int) :: status
       end function fpm_watch_execute
+      !> Copy the last failed native launch operation into a bounded NUL-terminated buffer.
+      subroutine fpm_watch_launch_operation(buffer, capacity) bind(C, name="fpm_watch_launch_operation")
+         import c_char, c_size_t
+         implicit none
+         ! allow(C071, C072)
+         character(kind=c_char), intent(out) :: buffer(*)
+         integer(c_size_t), value :: capacity
+      end subroutine fpm_watch_launch_operation
       !> Redirect descriptor 1 to stderr; return a saved stdout descriptor or a negative OS error.
       function fpm_watch_redirect_stdout() bind(C, name="fpm_watch_redirect_stdout") result(saved)
          import c_int
@@ -169,6 +177,7 @@ contains
       !! Keep supervisor workspace ownership for internal watcher/graph launches (default true).
       !! External commands clear that internal setting so surviving descendants own their workspaces.
       integer(c_int) :: status, was_interrupted, launch_error, silent_mode
+      character(kind=c_char) :: operation(64)
       character(len=:), allocatable :: effective_cmd, inherited_root
       logical :: isolate_workspace, root_defined
       integer :: environment_status
@@ -213,8 +222,10 @@ contains
          end if
       end if
       if (launch_error /= 0_c_int) then
+         call fpm_watch_launch_operation(operation, int(size(operation), c_size_t))
          call log_event("error", "command.launch_failed", "Cannot execute command: " // trim(cmd), &
-                      [log_int("os_error", int(launch_error)), log_string("command", trim(cmd))])
+                      [log_int("os_error", int(launch_error)), log_string("operation", from_c_string(operation)), &
+                       log_string("command", trim(cmd))])
          exitstat = 127
       else
          exitstat = int(status)
