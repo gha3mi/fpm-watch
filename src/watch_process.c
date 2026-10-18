@@ -11,6 +11,9 @@ static int launch_failure(int error, int *launch_error) {
 }
 
 #ifdef _WIN32
+#ifndef _WIN32_WINNT
+#define _WIN32_WINNT 0x0600
+#endif
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include <stdlib.h>
@@ -96,37 +99,58 @@ static int resolve_batch_script(const char *command, char *resolved, DWORD capac
 
 int fpm_watch_execute(const char *command, int silent, int *interrupted, int *launch_error) {
     char *line = (char *)malloc(strlen(command) + 1);
-    STARTUPINFOA startup;
+    STARTUPINFOEXA startup_info;
+    STARTUPINFOA *startup = &startup_info.StartupInfo;
     PROCESS_INFORMATION process;
     JOBOBJECT_EXTENDED_LIMIT_INFORMATION limits;
-    HANDLE job = NULL;
+    HANDLE job = NULL, handles[3];
+    SIZE_T attribute_size = 0;
     DWORD status = 127, error = 0, waited;
-    DWORD creation_flags = CREATE_SUSPENDED;
-    int handler_installed = 0, batch = 0, batch_error;
+    DWORD creation_flags = CREATE_SUSPENDED | EXTENDED_STARTUPINFO_PRESENT;
+    int handler_installed = 0, attributes_initialized = 0, batch = 0, batch_error;
     char command_processor[MAX_PATH + 9], script[MAX_PATH];
 
     *interrupted = 0;
     *launch_error = 0;
     if (line == NULL) return launch_failure(ERROR_NOT_ENOUGH_MEMORY, launch_error);
     strcpy(line, command);
-    ZeroMemory(&startup, sizeof(startup));
+    ZeroMemory(&startup_info, sizeof(startup_info));
     ZeroMemory(&process, sizeof(process));
     ZeroMemory(&limits, sizeof(limits));
-    startup.cb = sizeof(startup);
-    startup.dwFlags = STARTF_USESTDHANDLES;
-    startup.hStdInput = inherited_standard_handle(STD_INPUT_HANDLE, GENERIC_READ, 0);
-    if (startup.hStdInput == INVALID_HANDLE_VALUE) {
+    startup->cb = sizeof(startup_info);
+    startup->dwFlags = STARTF_USESTDHANDLES;
+    startup->hStdInput = inherited_standard_handle(STD_INPUT_HANDLE, GENERIC_READ, 0);
+    if (startup->hStdInput == INVALID_HANDLE_VALUE) {
         error = GetLastError();
         goto cleanup;
     }
-    startup.hStdOutput = inherited_standard_handle(silent == 2 ? STD_ERROR_HANDLE : STD_OUTPUT_HANDLE,
+    startup->hStdOutput = inherited_standard_handle(silent == 2 ? STD_ERROR_HANDLE : STD_OUTPUT_HANDLE,
                                                   GENERIC_WRITE, silent == 1);
-    if (startup.hStdOutput == INVALID_HANDLE_VALUE) {
+    if (startup->hStdOutput == INVALID_HANDLE_VALUE) {
         error = GetLastError();
         goto cleanup;
     }
-    startup.hStdError = inherited_standard_handle(STD_ERROR_HANDLE, GENERIC_WRITE, silent == 1);
-    if (startup.hStdError == INVALID_HANDLE_VALUE) {
+    startup->hStdError = inherited_standard_handle(STD_ERROR_HANDLE, GENERIC_WRITE, silent == 1);
+    if (startup->hStdError == INVALID_HANDLE_VALUE) {
+        error = GetLastError();
+        goto cleanup;
+    }
+    /* Give the child only these duplicates, not the original stdio handles or
+     * unrelated inheritable handles owned by the watcher or its caller. */
+    handles[0] = startup->hStdInput;
+    handles[1] = startup->hStdOutput;
+    handles[2] = startup->hStdError;
+    InitializeProcThreadAttributeList(NULL, 1, 0, &attribute_size);
+    if (attribute_size == 0) { error = GetLastError(); goto cleanup; }
+    startup_info.lpAttributeList = malloc(attribute_size);
+    if (startup_info.lpAttributeList == NULL) { error = ERROR_NOT_ENOUGH_MEMORY; goto cleanup; }
+    if (!InitializeProcThreadAttributeList(startup_info.lpAttributeList, 1, 0, &attribute_size)) {
+        error = GetLastError();
+        goto cleanup;
+    }
+    attributes_initialized = 1;
+    if (!UpdateProcThreadAttribute(startup_info.lpAttributeList, 0, PROC_THREAD_ATTRIBUTE_HANDLE_LIST,
+                                   handles, sizeof(handles), NULL, NULL)) {
         error = GetLastError();
         goto cleanup;
     }
@@ -155,7 +179,7 @@ int fpm_watch_execute(const char *command, int silent, int *interrupted, int *la
     batch_error = resolve_batch_script(command, script, MAX_PATH, 0);
     if (batch_error == 0) batch = 1;
     else if (batch_error != ERROR_FILE_NOT_FOUND) { error = (DWORD)batch_error; goto cleanup; }
-    if (!batch && !CreateProcessA(NULL, line, NULL, NULL, TRUE, creation_flags, NULL, NULL, &startup, &process)) {
+    if (!batch && !CreateProcessA(NULL, line, NULL, NULL, TRUE, creation_flags, NULL, NULL, startup, &process)) {
         error = GetLastError();
         if (error != ERROR_FILE_NOT_FOUND) goto cleanup;
         batch_error = resolve_batch_script(command, script, MAX_PATH, 1);
@@ -179,7 +203,7 @@ int fpm_watch_execute(const char *command, int silent, int *interrupted, int *la
             if (length >= MAX_PATH) { error = ERROR_FILENAME_EXCED_RANGE; goto cleanup; }
             strcat(command_processor, "\\cmd.exe");
         }
-        if (!CreateProcessA(command_processor, line, NULL, NULL, TRUE, creation_flags, NULL, NULL, &startup, &process)) {
+        if (!CreateProcessA(command_processor, line, NULL, NULL, TRUE, creation_flags, NULL, NULL, startup, &process)) {
             error = GetLastError();
             goto cleanup;
         }
@@ -221,9 +245,11 @@ cleanup:
     if (process.hProcess != NULL) CloseHandle(process.hProcess);
     if (job != NULL) CloseHandle(job);
     if (handler_installed) SetConsoleCtrlHandler(watch_console_handler, FALSE);
-    if (startup.hStdInput != NULL && startup.hStdInput != INVALID_HANDLE_VALUE) CloseHandle(startup.hStdInput);
-    if (startup.hStdOutput != NULL && startup.hStdOutput != INVALID_HANDLE_VALUE) CloseHandle(startup.hStdOutput);
-    if (startup.hStdError != NULL && startup.hStdError != INVALID_HANDLE_VALUE) CloseHandle(startup.hStdError);
+    if (startup->hStdInput != NULL && startup->hStdInput != INVALID_HANDLE_VALUE) CloseHandle(startup->hStdInput);
+    if (startup->hStdOutput != NULL && startup->hStdOutput != INVALID_HANDLE_VALUE) CloseHandle(startup->hStdOutput);
+    if (startup->hStdError != NULL && startup->hStdError != INVALID_HANDLE_VALUE) CloseHandle(startup->hStdError);
+    if (attributes_initialized) DeleteProcThreadAttributeList(startup_info.lpAttributeList);
+    free(startup_info.lpAttributeList);
     free(line);
     return error ? launch_failure((int)error, launch_error) : (int)status;
 }
