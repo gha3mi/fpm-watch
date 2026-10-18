@@ -92,13 +92,28 @@ contains
       !! Inclusive range of argv indices to join.
       character(len=:), allocatable :: s
       character(len=:), allocatable :: a
-      integer :: i
+      integer :: i, total, position
+      logical :: windows
 
-      s = ""
+      if (i2 < i1) then
+         s = ""
+         return
+      end if
+      windows = is_windows_os()
+      total = i2 - i1
       do i = i1, i2
          a = get_arg(i)
-         if (i > i1) s = s // " "
-         s = s // quote_arg(a)
+         total = total + quoted_length(a, windows)
+      end do
+      allocate(character(len=total) :: s)
+      position = 1
+      do i = i1, i2
+         if (i > i1) then
+            s(position:position) = " "
+            position = position + 1
+         end if
+         a = get_arg(i)
+         call put_quoted_arg(s, position, a, windows)
       end do
    end function join_argv
 
@@ -107,60 +122,91 @@ contains
    !! Optional `windows` overrides host detection. Windows doubles trailing
    !! backslashes and escapes embedded double quotes for the C-runtime parser.
    !! POSIX uses single quotes, breaking out of them to represent embedded quotes.
+   !! Both forms allocate once and fill the result in linear time.
    function quote_arg(a, windows) result(q)
       character(len=*), intent(in) :: a
       logical, intent(in), optional :: windows
       !! Explicit platform selection supports portable serialization checks.
       character(len=:), allocatable :: q
       logical :: use_windows
+      integer :: position, total
       if (present(windows)) then
          use_windows = windows
       else
          use_windows = is_windows_os()
       end if
-      if (use_windows) then
-         q = '"' // escape_quotes_win(a) // '"'
-      else
-         q = "'" // escape_quotes_sh(a) // "'"
-      end if
-   contains
-      !> Escape embedded quotes and trailing backslashes for a double-quoted Windows argv token.
-      pure function escape_quotes_win(s) result(r)
-         character(len=*), intent(in) :: s
-         character(len=:), allocatable :: r
-         integer :: j, backslashes
-         r = ""
-         backslashes = 0
-         do j = 1, len(s)
-            if (s(j:j) == achar(92)) then
+      total = quoted_length(a, use_windows)
+      allocate(character(len=total) :: q)
+      position = 1
+      call put_quoted_arg(q, position, a, use_windows)
+   end function quote_arg
+
+   !> Count the full quoted token using the same backslash rules as the writer.
+   pure integer function quoted_length(value, windows) result(length)
+      character(len=*), intent(in) :: value
+      logical, intent(in) :: windows
+      integer :: i, backslashes
+      length = len(value) + 2
+      backslashes = 0
+      do i = 1, len(value)
+         if (windows) then
+            if (value(i:i) == achar(92)) then
                backslashes = backslashes + 1
                cycle
             end if
-            if (s(j:j) == '"') then
-               r = r // repeat(achar(92), 2 * backslashes + 1) // '"'
-            else
-               r = r // repeat(achar(92), backslashes) // s(j:j)
+            if (value(i:i) == '"') length = length + backslashes + 1
+            backslashes = 0
+         else
+            if (value(i:i) == "'") length = length + 4
+         end if
+      end do
+      if (windows) length = length + backslashes
+   end function quoted_length
+
+   !> Fill a preallocated command buffer while retaining bytes outside this token.
+   pure subroutine put_quoted_arg(buffer, position, value, windows)
+      ! allow(C072)
+      character(len=*), intent(inout) :: buffer
+      integer, intent(inout) :: position
+      character(len=*), intent(in) :: value
+      logical, intent(in) :: windows
+      integer :: i, backslashes, written_slashes
+      character :: delimiter
+
+      delimiter = "'"
+      if (windows) delimiter = '"'
+      buffer(position:position) = delimiter
+      position = position + 1
+      backslashes = 0
+      do i = 1, len(value)
+         if (windows) then
+            if (value(i:i) == achar(92)) then
+               backslashes = backslashes + 1
+               cycle
+            end if
+            written_slashes = backslashes
+            if (value(i:i) == '"') written_slashes = 2 * backslashes + 1
+            if (written_slashes > 0) then
+               buffer(position:position + written_slashes - 1) = repeat(achar(92), written_slashes)
+               position = position + written_slashes
             end if
             backslashes = 0
-         end do
-         r = r // repeat(achar(92), 2 * backslashes)
-      end function escape_quotes_win
-
-      !> Replace embedded single quotes with quoted fragments suitable for a POSIX shell.
-      pure function escape_quotes_sh(s) result(r)
-         character(len=*), intent(in) :: s
-         character(len=:), allocatable :: r
-         integer :: j
-         r = ""
-         do j = 1, len(s)
-            if (s(j:j) == "'") then
-               r = r // "'""'""'"
-            else
-               r = r // s(j:j)
-            end if
-         end do
-      end function escape_quotes_sh
-   end function quote_arg
+         else if (value(i:i) == "'") then
+            buffer(position:position + 4) = "'""'""'"
+            position = position + 5
+            cycle
+         end if
+         buffer(position:position) = value(i:i)
+         position = position + 1
+      end do
+      if (windows .and. backslashes > 0) then
+         written_slashes = 2 * backslashes
+         buffer(position:position + written_slashes - 1) = repeat(achar(92), written_slashes)
+         position = position + written_slashes
+      end if
+      buffer(position:position) = delimiter
+      position = position + 1
+   end subroutine put_quoted_arg
 
    !> Read one decimal integer, rejecting extra tokens, null fields, and overflow.
    pure subroutine parse_int(s, v, ok)

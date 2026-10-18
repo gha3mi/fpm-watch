@@ -3,22 +3,26 @@
 !! Every byte contributes to the fingerprint. Missing, empty, and unreadable files
 !! have distinct states; nonempty content uses a 63-bit hash. Hash collisions are
 !! still possible, so fingerprints are change detectors, not content identities.
-!! File reads share a reusable buffer and are intended for serial use.
+!! Native file reads use a bounded buffer and unsigned hash arithmetic.
 module watch_fingerprint
    use, intrinsic :: iso_fortran_env, only: int64
+   use, intrinsic :: iso_c_binding, only: c_char, c_null_char, c_int64_t
    use fpm_strings, only: string_t
    implicit none
    private
    public init_fingerprints, scan_changes, accept_changes, file_fingerprint, watch_state_changed
    public preserve_fingerprints
 
-   integer(int64), parameter :: FNV_OFFSET = 1469598103934665603_int64
-   integer(int64), parameter :: MASK32 = 4294967295_int64
-   integer, parameter :: BLOCK_SIZE = 65536
-   integer(int64), parameter :: FILE_MISSING = 0_int64, FILE_EMPTY = 1_int64, FILE_UNREADABLE = 2_int64
-
-   !> Shared bounded scratch buffer; file fingerprinting is not reentrant.
-   character(len=BLOCK_SIZE), save :: io_buf
+   interface
+      !> Stream a native path with bounded memory and return the content/state fingerprint.
+      function native_file_fingerprint(path) bind(C, name="fpm_watch_file_fingerprint") result(fp)
+         import c_char, c_int64_t
+         implicit none
+         ! allow(C071)
+         character(kind=c_char), intent(in) :: path(*)
+         integer(c_int64_t) :: fp
+      end function native_file_fingerprint
+   end interface
 
 contains
 
@@ -239,62 +243,7 @@ contains
    !! A size change during reading is treated as unreadable until the next poll.
    integer(int64) function file_fingerprint(path) result(fp)
       character(len=*), intent(in) :: path
-      logical :: ex
-      integer(int64) :: sz, final_size, remaining, h
-      integer :: u, ios, n, i
-
-      fp = FILE_UNREADABLE
-      inquire(file=trim(path), exist=ex, iostat=ios)
-      if (ios /= 0) return
-      if (.not. ex) then
-         fp = FILE_MISSING
-         return
-      end if
-      open(newunit=u, file=trim(path), access="stream", form="unformatted", action="read", status="old", iostat=ios)
-      if (ios /= 0) return
-      sz = -1_int64
-      inquire(unit=u, size=sz, iostat=ios)
-      if (ios /= 0 .or. sz < 0_int64) then
-         close(u)
-         return
-      end if
-      remaining = sz
-      h = FNV_OFFSET
-      do while (remaining > 0_int64)
-         n = int(min(remaining, int(BLOCK_SIZE, int64)))
-         read(u, iostat=ios) io_buf(:n)
-         if (ios /= 0) exit
-         do i = 1, n
-            call fnv1a_mix_i64(h, int(iachar(io_buf(i:i)), int64))
-         end do
-         remaining = remaining - int(n, int64)
-      end do
-      if (remaining == 0_int64) then
-         inquire(unit=u, size=final_size, iostat=ios)
-         if (ios == 0) then
-            if (final_size == sz) then
-               fp = ibset(h, bit_size(h) - 1)
-               if (sz == 0_int64) fp = FILE_EMPTY
-            end if
-         end if
-      end if
-      close(u)
+      fp = native_file_fingerprint(trim(path) // c_null_char)
    end function file_fingerprint
-
-   !> Mix with the FNV prime modulo 2**64 using bounded 32-bit limbs.
-   !!
-   !! The prime is 2**40 + 435. Limb products fit signed int64, avoiding
-   !! undefined signed overflow while preserving the intended bit pattern.
-   pure subroutine fnv1a_mix_i64(h, x)
-      integer(int64), intent(inout) :: h
-      integer(int64), intent(in)    :: x
-      integer(int64) :: low, high, product
-      h = ieor(h, x)
-      low = iand(h, MASK32)
-      high = iand(shiftr(h, 32), MASK32)
-      product = low * 435_int64
-      high = high * 435_int64 + low * 256_int64 + shiftr(product, 32)
-      h = ior(shiftl(iand(high, MASK32), 32), iand(product, MASK32))
-   end subroutine fnv1a_mix_i64
 
 end module watch_fingerprint
