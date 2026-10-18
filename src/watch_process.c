@@ -340,6 +340,17 @@ static int close_on_exec_pipe(int descriptors[2]) {
     return 0;
 }
 
+/* Accept only a verified target group after an error; preserve genuine denials. */
+static int establish_process_group(pid_t process) {
+    pid_t group = process == 0 ? getpid() : process;
+    int error;
+    if (setpgid(process, group) == 0) return 0;
+    error = errno;
+    if ((process == 0 ? getpgrp() : getpgid(process)) == group) return 0;
+    errno = error;
+    return -1;
+}
+
 static int terminal_foreground(int terminal, pid_t group) {
     sigset_t blocked, previous;
     int result, error;
@@ -387,7 +398,7 @@ static void format_group(char *marker, pid_t group) {
 }
 
 static void run_monitor(const char *command, int gate, int result_descriptor,
-                        const sigset_t *mask, char **environment, char *marker, pid_t managed_group) {
+                        const sigset_t *mask, char **environment, char *marker) {
     struct sigaction action;
     char ready;
     int exec_error[2], status = 0, error = 0, i;
@@ -399,8 +410,6 @@ static void run_monitor(const char *command, int gate, int result_descriptor,
     child_group = ancestor_group = 0;
     interrupt_signal = 0;
     monitor_parent = (sig_atomic_t)getppid();
-    if (managed_group == 0 && setpgid(0, 0) != 0)
-        finish_monitor(result_descriptor, 0, errno, "setpgid(monitor)");
     action.sa_handler = monitor_signal_handler;
     action.sa_flags = 0;
     sigemptyset(&action.sa_mask);
@@ -408,7 +417,8 @@ static void run_monitor(const char *command, int gate, int result_descriptor,
         if (sigaction(watched_signals[i], &action, NULL) != 0)
             finish_monitor(result_descriptor, 0, errno, "sigaction(monitor)");
     }
-    /* Parent first gives this group terminal ownership, then releases the gate. */
+    /* Parent alone establishes the group and terminal ownership before releasing
+     * the gate. The monitor must not race a second setpgid against the parent. */
     do { released = read(gate, &ready, 1); } while (released < 0 && errno == EINTR);
     if (released != 1) finish_monitor(result_descriptor, 0, released < 0 ? errno : ECANCELED, "read(gate)");
     close(gate);
@@ -522,14 +532,13 @@ int fpm_watch_execute(const char *command, int silent, int *interrupted, int *la
         close(gate[1]);
         close(results[0]);
         if (terminal >= 0) close(terminal);
-        run_monitor(command, gate[0], results[1], &previous_mask, environment, marker,
-                    ancestor_group > 0 ? original_group : 0);
+        run_monitor(command, gate[0], results[1], &previous_mask, environment, marker);
     }
     close(gate[0]); gate[0] = -1;
     close(results[1]); results[1] = -1;
     managed_group = ancestor_group > 0 ? original_group : pid;
     child_group = (sig_atomic_t)managed_group;
-    if (managed_group == pid && setpgid(pid, pid) != 0) {
+    if (managed_group == pid && establish_process_group(pid) != 0) {
         error = errno; operation = "setpgid(parent)"; goto cancel;
     }
     if (managed_group == pid && terminal >= 0 && tcgetpgrp(terminal) == original_group) {

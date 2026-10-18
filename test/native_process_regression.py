@@ -72,6 +72,57 @@ int main(void) {
 }
 """
 
+GROUP_HARNESS = r"""
+#define _POSIX_C_SOURCE 200809L
+#include <errno.h>
+#include <stdio.h>
+#include <string.h>
+#include <unistd.h>
+
+enum { NORMAL, ALREADY_ESTABLISHED, DENIED };
+static int group_fault;
+static int controlled_setpgid(pid_t, pid_t);
+#define setpgid controlled_setpgid
+#include "watch_process.c"
+#undef setpgid
+
+/* Exercise both the established-group race and an actual permission denial. */
+static int controlled_setpgid(pid_t process, pid_t group) {
+    if (group_fault == DENIED) { errno = EPERM; return -1; }
+    int status = setpgid(process, group);
+    if (status == 0 && group_fault == ALREADY_ESTABLISHED) { errno = EPERM; return -1; }
+    return status;
+}
+
+int main(void) {
+    int status, error, interrupted;
+    char operation[64];
+    group_fault = ALREADY_ESTABLISHED;
+    for (int iteration = 0; iteration < 100; ++iteration) {
+        status = fpm_watch_execute("true", 0, &interrupted, &error);
+        if (status || error || interrupted) {
+            fpm_watch_launch_operation(operation, sizeof(operation));
+            fprintf(stderr, "established group rejected: status=%d os_error=%d operation=%s\n",
+                    status, error, operation);
+            return 1;
+        }
+    }
+    group_fault = DENIED;
+    status = fpm_watch_execute("true", 0, &interrupted, &error);
+    fpm_watch_launch_operation(operation, sizeof(operation));
+    if (status != 127 || error != EPERM || interrupted || strcmp(operation, "setpgid(parent)")) {
+        fprintf(stderr, "real denial lost: status=%d os_error=%d operation=%s\n", status, error, operation);
+        return 1;
+    }
+    group_fault = NORMAL;
+    status = fpm_watch_execute("true", 0, &interrupted, &error);
+    fpm_watch_launch_operation(operation, sizeof(operation));
+    if (status || error || interrupted || operation[0] != '\0') return 1;
+    puts("process-group races accepted only after verification; real denials preserved");
+    return 0;
+}
+"""
+
 
 if __name__ == "__main__":
     if os.name != "posix":
@@ -80,9 +131,11 @@ if __name__ == "__main__":
     compiler = shlex.split(os.environ.get("FPM_CC", "cc"))
     with tempfile.TemporaryDirectory(prefix="fpm-watch-native-") as temporary:
         directory = Path(temporary).resolve()
-        source = directory / "process.c"
-        executable = directory / "process"
-        source.write_text(HARNESS, encoding="ascii")
-        subprocess.run([*compiler, "-O2", "-Wall", "-Wextra", "-Werror", str(source),
-                        str(repository / "src/watch_process.c"), "-o", str(executable)], check=True)
-        subprocess.run([str(executable)], check=True, timeout=90)
+        for name, program, sources in (("stress", HARNESS, [str(repository / "src/watch_process.c")]),
+                                       ("groups", GROUP_HARNESS, [])):
+            source = directory / f"{name}.c"
+            executable = directory / name
+            source.write_text(program, encoding="ascii")
+            subprocess.run([*compiler, "-O2", "-Wall", "-Wextra", "-Werror", str(source), *sources,
+                            "-I", str(repository / "src"), "-o", str(executable)], check=True)
+            subprocess.run([str(executable)], check=True, timeout=90)
